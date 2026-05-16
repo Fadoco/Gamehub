@@ -9,6 +9,12 @@ if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
 }
 const auth = firebase.auth();
 
+// Função auxiliar para o Loader
+function toggleLoader(show) {
+    const loader = document.getElementById('loading-overlay');
+    if (loader) loader.style.display = show ? 'flex' : 'none';
+}
+
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
@@ -64,14 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.onsubmit = (e) => {
             e.preventDefault();
-            // Tenta pegar o valor do campo de e-mail independente do ID (login.html ou modal)
-            const emailInput = document.getElementById('email') || document.getElementById('username');
+            
+            const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
-            const email = emailInput ? emailInput.value : '';
-            const password = passwordInput ? passwordInput.value : '';
+            const email = emailInput.value;
+            const password = passwordInput.value;
 
+            toggleLoader(true);
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
+                    toggleLoader(false);
                     alert("Login realizado com sucesso!");
                     if (window.location.pathname.includes('login.html')) {
                         window.location.href = '../index.html';
@@ -80,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch((error) => {
+                    toggleLoader(false);
                     let message = "E-mail ou senha incorretos.";
                     // Em produção, usamos mensagens genéricas por segurança
                     switch (error.code) {
@@ -120,18 +129,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lógica de Esqueci a Senha
     const handleForgotPassword = () => {
-        const emailInput = document.getElementById('email') || document.getElementById('username');
-        const email = emailInput ? emailInput.value : '';
+        const emailInput = document.getElementById('email');
+        const email = emailInput.value;
         
         if (!email || !email.includes('@')) {
             alert("Por favor, digite seu e-mail no campo correspondente antes de clicar em esqueci a senha.");
             return;
         }
-        auth.sendPasswordResetEmail(email, { url: window.location.origin + window.location.pathname })
+
+        toggleLoader(true);
+        auth.sendPasswordResetEmail(email)
             .then(() => {
+                toggleLoader(false);
                 alert("E-mail de recuperação enviado! Verifique sua caixa de entrada (e a pasta de spam).");
             })
             .catch((error) => {
+                toggleLoader(false);
                 alert("Erro ao enviar e-mail: " + error.message);
             });
     };
@@ -144,8 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         googleButtons.forEach(btn => {
             btn.onclick = () => {
+                toggleLoader(true);
                 auth.signInWithPopup(provider)
                     .then((result) => {
+                        toggleLoader(false);
                         // O Firebase já puxa automaticamente o 'displayName' e 'photoURL' do Google.
                         console.log("Usuário autenticado pelo Google:", result.user.displayName);
 
@@ -156,10 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     })
                     .catch((error) => {
-                        console.error("Google Auth Error:", error);
-                        if (error.code === 'auth/unauthorized-domain' || error.message.toLowerCase().includes('referer')) {
-                            const currentDomain = window.location.hostname;
-                            alert(`Erro de Autorização: O domínio '${currentDomain}' não está autorizado no Firebase Console. Adicione-o em Authentication > Settings > Authorized Domains.`);
+                        toggleLoader(false);
+                        console.error("Google Auth Error Detail:", error);
+                        
+                        if (error.code === 'auth/unauthorized-domain') {
+                            alert(`[ERRO FIREBASE] O domínio '${window.location.hostname}' não está na lista de 'Domínios Autorizados' no console do Firebase.`);
+                        } else if (error.message.toLowerCase().includes('referer')) {
+                            alert(`[ERRO GOOGLE CLOUD] Sua API Key está restringindo o acesso. Adicione 'https://${window.location.hostname}/*' nas restrições da chave no Google Cloud Console.`);
                         } else {
                             alert("Erro Google: " + error.message);
                         }
