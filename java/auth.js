@@ -15,10 +15,13 @@ auth.onAuthStateChanged((user) => {
     const isSubfolder = window.location.pathname.includes('/html/');
 
     if (!user && !isLoginPage) {
-        // Detecta a localização correta do login.html de forma robusta
-        const currentPath = window.location.pathname;
-        const isInHtmlFolder = currentPath.includes('/html/');
-        const loginPath = isInHtmlFolder ? 'login.html' : 'html/login.html';
+        // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
+        let loginPath;
+        if (isSubfolder) {
+            loginPath = 'login.html';
+        } else {
+            loginPath = 'html/login.html';
+        }
         
         window.location.href = loginPath;
     }
@@ -61,8 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.onsubmit = (e) => {
             e.preventDefault();
-            const email = document.getElementById('email')?.value || document.getElementById('username')?.value;
-            const password = document.getElementById('password').value;
+            // Tenta pegar o valor do campo de e-mail independente do ID (login.html ou modal)
+            const emailInput = document.getElementById('email') || document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const email = emailInput ? emailInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
 
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
@@ -114,12 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lógica de Esqueci a Senha
     const handleForgotPassword = () => {
-        const email = document.getElementById('email')?.value || document.getElementById('username')?.value;
-        if (!email) {
+        const emailInput = document.getElementById('email') || document.getElementById('username');
+        const email = emailInput ? emailInput.value : '';
+        
+        if (!email || !email.includes('@')) {
             alert("Por favor, digite seu e-mail no campo correspondente antes de clicar em esqueci a senha.");
             return;
         }
-        auth.sendPasswordResetEmail(email)
+        auth.sendPasswordResetEmail(email, { url: window.location.origin + window.location.pathname })
             .then(() => {
                 alert("E-mail de recuperação enviado! Verifique sua caixa de entrada (e a pasta de spam).");
             })
@@ -150,7 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     .catch((error) => {
                         console.error("Google Auth Error:", error);
                         if (error.code === 'auth/unauthorized-domain' || error.message.toLowerCase().includes('referer')) {
-                            alert("Erro de Autorização: O domínio 'fadoco.github.io' ainda não foi propagado ou autorizado no Firebase/Google Cloud. Verifique as configurações e aguarde 5 minutos.");
+                            const currentDomain = window.location.hostname;
+                            alert(`Erro de Autorização: O domínio '${currentDomain}' não está autorizado no Firebase Console. Adicione-o em Authentication > Settings > Authorized Domains.`);
                         } else {
                             alert("Erro Google: " + error.message);
                         }
