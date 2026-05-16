@@ -15,9 +15,12 @@ auth.onAuthStateChanged((user) => {
     const isSubfolder = window.location.pathname.includes('/html/');
 
     if (!user && !isLoginPage) {
-        // Se não estiver logado, manda para a login.html
-        const target = isSubfolder ? 'login.html' : 'html/login.html';
-        window.location.href = window.location.pathname.includes('index.html') ? 'html/login.html' : target;
+        // Detecta a localização correta do login.html de forma robusta
+        const currentPath = window.location.pathname;
+        const isInHtmlFolder = currentPath.includes('/html/');
+        const loginPath = isInHtmlFolder ? 'login.html' : 'html/login.html';
+        
+        window.location.href = loginPath;
     }
     if (user && isLoginPage) {
         window.location.href = '../index.html';
@@ -71,20 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch((error) => {
-                    let message = "Erro ao realizar login.";
+                    let message = "E-mail ou senha incorretos.";
+                    // Em produção, usamos mensagens genéricas por segurança
                     switch (error.code) {
-                        case 'auth/user-not-found':
-                            message = "Usuário não encontrado.";
-                            break;
-                        case 'auth/wrong-password':
-                            message = "Senha incorreta.";
-                            break;
                         case 'auth/invalid-email':
                             message = "E-mail inválido.";
                             break;
                     }
                     alert(message);
-                    console.error("Firebase Auth Error:", error.code);
                 });
         };
     }
@@ -152,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch((error) => {
                         console.error("Google Auth Error:", error);
-                        if (error.code === 'auth/unauthorized-domain' || error.message.includes('referer')) {
-                            alert("Domínio não autorizado! Vá ao Console do Firebase > Authentication > Configurações > Domínios Autorizados e adicione o seu domínio atual.");
+                        if (error.code === 'auth/unauthorized-domain' || error.message.toLowerCase().includes('referer')) {
+                            alert("Erro de Autorização: O domínio 'fadoco.github.io' ainda não foi propagado ou autorizado no Firebase/Google Cloud. Verifique as configurações e aguarde 5 minutos.");
                         } else {
                             alert("Erro Google: " + error.message);
                         }
