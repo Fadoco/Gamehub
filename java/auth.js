@@ -3,19 +3,8 @@
  */
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
-// Você obtém esses dados ao criar um projeto no Firebase Console
-const firebaseConfig = {
-    apiKey: "AIzaSyA7UzLE9eO-Zas3n5fgEv8sQmHOuclwg3Q",
-    authDomain: "gamehub-web-8c78c.firebaseapp.com",
-    projectId: "gamehub-web-8c78c",
-    storageBucket: "gamehub-web-8c78c.firebasestorage.app",
-    messagingSenderId: "72140954640",
-    appId: "1:72140954640:web:29c9662a447659cbf73e95",
-    measurementId: "G-237ZJ8KN79"
-};
-
-// Inicializa o Firebase
-if (!firebase.apps.length) {
+// Inicializa o Firebase apenas se a configuração estiver disponível
+if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
@@ -151,7 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
         googleButtons.forEach(btn => {
             btn.onclick = () => {
                 auth.signInWithPopup(provider)
-                    .then(() => {
+                    .then((result) => {
+                        // O Firebase já puxa automaticamente o 'displayName' e 'photoURL' do Google.
+                        console.log("Usuário autenticado pelo Google:", result.user.displayName);
+
                         if (window.location.pathname.includes('login.html')) {
                             window.location.href = '../index.html';
                         } else {
@@ -161,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .catch((error) => {
                         console.error("Google Auth Error:", error);
                         if (error.code === 'auth/unauthorized-domain') {
-                            alert("Erro: Este domínio não está autorizado no Firebase. Se você está testando localmente, certifique-se de estar usando o Live Server (localhost).");
+                            alert("Domínio não autorizado! Vá ao Console do Firebase > Authentication > Configurações > Domínios Autorizados e adicione o seu domínio atual.");
                         } else {
                             alert("Erro Google: " + error.message);
                         }
