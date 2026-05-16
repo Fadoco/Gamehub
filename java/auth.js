@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch((error) => {
                         console.error("Google Auth Error:", error);
-                        if (error.code === 'auth/unauthorized-domain') {
+                        if (error.code === 'auth/unauthorized-domain' || error.message.includes('referer')) {
                             alert("Domínio não autorizado! Vá ao Console do Firebase > Authentication > Configurações > Domínios Autorizados e adicione o seu domínio atual.");
                         } else {
                             alert("Erro Google: " + error.message);
