@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Sua Loja de Jogos</title>
+    <link rel="stylesheet" href="css/style global.css">
+    <link rel="stylesheet" href="css/home.css">
+    <!-- Importação do Font Awesome para ícones (lupa, biblioteca, dados) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Scripts de carregamento dinâmico -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="java/global.js" defer></script>
+    <script src="java/home.js" defer></script>
+    <script src="java/search.js" defer></script>
+    <script src="java/auth.js" defer></script>
+</head>
+<body>
+    <!-- 
+        BARRA DE NAVEGAÇÃO SUPERIOR
+        Contém a branding (logo) e as ferramentas globais (busca, biblioteca, etc)
+    -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" style="cursor:pointer" onclick="window.location.href='index.html'">GameHub</div>
+                
+                <div class="nav-items">
+                    <!-- Área de pesquisa rápida -->
+                    <div class="search-box">
+                        <input type="text" placeholder="buscar">
+                        <i class="fas fa-search"></i>
+                    </div>
+
+                    <!-- Links de acesso rápido às funcionalidades principais -->
+                    <a href="#" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="#" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <a href="#" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
+                    
+                    <div class="user-profile" id="user-menu">
+                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
+                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
+                        <button id="btn-login" class="nav-button" style="background: none; border: 1px solid var(--accent); padding: 5px 10px; border-radius: 4px;">Entrar</button>
+                        <button id="btn-logout" class="nav-button" style="display: none; font-size: 10px; color: var(--accent);">Sair</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 
+        CONTEÚDO PRINCIPAL
+        Abaixo do cabeçalho, organizado em uma grid de jogos responsiva.
+    -->
+    <main class="container">
+        <div id="store-sections">
+            <!-- O JavaScript criará as seções e títulos automaticamente aqui -->
+            <p>Carregando categorias...</p>
+        </div>
+    </main>
+
+    <!-- Modal de Login -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Entrar no GameHub</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="username" placeholder="E-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Senha" required>
+                </div>
+                <p id="forgot-password-modal-link" style="font-size: 12px; color: var(--accent); cursor: pointer; text-decoration: underline; margin-bottom: 15px; margin-top: -10px;">Esqueci minha senha</p>
+                <button type="submit" class="buy-button">Entrar</button>
+                <div style="text-align: center; margin: 15px 0; color: #7f8c8d;">OU</div>
+                <button type="button" class="btn-google" style="width: 100%; padding: 10px; background: white; color: #444; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Entrar com Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GameHub</h3>
+                    <p>Sua loja independente preferida para descobrir novos mundos.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Ajuda</a></li>
+                        <li><a href="#">Reembolsos</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Siga-nos</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 GameHub. Todos os direitos reservados. Desenvolvido por Douglas.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

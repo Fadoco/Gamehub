@@ -1,0 +1,112 @@
+/**
+ * Estilos específicos para a página de detalhes do jogo
+ */
+
+.back-navigation {
+    margin-bottom: 20px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: var(--transition);
+    opacity: 0.7;
+}
+
+.back-button:hover { opacity: 1; color: var(--accent); }
+
+.game-detail-container {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.detail-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+}
+
+.detail-media img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.detail-buy-box {
+    background: var(--bg-header);
+    padding: 25px;
+    border-radius: 4px;
+    height: fit-content;
+}
+
+.tags-row {
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #bdc3c7;
+}
+
+.price-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.current-price {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.current-price.sale { color: var(--promo); }
+
+.discount-badge {
+    background: var(--promo);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.buy-button {
+    width: 100%;
+    background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.buy-button:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 800px) {
+    .detail-content {
+        grid-template-columns: 1fr;
+    }
+    .detail-header h1 { font-size: 1.5em; }
+}

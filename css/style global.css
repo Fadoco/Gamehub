@@ -1,0 +1,341 @@
+/**
+ * PROJETO: GameHub - Loja Independente de Jogos
+ * DESCRIÇÃO: Estilização personalizada para um site de jogos independente, com paleta de cores diferenciada da Steam.
+ * AUTOR: Engenharia de Software
+ * DATA: 7 de maio de 2026
+ * NOTAS: Cores otimizadas para melhor contraste e acessibilidade. Comentários detalhados para facilitar manutenção.
+ */
+
+/* --- Variáveis CSS (Custom Properties) --- */
+/* Define cores globais para facilitar mudanças futuras e consistência */
+:root {
+    --bg-dark: #2c3e50; /* Fundo escuro principal: azul acinzentado para um visual moderno e neutro */
+    --bg-header: #34495e; /* Fundo do cabeçalho: tom ligeiramente mais claro para hierarquia visual */
+    --text-main: #ecf0f1; /* Cor do texto principal: branco off para boa legibilidade */
+    --accent: #e74c3c; /* Cor de destaque: vermelho vibrante para botões e elementos interativos */
+    --secondary: #f39c12; /* Cor secundária: laranja para elementos especiais como promoções */
+    --promo: #27ae60; /* Cor para promoções: verde para indicar descontos */
+    --card-bg: rgba(0, 0, 0, 0.3); /* Fundo dos cards: semi-transparente para sobrepor imagens */
+    --shadow: rgba(0, 0, 0, 0.5); /* Sombra padrão: usada em vários elementos para profundidade */
+    --transition: 0.3s ease; /* Transição padrão: suaviza mudanças de estado */
+}
+
+/* --- Configurações Globais --- */
+/* Reseta margens e padding padrão, define fonte e cor de fundo */
+body {
+    margin: 0; /* Remove margem padrão do navegador */
+    padding: 0; /* Remove padding padrão */
+    background-color: var(--bg-dark); /* Aplica fundo escuro */
+    color: var(--text-main); /* Define cor do texto */
+    font-family: "Motiva Sans", Arial, Helvetica, sans-serif; /* Fonte principal, fallback para Arial */
+    -webkit-font-smoothing: antialiased; /* Melhora renderização da fonte em Webkit */
+    line-height: 1.5; /* Altura de linha para melhor legibilidade */
+}
+
+/* Container principal: Centraliza conteúdo e limita largura máxima */
+.container {
+    max-width: 1200px; /* Largura máxima para telas grandes */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px 5%; /* Padding em porcentagem para flexibilidade */
+}
+
+/* --- Cabeçalho (Header) --- */
+/* Estiliza o cabeçalho com fundo e sombra */
+header {
+    background-color: var(--bg-header); /* Fundo do cabeçalho */
+    padding: 15px 0; /* Padding vertical */
+    text-transform: uppercase; /* Transforma texto em maiúsculo */
+    box-shadow: 0 4px 10px var(--shadow); /* Sombra para profundidade */
+    position: sticky; /* Fixa o cabeçalho no topo da página */
+    top: 0; /* Alinha ao topo */
+    z-index: 1000; /* Garante que fique acima de todos os outros elementos */
+}
+
+/* Override para header: Remove limite de largura para ocupar toda a tela */
+header .container {
+    max-width: none; /* Remove max-width para header */
+    padding: 0 5%; /* Padding lateral consistente */
+}
+
+/* Navegação: Flexbox para alinhar logo e itens */
+nav {
+    display: flex; /* Usa flexbox */
+    justify-content: space-between; /* Espaça logo e itens */
+    align-items: center; /* Alinha verticalmente */
+    flex-wrap: wrap; /* Permite quebra em telas pequenas */
+    gap: 20px; /* Espaço entre itens */
+}
+
+/* Itens de navegação: Agrupa busca e botões */
+.nav-items {
+    display: flex; /* Flexbox */
+    align-items: center; /* Alinhamento vertical */
+    gap: 20px; /* Espaço entre elementos */
+}
+
+/* Logo: Estiliza o nome do site */
+.logo {
+    font-size: 24px; /* Tamanho da fonte */
+    font-weight: bold; /* Negrito */
+    color: var(--text-main); /* Cor do texto */
+    letter-spacing: 2px; /* Espaçamento entre letras */
+}
+
+/* Barra de busca: Input estilizado com ícone */
+.search-box {
+    display: flex; /* Flexbox para input e ícone */
+    align-items: center; /* Alinhamento vertical */
+    position: relative; /* Necessário para posicionar o dropdown de sugestões */
+    background: var(--accent); /* Fundo vermelho */
+    padding: 6px 10px; /* Padding interno */
+    border-radius: 3px; /* Bordas arredondadas */
+    box-shadow: inset 0 0 5px var(--shadow); /* Sombra interna */
+    gap: 8px; /* Espaço entre input e ícone */
+}
+
+.search-box i {
+    color: white; /* Ícone branco */
+    cursor: pointer; /* Indica que é clicável */
+    font-size: 14px; /* Tamanho do ícone */
+}
+
+.search-box input {
+    background: none; /* Remove fundo */
+    border: none; /* Remove borda */
+    color: white; /* Cor do texto: branco para contraste com fundo vermelho */
+    outline: none; /* Remove outline */
+    padding: 5px; /* Padding */
+    width: 120px; /* Largura fixa */
+    font-size: 14px; /* Tamanho da fonte */
+}
+
+/* --- Sugestões de Busca (Autocomplete Dropdown) --- */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 8px); /* Posiciona logo abaixo da barra */
+    left: 0;
+    width: 280px; /* Largura maior para acomodar o mini-card */
+    background: var(--bg-header);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px var(--shadow);
+    z-index: 1000;
+    display: none; /* Escondido por padrão */
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.suggestion-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 12px;
+    cursor: pointer;
+    transition: background var(--transition);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-transform: none; /* Mantém o case original para títulos de jogos */
+}
+
+.suggestion-card:last-child { border-bottom: none; }
+
+.suggestion-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-card img {
+    width: 50px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.suggestion-card i {
+    width: 50px;
+    text-align: center;
+    color: var(--secondary);
+    font-size: 1.2em;
+}
+
+.suggestion-text { display: flex; flex-direction: column; }
+.suggestion-name { font-size: 13px; font-weight: 500; color: var(--text-main); }
+.suggestion-meta { font-size: 9px; color: #95a5a6; text-transform: uppercase; letter-spacing: 1px; }
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Placeholder com transparência */
+}
+
+/* Botões de navegação: Links estilizados */
+.nav-button {
+    display: flex; /* Flexbox */
+    align-items: center; /* Alinhamento */
+    gap: 8px; /* Espaço entre ícone e texto */
+    text-decoration: none; /* Remove sublinhado */
+    color: var(--text-main); /* Cor */
+    font-size: 13px; /* Tamanho */
+    transition: var(--transition); /* Transição suave */
+}
+
+.nav-button:hover {
+    color: var(--accent); /* Muda cor no hover */
+}
+
+/* Botão especial (Roleta): Destaque com gradiente */
+.roulette {
+    background: linear-gradient(to right, var(--secondary), var(--accent)); /* Gradiente laranja-vermelho */
+    padding: 8px 15px; /* Padding */
+    color: white !important; /* Cor branca forçada */
+    font-weight: bold; /* Negrito */
+    border-radius: 2px; /* Bordas */
+}
+
+/* Estilização do Perfil do Usuário no Header */
+.user-profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    transition: var(--transition);
+    display: block;
+}
+
+.user-profile img:hover {
+    transform: scale(1.1);
+    border-color: var(--secondary);
+}
+
+/* Responsividade Global */
+@media (max-width: 768px) {
+    .container { padding: 15px 15px; }
+    .logo { font-size: 20px; margin: 0 auto; } /* Centraliza logo no mobile */
+    nav { justify-content: center; }
+    .nav-items { 
+        width: 100%; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 15px; 
+    }
+    .search-box { 
+        order: -1; /* Coloca a busca no topo do menu mobile */
+        width: 100%; 
+    }
+    .search-suggestions { left: 50%; transform: translateX(-50%); }
+}
+
+/* --- Rodapé (Footer) --- */
+.main-footer {
+    background-color: var(--bg-header);
+    padding: 60px 0 30px 0;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-section p {
+    color: #bdc3c7;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li { margin-bottom: 12px; }
+
+.footer-section ul li a {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.footer-section ul li a:hover { color: var(--accent); }
+
+.social-icons { display: flex; gap: 20px; }
+
+.social-icons a {
+    color: #bdc3c7;
+    font-size: 22px;
+    transition: var(--transition);
+}
+
+.social-icons a:hover {
+    color: var(--accent);
+    transform: translateY(-5px); /* Efeito de levitação ao passar o mouse */
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
+/* --- Estilos do Modal de Login --- */
+.modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--bg-header);
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 0 20px var(--shadow);
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-dark);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
