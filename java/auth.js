@@ -27,25 +27,17 @@ auth.onAuthStateChanged((user) => {
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
-    if (!user && !isLoginPage) {
-        // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
-        let loginPath;
-        if (isSubfolder) {
-            loginPath = 'login.html';
-        } else {
-            loginPath = 'html/login.html';
-        }
-        
-        window.location.href = loginPath;
-    }
-
+    // Se o usuário estiver logado e tentar acessar a página de login, manda para a home
     if (user && isLoginPage) {
         window.location.href = '../index.html';
+        return;
     }
 
-    // Proteção de Rota Admin: Se tentar acessar a página admin sem ser o dono, volta pra home
+    // Proteção de Rota Admin: Só redireciona se o usuário NÃO for admin E estiver na página admin
     if (isAdminPage && !isAdmin) {
-        window.location.href = '../index.html';
+        const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
+        window.location.href = loginPath;
+        return;
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
