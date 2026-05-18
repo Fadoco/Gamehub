@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao GameHub!</title>
+    <link rel="stylesheet" href="../css/style global.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-header) 100%);
+            color: var(--text-main);
+        }
+        .welcome-card {
+            background: var(--bg-header);
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px var(--shadow);
+            max-width: 600px;
+            margin: 20px;
+        }
+        .welcome-card h1 {
+            color: var(--accent);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .welcome-card p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .welcome-card .btn-continue {
+            background: var(--accent);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background var(--transition);
+            text-decoration: none; /* For anchor tag */
+            display: inline-block;
+        }
+        .welcome-card .btn-continue:hover {
+            background: #c0392b; /* Darker accent */
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-card">
+        <h1>Bem-vindo(a) ao GameHub!</h1>
+        <p>É um prazer ter você conosco. Explore nosso catálogo de jogos, descubra novas aventuras e divirta-se!</p>
+        <a href="../index.html" class="btn-continue">Começar a Explorar</a>
+    </div>
+</body>
+</html>

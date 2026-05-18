@@ -78,13 +78,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             toggleLoader(true);
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
+                .then((userCredential) => {
                     toggleLoader(false);
-                    alert("Login realizado com sucesso!");
-                    if (window.location.pathname.includes('login.html')) {
-                        window.location.href = '../index.html';
+                    const isNewUser = userCredential.additionalUserInfo.isNewUser;
+                    const isLoginPage = window.location.pathname.includes('login.html');
+
+                    if (isNewUser) {
+                        alert("Conta criada e login realizado com sucesso! Bem-vindo ao GameHub.");
+                        window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
                     } else {
-                        loginModal.style.display = 'none';
+                        alert("Login realizado com sucesso!");
+                        if (isLoginPage) {
+                            window.location.href = '../index.html';
+                        } else {
+                            loginModal.style.display = 'none';
+                        }
                     }
                 })
                 .catch((error) => {
@@ -117,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 })
                 .then(() => {
-                    alert("Conta criada com sucesso! Bem-vindo ao GameHub.");
-                    window.location.href = '../index.html';
+                    alert("Conta criada com sucesso! Bem-vindo(a) ao GameHub.");
+                    window.location.href = '../html/welcome.html';
                 })
                 .catch((error) => {
                     alert("Erro ao cadastrar: " + error.message);
@@ -161,13 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         toggleLoader(false);
+                    const isNewUser = result.additionalUserInfo.isNewUser;
+                    const isLoginPage = window.location.pathname.includes('login.html');
                         // O Firebase já puxa automaticamente o 'displayName' e 'photoURL' do Google.
                         console.log("Usuário autenticado pelo Google:", result.user.displayName);
 
-                        if (window.location.pathname.includes('login.html')) {
+                    if (isNewUser) {
+                        alert("Conta criada e login realizado com sucesso! Bem-vindo ao GameHub.");
+                        window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
+                        } else {
+                        alert("Login realizado com sucesso!");
+                        if (isLoginPage) {
                             window.location.href = '../index.html';
                         } else {
                             loginModal.style.display = 'none';
+                        }
                         }
                     })
                     .catch((error) => {
