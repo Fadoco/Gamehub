@@ -6,12 +6,25 @@ let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso p
 
 async function fetchGamesData() {
     try {
-        // Detecta se o arquivo está dentro de uma subpasta para ajustar o caminho do fetch
-        const isSubfolder = window.location.pathname.includes('/html/') || window.location.pathname.includes('/jogo.html');
-        const jsonPath = isSubfolder ? '../json/games.json' : 'json/games.json';
+        // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)
+        if (typeof db !== 'undefined') {
+            const snapshot = await db.collection('games').get();
+            if (!snapshot.empty) {
+                allGamesData = snapshot.docs.map(doc => ({
+                    firestoreId: doc.id,
+                    ...doc.data()
+                }));
+                console.log("Dados carregados via Firestore");
+            }
+        }
 
-        const response = await fetch(jsonPath);
-        allGamesData = await response.json(); // Armazena os dados
+        // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
+        if (allGamesData.length === 0) {
+            const isSubfolder = window.location.pathname.includes('/html/') || window.location.pathname.includes('/jogo.html');
+            const jsonPath = isSubfolder ? '../json/games.json' : 'json/games.json';
+            const response = await fetch(jsonPath);
+            allGamesData = await response.json();
+        }
 
         // Decide qual função de renderização chamar com base na página atual
         if (window.location.pathname.includes('jogo.html')) {

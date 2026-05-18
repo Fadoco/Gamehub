@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Painel Admin</title>
+    <link rel="stylesheet" href="../css/style global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/auth.js" defer></script>
+    <script src="../java/admin.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub Admin</div>
+                <div class="nav-items">
+                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Ver Loja</a>
+                    <button id="btn-logout" class="nav-button" style="background:none; border:none; cursor:pointer; color:var(--accent)">Sair</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-grid">
+            <!-- Formulário de Cadastro/Edição -->
+            <section class="admin-card">
+                <h2 id="form-title">Adicionar Novo Jogo</h2>
+                <form id="admin-game-form">
+                    <input type="hidden" id="game-firestore-id">
+                    
+                    <div class="form-group">
+                        <label>ID Numérico (URL)</label>
+                        <input type="number" id="game-id" required placeholder="Ex: 50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Título do Jogo</label>
+                        <input type="text" id="game-title" required placeholder="Nome do Jogo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>URL da Imagem (Header)</label>
+                        <input type="url" id="game-image" required placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tags (separadas por vírgula)</label>
+                        <input type="text" id="game-tags" required placeholder="RPG, Ação, Indie">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plataformas (FontAwesome Icons)</label>
+                        <input type="text" id="game-platforms" required placeholder="fab fa-windows, fab fa-playstation">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Preço Atual</label>
+                            <input type="text" id="game-current-price" required placeholder="R$ 99,90">
+                        </div>
+                        <div class="form-group">
+                            <label>Desconto (%)</label>
+                            <input type="number" id="game-discount" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preço Antigo (se houver desconto)</label>
+                        <input type="text" id="game-old-price" placeholder="R$ 199,90">
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="game-featured">
+                        <label for="game-featured">Destaque na Home</label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="buy-button">Salvar Jogo</button>
+                        <button type="button" id="btn-cancel-edit" class="btn-see-more" style="display:none">Cancelar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Lista de Jogos -->
+            <section class="admin-card">
+                <h2>Gerenciar Catálogo</h2>
+                <div class="admin-table-container">
+                    <table id="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Jogo</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-game-list">
+                            <!-- Preenchido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

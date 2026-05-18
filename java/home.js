@@ -92,12 +92,18 @@ function renderToContainer(games, container, clear = true) {
         const oldPriceHtml = hasDiscount ? `<span class="old-price">${game.oldPrice}</span>` : '';
         const priceClass = hasDiscount ? 'game-price sale' : 'game-price';
 
+        const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
+        const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+
         container.innerHTML += `
             <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card">
                 <div class="card-media">
                     ${discountBadge}
                     <img src="${game.image}" alt="${game.title}">
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
+                        <i class="${favIcon}"></i>
+                    </button>
                 </div>
                 <div class="game-info">
                     <div class="game-details">

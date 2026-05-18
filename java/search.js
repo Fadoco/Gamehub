@@ -2,6 +2,15 @@
  * Lógica específica para o sistema de busca em tempo real e sugestões dinâmicas.
  */
 
+// Função de Debounce: Evita processamento excessivo durante a digitação
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
 function initSearch() {
     const searchInput = document.querySelector('.search-box input');
     const searchIcon = document.querySelector('.search-box i');
@@ -19,7 +28,7 @@ function initSearch() {
         searchBox.appendChild(suggestionsContainer);
     }
 
-    searchInput.addEventListener('input', (e) => {
+    const processInput = (e) => {
         const searchTerm = e.target.value.toLowerCase().trim();
         const searchWords = searchTerm.split(' ').filter(word => word.length > 0);
 
@@ -42,7 +51,10 @@ function initSearch() {
         ).slice(0, 2); // Limita a 2 tags
 
         renderSuggestions(matchedGames, matchedTags, suggestionsContainer, performSearch);
-    });
+    };
+
+    // Aplica o debounce de 300ms no input
+    searchInput.addEventListener('input', debounce(processInput, 300));
 
     // 3. Lógica de Redirecionamento (Enter ou Lupa)
     const performSearch = (query) => {

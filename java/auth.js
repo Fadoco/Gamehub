@@ -8,6 +8,9 @@ if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
+const db = firebase.firestore();
+
+window.userFavorites = []; // Armazenamento global de favoritos
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -18,7 +21,12 @@ function toggleLoader(show) {
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
+    const isAdminPage = window.location.pathname.includes('admin.html');
     const isSubfolder = window.location.pathname.includes('/html/');
+    
+    // Lista de e-mails de administradores
+    const adminEmails = ["fadoco12311@gmail.com"];
+    const isAdmin = user && adminEmails.includes(user.email);
 
     if (!user && !isLoginPage) {
         // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
@@ -31,13 +39,41 @@ auth.onAuthStateChanged((user) => {
         
         window.location.href = loginPath;
     }
+
     if (user && isLoginPage) {
+        window.location.href = '../index.html';
+    }
+
+    // Proteção de Rota Admin: Se tentar acessar a página admin sem ser o dono, volta pra home
+    if (isAdminPage && !isAdmin) {
         window.location.href = '../index.html';
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
     checkUserSession(user);
+
+    if (user) {
+        loadFavorites(user.uid);
+    } else {
+        window.userFavorites = [];
+    }
 });
+
+// Função para carregar favoritos do banco de dados
+async function loadFavorites(uid) {
+    try {
+        const doc = await db.collection('users').doc(uid).get();
+        if (doc.exists) {
+            window.userFavorites = doc.data().favorites || [];
+        } else {
+            window.userFavorites = [];
+        }
+        // Força a atualização da interface se as funções de renderização existirem
+        if (typeof renderGames === 'function' && typeof allGamesData !== 'undefined') {
+            renderGames(allGamesData);
+        }
+    } catch (e) { console.error("Erro ao carregar favoritos:", e); }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginModal = document.getElementById('login-modal');
@@ -46,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.querySelector('.close-modal');
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
-    const googleButtons = document.querySelectorAll('.btn-google');
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
@@ -160,59 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (forgotPasswordLink) forgotPasswordLink.onclick = handleForgotPassword;
     if (forgotPasswordModalLink) forgotPasswordModalLink.onclick = handleForgotPassword;
 
-    // Lógica do Login com Google
-    if (googleButtons.length > 0) {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        googleButtons.forEach(btn => {
-            btn.onclick = () => {
-                toggleLoader(true);
-                auth.signInWithPopup(provider)
-                    .then((result) => {
-                        toggleLoader(false);
-                    const isNewUser = result.additionalUserInfo.isNewUser;
-                    const isLoginPage = window.location.pathname.includes('login.html');
-                        // O Firebase já puxa automaticamente o 'displayName' e 'photoURL' do Google.
-                        console.log("Usuário autenticado pelo Google:", result.user.displayName);
-
-                    if (isNewUser) {
-                        alert("Conta criada e login realizado com sucesso! Bem-vindo ao GameHub.");
-                        window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
-                        } else {
-                        alert("Login realizado com sucesso!");
-                        if (isLoginPage) {
-                            window.location.href = '../index.html';
-                        } else {
-                            loginModal.style.display = 'none';
-                        }
-                        }
-                    })
-                    .catch((error) => {
-                        toggleLoader(false);
-                        console.error("Google Auth Error Detail:", error);
-                        
-                        if (error.code === 'auth/unauthorized-domain') {
-                            alert(`[ERRO FIREBASE] O domínio '${window.location.hostname}' não está na lista de 'Domínios Autorizados' no console do Firebase.`);
-                        } else if (error.message.toLowerCase().includes('referer')) {
-                            alert(`[ERRO GOOGLE CLOUD] Sua API Key está restringindo o acesso. Adicione 'https://${window.location.hostname}/*' nas restrições da chave no Google Cloud Console.`);
-                        } else {
-                            alert("Erro Google: " + error.message);
-                            if (error.message.includes('The requested action is invalid.')) {
-                                alert(
-                                    "Erro Google: 'The requested action is invalid'.\n\n" +
-                                    "Para corrigir, vá ao Google Cloud Console e configure os dois campos:\n\n" +
-                                    "1. Origens JavaScript autorizadas: Use APENAS 'https://fadoco.github.io' (sem barras ou caminhos).\n" +
-                                    "2. URIs de redirecionamento autorizados: Adicione estes dois:\n" +
-                                    "   - https://fadoco.github.io/__/auth/handler\n" +
-                                    "   - https://gamehub-web-8c78c.firebaseapp.com/__/auth/handler\n\n" +
-                                    "Aguarde 5 minutos após salvar."
-                                );
-                            }
-                        }
-                    });
-            };
-        });
-    }
-
     // Logout
     if (btnLogout) {
         btnLogout.onclick = () => {
@@ -228,11 +210,34 @@ function checkUserSession(user) {
     const btnLogout = document.getElementById('btn-logout');
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
+    const userMenu = document.getElementById('user-menu');
+
+    // Lista de e-mails de administradores
+    const adminEmails = ["fadoco12311@gmail.com"]; // Mantenha sincronizado com a lista acima
+    const isAdmin = user && adminEmails.includes(user.email);
 
     if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnLogout) btnLogout.style.display = 'block';
+        
+        // Adiciona botão Admin se não existir
+        if (userMenu && !document.getElementById('btn-admin')) {
+            if (isAdmin) {
+                const adminBtn = document.createElement('button');
+                adminBtn.id = 'btn-admin';
+                adminBtn.className = 'nav-button';
+                adminBtn.style.cssText = "font-size: 10px; color: var(--secondary); background: none; border: none; cursor: pointer;";
+                adminBtn.innerHTML = '<i class="fas fa-tools"></i> Admin';
+                adminBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'admin.html' : 'html/admin.html';
+                userMenu.insertBefore(adminBtn, btnLogout);
+            }
+        }
+        // Remove o botão Admin se o usuário não for admin e ele existir
+        else if (!isAdmin && document.getElementById('btn-admin')) {
+            document.getElementById('btn-admin').remove();
+        }
+
         if (userNameSpan) {
             userNameSpan.textContent = displayName;
             userNameSpan.style.display = 'inline';
@@ -246,3 +251,26 @@ function checkUserSession(user) {
         if (userNameSpan) userNameSpan.style.display = 'none';
     }
 }
+
+// Função global para favoritar/desfavoritar
+window.toggleFavorite = async (event, gameId) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!auth.currentUser) {
+        document.getElementById('login-modal').style.display = 'flex';
+        return;
+    }
+
+    if (window.userFavorites.includes(gameId)) {
+        window.userFavorites = window.userFavorites.filter(id => id !== gameId);
+    } else {
+        window.userFavorites.push(gameId);
+    }
+
+    await db.collection('users').doc(auth.currentUser.uid).set({
+        favorites: window.userFavorites
+    }, { merge: true });
+
+    if (typeof renderGames === 'function') renderGames(allGamesData);
+};
