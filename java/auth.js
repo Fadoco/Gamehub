@@ -181,7 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             alert("Erro Google: " + error.message);
                             if (error.message.includes('The requested action is invalid.')) {
-                                alert("Erro Google: 'The requested action is invalid.' Isso geralmente indica que o 'URI de redirecionamento autorizado' para o OAuth do Google não está configurado corretamente no Google Cloud Console. Verifique se 'https://fadoco.github.io/__/auth/handler' está adicionado.");
+                                alert(
+                                    "Erro Google: 'The requested action is invalid'.\n\n" +
+                                    "Para corrigir, vá ao Google Cloud Console e configure os dois campos:\n\n" +
+                                    "1. Origens JavaScript autorizadas: Use APENAS 'https://fadoco.github.io' (sem barras ou caminhos).\n" +
+                                    "2. URIs de redirecionamento autorizados: Adicione estes dois:\n" +
+                                    "   - https://fadoco.github.io/__/auth/handler\n" +
+                                    "   - https://gamehub-web-8c78c.firebaseapp.com/__/auth/handler\n\n" +
+                                    "Aguarde 5 minutos após salvar."
+                                );
                             }
                         }
                     });
