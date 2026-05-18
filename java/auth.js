@@ -8,7 +8,14 @@ if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
-const db = firebase.firestore();
+
+// Inicializa o Firestore com segurança
+let db;
+try {
+    db = firebase.firestore();
+} catch (e) {
+    console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
+}
 
 window.userFavorites = []; // Armazenamento global de favoritos
 
@@ -46,7 +53,7 @@ auth.onAuthStateChanged((user) => {
     checkUserSession(user); 
 
     if (user) {
-        loadFavorites(user.uid);
+        if (db) loadFavorites(user.uid);
     } else {
         window.userFavorites = [];
     }
@@ -257,6 +264,11 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
 window.toggleFavorite = async (event, gameId) => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!db) {
+        alert("Erro: Banco de dados não inicializado.");
+        return;
+    }
 
     if (!auth.currentUser) {
         document.getElementById('login-modal').style.display = 'flex';
