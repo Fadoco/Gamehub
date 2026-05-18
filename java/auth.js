@@ -34,17 +34,22 @@ auth.onAuthStateChanged((user) => {
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
-    // 1. Redireciona usuários logados para longe da página de login (evita o loop)
-    if (user && isLoginPage) {
-        window.location.href = '../index.html';
-        return;
-    }
-
-    // 2. Proteção de Rota Admin: Somente o Admin cadastrado pode ver a página administrativa
-    if (isAdminPage) {
-        if (!user || !isAdmin) {
+    if (!user) {
+        // 1. Se NÃO estiver logado e NÃO estiver na página de login, redireciona para login.html
+        if (!isLoginPage) {
             const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
+            return;
+        }
+    } else {
+        // 2. Se ESTIVER logado e tentar acessar a página de login, manda para a home
+        if (isLoginPage) {
+            window.location.href = '../index.html';
+            return;
+        }
+        // 3. Proteção de Rota Admin: Somente o Admin logado pode ver a página administrativa
+        if (isAdminPage && !isAdmin) {
+            window.location.href = '../index.html';
             return;
         }
     }
@@ -85,23 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
-    // Abrir modal
-    if (btnLogin) {
-        btnLogin.onclick = () => loginModal.style.display = 'flex';
-    }
-
-    // Fechar modal
-    if (closeModal) {
-        closeModal.onclick = () => loginModal.style.display = 'none';
-    }
-
-    // Fechar ao clicar fora
-    window.onclick = (event) => {
-        if (event.target == loginModal) loginModal.style.display = 'none';
-    }
-
     // Lógica do formulário
-    // Lógica do formulário de Login
     if (loginForm) {
         loginForm.onsubmit = (e) => {
             e.preventDefault();
