@@ -180,6 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             alert(`[ERRO GOOGLE CLOUD] Sua API Key está restringindo o acesso. Adicione 'https://${window.location.hostname}/*' nas restrições da chave no Google Cloud Console.`);
                         } else {
                             alert("Erro Google: " + error.message);
+                            if (error.message.includes('The requested action is invalid.')) {
+                                alert("Erro Google: 'The requested action is invalid.' Isso geralmente indica que o 'URI de redirecionamento autorizado' para o OAuth do Google não está configurado corretamente no Google Cloud Console. Verifique se 'https://fadoco.github.io/__/auth/handler' está adicionado.");
+                            }
                         }
                     });
             };
