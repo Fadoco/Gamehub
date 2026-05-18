@@ -8,7 +8,7 @@ if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
-const db = firebase.firestore(); // Inicializa o Firestore
+const db = firebase.firestore();
 
 window.userFavorites = []; // Armazenamento global de favoritos
 
@@ -23,9 +23,10 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isSubfolder = window.location.pathname.includes('/html/');
-
-    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email); // Calcula se o usuário logado é admin
+    
+    // Lista de e-mails de administradores
+    const adminEmails = ["fadoco12311@gmail.com"];
+    const isAdmin = user && adminEmails.includes(user.email);
 
     if (!user && !isLoginPage) {
         // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
@@ -49,7 +50,7 @@ auth.onAuthStateChanged((user) => {
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
-    checkUserSession(user, isAdmin); // Passa isAdmin para a função
+    checkUserSession(user); // isAdmin é calculado dentro de checkUserSession agora
 
     if (user) {
         loadFavorites(user.uid);
@@ -207,12 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function checkUserSession(user, isAdmin) { // Recebe isAdmin como parâmetro
+function checkUserSession(user) { // isAdmin é calculado aqui dentro
     const btnLogin = document.getElementById('btn-login');
     const btnLogout = document.getElementById('btn-logout');
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
+    
+    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
+    const isAdmin = user && adminEmails.includes(user.email);
 
     if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
