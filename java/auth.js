@@ -8,7 +8,7 @@ if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
-const db = firebase.firestore();
+const db = firebase.firestore(); // Inicializa o Firestore
 
 window.userFavorites = []; // Armazenamento global de favoritos
 
@@ -23,10 +23,9 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isSubfolder = window.location.pathname.includes('/html/');
-    
-    // Lista de e-mails de administradores
-    const adminEmails = ["fadoco12311@gmail.com"];
-    const isAdmin = user && adminEmails.includes(user.email);
+
+    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email); // Calcula se o usuário logado é admin
 
     if (!user && !isLoginPage) {
         // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
@@ -50,7 +49,7 @@ auth.onAuthStateChanged((user) => {
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
-    checkUserSession(user);
+    checkUserSession(user, isAdmin); // Passa isAdmin para a função
 
     if (user) {
         loadFavorites(user.uid);
@@ -139,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             message = "E-mail inválido.";
                             break;
                     }
+                    console.error("Erro no Login:", error); // Log detalhado do erro
                     alert(message);
                 });
         };
@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch((error) => {
                     alert("Erro ao cadastrar: " + error.message);
+                    console.error("Erro no Cadastro:", error); // Log detalhado do erro
                     console.error(error);
                 });
         };
@@ -188,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch((error) => {
                 toggleLoader(false);
+                console.error("Erro ao enviar e-mail de recuperação:", error); // Log detalhado do erro
                 alert("Erro ao enviar e-mail: " + error.message);
             });
     };
@@ -205,16 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function checkUserSession(user) {
+function checkUserSession(user, isAdmin) { // Recebe isAdmin como parâmetro
     const btnLogin = document.getElementById('btn-login');
     const btnLogout = document.getElementById('btn-logout');
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
-
-    // Lista de e-mails de administradores
-    const adminEmails = ["fadoco12311@gmail.com"]; // Mantenha sincronizado com a lista acima
-    const isAdmin = user && adminEmails.includes(user.email);
 
     if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
