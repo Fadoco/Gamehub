@@ -23,10 +23,9 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isSubfolder = window.location.pathname.includes('/html/');
-    
-    // Lista de e-mails de administradores
-    const adminEmails = ["fadoco12311@gmail.com"];
-    const isAdmin = user && adminEmails.includes(user.email);
+
+    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
     if (!user && !isLoginPage) {
         // Melhora a detecção do caminho base para evitar redirecionamentos infinitos ou errados
@@ -216,7 +215,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     const userMenu = document.getElementById('user-menu');
     
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
-    const isAdmin = user && adminEmails.includes(user.email);
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
     if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
@@ -229,8 +228,14 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
                 const adminBtn = document.createElement('button');
                 adminBtn.id = 'btn-admin';
                 adminBtn.className = 'nav-button';
-                adminBtn.style.cssText = "font-size: 10px; color: var(--secondary); background: none; border: none; cursor: pointer;";
-                adminBtn.innerHTML = '<i class="fas fa-tools"></i> Admin';
+                // Bonequinho Admin grande e visível ao lado da foto
+                adminBtn.style.cssText = "font-size: 22px; color: var(--secondary); background: none; border: none; cursor: pointer; margin: 0 12px; display: flex; align-items: center; transition: 0.3s;";
+                adminBtn.title = "Painel Administrativo";
+                adminBtn.innerHTML = '<i class="fas fa-user-shield"></i>';
+                
+                adminBtn.onmouseover = () => adminBtn.style.color = 'var(--accent)';
+                adminBtn.onmouseout = () => adminBtn.style.color = 'var(--secondary)';
+
                 adminBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'admin.html' : 'html/admin.html';
                 userMenu.insertBefore(adminBtn, btnLogout);
             }
