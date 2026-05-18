@@ -18,6 +18,8 @@ try {
 }
 
 window.userFavorites = []; // Armazenamento global de favoritos
+window.userCart = [];      // Armazenamento global do carrinho
+window.userLibrary = [];   // Armazenamento global da biblioteca
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -29,14 +31,15 @@ function toggleLoader(show) {
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
+    const isWelcomePage = window.location.pathname.includes('welcome.html');
     const isSubfolder = window.location.pathname.includes('/html/');
 
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
     if (!user) {
-        // 1. Se NÃO estiver logado e NÃO estiver na página de login, redireciona para login.html
-        if (!isLoginPage) {
+        // 1. Se NÃO estiver logado e NÃO estiver na página de login ou boas-vindas, redireciona para login.html
+        if (!isLoginPage && !isWelcomePage) {
             const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
             return;
@@ -58,25 +61,31 @@ auth.onAuthStateChanged((user) => {
     checkUserSession(user); 
 
     if (user) {
-        if (db) loadFavorites(user.uid);
+        if (db) loadUserData(user.uid);
     } else {
         window.userFavorites = [];
+        window.userCart = [];
+        window.userLibrary = [];
     }
 });
 
-// Função para carregar favoritos do banco de dados
-async function loadFavorites(uid) {
+// Função para carregar todos os dados do usuário do banco de dados
+async function loadUserData(uid) {
     try {
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
-            window.userFavorites = doc.data().favorites || [];
+            const data = doc.data();
+            window.userFavorites = data.favorites || [];
+            window.userCart = data.cart || [];
+            window.userLibrary = data.library || [];
         } else {
-            window.userFavorites = [];
+            window.userFavorites = []; window.userCart = []; window.userLibrary = [];
         }
         // Força a atualização da interface se as funções de renderização existirem
         if (typeof renderGames === 'function' && typeof allGamesData !== 'undefined') {
             renderGames(allGamesData);
         }
+        updateNavBadges();
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
@@ -151,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(() => {
                     alert("Conta criada com sucesso! Bem-vindo(a) ao GameHub.");
-                    window.location.href = '../html/welcome.html';
+                    window.location.href = 'welcome.html';
                 })
                 .catch((error) => {
                     alert("Erro ao cadastrar: " + error.message);
@@ -276,3 +285,84 @@ window.toggleFavorite = async (event, gameId) => {
 
     if (typeof renderGames === 'function') renderGames(allGamesData);
 };
+
+// Função para atualizar contadores no menu (opcional)
+function updateNavBadges() {
+    const cartBtn = document.querySelector('.nav-button .fa-shopping-cart')?.parentElement;
+    if (cartBtn) {
+        cartBtn.setAttribute('data-count', window.userCart.length);
+    }
+}
+
+// Função para Adicionar/Remover do Carrinho
+window.toggleCart = async (gameId) => {
+    if (!auth.currentUser) {
+        window.location.href = window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
+        return;
+    }
+
+    // Verifica se o jogo já está na biblioteca
+    if (window.userLibrary.includes(gameId)) {
+        alert("Você já possui este jogo na sua biblioteca!");
+        return;
+    }
+
+    const index = window.userCart.indexOf(gameId);
+    if (index > -1) {
+        window.userCart.splice(index, 1);
+        alert("Removido do carrinho.");
+    } else {
+        window.userCart.push(gameId);
+        alert("Adicionado ao carrinho!");
+    }
+
+    await db.collection('users').doc(auth.currentUser.uid).set({
+        cart: window.userCart
+    }, { merge: true });
+    
+    updateNavBadges();
+};
+
+// Simulação de Compra (Move do Carrinho para Biblioteca)
+window.purchaseLibrary = async () => {
+    if (!auth.currentUser || window.userCart.length === 0) return;
+
+    if (confirm(`Deseja finalizar a compra de ${window.userCart.length} item(s)?`)) {
+        toggleLoader(true);
+        
+        // Adiciona itens do carrinho à biblioteca (sem duplicar)
+        const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
+        
+        try {
+            await db.collection('users').doc(auth.currentUser.uid).update({
+                library: newLibrary,
+                cart: [] // Limpa o carrinho após a compra
+            });
+
+            window.userLibrary = newLibrary;
+            window.userCart = [];
+            
+            toggleLoader(false);
+            alert("Compra realizada com sucesso! Os jogos agora estão na sua Biblioteca.");
+            updateNavBadges();
+            location.reload();
+        } catch (error) {
+            toggleLoader(false);
+            alert("Erro ao processar compra: " + error.message);
+        }
+    }
+};
+
+// Eventos para os botões do Header
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCart = document.getElementById('nav-cart');
+    const btnLibrary = document.getElementById('nav-library');
+    const isSubfolder = window.location.pathname.includes('/html/');
+
+    if (btnCart) {
+        btnCart.onclick = () => window.location.href = isSubfolder ? 'carrinho.html' : 'html/carrinho.html';
+    }
+    if (btnLibrary) {
+        btnLibrary.onclick = () => window.location.href = isSubfolder ? 'biblioteca.html' : 'html/biblioteca.html';
+    }
+});

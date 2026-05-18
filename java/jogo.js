@@ -27,6 +27,21 @@ function renderGameDetails(games) {
             priceBox.innerHTML = `<span class="current-price">${game.currentPrice}</span>`;
         }
 
+        // Configura o botão de compra/carrinho
+        const buyBtn = document.querySelector('.buy-button');
+        if (buyBtn) {
+            buyBtn.onclick = () => window.toggleCart(game.id);
+            
+            // Muda o texto se já estiver no carrinho ou biblioteca
+            if (window.userLibrary && window.userLibrary.includes(game.id)) {
+                buyBtn.textContent = "Na Biblioteca";
+                buyBtn.style.background = "var(--bg-header)";
+                buyBtn.disabled = true;
+            } else if (window.userCart && window.userCart.includes(game.id)) {
+                buyBtn.textContent = "Remover do Carrinho";
+            }
+        }
+
         const platformsContainer = document.getElementById('game-platforms-detail');
         platformsContainer.innerHTML = game.platforms.map(icon => `<i class="${icon}"></i>`).join(' ');
     } else {
