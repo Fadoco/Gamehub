@@ -27,21 +27,23 @@ auth.onAuthStateChanged((user) => {
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
-    // Se o usuário estiver logado e tentar acessar a página de login, manda para a home
+    // 1. Redireciona usuários logados para longe da página de login (evita o loop)
     if (user && isLoginPage) {
         window.location.href = '../index.html';
         return;
     }
 
-    // Proteção de Rota Admin: Só redireciona se o usuário NÃO for admin E estiver na página admin
-    if (isAdminPage && !isAdmin) {
-        const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
-        window.location.href = loginPath;
-        return;
+    // 2. Proteção de Rota Admin: Somente o Admin cadastrado pode ver a página administrativa
+    if (isAdminPage) {
+        if (!user || !isAdmin) {
+            const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
+            window.location.href = loginPath;
+            return;
+        }
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
-    checkUserSession(user); // isAdmin é calculado dentro de checkUserSession agora
+    checkUserSession(user); 
 
     if (user) {
         loadFavorites(user.uid);
@@ -106,14 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     toggleLoader(false);
-                    const isNewUser = userCredential.additionalUserInfo.isNewUser;
+                    const isNewUser = userCredential.additionalUserInfo?.isNewUser;
                     const isLoginPage = window.location.pathname.includes('login.html');
 
                     if (isNewUser) {
                         alert("Conta criada e login realizado com sucesso! Bem-vindo ao GameHub.");
                         window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
                     } else {
-                        alert("Login realizado com sucesso!");
+                        console.log("Login bem-sucedido.");
                         if (isLoginPage) {
                             window.location.href = '../index.html';
                         } else {
