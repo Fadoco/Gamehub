@@ -102,6 +102,10 @@ function refreshCurrentPageUI() {
             renderGameDetails(allGamesData);
         } else if (window.location.pathname.includes('busca.html') && typeof renderSearchResults === 'function') {
             renderSearchResults(allGamesData);
+        } else if (window.location.pathname.includes('carrinho.html') && typeof renderCart === 'function') {
+            renderCart();
+        } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
+            renderLibrary();
         } else if (typeof renderGames === 'function') {
             renderGames(allGamesData);
         }

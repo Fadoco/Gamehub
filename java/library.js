@@ -9,7 +9,7 @@ function renderLibrary() {
     if (!grid || !allGamesData.length) return;
 
     // Filtra apenas os jogos que estão na lista de biblioteca do usuário
-    const libraryGames = allGamesData.filter(game => window.userLibrary.includes(game.id));
+    const libraryGames = allGamesData.filter(game => window.userLibrary.some(libId => String(libId) === String(game.id)));
 
     if (libraryGames.length === 0) {
         grid.innerHTML = '';
@@ -22,14 +22,3 @@ function renderLibrary() {
         }
     }
 }
-
-// Aguarda os dados globais serem carregados para renderizar
-document.addEventListener('DOMContentLoaded', () => {
-    // Como fetchGamesData é assíncrono, verificamos em intervalos ou após o load
-    const checkData = setInterval(() => {
-        if (allGamesData.length > 0) {
-            renderLibrary();
-            clearInterval(checkData);
-        }
-    }, 100);
-});

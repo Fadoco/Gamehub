@@ -9,7 +9,8 @@ function renderCart() {
     
     if (!grid || !allGamesData.length) return;
 
-    const cartGames = allGamesData.filter(game => window.userCart.includes(game.id));
+    // Filtra garantindo que a comparação de ID ignore se é string ou número
+    const cartGames = allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));
 
     if (cartGames.length === 0) {
         grid.innerHTML = '';
@@ -39,11 +40,4 @@ function calculateTotal(cartGames) {
     totalElement.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const checkData = setInterval(() => {
-        if (allGamesData.length > 0) {
-            renderCart();
-            clearInterval(checkData);
-        }
-    }, 100);
-});
+// A chamada inicial agora é feita pelo global.js ou auth.js

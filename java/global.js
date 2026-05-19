@@ -59,6 +59,18 @@ async function fetchGamesData() {
             } else {
                 console.warn("renderSearchResults não está definida. Verifique se busca.js foi carregado.");
             }
+        } else if (window.location.pathname.includes('carrinho.html')) {
+            if (typeof renderCart === 'function') {
+                renderCart();
+            } else {
+                console.warn("renderCart não está definida. Verifique se cart.js foi carregado.");
+            }
+        } else if (window.location.pathname.includes('biblioteca.html')) {
+            if (typeof renderLibrary === 'function') {
+                renderLibrary();
+            } else {
+                console.warn("renderLibrary não está definida. Verifique se library.js foi carregado.");
+            }
         } else { // Assumimos que é a página inicial ou outra que lista jogos
             // Verifica se a função renderGames está disponível (carregada por home.js)
             if (typeof renderGames === 'function') {
