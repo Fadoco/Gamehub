@@ -118,6 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
+    // Abrir modal de login ao clicar no botão "Entrar" do header
+    if (btnLogin && loginModal) {
+        btnLogin.onclick = (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'flex';
+        };
+    }
+
+    // Fechar modal ao clicar no X
+    if (closeModal && loginModal) {
+        closeModal.onclick = () => {
+            loginModal.style.display = 'none';
+        };
+    }
+
     // Lógica do formulário
     if (loginForm) {
         loginForm.onsubmit = (e) => {
@@ -237,6 +252,9 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
     
+    // Garante que o container de perfil esteja visível no header
+    if (userMenu) userMenu.style.display = 'flex';
+
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
@@ -274,11 +292,13 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         }
         if (userImg) {
             userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
+            userImg.style.display = 'block';
         }
     } else {
         if (btnLogin) btnLogin.style.display = 'block';
         if (btnLogout) btnLogout.style.display = 'none';
         if (userNameSpan) userNameSpan.style.display = 'none';
+        if (userImg) userImg.style.display = 'block'; // Mostra avatar padrão mesmo deslogado
     }
 }
 
