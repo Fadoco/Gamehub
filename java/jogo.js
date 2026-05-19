@@ -60,7 +60,7 @@ function renderGameDetails(games) {
         // Se o jogo não for encontrado, exibe uma mensagem de erro
         const detailContainer = document.querySelector('.game-detail-container');
         if (detailContainer) {
-            detailContainer.innerHTML = "<h2>Jogo não encontrado.</h2><p>Verifique o ID do jogo na URL.</p>";
+            detailContainer.innerHTML = "<h2>Jogo não encontrado.</h2><p style='color: var(--secondary);'>Verifique o ID do jogo na URL.</p>";
         }
     }
 }

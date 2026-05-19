@@ -23,6 +23,7 @@ window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
 window.userBalance = 0;    // Saldo da carteira
+const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
 
 // Função auxiliar para o Loader
@@ -30,6 +31,27 @@ function toggleLoader(show) {
     const loader = document.getElementById('loading-overlay');
     if (loader) loader.style.display = show ? 'flex' : 'none';
 }
+
+// Sistema de Notificação Customizado
+window.showToast = (message, type = 'info') => {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    const icon = type === 'success' ? 'check-circle' : (type === 'error' ? 'exclamation-circle' : 'info-circle');
+    toast.innerHTML = `<i class="fas fa-${icon}"></i> <span>${message}</span>`;
+    
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+};
 
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
@@ -45,9 +67,6 @@ auth.onAuthStateChanged((user) => {
         return;
     }
 
-    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
-
     if (!user) {
         // 1. Se NÃO estiver logado e NÃO estiver na página de login ou boas-vindas, redireciona para login.html
         if (!isLoginPage && !isWelcomePage) {
@@ -59,6 +78,7 @@ auth.onAuthStateChanged((user) => {
         // 2. Se ESTIVER logado e tentar acessar a página de login, manda para a home
         if (isLoginPage) {
             window.location.href = '../index.html';
+            showToast("Você já está logado!", "info");
             return;
         }
         // 3. Proteção de Rota Admin: Somente o Admin logado pode ver a página administrativa
@@ -69,9 +89,22 @@ auth.onAuthStateChanged((user) => {
     }
 
     // Atualiza a interface sempre que o estado do usuário mudar
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email); // Recalcula isAdmin aqui para checkUserSession
     checkUserSession(user); 
 
     if (user) {
+        // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
+        if (db) {
+            db.collection('users').doc(user.uid).get().then(doc => {
+                if (!doc.exists) {
+                    db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        balance: 0,
+                        favorites: [], cart: [], library: [], history: []
+                    }, { merge: true });
+                }
+            });
+        }
         if (db) loadUserData(user.uid);
     } else {
         window.userFavorites = [];
@@ -162,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const isLoginPage = window.location.pathname.includes('login.html');
 
                     if (isNewUser) {
-                        alert("Conta criada e login realizado com sucesso! Bem-vindo ao GameHub.");
+                        showToast("Bem-vindo ao GameHub!", "success");
                         window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
                     } else {
                         console.log("Login bem-sucedido.");
@@ -183,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             break;
                     }
                     console.error("Erro no Login:", error); // Log detalhado do erro
-                    alert(message);
+                    showToast(message, "error");
                 });
         };
     }
@@ -204,15 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 })
                 .then(() => {
-                    alert("Conta criada com sucesso! Bem-vindo(a) ao GameHub.");
+                    showToast("Conta criada com sucesso!", "success");
                     window.location.href = 'welcome.html';
                 })
                 .catch((error) => {
                     console.error("Erro no Cadastro:", error);
                     if (error.message.includes('requests-from-referer-blocked')) {
-                        alert("Erro de Segurança: O domínio local (127.0.0.1:5500) não está autorizado no Google Cloud Console para esta API Key.");
+                        showToast("Domínio não autorizado no Firebase.", "error");
                     } else {
-                        alert("Erro ao cadastrar: " + error.message);
+                        showToast("Erro ao cadastrar: " + error.message, "error");
                     }
                     console.error("Erro no Cadastro:", error); // Log detalhado do erro
                     console.error(error);
@@ -226,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = emailInput.value;
         
         if (!email || !email.includes('@')) {
-            alert("Por favor, digite seu e-mail no campo correspondente antes de clicar em esqueci a senha.");
+            showToast("Digite um e-mail válido.", "error");
             return;
         }
 
@@ -234,12 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
         auth.sendPasswordResetEmail(email)
             .then(() => {
                 toggleLoader(false);
-                alert("E-mail de recuperação enviado! Verifique sua caixa de entrada (e a pasta de spam).");
+                showToast("E-mail de recuperação enviado!", "success");
             })
             .catch((error) => {
                 toggleLoader(false);
                 console.error("Erro ao enviar e-mail de recuperação:", error); // Log detalhado do erro
-                alert("Erro ao enviar e-mail: " + error.message);
+                showToast("Erro ao enviar e-mail.", "error");
             });
     };
 
@@ -328,7 +361,7 @@ window.toggleFavorite = async (event, gameId) => {
     event.stopPropagation();
 
     if (!db && !DESATIVAR_LOGIN_PARA_TESTE) {
-        alert("Erro: Banco de dados não inicializado.");
+        showToast("Erro: Banco de dados não inicializado.", "error");
         return;
     }
 
@@ -369,17 +402,17 @@ window.toggleCart = async (gameId) => {
 
     // Verifica se o jogo já está na biblioteca
     if (window.userLibrary.includes(gameId)) {
-        alert("Você já possui este jogo na sua biblioteca!");
+        showToast("Você já possui este jogo!", "info");
         return;
     }
 
     const index = window.userCart.indexOf(gameId);
     if (index > -1) {
         window.userCart.splice(index, 1);
-        alert("Removido do carrinho.");
+        showToast("Removido do carrinho.");
     } else {
         window.userCart.push(gameId);
-        alert("Adicionado ao carrinho!");
+        showToast("Adicionado ao carrinho!", "success");
     }
 
     if (auth.currentUser && db) {
@@ -395,24 +428,21 @@ window.toggleCart = async (gameId) => {
 // Simulação de Compra (Move do Carrinho para Biblioteca)
 window.purchaseLibrary = async () => {
     if (window.userCart.length === 0) {
-        alert("Seu carrinho está vazio!");
+        showToast("Carrinho vazio!", "error");
         return;
     }
 
     if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
-        alert("Você precisa estar logado para realizar uma compra.");
+        showToast("Você precisa estar logado para realizar uma compra.", "info");
         return;
     }
 
     // Calcula o total da compra baseado nos dados globais
     const cartGames = allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
-    const totalPurchase = cartGames.reduce((acc, game) => {
-        const price = parseFloat(game.currentPrice.replace('R$', '').replace('Grátis', '0').replace(',', '.').trim()) || 0;
-        return acc + price;
-    }, 0);
+    const totalPurchase = cartGames.reduce((acc, game) => acc + utils.parsePrice(game.currentPrice), 0);
 
     if (window.userBalance < totalPurchase) {
-        alert("Saldo insuficiente na carteira!");
+        showToast("Saldo insuficiente!", "error");
         return;
     }
 
@@ -438,7 +468,7 @@ window.purchaseLibrary = async () => {
             window.userBalance = newBalance;
             window.userHistory = newHistory;
             toggleLoader(false);
-            alert("Compra realizada com sucesso (Modo Offline)!");
+            showToast("Compra realizada (Offline)!", "success");
             refreshCurrentPageUI();
             updateNavBadges();
             return;
@@ -458,12 +488,12 @@ window.purchaseLibrary = async () => {
             window.userHistory = newHistory;
             
             toggleLoader(false);
-            alert("Compra realizada com sucesso! Os jogos agora estão na sua Biblioteca.");
+            showToast("Compra finalizada com sucesso!", "success");
             updateNavBadges();
             location.reload();
         } catch (error) {
             toggleLoader(false);
-            alert("Erro ao processar compra: " + error.message);
+            showToast("Erro ao processar compra.", "error");
         }
     }
 };

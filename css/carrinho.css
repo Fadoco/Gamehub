@@ -12,6 +12,12 @@
     gap: 20px;
 }
 
+/* Garante que o grid da home não interfira no carrinho */
+#cart-grid.game-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+}
+
 .cart-item {
     background: rgba(12, 20, 38, 0.5);
     border: 1px solid rgba(43, 144, 255, 0.1);
@@ -30,10 +36,11 @@
 }
 
 .cart-item img {
-    width: 120px;
-    height: 70px;
+    width: 140px !important;
+    height: 80px !important;
     object-fit: cover;
     border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .item-details { flex: 1; }

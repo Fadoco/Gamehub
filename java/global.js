@@ -4,6 +4,70 @@
 
 let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 
+// Utilitários Globais
+window.utils = {
+    // Converte preços como "R$ 99,90" ou "Grátis" para números (float)
+    parsePrice: (priceStr) => {
+        if (!priceStr) return 0;
+        const cleaned = String(priceStr).replace('R$', '').replace('Grátis', '0').replace(',', '.').trim();
+        return parseFloat(cleaned) || 0;
+    }
+};
+
+/**
+ * Renderiza uma lista de jogos em um container HTML.
+ * Esta função é compartilhada entre home.js, library.js e busca.js.
+ */
+window.renderToContainer = (games, container, clear = true) => {
+    if (!container) return;
+    
+    const gamePagePath = IS_SUBFOLDER ? 'jogo.html' : 'html/jogo.html';
+
+    if (clear) container.innerHTML = ''; 
+    if (games.length === 0) {
+        container.innerHTML = '<p>Nenhum jogo encontrado nesta seção.</p>';
+        return;
+    }
+
+    games.forEach(game => {
+        // Gerar ícones de plataformas dinamicamente
+        const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
+        
+        // Lógica de exibição de preço e desconto
+        const hasDiscount = game.discount > 0;
+        const discountBadge = hasDiscount ? `<span class="discount-percent">-${game.discount}%</span>` : '';
+        const oldPriceHtml = hasDiscount ? `<span class="old-price">${game.oldPrice}</span>` : '';
+        const priceClass = hasDiscount ? 'game-price sale' : 'game-price';
+
+        const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
+        const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+
+        container.innerHTML += `
+            <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
+                <article class="game-card">
+                <div class="card-media">
+                    ${discountBadge}
+                    <img src="${game.image}" alt="${game.title}">
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
+                        <i class="${favIcon}"></i>
+                    </button>
+                </div>
+                <div class="game-info">
+                    <div class="game-details">
+                        <p class="game-title">${game.title}</p>
+                        <div class="game-platforms">${platformsHtml}</div>
+                        <span class="game-tags">${game.tags.join(', ')}</span>
+                    </div>
+                    <div class="price-container">
+                        <div class="price-box">${oldPriceHtml}<p class="${priceClass}">${game.currentPrice}</p></div>
+                    </div>
+                </div>
+                </article>
+            </a>`;
+    });
+};
+
+const IS_SUBFOLDER = window.location.pathname.includes('/html/'); // Define uma vez para reuso
 async function fetchGamesData() {
     try {
         // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)
@@ -20,20 +84,18 @@ async function fetchGamesData() {
 
         // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
         if (allGamesData.length === 0) {
-            const isSubfolder = window.location.pathname.includes('/html/');
-            const jsonPath = isSubfolder ? '../json/games.json' : 'json/games.json';
+            const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
             const response = await fetch(jsonPath);
             allGamesData = await response.json();
         }
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
-        const isSubfolder = window.location.pathname.includes('/html/');
-        allGamesData = allGamesData.map(game => {
+        allGamesData = allGamesData.map(game => { // Usar IS_SUBFOLDER aqui
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
             
             // 2. Ajusta caminhos de imagens locais para subpastas (ex: de 'img/...' para '../img/...')
-            if (imgPath && !imgPath.startsWith('http') && isSubfolder && !imgPath.startsWith('../')) {
+            if (imgPath && !imgPath.startsWith('http') && IS_SUBFOLDER && !imgPath.startsWith('../')) {
                 imgPath = '../' + imgPath;
             }
 

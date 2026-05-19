@@ -70,56 +70,6 @@ function setupPagination(games, grid, footer) {
     showNextBatch();
 }
 
-function renderToContainer(games, container, clear = true) {
-    if (!container) return;
-    
-    const isSubfolder = window.location.pathname.includes('/html/');
-    const gamePagePath = isSubfolder ? 'jogo.html' : 'html/jogo.html';
-
-    if (clear) container.innerHTML = ''; 
-    if (games.length === 0) {
-        container.innerHTML = '<p>Nenhum jogo encontrado nesta seção.</p>';
-        return;
-    }
-
-    games.forEach(game => {
-        // Gerar ícones de plataformas dinamicamente
-        const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
-        
-        // Lógica de exibição de preço e desconto
-        const hasDiscount = game.discount > 0;
-        const discountBadge = hasDiscount ? `<span class="discount-percent">-${game.discount}%</span>` : '';
-        const oldPriceHtml = hasDiscount ? `<span class="old-price">${game.oldPrice}</span>` : '';
-        const priceClass = hasDiscount ? 'game-price sale' : 'game-price';
-
-        const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
-        const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
-
-        container.innerHTML += `
-            <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
-                <article class="game-card">
-                <div class="card-media">
-                    ${discountBadge}
-                    <img src="${game.image}" alt="${game.title}">
-                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
-                        <i class="${favIcon}"></i>
-                    </button>
-                </div>
-                <div class="game-info">
-                    <div class="game-details">
-                        <p class="game-title">${game.title}</p>
-                        <div class="game-platforms">${platformsHtml}</div>
-                        <span class="game-tags">${game.tags.join(', ')}</span>
-                    </div>
-                    <div class="price-container">
-                        <div class="price-box">${oldPriceHtml}<p class="${priceClass}">${game.currentPrice}</p></div>
-                    </div>
-                </div>
-                </article>
-            </a>`;
-    });
-}
-
 function createFooter(parent) {
     let footer = parent.querySelector('.section-footer');
     if (!footer) {

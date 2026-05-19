@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const userData = doc.data();
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td style="font-family: monospace; font-size: 0.85em;">${doc.id}</td>
+                <td style="font-family: monospace; font-size: 0.85em;">${doc.id}<br><small style="color:#7f8c8d">${userData.email || 'N/A'}</small></td>
                 <td style="color: var(--promo); font-weight: bold;">R$ ${(userData.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
             `;
             userList.appendChild(tr);
@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: document.getElementById('game-title').value,
             image: document.getElementById('game-image').value,
             tags: document.getElementById('game-tags').value.split(',').map(t => t.trim()),
+            description: document.getElementById('game-description').value, // Adicionado campo de descrição
             platforms: document.getElementById('game-platforms').value.split(',').map(p => p.trim()),
             currentPrice: document.getElementById('game-current-price').value,
             discount: parseInt(document.getElementById('game-discount').value) || 0,
@@ -67,15 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (firestoreId) {
                 await db.collection('games').doc(firestoreId).update(gameData);
-                alert("Jogo atualizado com sucesso!");
+                showToast("Jogo atualizado!", "success");
             } else {
                 await db.collection('games').doc(String(gameData.id)).set(gameData);
-                alert("Jogo adicionado com sucesso!");
+                showToast("Jogo adicionado!", "success");
             }
             resetForm();
             loadAdminGames();
         } catch (error) {
-            alert("Erro ao salvar: " + error.message);
+            showToast("Erro ao salvar.", "error");
         }
     };
 
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('game-id').value = game.id;
         document.getElementById('game-title').value = game.title;
         document.getElementById('game-image').value = game.image;
+        document.getElementById('game-description').value = game.description || ''; // Preenche a descrição
         document.getElementById('game-tags').value = game.tags.join(', ');
         document.getElementById('game-platforms').value = game.platforms.join(', ');
         document.getElementById('game-current-price').value = game.currentPrice;
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Excluir Jogo
     window.deleteGame = async (id) => {
-        if (confirm("Tem certeza que deseja excluir este jogo?")) {
+        if (confirm("Tem certeza que deseja excluir este jogo? Esta ação é irreversível!")) {
             await db.collection('games').doc(id).delete();
             loadAdminGames();
         }
@@ -129,11 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const amount = parseFloat(document.getElementById('amount-to-add').value);
 
             if (!userId) {
-                alert("Por favor, insira o ID do usuário (UID).");
+                showToast("Insira o UID do usuário.", "error");
                 return;
             }
             if (isNaN(amount) || amount <= 0) {
-                alert("Por favor, insira um valor válido e positivo para adicionar.");
+                showToast("Valor inválido.", "error");
                 return;
             }
 
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const doc = await userRef.get();
 
                 if (!doc.exists) {
-                    alert("Usuário não encontrado com o ID fornecido.");
+                    showToast("Usuário não encontrado com o ID fornecido.", "error");
                     return;
                 }
 
@@ -150,12 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newBalance = currentBalance + amount;
 
                 await userRef.update({ balance: newBalance });
-                alert(`R$ ${amount.toFixed(2)} adicionados ao saldo do usuário ${userId}. Novo saldo: R$ ${newBalance.toFixed(2)}`);
+                showToast(`R$ ${amount.toFixed(2)} adicionados ao saldo do usuário ${userId}. Novo saldo: R$ ${newBalance.toFixed(2)}`, "success");
                 loadAdminUsers(); // Atualiza a lista de usuários para mostrar o novo saldo
                 addBalanceForm.reset();
             } catch (error) {
                 console.error("Erro ao adicionar saldo:", error);
-                alert("Erro ao adicionar saldo: " + error.message);
+                showToast("Erro ao adicionar saldo: " + error.message, "error");
             }
         };
     }

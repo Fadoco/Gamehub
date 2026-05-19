@@ -46,9 +46,7 @@ function calculateTotal(cartGames) {
     if (!totalElement) return;
 
     const total = cartGames.reduce((acc, game) => {
-        // Converte "R$ 99,90" ou "Grátis" para número puro
-        const priceStr = game.currentPrice.replace('R$', '').replace('Grátis', '0').replace(',', '.').trim();
-        const price = parseFloat(priceStr) || 0;
+        const price = utils.parsePrice(game.currentPrice);
         return acc + price;
     }, 0);
 

@@ -17,14 +17,11 @@ function renderProfile() {
         return;
     }
 
-    // --- Cálculos de Destaques e Categorização ---
-    const parsePrice = (p) => parseFloat(String(p).replace('R$', '').replace('Grátis', '0').replace(',', '.').trim()) || 0;
-
     // 1. Encontrar o jogo mais caro na biblioteca
     const ownedGames = allGamesData.filter(g => window.userLibrary.some(id => String(id) === String(g.id)));
     let mostExpensive = "Nenhum jogo na coleção";
     if (ownedGames.length > 0) {
-        const expensiveGame = ownedGames.reduce((prev, curr) => parsePrice(curr.currentPrice) > parsePrice(prev.currentPrice) ? curr : prev);
+        const expensiveGame = ownedGames.reduce((prev, curr) => utils.parsePrice(curr.currentPrice) > utils.parsePrice(prev.currentPrice) ? curr : prev);
         mostExpensive = `${expensiveGame.title} (${expensiveGame.currentPrice})`;
     }
 

@@ -16,9 +16,7 @@ function renderLibrary() {
         emptyMsg.style.display = 'block';
     } else {
         emptyMsg.style.display = 'none';
-        // Reutilizamos a função de renderização do home.js (ela precisa estar carregada)
-        if (typeof renderToContainer === 'function') {
-            renderToContainer(libraryGames, grid, true);
-        }
+        // Reutilizamos a função de renderização global
+        window.renderToContainer(libraryGames, grid, true);
     }
 }
