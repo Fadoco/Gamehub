@@ -92,22 +92,15 @@ auth.onAuthStateChanged((user) => {
     const isWelcomePage = window.location.pathname.includes('welcome.html');
     const isSubfolder = window.location.pathname.includes('/html/');
 
-    // Se o modo de teste estiver ativo, ignora os redirecionamentos de bloqueio
-    if (DESATIVAR_LOGIN_PARA_TESTE) {
-        checkUserSession(user); 
-        if (user && db) loadUserData(user.uid);
-        return;
-    }
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
     if (!user) {
-        // 1. Se NÃO estiver logado e NÃO estiver na página de login ou boas-vindas, redireciona para login.html
-        if (!isLoginPage && !isWelcomePage) {
+        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
             const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
             return;
         }
     } else {
-        // 2. Se ESTIVER logado e tentar acessar a página de login, manda para a home
         if (isLoginPage) {
             window.location.href = '../index.html';
             showToast("Você já está logado!", "info");
@@ -120,9 +113,10 @@ auth.onAuthStateChanged((user) => {
         }
     }
 
-    // Atualiza a interface sempre que o estado do usuário mudar
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email); // Recalcula isAdmin aqui para checkUserSession
-    checkUserSession(user); 
+    checkUserSession(user);
+
+    // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
+    if (DESATIVAR_LOGIN_PARA_TESTE && !user) return;
 
     if (user) {
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
@@ -331,8 +325,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     // Garante que o container de perfil esteja visível no header
     if (userMenu) userMenu.style.display = 'flex';
 
-    const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // Lista de e-mails de administradores
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+    const isAdmin = user && ADMIN_EMAILS.includes(user?.email);
 
     if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
