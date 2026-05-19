@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameList = document.getElementById('admin-game-list');
     const cancelBtn = document.getElementById('btn-cancel-edit');
     const formTitle = document.getElementById('form-title');
+    const userList = document.getElementById('admin-user-list');
 
     // 1. Carregar e Renderizar Jogos
     async function loadAdminGames() {
@@ -26,6 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
             `;
             gameList.appendChild(tr);
+        });
+    }
+
+    // 1.1 Carregar e Renderizar Usuários
+    async function loadAdminUsers() {
+        if (!userList) return;
+        const snapshot = await db.collection('users').get();
+        userList.innerHTML = '';
+
+        snapshot.forEach(doc => {
+            const userData = doc.data();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-family: monospace; font-size: 0.85em;">${doc.id}</td>
+                <td style="color: var(--promo); font-weight: bold;">R$ ${(userData.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            `;
+            userList.appendChild(tr);
         });
     }
 
@@ -99,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelBtn.onclick = resetForm;
     loadAdminGames();
+    loadAdminUsers();
 
     // --- Gerenciamento de Saldo do Usuário ---
     const addBalanceForm = document.getElementById('add-balance-form');
@@ -132,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 await userRef.update({ balance: newBalance });
                 alert(`R$ ${amount.toFixed(2)} adicionados ao saldo do usuário ${userId}. Novo saldo: R$ ${newBalance.toFixed(2)}`);
+                loadAdminUsers(); // Atualiza a lista de usuários para mostrar o novo saldo
                 addBalanceForm.reset();
             } catch (error) {
                 console.error("Erro ao adicionar saldo:", error);

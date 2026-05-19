@@ -89,11 +89,11 @@ async function loadUserData(uid) {
             window.userFavorites = data.favorites || [];
             window.userCart = data.cart || [];
             window.userLibrary = data.library || [];
-            window.userBalance = data.balance ?? 500.00; // Saldo inicial de R$ 500 para testes
+            window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
             window.userHistory = data.history || [];
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
-            window.userBalance = 500.00; window.userHistory = [];
+            window.userBalance = 0.00; window.userHistory = [];
         }
         refreshCurrentPageUI();
         updateNavBadges();

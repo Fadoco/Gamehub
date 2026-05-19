@@ -90,6 +90,40 @@
                 </form>
             </section>
 
+            <!-- Gerenciamento de Saldo -->
+            <section class="admin-card">
+                <h2>Enviar Dinheiro (Carteira)</h2>
+                <form id="add-balance-form">
+                    <div class="form-group">
+                        <label>ID do Usuário (UID)</label>
+                        <input type="text" id="user-id-balance" required placeholder="Cole o UID do usuário">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor a Adicionar (R$)</label>
+                        <input type="number" step="0.01" id="amount-to-add" required placeholder="Ex: 50.00">
+                    </div>
+                    <button type="submit" class="buy-button">Adicionar ao Saldo</button>
+                </form>
+            </section>
+
+            <!-- Lista de Usuários -->
+            <section class="admin-card">
+                <h2>Usuários Registrados</h2>
+                <div class="admin-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>UID (ID do Usuário)</th>
+                                <th>Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-user-list">
+                            <!-- Preenchido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
             <!-- Lista de Jogos -->
             <section class="admin-card">
                 <h2>Gerenciar Catálogo</h2>

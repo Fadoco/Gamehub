@@ -9,13 +9,14 @@
 #cart-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .cart-item {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
+    background: rgba(12, 20, 38, 0.5);
+    border: 1px solid rgba(43, 144, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
     padding: 15px;
     display: flex;
     align-items: center;
@@ -46,7 +47,12 @@
     gap: 20px;
 }
 
-.item-price { font-weight: bold; color: var(--promo); font-size: 1.1rem; }
+.item-price { 
+    font-weight: bold; 
+    color: var(--promo); 
+    font-size: 1.2rem;
+    min-width: 100px;
+}
 
 .btn-remove {
     background: none;
@@ -63,17 +69,16 @@
 /* Resumo da Compra */
 #cart-summary {
     background: var(--bg-header);
-    padding: 25px;
-    border-radius: 12px;
+    padding: 30px;
+    border-radius: 16px;
     border: 1px solid var(--accent);
     height: fit-content;
     position: sticky;
     top: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 #cart-summary h2 { margin-bottom: 20px; }
-#cart-summary .buy-button { max-width: 300px; }
-}
 
 .summary-row {
     display: flex;
