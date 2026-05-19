@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Histórico de Compras</title>
+    <title>GameHub - Meu Perfil</title>
     <link rel="stylesheet" href="../css/style global.css">
-    <link rel="stylesheet" href="../css/historico.css">
+    <link rel="stylesheet" href="../css/perfil.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Scripts Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/auth.js" defer></script>
-    <script src="../java/historico.js" defer></script>
+    <script src="../java/perfil.js" defer></script>
     <script src="../java/global.js" defer></script>
 </head>
 <body>
@@ -21,21 +22,22 @@
             <nav>
                 <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
                 <div class="nav-items">
-                    <div id="user-wallet" class="wallet-widget">
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
                         <i class="fas fa-wallet"></i>
                         <span id="wallet-amount">R$ 0,00</span>
                     </div>
-                    <div class="user-profile" id="user-menu">
-                        <img src="" alt="Perfil">
+                    <div class="user-profile" id="user-menu" style="display: none;">
+                        <img src="" alt="Perfil" style="cursor: pointer;">
+                        <button id="btn-logout" class="nav-button" style="display: none; font-size: 10px; color: var(--accent);">Sair</button>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
+
     <main class="container">
-        <h1>Meu Histórico de Compras</h1>
-        <div id="history-list">
-            <p>Carregando histórico...</p>
+        <div id="profile-content">
+            <p>Carregando dados do perfil...</p>
         </div>
     </main>
 </body>

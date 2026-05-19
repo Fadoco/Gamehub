@@ -199,6 +199,11 @@ nav {
     border-color: rgba(43, 144, 255, 0.32);
 }
 
+/* Estilos para o nome de usuário e botão de logout no header */
+.user-profile #user-name { margin-right: 10px; font-size: 14px; }
+.user-profile #btn-logout { font-size: 10px; color: var(--accent); }
+
+
 /* Widget da Carteira */
 .wallet-widget {
     display: flex;

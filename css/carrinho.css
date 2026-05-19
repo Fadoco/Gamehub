@@ -71,6 +71,10 @@
     top: 100px;
 }
 
+#cart-summary h2 { margin-bottom: 20px; }
+#cart-summary .buy-button { max-width: 300px; }
+}
+
 .summary-row {
     display: flex;
     justify-content: space-between;
@@ -96,4 +100,9 @@
 
 @media (max-width: 900px) {
     .cart-container { grid-template-columns: 1fr; }
+}
+
+/* Mensagem de carrinho vazio */
+#cart-empty {
+    color: #bdc3c7; text-align: center; margin-top: 50px;
 }

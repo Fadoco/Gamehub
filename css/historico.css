@@ -1,0 +1,5 @@
+/* Estilos específicos para a página de histórico de compras */
+.history-card { background: var(--bg-header); border: 1px solid var(--card-border); padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+.history-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; }
+.history-items { font-size: 0.9em; color: #bdc3c7; }
+.history-total { color: var(--promo); font-weight: bold; font-size: 1.1em; }

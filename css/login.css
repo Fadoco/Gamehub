@@ -1,0 +1,42 @@
+/* Estilos específicos para a página de login */
+.login-page-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-header) 100%);
+}
+.login-card {
+    background: var(--bg-header);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px var(--shadow);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+.login-card h1 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.login-card p {
+    color: #bdc3c7;
+    margin-bottom: 25px;
+}
+.login-card .buy-button {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 16px;
+}
+.login-card .buy-button:hover { background: #1e70cc; transform: scale(1.02); } /* Ajustado para a cor do accent */
+.toggle-form { margin-top: 15px; font-size: 13px; color: var(--accent); cursor: pointer; text-decoration: underline; }
+.btn-google { width: 100%; padding: 12px; background: white; color: #444; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; margin-top: 10px; }

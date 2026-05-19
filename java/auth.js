@@ -111,6 +111,8 @@ function refreshCurrentPageUI() {
             renderCart();
         } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
             renderLibrary();
+        } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
+            renderProfile();
         } else if (typeof renderGames === 'function') {
             renderGames(allGamesData);
         }
@@ -302,6 +304,8 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         if (userImg) {
             userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
             userImg.style.display = 'block';
+            // Torna a foto de perfil clicável para ir ao perfil
+            userImg.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'perfil.html' : 'html/perfil.html';
         }
 
         // Atualiza a exibição da carteira
