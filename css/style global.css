@@ -485,3 +485,50 @@ nav {
     transform: translateY(-5px);
     background: #1e70cc;
 }
+
+/* --- Painel Administrativo: Lista de Usuários --- */
+.admin-users-section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.admin-search-input {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.admin-search-input:focus { border-color: var(--accent); }
+
+.user-list-container {
+    max-height: 550px; /* Altura máxima para aprox. 10 usuários */
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Estilização da Scrollbar para manter o design */
+.user-list-container::-webkit-scrollbar { width: 6px; }
+.user-list-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+.user-list-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+.user-admin-card {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-admin-card .user-name { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+.user-admin-card .user-email { font-size: 0.9rem; color: #bdc3c7; }
+.user-admin-card .user-id { font-size: 0.8rem; color: #7f8c8d; font-family: monospace; }
