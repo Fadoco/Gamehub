@@ -21,8 +21,20 @@
             <nav>
                 <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
                 <div class="nav-items">
+                    <div class="search-box">
+                        <input type="text" placeholder="buscar">
+                        <i class="fas fa-search"></i>
+                    </div>
                     <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
                     <a href="biblioteca.html" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <a href="#" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
+                    
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                        <i class="fas fa-wallet"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+                    
                     <div class="user-profile" id="user-menu">
                         <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
                         <button id="btn-logout" class="nav-button" style="background:none; border:none; cursor:pointer; color:var(--accent)">Sair</button>
@@ -41,7 +53,12 @@
                 </div>
                 
                 <div id="cart-summary" style="display: none;">
-                    <h2>Total: <span id="cart-total">R$ 0,00</span></h2>
+                    <div class="wallet-info">
+                        Seu saldo: <strong id="cart-wallet-balance">R$ 0,00</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total:</span> <span id="cart-total">R$ 0,00</span>
+                    </div>
                     <button onclick="window.purchaseLibrary()" class="buy-button">Finalizar Compra</button>
                 </div>
                 
@@ -58,9 +75,32 @@
 
     <footer class="main-footer">
         <div class="container">
-            <div class="footer-bottom">
-                &copy; 2026 GameHub. Todos os direitos reservados.
+            <div class="footer-content">
+                <div class="footer-section"><h3>GameHub</h3><p>Sua loja independente preferida.</p></div>
+                <div class="footer-section">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="../index.html">Loja</a></li>
+                        <li><a href="biblioteca.html">Biblioteca</a></li>
+                        <li><a href="historico.html">Histórico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Ajuda</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Siga-nos</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
         </div>
     </footer>
 </body>

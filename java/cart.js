@@ -51,4 +51,10 @@ function calculateTotal(cartGames) {
     }, 0);
 
     totalElement.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+    // Mostra o saldo atual do usuário no resumo para ele saber quanto tem
+    const walletInSummary = document.getElementById('cart-wallet-balance');
+    if (walletInSummary) {
+        walletInSummary.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    }
 }

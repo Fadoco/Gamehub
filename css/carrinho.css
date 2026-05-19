@@ -76,13 +76,16 @@
 /* Resumo da Compra */
 #cart-summary {
     background: var(--bg-header);
-    padding: 30px;
+    padding: 25px;
     border-radius: 16px;
     border: 1px solid var(--accent);
     height: fit-content;
     position: sticky;
     top: 100px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 #cart-summary h2 { margin-bottom: 20px; }
@@ -90,9 +93,17 @@
 .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.wallet-info {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    text-align: right;
 }
 
 .btn-checkout {

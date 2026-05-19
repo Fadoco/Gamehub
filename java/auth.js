@@ -53,6 +53,38 @@ window.showToast = (message, type = 'info') => {
     }, 3500);
 };
 
+// Substituição para o confirm() nativo do navegador
+window.customConfirm = (message, onConfirm) => {
+    let modal = document.getElementById('confirm-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'confirm-modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 350px; text-align: center;">
+                <h3 id="confirm-msg" style="margin-bottom: 25px;"></h3>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="confirm-yes" class="buy-button" style="padding: 10px 20px;">Confirmar</button>
+                    <button id="confirm-no" class="nav-button" style="padding: 10px 20px;">Cancelar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    document.getElementById('confirm-msg').textContent = message;
+    modal.style.display = 'flex';
+
+    document.getElementById('confirm-yes').onclick = () => {
+        modal.style.display = 'none';
+        onConfirm();
+    };
+
+    document.getElementById('confirm-no').onclick = () => {
+        modal.style.display = 'none';
+    };
+};
+
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
@@ -129,7 +161,7 @@ async function loadUserData(uid) {
             window.userBalance = 0.00; window.userHistory = [];
         }
         refreshCurrentPageUI();
-        updateNavBadges();
+        updateNavBadges(); // Agora atualiza badges e o widget da carteira
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
@@ -391,6 +423,12 @@ function updateNavBadges() {
     if (cartBtn) {
         cartBtn.setAttribute('data-count', window.userCart.length);
     }
+
+    // Garante que o saldo no Header esteja atualizado
+    const walletDisplay = document.getElementById('wallet-amount');
+    if (walletDisplay) {
+        walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    }
 }
 
 // Função para Adicionar/Remover do Carrinho
@@ -446,7 +484,7 @@ window.purchaseLibrary = async () => {
         return;
     }
 
-    if (confirm(`Total: R$ ${totalPurchase.toFixed(2)}\nDeseja finalizar a compra de ${window.userCart.length} item(s)?`)) {
+    window.customConfirm(`Total: R$ ${totalPurchase.toFixed(2)}\nDeseja finalizar a compra?`, async () => {
         toggleLoader(true);
         
         // Adiciona itens do carrinho à biblioteca (sem duplicar)
@@ -495,7 +533,7 @@ window.purchaseLibrary = async () => {
             toggleLoader(false);
             showToast("Erro ao processar compra.", "error");
         }
-    }
+    });
 };
 
 // Eventos para os botões do Header
