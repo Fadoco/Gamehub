@@ -42,7 +42,7 @@ async function initAdminPanel() {
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 const filtered = allUsers.filter(user => {
-                    const nickStr = String(user.displayName || user.email?.split('@')[0] || "").toLowerCase();
+                    const nickStr = window.utils.getUserFriendlyName(user).toLowerCase();
                     const emailStr = String(user.email || "").toLowerCase();
                     const idStr = String(user.id || "").toLowerCase();
                     return nickStr.includes(term) || emailStr.includes(term) || idStr.includes(term);
@@ -68,8 +68,8 @@ function renderUserList(users) {
     // Gera o HTML seguindo a hierarquia: Nick (Destaque), Gmail e ID (Menores)
     container.innerHTML = users.map(user => `
         <div class="user-admin-card">
-            <span class="user-name">${user.displayName || user.email?.split('@')[0] || 'Usuário'}</span>
-            <span class="user-email">${user.email || 'E-mail não disponível'}</span>
+            <span class="user-name">${window.utils.getUserFriendlyName(user)}</span>
+            <span class="user-email">${user.email || 'E-mail privado'}</span>
             <span class="user-id">ID: ${user.id}</span>
         </div>
     `).join('');

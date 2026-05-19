@@ -4,6 +4,10 @@
 
 let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 
+// Detecta uma única vez se estamos em uma subpasta
+window.IS_SUBFOLDER = window.location.pathname.includes('/html/');
+const IS_SUBFOLDER = window.IS_SUBFOLDER;
+
 // Utilitários Globais
 window.utils = {
     // Converte preços como "R$ 99,90" ou "Grátis" para números (float)
@@ -11,6 +15,11 @@ window.utils = {
         if (!priceStr) return 0;
         const cleaned = String(priceStr).replace('R$', '').replace('Grátis', '0').replace(',', '.').trim();
         return parseFloat(cleaned) || 0;
+    },
+    // Retorna o nome de exibição ou o prefixo do email
+    getUserFriendlyName: (user) => {
+        if (!user) return 'Usuário';
+        return user.displayName || (user.email ? user.email.split('@')[0] : 'Usuário');
     }
 };
 
@@ -67,7 +76,6 @@ window.renderToContainer = (games, container, clear = true) => {
     });
 };
 
-const IS_SUBFOLDER = window.location.pathname.includes('/html/'); // Define uma vez para reuso
 async function fetchGamesData() {
     try {
         // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)

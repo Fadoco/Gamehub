@@ -92,13 +92,11 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isWelcomePage = window.location.pathname.includes('welcome.html');
-    const isSubfolder = window.location.pathname.includes('/html/');
-
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
-            const loginPath = isSubfolder ? 'login.html' : 'html/login.html';
+            const loginPath = window.IS_SUBFOLDER ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
             return;
         }
@@ -331,13 +329,12 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
     
-    // Garante que o container de perfil esteja visível no header
     if (userMenu) userMenu.style.display = 'flex';
 
-    const isAdmin = user && ADMIN_EMAILS.includes(user?.email);
+    const isAdmin = user && window.ADMIN_EMAILS.includes(user?.email);
 
     if (user) {
-        const displayName = user.displayName || user.email.split('@')[0];
+        const displayName = window.utils.getUserFriendlyName(user);
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnLogout) btnLogout.style.display = 'block';
         
