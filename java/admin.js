@@ -6,59 +6,69 @@
 let allUsers = [];
 
 async function initAdminPanel() {
-    const userListContainer = document.querySelector('.user-list-container');
-    const searchInput = document.querySelector('.admin-search-input');
+    console.log("Iniciando carregamento do Painel Admin...");
+    
+    const container = document.querySelector('.user-list-container');
+    const search = document.querySelector('.admin-search-input');
 
-    // Verifica se o global.js já carregou os utilitários
+    // 1. Validação de Elementos e Dependências
+    if (!container) return console.error("ERRO: .user-list-container não encontrado no HTML.");
+    if (!window.db) {
+        console.warn("Banco de dados não pronto. Tentando novamente em 500ms...");
+        return setTimeout(initAdminPanel, 500);
+    }
     if (!window.utils) {
-        console.warn("Aguardando utilitários globais...");
+        console.warn("Utilitários globais não prontos. Tentando novamente em 500ms...");
         return setTimeout(initAdminPanel, 500);
     }
 
-    if (!userListContainer) {
-        console.warn("Elemento '.user-list-container' não encontrado no HTML.");
-        return;
-    }
-
-    userListContainer.innerHTML = "<p style='padding: 20px;'>Carregando usuários...</p>";
-
-    // Pega o DB do escopo global (window)
-    const firestore = window.db;
-    if (!firestore) {
-        userListContainer.innerHTML = "<p style='padding: 20px;'>Erro: Banco de dados não conectado.</p>";
-        return;
-    }
+    container.innerHTML = "<p style='padding: 20px;'>Carregando usuários do Firestore...</p>";
 
     try {
-        // Busca todos os usuários cadastrados na coleção 'users' do Firestore
-        const snapshot = await firestore.collection('users').get();
+        // 2. Busca de Dados
+        const snapshot = await window.db.collection('users').get();
+        
         if (snapshot.empty) {
-            userListContainer.innerHTML = "<p style='padding: 20px;'>Nenhum usuário cadastrado no banco.</p>";
+            console.log("Firestore retornou uma coleção vazia.");
+            container.innerHTML = "<p style='padding: 20px;'>Nenhum usuário encontrado no banco de dados.</p>";
             return;
         }
 
-        allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // 3. Processamento e Ordenação
+        allUsers = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
 
-        // Ordena por Nick e renderiza
-        allUsers.sort((a, b) => (a.displayName || "").localeCompare(b.displayName || ""));
+        console.log(`${allUsers.length} usuários carregados com sucesso.`);
+
+        // Ordena alfabeticamente pelo nome amigável
+        allUsers.sort((a, b) => {
+            const nameA = window.utils.getUserFriendlyName(a).toLowerCase();
+            const nameB = window.utils.getUserFriendlyName(b).toLowerCase();
+            return nameA.localeCompare(nameB);
+        });
+
+        // 4. Renderização Inicial
         renderUserList(allUsers);
 
-        // Implementação da Pesquisa em tempo real
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
+        // 5. Configuração da Pesquisa (se o input existir)
+        if (search) {
+            search.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 const filtered = allUsers.filter(user => {
-                    const nickStr = String(window.utils.getUserFriendlyName(user)).toLowerCase();
-                    const emailStr = String(user.email || "").toLowerCase();
-                    const idStr = String(user.id || "").toLowerCase();
-                    return nickStr.includes(term) || emailStr.includes(term) || idStr.includes(term);
+                    const nick = window.utils.getUserFriendlyName(user).toLowerCase();
+                    const email = (user.email || "").toLowerCase();
+                    const uid = (user.id || "").toLowerCase();
+                    return nick.includes(term) || email.includes(term) || uid.includes(term);
                 });
                 renderUserList(filtered);
             });
         }
+
     } catch (error) {
-        console.error("Erro ao carregar usuários no painel admin:", error);
-        userListContainer.innerHTML = "<p style='color: #e74c3c; padding: 20px;'>Erro de conexão com o banco de dados.</p>";
+        console.error("Erro crítico ao carregar painel admin:", error);
+        container.innerHTML = `<p style='color: #e74c3c; padding: 20px;'>Erro ao acessar Firestore: ${error.message}</p>`;
     }
 }
 
@@ -71,26 +81,29 @@ function renderUserList(users) {
         return;
     }
 
-    // Gera o HTML seguindo a hierarquia: Nick (Destaque), Gmail e ID (Menores)
     container.innerHTML = users.map(user => `
         <div class="user-admin-card">
-            <span class="user-name">${window.utils.getUserFriendlyName(user)}</span>
-            <span class="user-email">${user.email || 'E-mail não cadastrado'}</span>
-            <span class="user-id">ID: ${user.id}</span>
+            <div class="user-name">${window.utils.getUserFriendlyName(user)}</div>
+            <div class="user-email">${user.email || 'E-mail não disponível'}</div>
+            <div class="user-id">ID: ${user.id}</div>
         </div>
     `).join('');
 }
 
-// Só inicia o painel quando o Firebase confirmar que o usuário está logado e é Admin
-window.auth.onAuthStateChanged((user) => {
-    if (user) {
-        const adminEmails = window.ADMIN_EMAILS || [];
-        if (adminEmails.includes(user.email)) {
-            initAdminPanel();
+// 6. Gatilho de Inicialização com Proteção de Admin
+if (window.auth) {
+    window.auth.onAuthStateChanged((user) => {
+        if (user) {
+            const adminEmails = window.ADMIN_EMAILS || [];
+            if (adminEmails.includes(user.email)) {
+                initAdminPanel();
+            } else {
+                console.warn("Usuário logado não é administrador.");
+            }
         } else {
-            console.warn("Acesso negado: Usuário não é administrador.");
+            console.log("Aguardando login do administrador...");
         }
-    } else {
-        console.log("Aguardando autenticação...");
-    }
-});
+    });
+} else {
+    console.error("Objeto window.auth não encontrado. Verifique se auth.js foi carregado corretamente.");
+}
