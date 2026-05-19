@@ -16,19 +16,19 @@
 
 .tag-btn {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(43, 144, 255, 0.18);
     color: var(--text-main);
-    padding: 5px 15px;
-    border-radius: 20px;
+    padding: 6px 16px;
+    border-radius: 999px;
     cursor: pointer;
     font-size: 0.85em;
     transition: var(--transition);
 }
 
 .tag-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    background: rgba(43, 144, 255, 0.18);
+    border-color: rgba(43, 144, 255, 0.45);
+    transform: translateY(-1px);
 }
 
 /* --- Conteúdo Principal --- */
@@ -51,19 +51,21 @@ h2 {
 /* Card de jogo: Container principal */
 .game-card {
     background: var(--card-bg);
-    transition: transform var(--transition), background var(--transition);
+    transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
     cursor: pointer;
-    box-shadow: 0 0 10px var(--shadow);
-    border-radius: 4px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    border-radius: 18px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
 }
 
 /* Hover no card: Efeito de escala e mudança de fundo */
 .game-card:hover {
-    transform: scale(1.02);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 5px 15px var(--shadow);
-    outline: 1px solid var(--accent);
+    transform: translateY(-4px) scale(1.01);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    outline: 1px solid rgba(43, 144, 255, 0.55);
 }
 
 /* Imagem do card: Preenche largura */
@@ -77,21 +79,23 @@ h2 {
 .card-media {
     position: relative;
     overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Badge de desconto: Verde para promoções */
 .discount-percent {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--promo);
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, rgba(43, 144, 255, 0.95), rgba(127, 56, 255, 0.9));
     color: white;
-    padding: 6px 10px;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 3px;
+    padding: 7px 12px;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 999px;
     display: inline-block;
     z-index: 10;
+    letter-spacing: 0.5px;
 }
 
 /* Informações do jogo: Flex para alinhar detalhes e preço */
@@ -99,8 +103,9 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.3));
-    min-height: 60px;
+    background: rgba(5, 10, 24, 0.95);
+    min-height: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Detalhes do jogo: Título, plataformas, tags */
@@ -127,14 +132,14 @@ h2 {
 
 .game-platforms {
     display: flex;
-    gap: 8px;
-    font-size: 0.8em;
-    color: #bdc3c7;
+    gap: 10px;
+    font-size: 0.78em;
+    color: #a8bcd4;
 }
 
 .game-tags {
     font-size: 0.75rem;
-    color: #7f8c8d;
+    color: #8da7c5;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -146,47 +151,48 @@ h2 {
 .price-container {
     display: flex;
     align-items: stretch;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(22, 35, 60, 0.92);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .price-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4px 12px;
-    min-width: 80px;
+    padding: 8px 14px;
+    min-width: 88px;
     text-align: right;
 }
 
 .old-price {
-    font-size: 0.7em;
+    font-size: 0.72em;
     text-decoration: line-through;
-    color: #95a5a6;
+    color: #8a9db8;
     margin: 0;
 }
 
 .game-price {
     margin: 0;
-    font-size: 0.85em;
+    font-size: 0.95em;
     color: var(--text-main);
-    background: rgba(0, 0, 0, 0.3);
-    padding: 3px 6px;
-    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 5px 8px;
+    border-radius: 6px;
 }
 
 .game-price.sale {
-    color: var(--promo);
+    color: var(--accent);
 }
 
 /* Botão Ver Mais */
 .btn-see-more {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-main);
-    padding: 10px 30px;
-    border-radius: 4px;
+    background: rgba(43, 144, 255, 0.16);
+    border: 1px solid rgba(43, 144, 255, 0.35);
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 999px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: var(--transition);
@@ -194,8 +200,8 @@ h2 {
 }
 
 .btn-see-more:hover {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: linear-gradient(135deg, #4e7bff, #2b90ff);
+    border-color: rgba(255, 255, 255, 0.22);
 }
 
 @media (max-width: 600px) {
