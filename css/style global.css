@@ -199,6 +199,22 @@ nav {
     border-color: rgba(43, 144, 255, 0.32);
 }
 
+/* Widget da Carteira */
+.wallet-widget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(43, 144, 255, 0.1);
+    border: 1px solid var(--accent);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--promo);
+    font-weight: bold;
+}
+.wallet-widget:hover { background: rgba(43, 144, 255, 0.2); transform: scale(1.05); }
+
 /* Botão especial (Roleta): Destaque com gradiente */
 .roulette {
     background: linear-gradient(135deg, #4e7bff, #2b90ff); /* Gradiente azul intenso */

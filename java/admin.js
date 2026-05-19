@@ -99,4 +99,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelBtn.onclick = resetForm;
     loadAdminGames();
+
+    // --- Gerenciamento de Saldo do Usuário ---
+    const addBalanceForm = document.getElementById('add-balance-form');
+
+    if (addBalanceForm) {
+        addBalanceForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('user-id-balance').value.trim();
+            const amount = parseFloat(document.getElementById('amount-to-add').value);
+
+            if (!userId) {
+                alert("Por favor, insira o ID do usuário (UID).");
+                return;
+            }
+            if (isNaN(amount) || amount <= 0) {
+                alert("Por favor, insira um valor válido e positivo para adicionar.");
+                return;
+            }
+
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const doc = await userRef.get();
+
+                if (!doc.exists) {
+                    alert("Usuário não encontrado com o ID fornecido.");
+                    return;
+                }
+
+                const currentBalance = doc.data().balance || 0; // Pega o saldo atual, ou 0 se não existir
+                const newBalance = currentBalance + amount;
+
+                await userRef.update({ balance: newBalance });
+                alert(`R$ ${amount.toFixed(2)} adicionados ao saldo do usuário ${userId}. Novo saldo: R$ ${newBalance.toFixed(2)}`);
+                addBalanceForm.reset();
+            } catch (error) {
+                console.error("Erro ao adicionar saldo:", error);
+                alert("Erro ao adicionar saldo: " + error.message);
+            }
+        };
+    }
 });

@@ -71,6 +71,12 @@ async function fetchGamesData() {
             } else {
                 console.warn("renderLibrary não está definida. Verifique se library.js foi carregado.");
             }
+        } else if (window.location.pathname.includes('historico.html')) {
+            if (typeof renderHistory === 'function') {
+                renderHistory();
+            } else {
+                console.warn("renderHistory não está definida. Verifique se historico.js foi carregado.");
+            }
         } else { // Assumimos que é a página inicial ou outra que lista jogos
             // Verifica se a função renderGames está disponível (carregada por home.js)
             if (typeof renderGames === 'function') {

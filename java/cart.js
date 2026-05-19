@@ -19,9 +19,24 @@ function renderCart() {
     } else {
         emptyMsg.style.display = 'none';
         summary.style.display = 'block';
-        if (typeof renderToContainer === 'function') {
-            renderToContainer(cartGames, grid, true);
-        }
+        
+        // Renderização customizada para o carrinho (Formato de Lista)
+        grid.innerHTML = cartGames.map(game => `
+            <div class="cart-item">
+                <img src="${game.image}" alt="${game.title}">
+                <div class="item-details">
+                    <h3>${game.title}</h3>
+                    <p class="item-tags">${game.tags.join(' • ')}</p>
+                </div>
+                <div class="item-price-actions">
+                    <span class="item-price">${game.currentPrice}</span>
+                    <button class="btn-remove" onclick="toggleCart(${game.id})" title="Remover item">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
         calculateTotal(cartGames);
     }
 }
@@ -39,5 +54,3 @@ function calculateTotal(cartGames) {
 
     totalElement.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 }
-
-// A chamada inicial agora é feita pelo global.js ou auth.js

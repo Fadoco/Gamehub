@@ -22,6 +22,8 @@ try {
 window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
+window.userBalance = 0;    // Saldo da carteira
+window.userHistory = [];   // Histórico de compras
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -87,8 +89,11 @@ async function loadUserData(uid) {
             window.userFavorites = data.favorites || [];
             window.userCart = data.cart || [];
             window.userLibrary = data.library || [];
+            window.userBalance = data.balance ?? 500.00; // Saldo inicial de R$ 500 para testes
+            window.userHistory = data.history || [];
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
+            window.userBalance = 500.00; window.userHistory = [];
         }
         refreshCurrentPageUI();
         updateNavBadges();
@@ -298,6 +303,13 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
             userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
             userImg.style.display = 'block';
         }
+
+        // Atualiza a exibição da carteira
+        const walletDisplay = document.getElementById('wallet-amount');
+        if (walletDisplay) {
+            walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('user-wallet').style.display = 'flex';
+        }
     } else {
         if (btnLogin) btnLogin.style.display = 'block';
         if (btnLogout) btnLogout.style.display = 'none';
@@ -388,16 +400,39 @@ window.purchaseLibrary = async () => {
         return;
     }
 
-    if (confirm(`Deseja finalizar a compra de ${window.userCart.length} item(s)?`)) {
+    // Calcula o total da compra baseado nos dados globais
+    const cartGames = allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
+    const totalPurchase = cartGames.reduce((acc, game) => {
+        const price = parseFloat(game.currentPrice.replace('R$', '').replace('Grátis', '0').replace(',', '.').trim()) || 0;
+        return acc + price;
+    }, 0);
+
+    if (window.userBalance < totalPurchase) {
+        alert("Saldo insuficiente na carteira!");
+        return;
+    }
+
+    if (confirm(`Total: R$ ${totalPurchase.toFixed(2)}\nDeseja finalizar a compra de ${window.userCart.length} item(s)?`)) {
         toggleLoader(true);
         
         // Adiciona itens do carrinho à biblioteca (sem duplicar)
         const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
+        const newBalance = window.userBalance - totalPurchase;
+        
+        // Cria o registro de histórico
+        const transaction = {
+            date: new Date().toISOString(),
+            items: cartGames.map(g => g.title),
+            total: totalPurchase
+        };
+        const newHistory = [transaction, ...window.userHistory];
 
         // Se não estiver logado (modo teste), apenas atualiza localmente
         if (!auth.currentUser) {
             window.userLibrary = newLibrary;
             window.userCart = [];
+            window.userBalance = newBalance;
+            window.userHistory = newHistory;
             toggleLoader(false);
             alert("Compra realizada com sucesso (Modo Offline)!");
             refreshCurrentPageUI();
@@ -408,11 +443,15 @@ window.purchaseLibrary = async () => {
         try {
             await db.collection('users').doc(auth.currentUser.uid).update({
                 library: newLibrary,
-                cart: [] // Limpa o carrinho após a compra
+                cart: [], // Limpa o carrinho após a compra
+                balance: newBalance,
+                history: newHistory
             });
 
             window.userLibrary = newLibrary;
             window.userCart = [];
+            window.userBalance = newBalance;
+            window.userHistory = newHistory;
             
             toggleLoader(false);
             alert("Compra realizada com sucesso! Os jogos agora estão na sua Biblioteca.");
