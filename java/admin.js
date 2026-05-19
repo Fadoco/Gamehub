@@ -14,22 +14,24 @@ async function initAdminPanel() {
     try {
         // Busca todos os usuários cadastrados na coleção 'users' do Firestore
         const snapshot = await db.collection('users').get();
-        allUsers = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        if (snapshot.empty) {
+            userListContainer.innerHTML = "<p>Nenhum usuário cadastrado.</p>";
+            return;
+        }
+
+        allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         // Renderização inicial da lista completa
         renderUserList(allUsers);
 
-        // Implementação da busca em tempo real (Filtra por Nick, Email ou ID)
+        // Pesquisa em tempo real
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 const filtered = allUsers.filter(user => {
-                    const nick = (user.displayName || "Sem Nick").toLowerCase();
+                    const nick = (user.displayName || "").toLowerCase();
                     const email = (user.email || "").toLowerCase();
-                    const id = user.id.toLowerCase();
+                    const id = (user.id || "").toLowerCase();
                     return nick.includes(term) || email.includes(term) || id.includes(term);
                 });
                 renderUserList(filtered);
@@ -61,6 +63,5 @@ function renderUserList(users) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Pequeno atraso para garantir que a variável 'db' (Firestore) foi inicializada em auth.js
-    setTimeout(initAdminPanel, 500);
+    initAdminPanel();
 });

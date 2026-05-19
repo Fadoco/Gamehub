@@ -530,5 +530,5 @@ nav {
 }
 
 .user-admin-card .user-name { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
-.user-admin-card .user-email { font-size: 0.9rem; color: #bdc3c7; }
-.user-admin-card .user-id { font-size: 0.8rem; color: #7f8c8d; font-family: monospace; }
+.user-admin-card .user-email { font-size: 0.85rem; color: #bdc3c7; }
+.user-admin-card .user-id { font-size: 0.75rem; color: #7f8c8d; font-family: monospace; }

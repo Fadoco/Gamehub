@@ -265,9 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     // Salva o Nick (displayName) também no documento do Firestore para o Admin ver
                     const user = auth.currentUser;
-                    return db.collection('users').doc(user.uid).update({
+                    return db.collection('users').doc(user.uid).set({
                         displayName: name
-                    });
+                    }, { merge: true });
                 })
                 .then(() => {
                     showToast("Conta criada com sucesso!", "success");
