@@ -15,6 +15,10 @@ function renderGameDetails(games) {
         document.getElementById('game-title-detail').textContent = game.title;
         document.getElementById('game-image-detail').src = game.image;
         document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
+
+        // Preenche a descrição (atente-se ao 'D' maiúsculo vindo do JSON)
+        const descElement = document.getElementById('game-description-detail');
+        if (descElement) descElement.textContent = game.Description || game.description;
         
         const priceBox = document.getElementById('game-price-detail');
         if (game.discount > 0) {
@@ -35,10 +39,17 @@ function renderGameDetails(games) {
             // Muda o texto se já estiver no carrinho ou biblioteca
             if (window.userLibrary && window.userLibrary.includes(game.id)) {
                 buyBtn.textContent = "Na Biblioteca";
-                buyBtn.style.background = "var(--bg-header)";
+                buyBtn.style.background = "#27ae60"; // Verde para indicar posse
+                buyBtn.style.cursor = "default";
                 buyBtn.disabled = true;
             } else if (window.userCart && window.userCart.includes(game.id)) {
                 buyBtn.textContent = "Remover do Carrinho";
+                buyBtn.style.background = "var(--accent)";
+                buyBtn.disabled = false;
+            } else {
+                buyBtn.textContent = "Adicionar ao Carrinho";
+                buyBtn.style.background = "var(--accent)";
+                buyBtn.disabled = false;
             }
         }
 

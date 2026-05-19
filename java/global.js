@@ -20,7 +20,7 @@ async function fetchGamesData() {
 
         // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
         if (allGamesData.length === 0) {
-            const isSubfolder = window.location.pathname.includes('/html/') || window.location.pathname.includes('/jogo.html');
+            const isSubfolder = window.location.pathname.includes('/html/');
             const jsonPath = isSubfolder ? '../json/games.json' : 'json/games.json';
             const response = await fetch(jsonPath);
             allGamesData = await response.json();

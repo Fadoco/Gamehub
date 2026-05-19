@@ -2,6 +2,8 @@
  * Lógica de autenticação e gerenciamento de sessão do usuário.
  */
 
+const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
+
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
 if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
@@ -33,6 +35,13 @@ auth.onAuthStateChanged((user) => {
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isWelcomePage = window.location.pathname.includes('welcome.html');
     const isSubfolder = window.location.pathname.includes('/html/');
+
+    // Se o modo de teste estiver ativo, ignora os redirecionamentos de bloqueio
+    if (DESATIVAR_LOGIN_PARA_TESTE) {
+        checkUserSession(user); 
+        if (user && db) loadUserData(user.uid);
+        return;
+    }
 
     const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; 
     const isAdmin = user && ADMIN_EMAILS.includes(user.email);
@@ -81,12 +90,22 @@ async function loadUserData(uid) {
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
         }
-        // Força a atualização da interface se as funções de renderização existirem
-        if (typeof renderGames === 'function' && typeof allGamesData !== 'undefined') {
-            renderGames(allGamesData);
-        }
+        refreshCurrentPageUI();
         updateNavBadges();
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
+}
+
+// Função auxiliar para atualizar a interface da página atual sem recarregar
+function refreshCurrentPageUI() {
+    if (typeof allGamesData !== 'undefined' && allGamesData.length > 0) {
+        if (window.location.pathname.includes('jogo.html') && typeof renderGameDetails === 'function') {
+            renderGameDetails(allGamesData);
+        } else if (window.location.pathname.includes('busca.html') && typeof renderSearchResults === 'function') {
+            renderSearchResults(allGamesData);
+        } else if (typeof renderGames === 'function') {
+            renderGames(allGamesData);
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -163,7 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = 'welcome.html';
                 })
                 .catch((error) => {
-                    alert("Erro ao cadastrar: " + error.message);
+                    console.error("Erro no Cadastro:", error);
+                    if (error.message.includes('requests-from-referer-blocked')) {
+                        alert("Erro de Segurança: O domínio local (127.0.0.1:5500) não está autorizado no Google Cloud Console para esta API Key.");
+                    } else {
+                        alert("Erro ao cadastrar: " + error.message);
+                    }
                     console.error("Erro no Cadastro:", error); // Log detalhado do erro
                     console.error(error);
                 });
@@ -263,12 +287,12 @@ window.toggleFavorite = async (event, gameId) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!db) {
+    if (!db && !DESATIVAR_LOGIN_PARA_TESTE) {
         alert("Erro: Banco de dados não inicializado.");
         return;
     }
 
-    if (!auth.currentUser) {
+    if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
         document.getElementById('login-modal').style.display = 'flex';
         return;
     }
@@ -279,11 +303,13 @@ window.toggleFavorite = async (event, gameId) => {
         window.userFavorites.push(gameId);
     }
 
-    await db.collection('users').doc(auth.currentUser.uid).set({
-        favorites: window.userFavorites
-    }, { merge: true });
+    if (auth.currentUser && db) {
+        await db.collection('users').doc(auth.currentUser.uid).set({
+            favorites: window.userFavorites
+        }, { merge: true });
+    }
 
-    if (typeof renderGames === 'function') renderGames(allGamesData);
+    refreshCurrentPageUI();
 };
 
 // Função para atualizar contadores no menu (opcional)
@@ -296,7 +322,7 @@ function updateNavBadges() {
 
 // Função para Adicionar/Remover do Carrinho
 window.toggleCart = async (gameId) => {
-    if (!auth.currentUser) {
+    if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
         window.location.href = window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
         return;
     }
@@ -316,23 +342,45 @@ window.toggleCart = async (gameId) => {
         alert("Adicionado ao carrinho!");
     }
 
-    await db.collection('users').doc(auth.currentUser.uid).set({
-        cart: window.userCart
-    }, { merge: true });
+    if (auth.currentUser && db) {
+        await db.collection('users').doc(auth.currentUser.uid).set({
+            cart: window.userCart
+        }, { merge: true });
+    }
     
+    refreshCurrentPageUI();
     updateNavBadges();
 };
 
 // Simulação de Compra (Move do Carrinho para Biblioteca)
 window.purchaseLibrary = async () => {
-    if (!auth.currentUser || window.userCart.length === 0) return;
+    if (window.userCart.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+    }
+
+    if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
+        alert("Você precisa estar logado para realizar uma compra.");
+        return;
+    }
 
     if (confirm(`Deseja finalizar a compra de ${window.userCart.length} item(s)?`)) {
         toggleLoader(true);
         
         // Adiciona itens do carrinho à biblioteca (sem duplicar)
         const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
-        
+
+        // Se não estiver logado (modo teste), apenas atualiza localmente
+        if (!auth.currentUser) {
+            window.userLibrary = newLibrary;
+            window.userCart = [];
+            toggleLoader(false);
+            alert("Compra realizada com sucesso (Modo Offline)!");
+            refreshCurrentPageUI();
+            updateNavBadges();
+            return;
+        }
+
         try {
             await db.collection('users').doc(auth.currentUser.uid).update({
                 library: newLibrary,
