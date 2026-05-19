@@ -158,4 +158,27 @@ async function fetchGamesData() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', fetchGamesData);
+/**
+ * Inicializa o botão "Voltar ao Topo" globalmente
+ */
+function initBackToTop() {
+    const btn = document.createElement('button');
+    btn.className = 'back-to-top';
+    btn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+    document.body.appendChild(btn);
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            btn.style.display = 'flex';
+        } else {
+            btn.style.display = 'none';
+        }
+    });
+
+    btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchGamesData();
+    initBackToTop();
+});

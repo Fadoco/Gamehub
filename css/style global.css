@@ -459,3 +459,29 @@ nav {
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.8);
 }
+
+/* --- Botão Voltar ao Topo --- */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: none; /* Controlado via JS */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: var(--transition);
+    font-size: 1.2rem;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    background: #1e70cc;
+}

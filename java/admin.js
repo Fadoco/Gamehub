@@ -104,10 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Excluir Jogo
     window.deleteGame = async (id) => {
-        if (confirm("Tem certeza que deseja excluir este jogo? Esta ação é irreversível!")) {
+        window.customConfirm("Tem certeza que deseja excluir este jogo? Esta ação é irreversível!", async () => {
             await db.collection('games').doc(id).delete();
             loadAdminGames();
-        }
+            showToast("Jogo excluído com sucesso!", "success");
+        });
     };
 
     function resetForm() {
