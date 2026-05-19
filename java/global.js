@@ -26,6 +26,25 @@ async function fetchGamesData() {
             allGamesData = await response.json();
         }
 
+        // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
+        const isSubfolder = window.location.pathname.includes('/html/');
+        allGamesData = allGamesData.map(game => {
+            // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
+            let imgPath = game.image || game.Image;
+            
+            // 2. Ajusta caminhos de imagens locais para subpastas (ex: de 'img/...' para '../img/...')
+            if (imgPath && !imgPath.startsWith('http') && isSubfolder && !imgPath.startsWith('../')) {
+                imgPath = '../' + imgPath;
+            }
+
+            return {
+                ...game,
+                image: imgPath,
+                // Padroniza também a descrição para facilitar o uso nos outros scripts
+                description: game.description || game.Description
+            };
+        });
+
         // Decide qual função de renderização chamar com base na página atual
         if (window.location.pathname.includes('jogo.html')) {
             // Verifica se a função renderGameDetails está disponível (carregada por jogo.js)

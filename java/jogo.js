@@ -6,8 +6,9 @@ function renderGameDetails(games) {
     // Pega o ID da URL (ex: jogo.html?id=1)
     const params = new URLSearchParams(window.location.search);
     const gameId = parseInt(params.get('id'));
-
-    const game = games.find(g => g.id === gameId);
+    
+    // Busca o jogo garantindo que a comparação funcione mesmo se o ID no JSON for string ou número
+    const game = games.find(g => String(g.id) === String(gameId));
 
     if (game) {
         // Preenche os elementos da página com os dados do JSON
@@ -16,9 +17,9 @@ function renderGameDetails(games) {
         document.getElementById('game-image-detail').src = game.image;
         document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
 
-        // Preenche a descrição (atente-se ao 'D' maiúsculo vindo do JSON)
+        // Preenche a descrição usando o campo já normalizado pelo global.js
         const descElement = document.getElementById('game-description-detail');
-        if (descElement) descElement.textContent = game.Description || game.description;
+        if (descElement) descElement.textContent = game.description;
         
         const priceBox = document.getElementById('game-price-detail');
         if (game.discount > 0) {
