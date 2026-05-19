@@ -16,17 +16,17 @@ function renderGames(games) {
     // 2. Sistema Totalmente Automático: Extrai todas as tags únicas do catálogo
     const allTags = games.flatMap(game => game.tags);
     const uniqueCategories = [...new Set(allTags)].sort();
+    
+    // Melhoria: Ordena as categorias pela popularidade (quantos jogos ela tem)
+    // e filtra para mostrar apenas categorias que tenham pelo menos 3 jogos
+    const filteredCategories = uniqueCategories.map(tag => ({
+        name: tag,
+        count: games.filter(g => g.tags.includes(tag)).length
+    }))
+    .filter(cat => cat.count >= 3)
+    .sort((a, b) => b.count - a.count);
 
-    uniqueCategories.forEach(category => {
-        const filtered = games.filter(g => g.tags.includes(category));
-        // Criamos seções apenas para categorias que tenham pelo menos 2 jogos (opcional)
-        if (filtered.length >= 1) {
-            createSection(`Jogos de ${category}`, filtered, storeSections);
-        }
-    });
-}
-
-/**
+    
  * Cria dinamicamente o HTML de uma seção (Título + Grid)
  */
 function createSection(title, games, parentContainer) {

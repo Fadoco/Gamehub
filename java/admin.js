@@ -16,9 +16,13 @@ async function initAdminPanel() {
 
     userListContainer.innerHTML = "<p style='padding: 20px;'>Carregando usuários...</p>";
 
+    // Pega o DB do escopo global (window)
+    const firestore = window.db;
+    if (!firestore) return console.error("Firestore não disponível.");
+
     try {
         // Busca todos os usuários cadastrados na coleção 'users' do Firestore
-        const snapshot = await db.collection('users').get();
+        const snapshot = await firestore.collection('users').get();
         if (snapshot.empty) {
             userListContainer.innerHTML = "<p style='padding: 20px;'>Nenhum usuário cadastrado no banco.</p>";
             return;
@@ -69,8 +73,10 @@ function renderUserList(users) {
 }
 
 // Só inicia o painel quando o Firebase confirmar que o usuário está logado e é Admin
-firebase.auth().onAuthStateChanged((user) => {
-    if (user && ADMIN_EMAILS.includes(user.email)) {
+window.auth.onAuthStateChanged((user) => {
+    const adminEmails = window.ADMIN_EMAILS || [];
+    
+    if (user && adminEmails.includes(user.email)) {
         initAdminPanel();
     }
 });

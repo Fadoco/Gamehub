@@ -9,21 +9,23 @@ const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser r
 if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
-const auth = firebase.auth();
+window.auth = firebase.auth();
+const auth = window.auth;
 
 // Inicializa o Firestore com segurança
-let db;
+window.db = null;
 try {
-    db = firebase.firestore();
+    window.db = firebase.firestore();
 } catch (e) {
     console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
 }
+const db = window.db;
 
 window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
 window.userBalance = 0;    // Saldo da carteira
-const ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // E-mails de administradores
+window.ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
 
 // Função auxiliar para o Loader
