@@ -18,7 +18,10 @@ async function initAdminPanel() {
 
     // Pega o DB do escopo global (window)
     const firestore = window.db;
-    if (!firestore) return console.error("Firestore não disponível.");
+    if (!firestore) {
+        userListContainer.innerHTML = "<p style='padding: 20px;'>Erro: Banco de dados não conectado.</p>";
+        return;
+    }
 
     try {
         // Busca todos os usuários cadastrados na coleção 'users' do Firestore
@@ -30,19 +33,19 @@ async function initAdminPanel() {
 
         allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        // Ordena por nome inicialmente e renderiza
+        // Ordena por Nick e renderiza
         allUsers.sort((a, b) => (a.displayName || "").localeCompare(b.displayName || ""));
         renderUserList(allUsers);
 
-        // Pesquisa em tempo real (Filtra por Nick, Email ou ID)
+        // Implementação da Pesquisa em tempo real
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 const filtered = allUsers.filter(user => {
-                    const nick = String(user.displayName || "").toLowerCase();
-                    const email = String(user.email || "").toLowerCase();
-                    const id = String(user.id || "").toLowerCase();
-                    return nick.includes(term) || email.includes(term) || id.includes(term);
+                    const nickStr = String(user.displayName || user.email?.split('@')[0] || "").toLowerCase();
+                    const emailStr = String(user.email || "").toLowerCase();
+                    const idStr = String(user.id || "").toLowerCase();
+                    return nickStr.includes(term) || emailStr.includes(term) || idStr.includes(term);
                 });
                 renderUserList(filtered);
             });

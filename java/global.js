@@ -71,8 +71,8 @@ const IS_SUBFOLDER = window.location.pathname.includes('/html/'); // Define uma 
 async function fetchGamesData() {
     try {
         // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)
-        if (typeof db !== 'undefined') {
-            const snapshot = await db.collection('games').get();
+        if (window.db) {
+            const snapshot = await window.db.collection('games').get();
             if (!snapshot.empty) {
                 allGamesData = snapshot.docs.map(doc => ({
                     firestoreId: doc.id,

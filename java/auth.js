@@ -25,7 +25,7 @@ window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
 window.userBalance = 0;    // Saldo da carteira
-window.ADMIN_EMAILS = ["fadoco12311@gmail.com"]; // E-mails de administradores
+window.ADMIN_EMAILS = ["fadoco12311@gmail.com", "gabrielmomo6759@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
 
 // Função auxiliar para o Loader

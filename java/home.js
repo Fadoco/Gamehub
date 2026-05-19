@@ -26,7 +26,14 @@ function renderGames(games) {
     .filter(cat => cat.count >= 3)
     .sort((a, b) => b.count - a.count);
 
-    
+    // Executa a criação de cada seção baseada nas categorias filtradas
+    filteredCategories.forEach(cat => {
+        const filtered = games.filter(g => g.tags.includes(cat.name));
+        createSection(`Jogos de ${cat.name}`, filtered, storeSections);
+    });
+}
+
+/**
  * Cria dinamicamente o HTML de uma seção (Título + Grid)
  */
 function createSection(title, games, parentContainer) {
