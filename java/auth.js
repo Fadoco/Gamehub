@@ -263,6 +263,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 })
                 .then(() => {
+                    // Salva o Nick (displayName) também no documento do Firestore para o Admin ver
+                    const user = auth.currentUser;
+                    return db.collection('users').doc(user.uid).update({
+                        displayName: name
+                    });
+                })
+                .then(() => {
                     showToast("Conta criada com sucesso!", "success");
                     window.location.href = 'welcome.html';
                 })
