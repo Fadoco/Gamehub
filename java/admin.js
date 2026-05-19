@@ -9,6 +9,12 @@ async function initAdminPanel() {
     const userListContainer = document.querySelector('.user-list-container');
     const searchInput = document.querySelector('.admin-search-input');
 
+    // Verifica se o global.js já carregou os utilitários
+    if (!window.utils) {
+        console.warn("Aguardando utilitários globais...");
+        return setTimeout(initAdminPanel, 500);
+    }
+
     if (!userListContainer) {
         console.warn("Elemento '.user-list-container' não encontrado no HTML.");
         return;
@@ -42,7 +48,7 @@ async function initAdminPanel() {
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 const filtered = allUsers.filter(user => {
-                    const nickStr = window.utils.getUserFriendlyName(user).toLowerCase();
+                    const nickStr = String(window.utils.getUserFriendlyName(user)).toLowerCase();
                     const emailStr = String(user.email || "").toLowerCase();
                     const idStr = String(user.id || "").toLowerCase();
                     return nickStr.includes(term) || emailStr.includes(term) || idStr.includes(term);
@@ -69,7 +75,7 @@ function renderUserList(users) {
     container.innerHTML = users.map(user => `
         <div class="user-admin-card">
             <span class="user-name">${window.utils.getUserFriendlyName(user)}</span>
-            <span class="user-email">${user.email || 'E-mail privado'}</span>
+            <span class="user-email">${user.email || 'E-mail não cadastrado'}</span>
             <span class="user-id">ID: ${user.id}</span>
         </div>
     `).join('');
@@ -77,9 +83,14 @@ function renderUserList(users) {
 
 // Só inicia o painel quando o Firebase confirmar que o usuário está logado e é Admin
 window.auth.onAuthStateChanged((user) => {
-    const adminEmails = window.ADMIN_EMAILS || [];
-    
-    if (user && adminEmails.includes(user.email)) {
-        initAdminPanel();
+    if (user) {
+        const adminEmails = window.ADMIN_EMAILS || [];
+        if (adminEmails.includes(user.email)) {
+            initAdminPanel();
+        } else {
+            console.warn("Acesso negado: Usuário não é administrador.");
+        }
+    } else {
+        console.log("Aguardando autenticação...");
     }
 });

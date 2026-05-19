@@ -92,7 +92,7 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html');
     const isWelcomePage = window.location.pathname.includes('welcome.html');
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+    const isAdmin = user && window.ADMIN_EMAILS.includes(user.email);
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
