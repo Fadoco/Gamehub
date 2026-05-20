@@ -115,18 +115,12 @@
             <!-- Lista de Usuários -->
             <section class="admin-card">
                 <h2>Usuários Registrados</h2>
-                <div class="admin-table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Usuário (UID / E-mail)</th>
-                                <th>Saldo Atual</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-user-list">
-                            <!-- Preenchido via JS -->
-                        </tbody>
-                    </table>
+                <!-- Campo de busca para o sistema de filtro -->
+                <input type="text" class="admin-search-input" placeholder="Pesquisar por nick, e-mail ou ID...">
+                
+                <!-- Container para os cartões com sistema de scroll -->
+                <div class="user-list-container">
+                    <p style="padding: 20px;">Carregando usuários...</p>
                 </div>
             </section>
 
