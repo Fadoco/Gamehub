@@ -32,6 +32,10 @@ window.userBio = "";       // Descrição do perfil
 window.userAvatar = "";    // URL da foto customizada
 window.userBannerURL = ""; // URL do banner
 window.userBannerType = "image"; // Tipo de banner (image/video)
+window.userFriendshipId = null; // ID numérico para adicionar amigos
+window.userFriends = [];   // Lista de UIDs de amigos
+window.userFriendRequestsSent = []; // Requisições de amizade enviadas
+window.userFriendRequestsReceived = []; // Requisições de amizade recebidas
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -129,17 +133,29 @@ auth.onAuthStateChanged((user) => {
         if (db) {
             db.collection('users').doc(user.uid).get().then(doc => {
                 // Se o documento não existir OU o campo email estiver faltando, atualizamos
+                const existingData = doc.exists ? doc.data() : {};
+                let friendshipId = existingData.friendshipId;
+
+                // Gerar um friendshipId se não existir (6 dígitos aleatórios)
+                if (!friendshipId) {
+                    friendshipId = Math.floor(100000 + Math.random() * 900000);
+                }
+
                 db.collection('users').doc(user.uid).set({
                     email: user.email,
-                    balance: doc.exists ? (doc.data().balance ?? 0) : 0,
-                    favorites: doc.exists ? (doc.data().favorites ?? []) : [],
-                    cart: doc.exists ? (doc.data().cart ?? []) : [],
-                    library: doc.exists ? (doc.data().library ?? []) : [],
-                    history: doc.exists ? (doc.data().history ?? []) : [],
-                    bio: doc.exists ? (doc.data().bio ?? "") : "",
-                    avatar: doc.exists ? (doc.data().avatar ?? "") : "",
-                    bannerURL: doc.exists ? (doc.data().bannerURL ?? "") : "",
-                    bannerType: doc.exists ? (doc.data().bannerType ?? "image") : "image"
+                    balance: existingData.balance ?? 0,
+                    favorites: existingData.favorites ?? [],
+                    cart: existingData.cart ?? [],
+                    library: existingData.library ?? [],
+                    history: existingData.history ?? [],
+                    bio: existingData.bio ?? "",
+                    avatar: existingData.avatar ?? "",
+                    bannerURL: existingData.bannerURL ?? "",
+                    bannerType: existingData.bannerType ?? "image",
+                    friendshipId: friendshipId,
+                    friends: existingData.friends ?? [],
+                    friendRequestsSent: existingData.friendRequestsSent ?? [],
+                    friendRequestsReceived: existingData.friendRequestsReceived ?? []
                 }, { merge: true });
             });
         }
@@ -161,15 +177,20 @@ async function loadUserData(uid) {
             window.userCart = data.cart || [];
             window.userLibrary = data.library || [];
             window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
-            window.userHistory = data.history || [];
+            window.userHistory = data.history || []; // Histórico de compras
             window.userBio = data.bio || "";
             window.userAvatar = data.avatar || "";
             window.userBannerURL = data.bannerURL || "";
             window.userBannerType = data.bannerType || "image";
+            window.userFriendshipId = data.friendshipId ?? null;
+            window.userFriends = data.friends || [];
+            window.userFriendRequestsSent = data.friendRequestsSent || [];
+            window.userFriendRequestsReceived = data.friendRequestsReceived || [];
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
             window.userBalance = 0.00; window.userHistory = [];
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
+            window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
         refreshCurrentPageUI();
         updateNavBadges(); // Agora atualiza badges e o widget da carteira
@@ -188,7 +209,7 @@ function refreshCurrentPageUI() {
         } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
             renderLibrary();
         } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
-            renderProfile();
+            // renderProfile() é chamado por initProfilePage no perfil.js, que gerencia o UID da URL
         } else if (typeof renderGames === 'function') {
             renderGames(allGamesData);
         }
@@ -284,7 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const user = auth.currentUser;
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
-                        email: user.email
+                        email: user.email,
+                        friendshipId: Math.floor(100000 + Math.random() * 900000),
+                        friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
                 })
                 .then(() => {
@@ -579,3 +602,97 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLibrary.onclick = () => window.location.href = isSubfolder ? 'biblioteca.html' : 'html/biblioteca.html';
     }
 });
+
+// --- Funções de Amizade (Lógica) ---
+window.sendFriendRequest = async (targetUid) => {
+    if (!auth.currentUser) return showToast("Logue para adicionar amigos.", "info");
+    const myUid = auth.currentUser.uid;
+    if (myUid === targetUid) return showToast("Você não pode se adicionar.", "error");
+    if (window.userFriends.includes(targetUid)) return showToast("Já são amigos!", "info");
+    if (window.userFriendRequestsSent.includes(targetUid)) return showToast("Pedido já enviado.", "info");
+
+    try {
+        await db.collection('users').doc(myUid).update({
+            friendRequestsSent: firebase.firestore.FieldValue.arrayUnion(targetUid)
+        });
+        await db.collection('users').doc(targetUid).update({
+            friendRequestsReceived: firebase.firestore.FieldValue.arrayUnion(myUid)
+        });
+        showToast("Pedido de amizade enviado!", "success");
+        window.userFriendRequestsSent.push(targetUid);
+        refreshCurrentPageUI();
+    } catch (error) { showToast("Erro ao enviar pedido.", "error"); }
+};
+
+window.acceptFriendRequest = async (requesterUid) => {
+    if (!auth.currentUser) return;
+    try {
+        toggleLoader(true);
+        const myUid = auth.currentUser.uid;
+        const myRef = db.collection('users').doc(myUid);
+        const requesterRef = db.collection('users').doc(requesterUid);
+
+        await db.runTransaction(async (transaction) => {
+            transaction.update(myRef, {
+                friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid),
+                friends: firebase.firestore.FieldValue.arrayUnion(requesterUid)
+            });
+            transaction.update(requesterRef, {
+                friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid),
+                friends: firebase.firestore.FieldValue.arrayUnion(myUid)
+            });
+        });
+
+        showToast("Pedido aceito!", "success");
+        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        window.userFriends.push(requesterUid);
+        refreshCurrentPageUI();
+    } catch (error) { showToast("Erro ao aceitar pedido.", "error"); }
+    finally { toggleLoader(false); }
+};
+
+window.rejectFriendRequest = async (requesterUid) => {
+    if (!auth.currentUser) return;
+    try {
+        const myUid = auth.currentUser.uid;
+        await db.collection('users').doc(myUid).update({
+            friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid)
+        });
+        await db.collection('users').doc(requesterUid).update({
+            friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid)
+        });
+        showToast("Pedido rejeitado.", "info");
+        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        refreshCurrentPageUI();
+    } catch (error) { showToast("Erro ao rejeitar.", "error"); }
+};
+
+window.removeFriend = async (friendUid) => {
+    if (!auth.currentUser) return;
+    const myUid = auth.currentUser.uid;
+
+    window.customConfirm("Remover este amigo?", async () => {
+        try {
+            toggleLoader(true);
+            await db.collection('users').doc(myUid).update({
+                friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
+            });
+            await db.collection('users').doc(friendUid).update({
+                friends: firebase.firestore.FieldValue.arrayRemove(myUid)
+            });
+            showToast("Amigo removido.");
+            window.userFriends = window.userFriends.filter(id => id !== friendUid);
+            refreshCurrentPageUI();
+        } catch (error) { showToast("Erro ao remover.", "error"); }
+        finally { toggleLoader(false); }
+    });
+};
+
+// Lógica para buscar usuário pelo ID numérico
+window.findUserByFriendshipId = async (friendId) => {
+    const snapshot = await db.collection('users')
+        .where('friendshipId', '==', parseInt(friendId))
+        .limit(1)
+        .get();
+    return snapshot.empty ? null : { uid: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+};
