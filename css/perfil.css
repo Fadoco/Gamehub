@@ -10,6 +10,7 @@
     align-items: center;
     text-align: center;
     gap: 20px;
+    position: relative; /* Garante que o botão 'Editar' se alinhe dentro deste card */
 }
 .profile-avatar { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--accent); object-fit: cover; }
 .profile-id { background: rgba(255, 255, 255, 0.05); padding: 8px 15px; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: var(--secondary); margin-top: 10px; cursor: help; }
@@ -93,4 +94,17 @@
     color: white;
     border-radius: 4px;
     outline: none;
+}
+
+/* Ajuste para os campos de input dentro do formulário de edição */
+.edit-profile-form .form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.edit-profile-form input, .edit-profile-form textarea {
+    width: 100%;
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
