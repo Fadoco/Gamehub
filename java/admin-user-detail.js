@@ -100,8 +100,22 @@ window.addGameToUser = async () => {
 window.removeGameFromUser = async (gameId) => {
     window.customConfirm("Remover este jogo da biblioteca do usuário?", async () => {
         const newLib = (targetUserData.library || []).filter(id => id !== gameId);
-        await window.db.collection('users').doc(targetUid).update({ library: newLib });
-        showToast("Jogo removido.");
+
+        // Encontra o título do jogo para removê-lo também do histórico (que usa strings de título)
+        const game = allGamesData.find(g => String(g.id) === String(gameId));
+        const gameTitle = game ? game.title : null;
+
+        let newHistory = (targetUserData.history || []).map(order => ({
+            ...order,
+            items: order.items.filter(item => item !== gameTitle)
+        })).filter(order => order.items.length > 0);
+
+        await window.db.collection('users').doc(targetUid).update({ 
+            library: newLib,
+            history: newHistory
+        });
+        
+        showToast("Jogo removido da biblioteca e do histórico.");
     });
 };
 

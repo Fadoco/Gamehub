@@ -349,6 +349,18 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     
     if (userMenu) userMenu.style.display = 'flex';
 
+    // Adiciona botão Ranking se não existir (Visível para todos)
+    if (userMenu && !document.getElementById('btn-ranking')) {
+        const rankBtn = document.createElement('button');
+        rankBtn.id = 'btn-ranking';
+        rankBtn.className = 'nav-button';
+        rankBtn.style.cssText = "font-size: 18px; color: #f1c40f; background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; transition: 0.3s;";
+        rankBtn.title = "Ranking de Riqueza";
+        rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
+        rankBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'ranking.html' : 'html/ranking.html';
+        userMenu.prepend(rankBtn);
+    }
+
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user?.email?.toLowerCase());
 
