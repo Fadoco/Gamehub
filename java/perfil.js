@@ -58,6 +58,13 @@ async function renderProfile() {
     profileAvatar.src = currentProfileData.avatar || `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(currentProfileData)}&background=27ae60&color=fff`;
     profileFriendshipId.textContent = `ID de Amizade: #${currentProfileData.friendshipId || 'N/A'}`;
 
+    // Configura o clique para copiar o ID
+    profileFriendshipId.onclick = () => {
+        const idOnly = currentProfileData.friendshipId;
+        navigator.clipboard.writeText(idOnly);
+        showToast("ID copiado para a área de transferência!", "success");
+    };
+
     // Renderizar Banner
     profileBannerContainer.innerHTML = ''; // Limpa o conteúdo anterior
     if (currentProfileData.bannerURL) {
@@ -190,20 +197,18 @@ window.handleAddFriendById = async () => {
     try {
         toggleLoader(true);
         // Busca o usuário que possui esse friendshipId
-        const snapshot = await window.db.collection('users')
-            .where('friendshipId', '==', friendId)
-            .limit(1)
-            .get();
+        const userFound = await window.findUserByFriendshipId(friendId); // Usa a função global do auth.js
 
-        if (snapshot.empty) {
+        if (!userFound) {
             showToast("Usuário não encontrado com este ID.", "error");
         } else {
-            const targetUid = snapshot.docs[0].id;
+            const targetUid = userFound.uid;
             await window.sendFriendRequest(targetUid);
-            idInput.value = "";
+            idInput.value = ""; // Limpa o input após enviar o pedido
         }
     } catch (error) {
-        showToast("Erro ao buscar ID.", "error");
+        console.error("Erro ao buscar ID ou enviar pedido:", error);
+        showToast("Erro ao buscar ID ou enviar pedido.", "error");
     } finally {
         toggleLoader(false);
     }
