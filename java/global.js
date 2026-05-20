@@ -29,16 +29,10 @@ window.utils = {
  */
 window.renderToContainer = (games, container, clear = true) => {
     if (!container) return;
-    
+
     const gamePagePath = IS_SUBFOLDER ? 'jogo.html' : 'html/jogo.html';
 
-    if (clear) container.innerHTML = ''; 
-    if (games.length === 0) {
-        container.innerHTML = '<p>Nenhum jogo encontrado nesta seção.</p>';
-        return;
-    }
-
-    games.forEach(game => {
+    const html = games.map(game => {
         // Gerar ícones de plataformas dinamicamente
         const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
         
@@ -51,7 +45,7 @@ window.renderToContainer = (games, container, clear = true) => {
         const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
         const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
 
-        container.innerHTML += `
+        return `
             <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card">
                 <div class="card-media">
@@ -73,7 +67,13 @@ window.renderToContainer = (games, container, clear = true) => {
                 </div>
                 </article>
             </a>`;
-    });
+    }).join('');
+
+    if (clear) {
+        container.innerHTML = html || '<p>Nenhum jogo encontrado nesta seção.</p>';
+    } else {
+        container.insertAdjacentHTML('beforeend', html);
+    }
 };
 
 async function fetchGamesData() {
@@ -115,54 +115,35 @@ async function fetchGamesData() {
             };
         });
 
-        // Decide qual função de renderização chamar com base na página atual
-        if (window.location.pathname.includes('jogo.html')) {
-            // Verifica se a função renderGameDetails está disponível (carregada por jogo.js)
-            if (typeof renderGameDetails === 'function') {
-                renderGameDetails(allGamesData);
-            } else {
-                console.warn("renderGameDetails não está definida. Verifique se jogo.js foi carregado.");
-            }
-        } else if (window.location.pathname.includes('busca.html')) {
-            if (typeof renderSearchResults === 'function') {
-                renderSearchResults(allGamesData);
-            } else {
-                console.warn("renderSearchResults não está definida. Verifique se busca.js foi carregado.");
-            }
-        } else if (window.location.pathname.includes('carrinho.html')) {
-            if (typeof renderCart === 'function') {
-                renderCart();
-            } else {
-                console.warn("renderCart não está definida. Verifique se cart.js foi carregado.");
-            }
-        } else if (window.location.pathname.includes('biblioteca.html')) {
-            if (typeof renderLibrary === 'function') {
-                renderLibrary();
-            } else {
-                console.warn("renderLibrary não está definida. Verifique se library.js foi carregado.");
-            }
-        } else if (window.location.pathname.includes('historico.html')) {
-            if (typeof renderHistory === 'function') {
-                renderHistory();
-            } else {
-                console.warn("renderHistory não está definida. Verifique se historico.js foi carregado.");
-            }
-        } else if (window.location.pathname.includes('perfil.html')) {
-            if (typeof renderProfile === 'function') {
-                renderProfile();
-            } else {
-                console.warn("renderProfile não está definida. Verifique se perfil.js foi carregado.");
-            }
-        } else { // Assumimos que é a página inicial ou outra que lista jogos
-            // Verifica se a função renderGames está disponível (carregada por home.js)
-            if (typeof renderGames === 'function') {
-                renderGames(allGamesData);
-            } else {
-                console.warn("renderGames não está definida. Verifique se home.js foi carregado.");
-            }
-        }
+        routePageRendering();
+
     } catch (error) {
         console.error("Erro ao carregar o catálogo de jogos:", error);
+    }
+}
+
+/**
+ * Decide qual função de renderização chamar com base na página atual
+ */
+function routePageRendering() {
+    const path = window.location.pathname;
+    
+    const routes = [
+        { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [allGamesData] },
+        { file: 'busca.html', func: typeof renderSearchResults === 'function' ? renderSearchResults : null, args: [allGamesData] },
+        { file: 'carrinho.html', func: typeof renderCart === 'function' ? renderCart : null },
+        { file: 'biblioteca.html', func: typeof renderLibrary === 'function' ? renderLibrary : null },
+        { file: 'historico.html', func: typeof renderHistory === 'function' ? renderHistory : null },
+        { file: 'perfil.html', func: typeof renderProfile === 'function' ? renderProfile : null }
+    ];
+
+    const activeRoute = routes.find(r => path.includes(r.file));
+
+    if (activeRoute) {
+        if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
+        else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);
+    } else if (typeof renderGames === 'function') {
+        renderGames(allGamesData);
     }
 }
 
