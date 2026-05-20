@@ -64,7 +64,7 @@ function renderUserPanel() {
     const history = targetUserData.history || [];
     historyTable.innerHTML = history.map(h => `
         <tr>
-            <td>${new Date(h.date).toLocaleDateString()}</td>
+            <td>${new Date(h.date).toLocaleDateString('pt-BR')} às ${new Date(h.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</td>
             <td>${h.items.join(', ')}</td>
             <td>R$ ${h.total.toFixed(2)}</td>
         </tr>

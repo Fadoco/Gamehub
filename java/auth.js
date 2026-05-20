@@ -27,6 +27,10 @@ window.userLibrary = [];   // Armazenamento global da biblioteca
 window.userBalance = 0;    // Saldo da carteira
 window.ADMIN_EMAILS = ["fadoco12311@gmail.com", "gabrielmomo6759@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
+window.userBio = "";       // Descrição do perfil
+window.userAvatar = "";    // URL da foto customizada
+window.userBannerURL = ""; // URL do banner
+window.userBannerType = "image"; // Tipo de banner (image/video)
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -92,7 +96,8 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin-user-detail.html');
     const isWelcomePage = window.location.pathname.includes('welcome.html');
-    const isAdmin = user && window.ADMIN_EMAILS.includes(user.email);
+    const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+    const isAdmin = user && adminList.includes(user.email.toLowerCase());
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
@@ -129,7 +134,11 @@ auth.onAuthStateChanged((user) => {
                     favorites: doc.exists ? (doc.data().favorites ?? []) : [],
                     cart: doc.exists ? (doc.data().cart ?? []) : [],
                     library: doc.exists ? (doc.data().library ?? []) : [],
-                    history: doc.exists ? (doc.data().history ?? []) : []
+                    history: doc.exists ? (doc.data().history ?? []) : [],
+                    bio: doc.exists ? (doc.data().bio ?? "") : "",
+                    avatar: doc.exists ? (doc.data().avatar ?? "") : "",
+                    bannerURL: doc.exists ? (doc.data().bannerURL ?? "") : "",
+                    bannerType: doc.exists ? (doc.data().bannerType ?? "image") : "image"
                 }, { merge: true });
             });
         }
@@ -152,9 +161,14 @@ async function loadUserData(uid) {
             window.userLibrary = data.library || [];
             window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
             window.userHistory = data.history || [];
+            window.userBio = data.bio || "";
+            window.userAvatar = data.avatar || "";
+            window.userBannerURL = data.bannerURL || "";
+            window.userBannerType = data.bannerType || "image";
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
             window.userBalance = 0.00; window.userHistory = [];
+            window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
         }
         refreshCurrentPageUI();
         updateNavBadges(); // Agora atualiza badges e o widget da carteira
@@ -334,7 +348,8 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     
     if (userMenu) userMenu.style.display = 'flex';
 
-    const isAdmin = user && window.ADMIN_EMAILS.includes(user?.email);
+    const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+    const isAdmin = user && adminList.includes(user?.email?.toLowerCase());
 
     if (user) {
         const displayName = window.utils.getUserFriendlyName(user);

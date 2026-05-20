@@ -42,13 +42,60 @@ function renderProfile() {
     });
 
     const displayName = user.displayName || user.email.split('@')[0];
-    const photoURL = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
+    const photoURL = window.userAvatar || user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
+
+    let bannerHtml = '';
+    if (window.userBannerURL) {
+        if (window.userBannerType === 'video') {
+            bannerHtml = `<video class="profile-banner-media" src="${window.userBannerURL}" autoplay muted loop></video>`;
+        } else {
+            bannerHtml = `<img class="profile-banner-media" src="${window.userBannerURL}" alt="Banner">`;
+        }
+    } else {
+        bannerHtml = `<div class="profile-banner-media" style="background: var(--gradient);"></div>`;
+    }
 
     container.innerHTML = `
+        <div class="profile-banner-container">
+            ${bannerHtml}
+        </div>
         <div class="profile-container">
+            <button class="btn-edit-profile" onclick="toggleEditProfile()"><i class="fas fa-edit"></i> Editar Perfil</button>
+            
             <img src="${photoURL}" alt="Avatar" class="profile-avatar">
             <h1>${displayName}</h1>
             <p style="color: #bdc3c7;">${user.email}</p>
+
+            <div id="edit-profile-form" class="edit-profile-form">
+                <h3>Personalizar Perfil</h3>
+                <div class="form-group">
+                    <label>Novo Nickname</label>
+                    <input type="text" id="edit-nick" value="${displayName}">
+                </div>
+                <div class="form-group">
+                    <label>Bio / Descrição</label>
+                    <textarea id="edit-bio" rows="3">${window.userBio}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL da Foto de Perfil</label>
+                    <input type="url" id="edit-avatar" value="${window.userAvatar}" placeholder="Link da imagem">
+                </div>
+                <div class="form-group">
+                    <label>URL do Banner</label>
+                    <input type="url" id="edit-banner-url" value="${window.userBannerURL}" placeholder="Link da imagem ou vídeo">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Banner</label>
+                    <select id="edit-banner-type">
+                        <option value="image" ${window.userBannerType === 'image' ? 'selected' : ''}>Imagem</option>
+                        <option value="video" ${window.userBannerType === 'video' ? 'selected' : ''}>Vídeo</option>
+                    </select>
+                </div>
+                <button class="buy-button" onclick="saveProfileChanges()">Salvar Alterações</button>
+            </div>
+
+            <p class="profile-bio">${window.userBio || 'Nenhuma descrição adicionada.'}</p>
+
             <div class="profile-id" title="Use este ID no painel Admin para gerenciar seu saldo">ID: ${user.uid}</div>
             
             <div class="profile-stats">
@@ -98,3 +145,42 @@ function renderProfile() {
         </div>
     `;
 }
+
+window.toggleEditProfile = () => {
+    const form = document.getElementById('edit-profile-form');
+    if (form) form.style.display = form.style.display === 'flex' ? 'none' : 'flex';
+};
+
+window.saveProfileChanges = async () => {
+    const nick = document.getElementById('edit-nick').value;
+    const bio = document.getElementById('edit-bio').value;
+    const avatar = document.getElementById('edit-avatar').value;
+    const bannerURL = document.getElementById('edit-banner-url').value;
+    const bannerType = document.getElementById('edit-banner-type').value;
+
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    toggleLoader(true);
+    try {
+        // Atualiza o Display Name no Firebase Auth
+        await user.updateProfile({ displayName: nick });
+        
+        // Atualiza os dados no Firestore
+        await db.collection('users').doc(user.uid).update({
+            displayName: nick,
+            bio: bio,
+            avatar: avatar,
+            bannerURL: bannerURL,
+            bannerType: bannerType
+        });
+
+        showToast("Perfil atualizado com sucesso!", "success");
+        location.reload(); // Recarrega para aplicar as mudanças
+    } catch (e) {
+        console.error("Erro ao atualizar perfil:", e);
+        showToast("Erro ao salvar alterações.", "error");
+    } finally {
+        toggleLoader(false);
+    }
+};

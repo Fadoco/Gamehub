@@ -44,7 +44,8 @@ async function loadUsersSystem() {
             displayUsers(filtered);
         });
     } catch (error) {
-        container.innerHTML = `<p style="color:red">Erro ao carregar usuários: ${error.message}</p>`;
+        console.error("Erro detalhado ao carregar usuários:", error);
+        container.innerHTML = `<p style="color:red">Erro ao carregar usuários: ${error.code === 'permission-denied' ? 'Sem permissão no Firestore (verifique as Regras de Segurança)' : error.message}</p>`;
     }
 }
 
@@ -73,8 +74,8 @@ function displayUsers(list) {
 // Inicialização protegida: Só roda se o usuário logado for admin
 if (window.auth) {
     window.auth.onAuthStateChanged((user) => {
-        const admins = window.ADMIN_EMAILS || [];
-        if (user && admins.includes(user.email)) {
+        const admins = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+        if (user && admins.includes(user.email.toLowerCase())) {
             loadUsersSystem();
         }
     });
