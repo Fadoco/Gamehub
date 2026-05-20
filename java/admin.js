@@ -75,7 +75,7 @@ function displayUsers(list) {
 if (window.auth) {
     window.auth.onAuthStateChanged((user) => {
         const admins = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
-        if (user && admins.includes(user.email.toLowerCase())) {
+        if (user && admins.includes(user.email?.toLowerCase())) {
             loadUsersSystem();
         }
     });

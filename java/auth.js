@@ -19,6 +19,14 @@ try {
 } catch (e) {
     console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
 }
+
+window.storage = null;
+try {
+    window.storage = firebase.storage();
+} catch (e) {
+    console.warn("Firebase Storage SDK não carregado. Upload de arquivos desativado.");
+}
+const storage = window.storage;
 const db = window.db;
 
 window.userFavorites = []; // Armazenamento global de favoritos
