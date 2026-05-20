@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
                         email: user.email,
-                        friendshipId: Math.floor(100000 + Math.random() * 900000),
+                        friendshipId: existingData?.friendshipId || Math.floor(100000 + Math.random() * 900000),
                         friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
                 })
@@ -382,6 +382,32 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
         rankBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'ranking.html' : 'html/ranking.html';
         userMenu.prepend(rankBtn);
+    }
+
+    // Adiciona botão Notificações se não existir
+    if (userMenu && !document.getElementById('notif-wrapper')) {
+        const notifWrapper = document.createElement('div');
+        notifWrapper.id = 'notif-wrapper';
+        notifWrapper.className = 'notifications-wrapper';
+        notifWrapper.innerHTML = `
+            <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: var(--secondary); background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; position: relative;" title="Notificações">
+                <i class="fas fa-bell"></i>
+                <span id="notif-badge" class="notification-badge">0</span>
+            </button>
+            <div id="notif-dropdown" class="notifications-dropdown">
+                <div class="notifications-header">Pedidos de Amizade</div>
+                <div id="notif-list" class="notifications-list">
+                    <div class="empty-notif">Nenhuma notificação nova.</div>
+                </div>
+            </div>
+        `;
+        userMenu.prepend(notifWrapper);
+
+        const btn = document.getElementById('btn-notifications');
+        const dropdown = document.getElementById('notif-dropdown');
+        btn.onclick = (e) => { e.stopPropagation(); dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block'; if (dropdown.style.display === 'block') window.renderNotifications(); };
+        document.addEventListener('click', () => { dropdown.style.display = 'none'; });
+        dropdown.onclick = (e) => e.stopPropagation();
     }
 
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
@@ -481,6 +507,17 @@ function updateNavBadges() {
     const walletDisplay = document.getElementById('wallet-amount');
     if (walletDisplay) {
         walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    }
+
+    // Atualiza o sino de notificações
+    const notifBadge = document.getElementById('notif-badge');
+    if (notifBadge) {
+        const count = (window.userFriendRequestsReceived || []).length;
+        notifBadge.textContent = count;
+        notifBadge.style.display = count > 0 ? 'block' : 'none';
+        
+        const dropdown = document.getElementById('notif-dropdown');
+        if (dropdown && dropdown.style.display === 'block') window.renderNotifications();
     }
 }
 

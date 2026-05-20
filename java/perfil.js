@@ -9,27 +9,28 @@ const ProfileState = {
     isMyProfile: false
 };
 
-// Cache de Elementos do DOM para performance
-const Elements = {
-    displayName: () => document.getElementById('profile-display-name'),
-    bio: () => document.getElementById('profile-bio'),
-    avatar: () => document.getElementById('profile-avatar'),
-    banner: () => document.getElementById('profile-banner-container'),
-    friendId: () => document.getElementById('profile-friendship-id'),
-    btnEdit: () => document.getElementById('btn-edit-profile'),
-    btnAddFriend: () => document.getElementById('btn-add-friend'),
-    editForm: () => document.getElementById('edit-profile-form'),
-    stats: {
-        games: () => document.getElementById('stat-games'),
-        friends: () => document.getElementById('stat-friends'),
-        balance: () => document.getElementById('stat-balance')
-    },
-    friendships: {
-        sectionRequests: () => document.getElementById('friend-requests-section'),
-        listRequests: () => document.getElementById('friend-requests-list'),
-        listFriends: () => document.getElementById('friends-list'),
-        addByIdContainer: () => document.getElementById('add-by-id-container')
-    }
+// Referências de elementos cacheificadas
+let el = {};
+
+function cacheElements() {
+    el = {
+        displayName: document.getElementById('profile-display-name'),
+        bio: document.getElementById('profile-bio'),
+        avatar: document.getElementById('profile-avatar'),
+        banner: document.getElementById('profile-banner-container'),
+        friendId: document.getElementById('profile-friendship-id'),
+        btnEdit: document.getElementById('btn-edit-profile'),
+        btnAddFriend: document.getElementById('btn-add-friend'),
+        editForm: document.getElementById('edit-profile-form'),
+        statGames: document.getElementById('stat-games'),
+        statFriends: document.getElementById('stat-friends'),
+        statBalance: document.getElementById('stat-balance'),
+        sectionReq: document.getElementById('friend-requests-section'),
+        listReq: document.getElementById('friend-requests-list'),
+        listFriends: document.getElementById('friends-list'),
+        addByIdBox: document.getElementById('add-by-id-container'),
+        cancelEdit: document.getElementById('cancel-edit-profile')
+    };
 };
 
 async function initProfilePage() {
@@ -37,6 +38,8 @@ async function initProfilePage() {
     if (!window.db || !window.auth || !window.utils || !window.auth.currentUser) {
         return setTimeout(initProfilePage, 500);
     }
+
+    cacheElements();
 
     const params = new URLSearchParams(window.location.search);
     ProfileState.uid = params.get('uid') || window.auth.currentUser.uid;
@@ -57,13 +60,13 @@ async function renderProfile() {
     const data = ProfileState.data;
     if (!data) return;
 
-    // 1. Dados Básicos e Banner
-    Elements.displayName().textContent = window.utils.getUserFriendlyName(data);
-    Elements.bio().textContent = data.bio || "Nenhuma biografia definida.";
-    Elements.avatar().src = data.avatar || `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(data)}&background=27ae60&color=fff`;
-    Elements.friendId().textContent = `ID de Amizade: #${data.friendshipId || 'N/A'}`;
+    // 1. Informações Básicas
+    el.displayName.textContent = window.utils.getUserFriendlyName(data);
+    el.bio.textContent = data.bio || "Nenhuma biografia definida.";
+    el.avatar.src = data.avatar || `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(data)}&background=27ae60&color=fff`;
+    el.friendId.textContent = `ID de Amizade: #${data.friendshipId || 'N/A'}`;
     
-    Elements.friendId().onclick = () => {
+    el.friendId.onclick = () => {
         if (data.friendshipId) {
             navigator.clipboard.writeText(String(data.friendshipId));
             showToast("ID copiado!", "success");
@@ -80,60 +83,59 @@ async function renderProfile() {
     }
 
     // 3. Estatísticas
-    Elements.stats.games().textContent = (data.library || []).length;
-    Elements.stats.friends().textContent = (data.friends || []).length;
-    Elements.stats.balance().textContent = `R$ ${(data.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    el.statGames.textContent = (data.library || []).length;
+    el.statFriends.textContent = (data.friends || []).length;
+    el.statBalance.textContent = `R$ ${(data.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
     // Renderizar Pedidos de Amizade Recebidos (apenas para o próprio perfil)
     if (ProfileState.isMyProfile) await renderRequests();
 
     // 4. Lista de Amigos
-    await renderFriendsList(data.friends || []);
+    renderFriendsList(data.friends || []);
 }
 
 function renderBanner(data) {
-    const container = Elements.banner();
     if (data.bannerURL) {
-        const media = data.bannerType === 'video' 
+        el.banner.innerHTML = data.bannerType === 'video' 
             ? `<video class="profile-banner-media" src="${data.bannerURL}" autoplay loop muted></video>`
             : `<img class="profile-banner-media" src="${data.bannerURL}" alt="Banner">`;
-        container.innerHTML = media;
     } else {
-        container.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
-        container.innerHTML = '';
+        el.banner.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
+        el.banner.innerHTML = '';
     }
 }
 
 function setupMyProfileUI(data) {
-    Elements.btnEdit().style.display = 'block';
-    Elements.btnAddFriend().style.display = 'none';
-    Elements.friendships.sectionRequests().style.display = 'block';
-    Elements.friendships.addByIdContainer().style.display = 'flex';
+    el.btnEdit.style.display = 'block';
+    el.btnAddFriend.style.display = 'none';
+    el.sectionReq.style.display = 'block';
+    el.addByIdBox.style.display = 'flex';
 
     // Preencher formulário
-    const form = Elements.editForm();
-    form.style.display = 'none';
+    const form = el.editForm;
+    if (form.style.display !== 'flex') form.style.display = 'none';
+    
     document.getElementById('edit-display-name').value = data.displayName || '';
     document.getElementById('edit-bio').value = data.bio || '';
     document.getElementById('edit-avatar-url').value = data.avatar || '';
     document.getElementById('edit-banner-url').value = data.bannerURL || '';
     document.getElementById('edit-banner-type').value = data.bannerType || 'image';
 
-    Elements.btnEdit().onclick = () => { form.style.display = 'flex'; Elements.btnEdit().style.display = 'none'; };
-    document.getElementById('cancel-edit-profile').onclick = () => { form.style.display = 'none'; Elements.btnEdit().style.display = 'block'; };
+    el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
+    el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
     form.onsubmit = handleEditProfile;
 }
 
 function setupOtherProfileUI() {
-    Elements.btnEdit().style.display = 'none';
-    Elements.friendships.sectionRequests().style.display = 'none';
-    Elements.friendships.addByIdContainer().style.display = 'none';
+    el.btnEdit.style.display = 'none';
+    el.sectionReq.style.display = 'none';
+    el.addByIdBox.style.display = 'none';
 
-    const btn = Elements.btnAddFriend();
+    const btn = el.btnAddFriend;
     btn.style.display = 'block';
     
     const uid = ProfileState.uid;
-    if (window.userFriends.includes(uid)) {
+    if (window.userFriends && window.userFriends.includes(uid)) {
         btn.textContent = "Amigo"; btn.disabled = true; btn.style.background = "#27ae60";
     } else if (window.userFriendRequestsSent.includes(uid)) {
         btn.textContent = "Pedido Enviado"; btn.disabled = true; btn.style.background = "var(--secondary)";
@@ -147,11 +149,10 @@ function setupOtherProfileUI() {
 }
 
 async function renderRequests() {
-    const list = Elements.friendships.listRequests();
     const uids = window.userFriendRequestsReceived || [];
     
     if (uids.length === 0) {
-        list.innerHTML = "<p>Nenhum pedido pendente.</p>";
+        el.listReq.innerHTML = "<p>Nenhum pedido pendente.</p>";
         return;
     }
 
@@ -171,13 +172,12 @@ async function renderRequests() {
                 </div>
             </div>`;
     }));
-    list.innerHTML = html.join('');
+    el.listReq.innerHTML = html.join('');
 }
 
 async function renderFriendsList(friendsUids) {
-    const list = Elements.friendships.listFriends();
     if (friendsUids.length === 0) {
-        list.innerHTML = "<p>Nenhum amigo para exibir.</p>";
+        el.listFriends.innerHTML = "<p>Nenhum amigo para exibir.</p>";
         return;
     }
 
@@ -194,7 +194,7 @@ async function renderFriendsList(friendsUids) {
                 ${ProfileState.isMyProfile ? `<button class="nav-button remove-friend-btn" onclick="event.stopPropagation(); window.removeFriend('${uid}')"><i class="fas fa-user-minus"></i></button>` : ''}
             </div>`;
     }));
-    list.innerHTML = html.join('');
+    el.listFriends.innerHTML = html.join('');
 }
 
 
