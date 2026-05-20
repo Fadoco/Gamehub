@@ -61,7 +61,7 @@ function displayUsers(list) {
     }
 
     container.innerHTML = list.map(user => `
-        <div class="user-admin-card">
+        <div class="user-admin-card" onclick="window.location.href='admin-user-detail.html?uid=${user.id}'" style="cursor:pointer">
             <span class="user-name">${window.utils.getUserFriendlyName(user)}</span>
             <span class="user-email">${user.email || 'E-mail privado'}</span>
             <span class="user-id">UID: ${user.id}</span>

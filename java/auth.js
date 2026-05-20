@@ -90,7 +90,7 @@ window.customConfirm = (message, onConfirm) => {
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
-    const isAdminPage = window.location.pathname.includes('admin.html');
+    const isAdminPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin-user-detail.html');
     const isWelcomePage = window.location.pathname.includes('welcome.html');
     const isAdmin = user && window.ADMIN_EMAILS.includes(user.email);
 
@@ -122,13 +122,15 @@ auth.onAuthStateChanged((user) => {
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
         if (db) {
             db.collection('users').doc(user.uid).get().then(doc => {
-                if (!doc.exists) {
-                    db.collection('users').doc(user.uid).set({
-                        email: user.email,
-                        balance: 0,
-                        favorites: [], cart: [], library: [], history: []
-                    }, { merge: true });
-                }
+                // Se o documento não existir OU o campo email estiver faltando, atualizamos
+                db.collection('users').doc(user.uid).set({
+                    email: user.email,
+                    balance: doc.exists ? (doc.data().balance ?? 0) : 0,
+                    favorites: doc.exists ? (doc.data().favorites ?? []) : [],
+                    cart: doc.exists ? (doc.data().cart ?? []) : [],
+                    library: doc.exists ? (doc.data().library ?? []) : [],
+                    history: doc.exists ? (doc.data().history ?? []) : []
+                }, { merge: true });
             });
         }
         if (db) loadUserData(user.uid);
@@ -266,7 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Salva o Nick (displayName) também no documento do Firestore para o Admin ver
                     const user = auth.currentUser;
                     return db.collection('users').doc(user.uid).set({
-                        displayName: name
+                        displayName: name,
+                        email: user.email
                     }, { merge: true });
                 })
                 .then(() => {
