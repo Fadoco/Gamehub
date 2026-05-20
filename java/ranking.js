@@ -30,7 +30,7 @@ async function initRanking() {
                 return `
                     <tr class="rank-row">
                         <td class="rank-pos rank-${pos <= 3 ? pos : 'other'}">#${pos}</td>
-                        <td>
+                        <td onclick="window.location.href='perfil.html?uid=${doc.id}'" style="cursor: pointer;">
                             <div class="rank-user">
                                 <img src="${avatar}" class="rank-avatar" alt="Avatar">
                                 <span>${name}</span>

@@ -593,6 +593,8 @@ nav {
 .rank-3 { color: #e67e22; } /* Bronze */
 
 .rank-user { display: flex; align-items: center; gap: 15px; }
+.rank-user:hover span { color: var(--accent); text-decoration: underline; }
+
 .rank-avatar { 
     width: 40px; 
     height: 40px; 
