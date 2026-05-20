@@ -105,43 +105,6 @@ window.removeGameFromUser = async (gameId) => {
     });
 };
 
-window.adminUploadMedia = async () => {
-    const avatarFile = document.getElementById('admin-edit-avatar').files[0];
-    const bannerFile = document.getElementById('admin-edit-banner').files[0];
-
-    if (!avatarFile && !bannerFile) return showToast("Selecione ao menos um arquivo", "info");
-
-    toggleLoader(true);
-    try {
-        const updates = {};
-
-        if (avatarFile) {
-            const storageRef = window.storage.ref(`profiles/${targetUid}/avatar_admin_${Date.now()}`);
-            await storageRef.put(avatarFile);
-            updates.avatar = await storageRef.getDownloadURL();
-        }
-
-        if (bannerFile) {
-            const storageRef = window.storage.ref(`profiles/${targetUid}/banner_admin_${Date.now()}`);
-            await storageRef.put(bannerFile);
-            updates.bannerURL = await storageRef.getDownloadURL();
-            updates.bannerType = bannerFile.type.startsWith('video') ? 'video' : 'image';
-        }
-
-        await window.db.collection('users').doc(targetUid).update(updates);
-        showToast("Mídias atualizadas pelo Admin!", "success");
-        
-        // Limpa os campos
-        document.getElementById('admin-edit-avatar').value = "";
-        document.getElementById('admin-edit-banner').value = "";
-    } catch (error) {
-        console.error(error);
-        showToast("Erro no upload", "error");
-    } finally {
-        toggleLoader(false);
-    }
-};
-
 // Iniciar sistema
 document.addEventListener('DOMContentLoaded', () => {
     // Aguarda o auth carregar para validar se ainda é admin

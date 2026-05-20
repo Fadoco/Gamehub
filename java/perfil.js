@@ -79,12 +79,10 @@ function renderProfile() {
                 <div class="form-group">
                     <label>URL da Foto de Perfil</label>
                     <input type="url" id="edit-avatar" value="${window.userAvatar}" placeholder="Link da imagem">
-                    <input type="file" id="edit-avatar-file" accept="image/*" class="file-input-compact">
                 </div>
                 <div class="form-group">
                     <label>URL do Banner</label>
                     <input type="url" id="edit-banner-url" value="${window.userBannerURL}" placeholder="Link da imagem ou vídeo">
-                    <input type="file" id="edit-banner-file" accept="image/*,video/*" class="file-input-compact">
                 </div>
                 <div class="form-group">
                     <label>Tipo de Banner</label>
@@ -160,9 +158,6 @@ window.saveProfileChanges = async () => {
     const bannerURLInput = document.getElementById('edit-banner-url').value;
     let bannerType = document.getElementById('edit-banner-type').value;
 
-    const avatarFile = document.getElementById('edit-avatar-file').files[0];
-    const bannerFile = document.getElementById('edit-banner-file').files[0];
-
     const user = firebase.auth().currentUser;
     if (!user) return;
 
@@ -171,29 +166,11 @@ window.saveProfileChanges = async () => {
         let finalAvatar = avatarURL;
         let finalBanner = bannerURLInput;
 
-        // Função auxiliar robusta para upload no Storage
-        const uploadFile = async (file, path) => {
-            if (!window.storage) throw new Error("Firebase Storage não inicializado.");
-            const storageRef = window.storage.ref(path);
-            const snapshot = await storageRef.put(file);
-            return await storageRef.getDownloadURL();
-        };
-
-        if (avatarFile) {
-            finalAvatar = await uploadFile(avatarFile, `profiles/${user.uid}/avatar_${Date.now()}`);
-        }
-
-        if (bannerFile) {
-            finalBanner = await uploadFile(bannerFile, `profiles/${user.uid}/banner_${Date.now()}`);
-            // Detecta automaticamente se o arquivo enviado é vídeo ou imagem
-            bannerType = bannerFile.type.startsWith('video') ? 'video' : 'image';
-        }
-
         // Atualiza o Display Name no Firebase Auth
         await user.updateProfile({ displayName: nick, photoURL: finalAvatar });
         
         // Atualiza os dados no Firestore
-        await db.collection('users').doc(user.uid).update({
+        await window.db.collection('users').doc(user.uid).update({
             displayName: nick,
             bio: bio,
             avatar: finalAvatar,

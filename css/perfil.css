@@ -108,10 +108,3 @@
     width: 100%;
     box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
-
-.file-input-compact {
-    margin-top: 8px;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    cursor: pointer;
-}
