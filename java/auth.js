@@ -37,6 +37,17 @@ window.userFriends = [];   // Lista de UIDs de amigos
 window.userFriendRequestsSent = []; // Requisições de amizade enviadas
 window.userFriendRequestsReceived = []; // Requisições de amizade recebidas
 
+// Referências DOM centralizadas
+const authElements = {
+    loginModal: () => document.getElementById('login-modal'),
+    userMenu: () => document.getElementById('user-menu'),
+    walletDisplay: () => document.getElementById('wallet-amount'),
+    userName: () => document.getElementById('user-name'),
+    userImg: () => document.querySelector('.user-profile img'),
+    btnLogin: () => document.getElementById('btn-login'),
+    btnLogout: () => document.getElementById('btn-logout')
+};
+
 // Função auxiliar para o Loader
 function toggleLoader(show) {
     const loader = document.getElementById('loading-overlay');
@@ -125,117 +136,101 @@ auth.onAuthStateChanged((user) => {
 
     checkUserSession(user);
 
-    // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
     if (DESATIVAR_LOGIN_PARA_TESTE && !user) return;
 
     if (user) {
-        // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
         if (db) {
-            db.collection('users').doc(user.uid).get().then(doc => {
-                // Se o documento não existir OU o campo email estiver faltando, atualizamos
+            // Garante a existência do documento do usuário
+            const userRef = db.collection('users').doc(user.uid);
+            userRef.get().then(doc => {
                 const existingData = doc.exists ? doc.data() : {};
-                let friendshipId = existingData.friendshipId;
-
-                // Gerar um friendshipId se não existir
-                if (!friendshipId) {
-                    friendshipId = Math.floor(100000 + Math.random() * 900000); // 6-digit random number
-                    // TODO: Implement a more robust uniqueness check for friendshipId in a real application
-                    // For now, we assume low collision probability or handle it on the first write.
+                if (!doc.exists) {
+                    userRef.set({
+                        email: user.email,
+                        displayName: user.displayName || user.email.split('@')[0],
+                        balance: 0,
+                        favorites: [],
+                        cart: [],
+                        library: [],
+                        history: [],
+                        bio: "",
+                        avatar: "",
+                        bannerURL: "",
+                        bannerType: "image",
+                        friendshipId: Math.floor(100000 + Math.random() * 900000),
+                        friends: [],
+                        friendRequestsSent: [],
+                        friendRequestsReceived: []
+                    });
                 }
-
-                db.collection('users').doc(user.uid).set({
-                    email: user.email,
-                    balance: existingData.balance ?? 0,
-                    favorites: existingData.favorites ?? [],
-                    cart: existingData.cart ?? [],
-                    library: existingData.library ?? [],
-                    history: existingData.history ?? [],
-                    bio: existingData.bio ?? "",
-                    avatar: existingData.avatar ?? "",
-                    bannerURL: existingData.bannerURL ?? "",
-                    bannerType: existingData.bannerType ?? "image",
-                    friendshipId: friendshipId,
-                    friends: existingData.friends ?? [],
-                    friendRequestsSent: existingData.friendRequestsSent ?? [],
-                    friendRequestsReceived: existingData.friendRequestsReceived ?? []
-                }, { merge: true });
             });
+            // Inicializa sincronização em tempo real
+            setupUserDataSync(user.uid);
         }
-        if (db) loadUserData(user.uid);
     } else {
-        window.userFavorites = [];
-        window.userCart = [];
-        window.userLibrary = [];
+        resetGlobals();
     }
 });
 
-// Função para carregar todos os dados do usuário do banco de dados
-async function loadUserData(uid) {
-    try {
-        const doc = await db.collection('users').doc(uid).get();
-        if (doc.exists) {
-            const data = doc.data();
-            window.userFavorites = data.favorites || [];
-            window.userCart = data.cart || [];
-            window.userLibrary = data.library || [];
-            window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
-            window.userHistory = data.history || []; // Histórico de compras
-            window.userBio = data.bio || "";
-            window.userAvatar = data.avatar || "";
-            window.userBannerURL = data.bannerURL || "";
-            window.userBannerType = data.bannerType || "image";
-            window.userFriendshipId = data.friendshipId ?? null;
-            window.userFriends = data.friends || [];
-            window.userFriendRequestsSent = data.friendRequestsSent || [];
-            window.userFriendRequestsReceived = data.friendRequestsReceived || [];
-        } else {
-            // Reset all user data if document doesn't exist
-            // This part might be redundant if the .set({merge:true}) above always creates a doc
-            window.userFavorites = []; window.userCart = []; window.userLibrary = [];
-            window.userBalance = 0.00; window.userHistory = [];
-            window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
-        }
+/**
+ * Sincroniza dados do usuário em tempo real
+ */
+function setupUserDataSync(uid) {
+    if (!db) return;
+
+    db.collection('users').doc(uid).onSnapshot(doc => {
+        if (!doc.exists) return;
+        const data = doc.data();
+        
+        // Atualiza variáveis globais
+        window.userFavorites = data.favorites || [];
+        window.userCart = data.cart || [];
+        window.userLibrary = data.library || [];
+        window.userBalance = data.balance || 0;
+        window.userHistory = data.history || [];
+        window.userBio = data.bio || "";
+        window.userAvatar = data.avatar || "";
+        window.userBannerURL = data.bannerURL || "";
+        window.userBannerType = data.bannerType || "image";
+        window.userFriendshipId = data.friendshipId;
+        window.userFriends = data.friends || [];
+        window.userFriendRequestsSent = data.friendRequestsSent || [];
+        window.userFriendRequestsReceived = data.friendRequestsReceived || [];
+
+        updateNavBadges();
         refreshCurrentPageUI();
-        updateNavBadges(); // Agora atualiza badges e o widget da carteira
-    } catch (e) { console.error("Erro ao carregar favoritos:", e); }
+        checkUserSession(auth.currentUser); // Atualiza UI do cabeçalho com novos dados (avatar/saldo)
+    }, error => {
+        console.error("Erro no sync de dados do usuário:", error);
+    });
+}
+
+function resetGlobals() {
+    window.userFavorites = []; window.userCart = []; window.userLibrary = [];
+    window.userBalance = 0; window.userFriends = [];
 }
 
 // Função auxiliar para atualizar a interface da página atual sem recarregar
 function refreshCurrentPageUI() {
-    if (typeof allGamesData !== 'undefined' && allGamesData.length > 0) {
-        if (window.location.pathname.includes('jogo.html') && typeof renderGameDetails === 'function') {
-            renderGameDetails(allGamesData);
-        } else if (window.location.pathname.includes('busca.html') && typeof renderSearchResults === 'function') {
-            renderSearchResults(allGamesData);
-        } else if (window.location.pathname.includes('carrinho.html') && typeof renderCart === 'function') {
-            renderCart();
-        } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
-            renderLibrary();
-        } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
-            renderProfile();
-        } else if (typeof renderGames === 'function') {
-            renderGames(allGamesData);
-        }
-    }
+    const path = window.location.pathname;
+    if (!window.allGamesData || window.allGamesData.length === 0) return;
+
+    if (path.includes('jogo.html') && typeof renderGameDetails === 'function') renderGameDetails(window.allGamesData);
+    else if (path.includes('busca.html') && typeof renderSearchResults === 'function') renderSearchResults(window.allGamesData);
+    else if (path.includes('carrinho.html') && typeof renderCart === 'function') renderCart();
+    else if (path.includes('biblioteca.html') && typeof renderLibrary === 'function') renderLibrary();
+    else if (path.includes('perfil.html') && typeof renderProfile === 'function') renderProfile();
+    else if (typeof renderGames === 'function') renderGames(window.allGamesData);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginModal = document.getElementById('login-modal');
-    const btnLogin = document.getElementById('btn-login');
-    const btnLogout = document.getElementById('btn-logout');
+    const loginModal = authElements.loginModal();
     const closeModal = document.querySelector('.close-modal');
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
-    const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
-    // Abrir modal de login ao clicar no botão "Entrar" do header
-    if (btnLogin && loginModal) {
-        btnLogin.onclick = (e) => {
-            e.preventDefault();
-            loginModal.style.display = 'flex';
-        };
-    }
+    // Abrir modal de login
+    authElements.btnLogin()?.addEventListener('click', (e) => { e.preventDefault(); loginModal.style.display = 'flex'; });
 
     // Fechar modal ao clicar no X
     if (closeModal && loginModal) {
@@ -277,11 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     toggleLoader(false);
                     let message = "E-mail ou senha incorretos.";
                     // Em produção, usamos mensagens genéricas por segurança
-                    switch (error.code) {
-                        case 'auth/invalid-email':
-                            message = "E-mail inválido.";
-                            break;
-                    }
+                    if (error.code === 'auth/invalid-email') message = "E-mail inválido.";
+                    else if (error.code === 'auth/user-not-found') message = "Usuário não encontrado.";
+
                     console.error("Erro no Login:", error); // Log detalhado do erro
                     showToast(message, "error");
                 });
@@ -309,9 +302,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
                         email: user.email,
-                        // Generate friendshipId on first creation if not already set
-                        friendshipId: Math.floor(100000 + Math.random() * 900000), // 6-digit random number
-                        friends: [], friendRequestsSent: [], friendRequestsReceived: []
+                        balance: 0,
+                        favorites: [],
+                        cart: [],
+                        library: [],
+                        history: [],
+                        bio: "",
+                        avatar: "",
+                        bannerURL: "",
+                        bannerType: "image",
+                        friendshipId: Math.floor(100000 + Math.random() * 900000),
+                        friends: [], 
+                        friendRequestsSent: [], 
+                        friendRequestsReceived: []
                     }, { merge: true });
                 })
                 .then(() => {
@@ -354,22 +357,18 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
-    if (forgotPasswordLink) forgotPasswordLink.onclick = handleForgotPassword;
-    if (forgotPasswordModalLink) forgotPasswordModalLink.onclick = handleForgotPassword;
+    document.getElementById('forgot-password-link')?.addEventListener('click', handleForgotPassword);
+    document.getElementById('forgot-password-modal-link')?.addEventListener('click', handleForgotPassword);
 
     // Logout
-    if (btnLogout) {
-        btnLogout.onclick = () => {
-            auth.signOut().then(() => {
-                location.reload();
-            });
-        };
-    }
+    authElements.btnLogout()?.addEventListener('click', () => {
+        auth.signOut().then(() => location.reload());
+    });
 });
 
-function checkUserSession(user) { // isAdmin é calculado aqui dentro
-    const btnLogin = document.getElementById('btn-login');
-    const btnLogout = document.getElementById('btn-logout');
+function checkUserSession(user) {
+    const btnLogin = authElements.btnLogin();
+    const btnLogout = authElements.btnLogout();
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
@@ -384,7 +383,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         rankBtn.style.cssText = "font-size: 18px; color: #f1c40f; background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; transition: 0.3s;";
         rankBtn.title = "Ranking de Riqueza";
         rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
-        rankBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'ranking.html' : 'html/ranking.html';
+        rankBtn.onclick = () => window.location.href = window.IS_SUBFOLDER ? 'ranking.html' : 'html/ranking.html';
         userMenu.prepend(rankBtn);
     }
 
@@ -427,14 +426,14 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
             userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
             userImg.style.display = 'block';
             // Torna a foto de perfil clicável para ir ao perfil
-            userImg.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'perfil.html' : 'html/perfil.html';
+            userImg.onclick = () => window.location.href = window.IS_SUBFOLDER ? 'perfil.html' : 'html/perfil.html';
         }
 
         // Atualiza a exibição da carteira
-        const walletDisplay = document.getElementById('wallet-amount');
+        const walletDisplay = authElements.walletDisplay();
         if (walletDisplay) {
             walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            document.getElementById('user-wallet').style.display = 'flex';
+            if (document.getElementById('user-wallet')) document.getElementById('user-wallet').style.display = 'flex';
         }
     } else {
         if (btnLogin) btnLogin.style.display = 'block';
@@ -482,7 +481,7 @@ function updateNavBadges() {
     }
 
     // Garante que o saldo no Header esteja atualizado
-    const walletDisplay = document.getElementById('wallet-amount');
+    const walletDisplay = authElements.walletDisplay();
     if (walletDisplay) {
         walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     }
@@ -584,8 +583,7 @@ window.purchaseLibrary = async () => {
             
             toggleLoader(false);
             showToast("Compra finalizada com sucesso!", "success");
-            updateNavBadges();
-            location.reload();
+            // O sync em tempo real cuidará de atualizar a UI e os badges
         } catch (error) {
             toggleLoader(false);
             showToast("Erro ao processar compra.", "error");
@@ -707,6 +705,18 @@ window.rejectFriendRequest = async (requesterUid) => {
 };
 
 window.removeFriend = async (friendUid) => {
-    // TODO: Implement logic to remove friend from both users' friend lists
-    showToast("Funcionalidade de remover amigo ainda não implementada.", "info");
+    if (!auth.currentUser) return;
+    const myUid = auth.currentUser.uid;
+
+    window.customConfirm("Tem certeza que deseja remover este amigo?", async () => {
+        try {
+            await db.collection('users').doc(myUid).update({ friends: firebase.firestore.FieldValue.arrayRemove(friendUid) });
+            await db.collection('users').doc(friendUid).update({ friends: firebase.firestore.FieldValue.arrayRemove(myUid) });
+            
+            showToast("Amizade removida.");
+            // O sync em tempo real cuidará de atualizar a UI local
+        } catch (error) {
+            showToast("Erro ao remover amigo.", "error");
+        }
+    });
 };

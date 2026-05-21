@@ -26,6 +26,15 @@ async function initProfilePage() {
             document.querySelector('main.container').innerHTML = "<h2 style='text-align:center; margin-top: 50px;'>Perfil não encontrado.</h2>";
         }
     });
+
+    // Funcionalidade de clicar para copiar o ID de amizade
+    const idSpan = document.getElementById('profile-friendship-id');
+    if (idSpan) {
+        idSpan.onclick = () => {
+            const idText = currentProfileData.friendshipId.toString();
+            navigator.clipboard.writeText(idText).then(() => showToast("ID copiado!", "success"));
+        };
+    }
 }
 
 async function renderProfile() {
@@ -76,6 +85,7 @@ async function renderProfile() {
         btnAddFriend.style.display = 'none';
         friendRequestsSection.style.display = 'block';
         document.getElementById('edit-profile-form').style.display = 'none'; // Esconde o formulário por padrão
+        if (document.getElementById('add-by-id-container')) document.getElementById('add-by-id-container').style.display = 'flex';
 
         // Preencher formulário de edição
         document.getElementById('edit-display-name').value = currentProfileData.displayName || '';
@@ -99,6 +109,7 @@ async function renderProfile() {
         btnEditProfile.style.display = 'none';
         document.getElementById('edit-profile-form').style.display = 'none';
         friendRequestsSection.style.display = 'none';
+        if (document.getElementById('add-by-id-container')) document.getElementById('add-by-id-container').style.display = 'none';
 
         // Lógica do botão "Adicionar Amigo" para outros perfis
         btnAddFriend.style.display = 'block';
@@ -177,6 +188,32 @@ async function renderProfile() {
         friendsList.innerHTML = "<p>Nenhum amigo para exibir.</p>";
     }
 }
+
+/**
+ * Adiciona um amigo buscando pelo ID numérico de amizade
+ */
+window.handleAddFriendById = async () => {
+    const input = document.getElementById('input-friend-id');
+    const friendId = parseInt(input.value);
+
+    if (!friendId || isNaN(friendId)) return showToast("Digite um ID válido", "error");
+    if (friendId === currentProfileData.friendshipId) return showToast("Você não pode se adicionar!", "error");
+
+    try {
+        // Busca o usuário que possui aquele friendshipId
+        const snapshot = await window.db.collection('users').where('friendshipId', '==', friendId).limit(1).get();
+        
+        if (snapshot.empty) {
+            return showToast("Usuário não encontrado com este ID.", "error");
+        }
+
+        const targetUid = snapshot.docs[0].id;
+        await window.sendFriendRequest(targetUid);
+        input.value = "";
+    } catch (error) {
+        showToast("Erro ao buscar usuário.", "error");
+    }
+};
 
 async function handleEditProfile(event) {
     event.preventDefault();

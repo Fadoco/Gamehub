@@ -60,8 +60,7 @@ function initSearch() {
     const performSearch = (query) => {
         const term = query || searchInput.value.trim();
         if (!term) return;
-        const isSubfolder = window.location.pathname.includes('/html/');
-        const buscaPath = isSubfolder ? 'busca.html' : 'html/busca.html';
+        const buscaPath = window.IS_SUBFOLDER ? 'busca.html' : 'html/busca.html';
         window.location.href = `${buscaPath}?q=${encodeURIComponent(term)}`;
     };
 
@@ -109,8 +108,7 @@ function renderSuggestions(games, tags, container, performSearch) {
             </div>
         `;
         div.onclick = () => {
-            const isSubfolder = window.location.pathname.includes('/html/');
-            window.location.href = isSubfolder ? `jogo.html?id=${game.id}` : `html/jogo.html?id=${game.id}`;
+            window.location.href = window.IS_SUBFOLDER ? `jogo.html?id=${game.id}` : `html/jogo.html?id=${game.id}`;
         };
         container.appendChild(div);
     });
