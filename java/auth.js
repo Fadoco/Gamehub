@@ -3,19 +3,36 @@
  */
 
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
+const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
+
 if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 window.auth = firebase.auth();
 const auth = window.auth;
 
+// Conecta ao emulador de autenticação do Firebase se estiver rodando localmente
+if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    try {
+        auth.useEmulator('http://localhost:9099');
+        console.log('Conectado ao emulador de autenticação Firebase em http://localhost:9099');
+    } catch (e) {
+        console.warn('Não foi possível conectar ao emulador de autenticação:', e);
+    }
+}
+
 // Inicializa o Firestore com segurança
 window.db = null;
 try {
     window.db = firebase.firestore();
+    // Se o Auth usa emulador, o Firestore também deve usar para manter a consistência local
+    if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+        window.db.useEmulator('localhost', 8080);
+        console.log('Conectado ao emulador do Firestore em localhost:8080');
+    }
 } catch (e) {
     console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
 }
@@ -306,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
                         email: user.email,
-                        friendshipId: existingData?.friendshipId || Math.floor(100000 + Math.random() * 900000),
+                        friendshipId: Math.floor(100000 + Math.random() * 900000),
                         friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
                 })
