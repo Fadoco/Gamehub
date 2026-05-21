@@ -121,8 +121,11 @@ auth.onAuthStateChanged((user) => {
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
 
+    // Verifica se o bypass de login está ativo no localStorage
+    const isSkipActive = localStorage.getItem('skipLogin') === 'true';
+
     if (!user) {
-        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
+        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) {
             const loginPath = window.IS_SUBFOLDER ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
             return;
@@ -143,7 +146,7 @@ auth.onAuthStateChanged((user) => {
     checkUserSession(user);
 
     // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
-    if (DESATIVAR_LOGIN_PARA_TESTE && !user) return;
+    if ((DESATIVAR_LOGIN_PARA_TESTE || isSkipActive) && !user) return;
 
     if (user) {
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
@@ -373,10 +376,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout
     if (btnLogout) {
         btnLogout.onclick = () => {
+            localStorage.removeItem('skipLogin'); // Remove o bypass ao deslogar
             auth.signOut().then(() => {
                 location.reload();
             });
         };
+    }
+
+    // --- Injeção Automática do Botão de Skip (Apenas para Teste Local) ---
+    // O botão só aparece se você estiver no localhost para não afetar o site real
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const loginCard = document.querySelector('.login-card');
+        if (loginCard && window.location.pathname.includes('login.html')) {
+            const skipBtn = document.createElement('button');
+            skipBtn.id = 'btn-skip-login-dev';
+            skipBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Pular Login (Modo Teste)';
+            skipBtn.className = "nav-button"; // Usa o estilo de botão que você já tem
+            skipBtn.style.cssText = "width: 100%; margin-top: 15px; opacity: 0.6; font-size: 11px; justify-content: center; border-style: dashed; cursor: pointer;";
+            skipBtn.onclick = () => {
+                localStorage.setItem('skipLogin', 'true');
+                window.location.href = '../index.html';
+            };
+            loginCard.appendChild(skipBtn);
+        }
     }
 });
 
