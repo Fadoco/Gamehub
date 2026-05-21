@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resultados da busca no GameHub. Encontre os jogos que você procura em nosso catálogo.">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
     <title>GameHub - Resultados da Busca</title>
     <link rel="stylesheet" href="../css/style global.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase SDKs com defer para carregamento não-bloqueante -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/home.js" defer></script>
@@ -24,12 +28,12 @@
                 <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
                 <div class="nav-items">
                     <div class="search-box">
-                        <input type="text" placeholder="buscar">
+                        <input type="text" placeholder="Buscar jogos..." aria-label="Pesquisar jogos no catálogo">
                         <i class="fas fa-search"></i>
                     </div>
-                    <a href="index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
-                    <a href="biblioteca.html" id="nav-library" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
-                    <a href="carrinho.html" id="nav-cart" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
+                    <a href="biblioteca.html" id="nav-library" class="nav-button" aria-label="Minha Biblioteca"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="carrinho.html" id="nav-cart" class="nav-button" aria-label="Meu Carrinho"><i class="fas fa-shopping-cart"></i> Carrinho</a>
                     <a href="#" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
                     
                     <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
@@ -37,10 +41,16 @@
                         <span id="wallet-amount">R$ 0,00</span>
                     </div>
                     
-                    <div class="user-profile" id="user-menu" style="display: none;">
-                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="cursor:pointer">
-                        <button id="btn-login" class="nav-button" style="display:none">Entrar</button>
-                        <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                    <div class="user-profile" id="user-menu" style="display: none;"> <!-- Adicionado id="user-menu" -->
+                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span> <!-- Adicionado id="user-name" -->
+                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="cursor:pointer"> <!-- Removido id="user-img" pois auth.js usa querySelector -->
+                        <button id="btn-login" class="nav-button" style="background: none; border: 1px solid var(--accent); padding: 5px 10px; border-radius: 4px;">Entrar</button> <!-- Adicionado id="btn-login" -->
+                        <button id="btn-logout" class="nav-button" style="display: none; font-size: 10px; color: var(--accent);">Sair</button> <!-- Adicionado id="btn-logout" -->
+                    </div>
+
+                    <!-- Modal de Login (necessário para o auth.js) -->
+                    <div id="login-modal" class="modal" style="display: none;">
+                        <!-- Conteúdo do modal de login será injetado ou já existe no index.html -->
                     </div>
                 </div>
             </nav>
@@ -52,7 +62,7 @@
             <a href="../index.html" class="back-button" style="text-decoration:none; color:inherit; opacity:0.7"><i class="fas fa-arrow-left"></i> Voltar para a Loja</a>
         </div>
 
-        <section class="store-section" style="margin-top: 20px;">
+        <section class="store-section" style="margin-top: 40px;">
             <h2>Resultados para: "<span id="search-query-text"></span>"</h2>
             <div class="game-grid" id="grid-busca"></div>
             <div id="footer-busca" style="text-align: center; margin-top: 20px;"></div>
@@ -62,7 +72,27 @@
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section"><h3>GameHub</h3><p>Sua loja independente preferida.</p></div>
+                <div class="footer-section">
+                    <h3>GameHub</h3>
+                    <p>Sua loja independente preferida para descobrir novos mundos.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="../index.html">Loja</a></li>
+                        <li><a href="biblioteca.html">Biblioteca</a></li>
+                        <li><a href="carrinho.html">Carrinho</a></li>
+                        <li><a href="historico.html">Histórico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Ajuda</a></li>
+                        <li><a href="#">Reembolsos</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
                 <div class="footer-section"><h3>Siga-nos</h3>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-discord"></i></a>
@@ -71,8 +101,18 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">&copy; 2026 GameHub. Douglas.</div>
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
         </div>
     </footer>
+
+    <!-- Overlay de Carregamento Global -->
+    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-weight: bold; letter-spacing: 2px; color: white;">BUSCANDO JOGOS...</p>
+    </div>
+
+    <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </body>
 </html>

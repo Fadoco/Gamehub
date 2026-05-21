@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GameHub - A sua melhor loja independente para descobrir, gerenciar e comprar novos jogos.">
+    <meta property="og:title" content="GameHub - Sua Loja de Jogos">
+    <meta property="og:description" content="Descubra, gerencie e compre os melhores jogos independentes em um só lugar.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/banner-og.png"> <!-- Sugestão: adicione um banner 1200x630 para redes sociais -->
+    
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
     <title>GameHub - Sua Loja de Jogos</title>
     <link rel="stylesheet" href="css/style global.css">
     <link rel="stylesheet" href="css/home.css">
     <!-- Importação do Font Awesome para ícones (lupa, biblioteca, dados) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Scripts de carregamento dinâmico -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
     <script src="java/firebase-config.js"></script>
     <script src="java/global.js" defer></script>
     <script src="java/home.js" defer></script>
@@ -31,7 +38,7 @@
                 <div class="nav-items">
                     <!-- Área de pesquisa rápida -->
                     <div class="search-box">
-                        <input type="text" placeholder="buscar">
+                        <input type="text" placeholder="Buscar jogos..." aria-label="Pesquisar jogos no catálogo">
                         <i class="fas fa-search"></i>
                     </div>
 
@@ -113,4 +120,57 @@
             <form id="login-form">
                 <div class="form-group">
                     <input type="email" id="email" placeholder="E-mail" required>
-          
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Senha" required>
+                </div>
+                <p class="toggle-form" id="forgot-password-modal-link" style="cursor: pointer; font-size: 0.8em; color: var(--accent); margin-bottom: 15px;">Esqueci minha senha</p>
+                <button type="submit" class="buy-button">Entrar no GameHub</button>
+            </form>
+
+            <!-- Seção de Cadastro (Alternável via JS) -->
+            <div id="signup-section" style="display: none; margin-top: 20px;">
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+                <h3 style="margin-bottom: 15px;">Criar Nova Conta</h3>
+                <form id="signup-form">
+                    <div class="form-group"><input type="text" id="signup-name" placeholder="Como quer ser chamado?" required></div>
+                    <div class="form-group"><input type="email" id="signup-email" placeholder="Seu melhor e-mail" required></div>
+                    <div class="form-group"><input type="password" id="signup-password" placeholder="Crie uma senha (mín. 6 caracteres)" required minlength="6"></div>
+                    <button type="submit" class="buy-button">Cadastrar e Explorar</button>
+                </form>
+            </div>
+
+            <p id="toggle-auth-form" style="text-align: center; margin-top: 20px; font-size: 0.9em; cursor: pointer; color: var(--secondary);">
+                Não tem conta? <span style="color: var(--accent);">Cadastre-se aqui</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Overlay de Carregamento Global -->
+    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-weight: bold; letter-spacing: 2px; color: white;">PROCESSANDO...</p>
+    </div>
+
+    <script>
+        // Lógica para alternar entre Login e Cadastro no Modal
+        document.getElementById('toggle-auth-form').onclick = function() {
+            const signupSec = document.getElementById('signup-section');
+            const loginForm = document.getElementById('login-form');
+            const modalTitle = document.querySelector('#login-modal h2');
+            
+            if (signupSec.style.display === 'none') {
+                signupSec.style.display = 'block';
+                loginForm.style.display = 'none';
+                modalTitle.textContent = 'Junte-se ao GameHub';
+                this.innerHTML = 'Já possui uma conta? <span style="color: var(--accent);">Fazer Login</span>';
+            } else {
+                signupSec.style.display = 'none';
+                loginForm.style.display = 'block';
+                modalTitle.textContent = 'Entrar no GameHub';
+                this.innerHTML = 'Não tem conta? <span style="color: var(--accent);">Cadastre-se aqui</span>';
+            }
+        };
+    </script>
+</body>
+</html>

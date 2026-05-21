@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Painel Admin</title>
+    <meta name="description" content="GameHub Admin - Painel de controle para gerenciar usuários e catálogo de jogos.">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <title>GameHub - Painel Administrativo</title>
     <link rel="stylesheet" href="../css/style global.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/global.js" defer></script>
@@ -23,7 +25,7 @@
             <nav>
                 <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub Admin</div>
                 <div class="nav-items">
-                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Ver Loja</a>
+                    <a href="../index.html" class="nav-button" aria-label="Ver Loja"><i class="fas fa-store"></i> Ver Loja</a>
                     <button id="btn-logout" class="nav-button" style="background:none; border:none; cursor:pointer; color:var(--accent)">Sair</button>
                 </div>
             </nav>
@@ -40,38 +42,38 @@
                     
                     <div class="form-group">
                         <label>ID Numérico (URL)</label>
-                        <input type="number" id="game-id" required placeholder="Ex: 50">
+                        <input type="number" id="game-id" required placeholder="Ex: 50" aria-label="ID numérico do jogo">
                     </div>
                     
                     <div class="form-group">
                         <label>Título do Jogo</label>
-                        <input type="text" id="game-title" required placeholder="Nome do Jogo">
+                        <input type="text" id="game-title" required placeholder="Nome do Jogo" aria-label="Título do jogo">
                     </div>
 
                     <div class="form-group">
                         <label>URL da Imagem (Header)</label>
-                        <input type="url" id="game-image" required placeholder="https://...">
+                        <input type="url" id="game-image" required placeholder="https://..." aria-label="URL da imagem do jogo">
                     </div>
 
                     <div class="form-group">
                         <label>Descrição do Jogo</label>
-                        <textarea id="game-description" rows="5" placeholder="Descrição detalhada do jogo..."></textarea>
+                        <textarea id="game-description" rows="5" placeholder="Descrição detalhada do jogo..." aria-label="Descrição do jogo"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Tags (separadas por vírgula)</label>
-                        <input type="text" id="game-tags" required placeholder="RPG, Ação, Indie">
+                        <input type="text" id="game-tags" required placeholder="RPG, Ação, Indie" aria-label="Tags do jogo, separadas por vírgula">
                     </div>
 
                     <div class="form-group">
                         <label>Plataformas (FontAwesome Icons)</label>
-                        <input type="text" id="game-platforms" required placeholder="fab fa-windows, fab fa-playstation">
+                        <input type="text" id="game-platforms" required placeholder="fab fa-windows, fab fa-playstation" aria-label="Ícones FontAwesome das plataformas">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label>Preço Atual</label>
-                            <input type="text" id="game-current-price" required placeholder="R$ 99,90">
+                            <input type="text" id="game-current-price" required placeholder="R$ 99,90" aria-label="Preço atual do jogo">
                         </div>
                         <div class="form-group">
                             <label>Desconto (%)</label>
@@ -81,11 +83,11 @@
 
                     <div class="form-group">
                         <label>Preço Antigo (se houver desconto)</label>
-                        <input type="text" id="game-old-price" placeholder="R$ 199,90">
+                        <input type="text" id="game-old-price" placeholder="R$ 199,90" aria-label="Preço antigo do jogo (opcional)">
                     </div>
 
                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="game-featured">
+                        <input type="checkbox" id="game-featured" aria-label="Marcar jogo como destaque na página inicial">
                         <label for="game-featured">Destaque na Home</label>
                     </div>
 
@@ -102,11 +104,11 @@
                 <form id="add-balance-form">
                     <div class="form-group">
                         <label>ID do Usuário (UID)</label>
-                        <input type="text" id="user-id-balance" required placeholder="Cole o UID do usuário">
+                        <input type="text" id="user-id-balance" required placeholder="Cole o UID do usuário" aria-label="UID do usuário para adicionar saldo">
                     </div>
                     <div class="form-group">
                         <label>Valor a Adicionar (R$)</label>
-                        <input type="number" step="0.01" id="amount-to-add" required placeholder="Ex: 50.00">
+                        <input type="number" step="0.01" id="amount-to-add" required placeholder="Ex: 50.00" aria-label="Valor a adicionar ao saldo do usuário">
                     </div>
                     <button type="submit" class="buy-button">Adicionar ao Saldo</button>
                 </form>
@@ -115,7 +117,7 @@
             <!-- Lista de Usuários -->
             <section class="admin-card">
                 <h2>Usuários Registrados</h2>
-                <!-- Campo de busca para o sistema de filtro -->
+                <!-- Campo de busca para o sistema de filtro de usuários -->
                 <input type="text" class="admin-search-input" placeholder="Pesquisar por nick, e-mail ou ID...">
                 
                 <!-- Container para os cartões com sistema de scroll -->
@@ -145,5 +147,39 @@
             </section>
         </div>
     </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GameHub Admin</h3>
+                    <p>Ferramentas de gestão para o seu GameHub.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="../index.html">Ver Loja</a></li>
+                        <li><a href="admin-user-detail.html">Detalhes de Usuário</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">Relatar Bug</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">&copy; 2026 GameHub Admin. Acesso Restrito.</div>
+        </div>
+    </footer>
+
+    <!-- Overlay de Carregamento Global -->
+    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-weight: bold; letter-spacing: 2px; color: white;">PROCESSANDO...</p>
+    </div>
+
+    <style> @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } </style>
 </body>
 </html>
