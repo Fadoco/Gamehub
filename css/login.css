@@ -5,34 +5,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Imagem de fundo estilo mosaico da Steam */
-    background: url("../img/Imagemlogo.png") no-repeat center center;
-    background-size: cover;
+    background-color: var(--bg-dark);
     position: relative;
 }
 
-/* Camada escura por cima da imagem para dar o clima "Steam" e gerar contraste */
 .background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(24, 26, 30, 0.4) 0%, rgba(11, 12, 15, 0.9) 100%);
-    z-index: 1;
+    display: none; /* Remove o gradiente da Steam */
 }
 
 /* Card de login centralizado e semi-transparente */
 .login-card {
-    background: rgba(24, 26, 30, 0.85); /* Tom escuro com transparência */
-    padding: 40px;
-    border-radius: 4px; /* Cantos mais retos como na Steam */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    background: #202020; /* Fundo sólido da Epic */
+    padding: 50px 40px;
+    border-radius: 8px;
+    box-shadow: none;
     width: 90%;
     max-width: 420px;
-    text-align: left; /* Alinhamento à esquerda estilo Steam */
-    z-index: 2; /* Fica acima do overlay */
-    backdrop-filter: blur(4px); /* Leve desfoque no fundo do card */
+    text-align: center;
+    z-index: 2;
+    backdrop-filter: none;
 }
 
 .login-card h1 {
@@ -59,7 +50,7 @@
 .form-group input {
     width: 100%;
     padding: 12px;
-    background-color: #2a2d32; /* Fundo escuro interno do input */
+    background-color: #333333;
     border: 1px solid #1c1e21;
     border-radius: 3px;
     color: #fff;
@@ -91,16 +82,16 @@
 /* Botão de entrar/criar conta modificado */
 .login-card .buy-button {
     width: 100%;
-    padding: 14px;
-    background: linear-gradient(90deg, var(--accent) 0%, #1e70cc 100%); /* Degradê sutil com sua cor */
+    padding: 16px;
+    background: var(--accent); /* Azul sólido */
     border: none;
     color: white;
-    border-radius: 3px;
-    font-weight: normal;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: var(--transition);
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 14px;
+    margin-top: 20px;
 }
 
 .login-card .buy-button:hover {
