@@ -3,29 +3,35 @@
  */
 
 async function initRanking() {
-    const listContainer = document.getElementById('ranking-list-body');
-    if (!listContainer) return;
+    const elements = {
+        list: document.getElementById('ranking-list-body')
+    };
+
+    if (!elements.list) return;
 
     // Aguarda o Banco de Dados estar pronto
     if (!window.db) return setTimeout(initRanking, 500);
 
+    if (window.showToast) console.log("Sincronizando ranking em tempo real...");
+
     // Escuta mudanças em tempo real na coleção de usuários, ordenando pelo saldo (Decrescente)
-    // Nota: O Firebase pode solicitar a criação de um índice no console na primeira execução.
     window.db.collection('users')
         .orderBy('balance', 'desc')
         .limit(50) // Mostra o Top 50 usuários mais ricos
-        .onSnapshot((snapshot) => {
+        .onSnapshot(snapshot => {
             if (snapshot.empty) {
-                listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
+                elements.list.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                 return;
             }
 
-            listContainer.innerHTML = snapshot.docs.map((doc, index) => {
+            elements.list.innerHTML = snapshot.docs.map((doc, index) => {
                 const user = doc.data();
                 const pos = index + 1;
                 const name = window.utils.getUserFriendlyName({ ...user, id: doc.id });
-                const avatar = user.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
-                const balance = user.balance || 0;
+                
+                // Fallback de avatar consistente com o perfil
+                const avatar = user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=27ae60&color=fff`;
+                const balance = parseFloat(user.balance) || 0;
 
                 return `
                     <tr class="rank-row">
@@ -40,6 +46,9 @@ async function initRanking() {
                     </tr>
                 `;
             }).join('');
+        }, error => {
+            console.error("Erro ao carregar ranking:", error);
+            if (window.showToast) window.showToast("Erro ao atualizar ranking em tempo real.", "error");
         });
 }
 

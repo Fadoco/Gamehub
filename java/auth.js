@@ -533,7 +533,7 @@ window.purchaseLibrary = async () => {
 
     // Calcula o total da compra baseado nos dados globais
     const cartGames = allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
-    const totalPurchase = cartGames.reduce((acc, game) => acc + utils.parsePrice(game.currentPrice), 0);
+    const totalPurchase = cartGames.reduce((acc, game) => acc + window.utils.parsePrice(game.currentPrice), 0);
 
     if (window.userBalance < totalPurchase) {
         showToast("Saldo insuficiente!", "error");

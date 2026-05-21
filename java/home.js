@@ -54,13 +54,13 @@ function createSection(title, games, parentContainer) {
     const grid = section.querySelector('.game-grid');
     const footer = section.querySelector('.section-footer');
     
-    setupPagination(games, grid, footer);
+    window.setupPagination(games, grid, footer);
 }
 
 /**
  * Controla a exibição em lotes de 10 jogos
  */
-function setupPagination(games, grid, footer) {
+window.setupPagination = (games, grid, footer) => {
     let displayedCount = 0;
     const limit = 10;
     footer.innerHTML = '';
