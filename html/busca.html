@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="../css/style global.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/home.js" defer></script>
     <script src="../java/search.js" defer></script>
+    <script src="../java/auth.js" defer></script>
     <script src="../java/busca.js" defer></script>
 </head>
 <body>
@@ -22,11 +27,20 @@
                         <input type="text" placeholder="buscar">
                         <i class="fas fa-search"></i>
                     </div>
-                    <a href="#" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
-                    <a href="#" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <a href="index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
+                    <a href="biblioteca.html" id="nav-library" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="carrinho.html" id="nav-cart" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
                     <a href="#" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
-                    <div class="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
+                    
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                        <i class="fas fa-wallet"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="user-profile" id="user-menu" style="display: none;">
+                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="cursor:pointer">
+                        <button id="btn-login" class="nav-button" style="display:none">Entrar</button>
+                        <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
                     </div>
                 </div>
             </nav>
