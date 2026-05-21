@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     /* Imagem de fundo estilo mosaico da Steam */
-    background: url('/img/Imagemlogo.png') no-repeat center center;
+    background: url('img/Imagemlogo.png') no-repeat center center;
     background-size: cover;
     position: relative;
 }
