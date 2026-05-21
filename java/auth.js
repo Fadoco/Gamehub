@@ -750,3 +750,35 @@ window.findUserByFriendshipId = async (friendId) => {
         .get();
     return snapshot.empty ? null : { uid: snapshot.docs[0].id, ...snapshot.docs[0].data() };
 };
+
+// Renderiza a lista de notificações (pedidos de amizade) no dropdown do sino
+window.renderNotifications = async () => {
+    const list = document.getElementById('notif-list');
+    if (!list) return;
+
+    const uids = window.userFriendRequestsReceived || [];
+    if (uids.length === 0) {
+        list.innerHTML = '<div class="empty-notif" style="padding: 15px; text-align: center; font-size: 13px; color: var(--text-secondary);">Nenhuma notificação nova.</div>';
+        return;
+    }
+
+    const html = await Promise.all(uids.map(async (uid) => {
+        const userDoc = await db.collection('users').doc(uid).get();
+        if (!userDoc.exists) return '';
+        const userData = userDoc.data();
+        const name = window.utils.getUserFriendlyName(userData);
+        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
+        return `
+            <div class="notification-item" style="display: flex; gap: 12px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center;">
+                <img src="${avatar}" style="width: 32px; height: 32px; border-radius: 50%;">
+                <div style="flex: 1; font-size: 12px;">
+                    <div style="margin-bottom: 6px; color: var(--text-main);"><strong>${name}</strong> quer ser seu amigo.</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="buy-button" onclick="window.acceptFriendRequest('${uid}')" style="padding: 4px 8px; font-size: 10px; margin:0; width: auto; height: auto;">Aceitar</button>
+                        <button class="nav-button" onclick="window.rejectFriendRequest('${uid}')" style="padding: 4px 8px; font-size: 10px; margin:0; width: auto; height: auto;">Recusar</button>
+                    </div>
+                </div>
+            </div>`;
+    }));
+    list.innerHTML = html.join('');
+};
