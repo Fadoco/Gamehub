@@ -13,9 +13,26 @@
         <div class="container">
             <nav>
                 <div class="logo" onclick="window.location.href='../index.html'" style="cursor:pointer">GAMEHUB</div>
-                <div class="nav-items" id="user-menu">
-                    <button id="btn-login" class="nav-button">Entrar</button>
-                    <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                <div class="nav-items">
+                    <div class="search-box">
+                        <input type="text" placeholder="buscar">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
+                    <a href="biblioteca.html" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                        <i class="fas fa-wallet"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+
+                    <div class="user-profile" id="user-menu" style="display: none;">
+                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
+                        <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Perfil">
+                        <button id="btn-login" class="nav-button">Entrar</button>
+                        <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -107,6 +124,36 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal de Login (Necessário para ações de favoritos/carrinho se deslogado) -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Entrar no GameHub</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="E-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Senha" required>
+                </div>
+                <p class="toggle-form" id="forgot-password-modal-link" style="cursor:pointer; font-size: 0.8em; color: var(--accent); margin-bottom: 15px;">Esqueci minha senha</p>
+                <button type="submit" class="buy-button">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Overlay de Carregamento Global -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="loader"></div>
+        <p>AGUARDE...</p>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
+        </div>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
