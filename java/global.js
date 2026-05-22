@@ -12,12 +12,8 @@ const IS_SUBFOLDER = window.IS_SUBFOLDER;
 window.utils = {
     // Converte preços como "R$ 99,90" ou "Grátis" para números (float)
     parsePrice: (priceStr) => {
-        if (typeof priceStr === 'number') return priceStr;
-        if (!priceStr || String(priceStr).toLowerCase().includes('grátis')) return 0;
-        
-        const cleaned = String(priceStr)
-            .replace(/[^\d,.-]/g, '') // Remove tudo exceto números, pontos, vírgulas e hifens
-            .replace(',', '.');       // Padroniza decimal para ponto
+        if (!priceStr) return 0;
+        const cleaned = String(priceStr).replace('R$', '').replace('Grátis', '0').replace(',', '.').trim();
         return parseFloat(cleaned) || 0;
     },
     // Retorna o nome de exibição ou o prefixo do email
@@ -37,13 +33,8 @@ window.renderToContainer = (games, container, clear = true) => {
     const gamePagePath = IS_SUBFOLDER ? 'jogo.html' : 'html/jogo.html';
 
     const html = games.map(game => {
-        // Fallbacks para garantir que o site não quebre se houver dados faltando no banco
-        const platforms = game.platforms || [];
-        const tags = game.tags || [];
-        const gameImg = game.image || (IS_SUBFOLDER ? '../img/placeholder.png' : 'img/placeholder.png');
-
         // Gerar ícones de plataformas dinamicamente
-        const platformsHtml = platforms.map(icon => `<i class="${icon}"></i>`).join('');
+        const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
         
         // Lógica de exibição de preço e desconto
         const hasDiscount = game.discount > 0;
@@ -59,7 +50,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 <article class="game-card">
                 <div class="card-media">
                     ${discountBadge}
-                    <img src="${gameImg}" alt="${game.title}" onerror="this.src='${IS_SUBFOLDER ? '../img/placeholder.png' : 'img/placeholder.png'}'">
+                    <img src="${game.image}" alt="${game.title}">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
                         <i class="${favIcon}"></i>
                     </button>
@@ -68,7 +59,7 @@ window.renderToContainer = (games, container, clear = true) => {
                     <div class="game-details">
                         <p class="game-title">${game.title}</p>
                         <div class="game-platforms">${platformsHtml}</div>
-                        <span class="game-tags">${tags.join(', ')}</span>
+                        <span class="game-tags">${game.tags.join(', ')}</span>
                     </div>
                     <div class="price-container">
                         <div class="price-box">${oldPriceHtml}<p class="${priceClass}">${game.currentPrice}</p></div>
@@ -86,61 +77,71 @@ window.renderToContainer = (games, container, clear = true) => {
 };
 
 async function fetchGamesData() {
-    // Se já temos os dados, não precisamos buscar novamente (Cache simples)
-    if (allGamesData.length > 0) return routePageRendering();
-
     try {
+        // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)
         if (window.db) {
             const snapshot = await window.db.collection('games').get();
             if (!snapshot.empty) {
-                allGamesData = snapshot.docs.map(doc => ({ firestoreId: doc.id, ...doc.data() }));
+                allGamesData = snapshot.docs.map(doc => ({
+                    firestoreId: doc.id,
+                    ...doc.data()
+                }));
+                console.log("Dados carregados via Firestore");
             }
         }
 
+        // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
         if (allGamesData.length === 0) {
             const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
             const response = await fetch(jsonPath);
             allGamesData = await response.json();
         }
 
-        // Normalização e sanitização dos dados
-        allGamesData = allGamesData.map(game => {
+        // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
+        allGamesData = allGamesData.map(game => { // Usar IS_SUBFOLDER aqui
+            // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
             
+            // 2. Ajusta caminhos de imagens locais para subpastas (ex: de 'img/...' para '../img/...')
             if (imgPath && !imgPath.startsWith('http') && IS_SUBFOLDER && !imgPath.startsWith('../')) {
                 imgPath = '../' + imgPath;
             }
 
             return {
                 ...game,
-                id: parseInt(game.id),
                 image: imgPath,
+                // Padroniza também a descrição para facilitar o uso nos outros scripts
                 description: game.description || game.Description
             };
         });
 
         routePageRendering();
+
     } catch (error) {
         console.error("Erro ao carregar o catálogo de jogos:", error);
     }
 }
 
+/**
+ * Decide qual função de renderização chamar com base na página atual
+ */
 function routePageRendering() {
     const path = window.location.pathname;
     
-    const routeMap = {
-        'jogo.html': () => typeof renderGameDetails === 'function' && renderGameDetails(allGamesData),
-        'busca.html': () => typeof renderSearchResults === 'function' && renderSearchResults(allGamesData),
-        'carrinho.html': () => typeof renderCart === 'function' && renderCart(),
-        'biblioteca.html': () => typeof renderLibrary === 'function' && renderLibrary(),
-        'historico.html': () => typeof renderHistory === 'function' && renderHistory(),
-        'perfil.html': () => typeof renderProfile === 'function' && renderProfile()
-    };
+    const routes = [
+        { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [allGamesData] },
+        { file: 'busca.html', func: typeof renderSearchResults === 'function' ? renderSearchResults : null, args: [allGamesData] },
+        { file: 'carrinho.html', func: typeof renderCart === 'function' ? renderCart : null },
+        { file: 'biblioteca.html', func: typeof renderLibrary === 'function' ? renderLibrary : null },
+        { file: 'historico.html', func: typeof renderHistory === 'function' ? renderHistory : null },
+        { file: 'perfil.html', func: typeof renderProfile === 'function' ? renderProfile : null }
+    ];
 
-    const activeFile = Object.keys(routeMap).find(file => path.includes(file));
+    const activeRoute = routes.find(r => path.includes(r.file));
 
-    if (activeFile) {
-        routeMap[activeFile]();
+    if (activeRoute) {
+        if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
+        else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);
     } else if (typeof renderGames === 'function') {
         renderGames(allGamesData);
     }
@@ -150,8 +151,6 @@ function routePageRendering() {
  * Inicializa o botão "Voltar ao Topo" globalmente
  */
 function initBackToTop() {
-    if (document.querySelector('.back-to-top')) return; // Evita duplicar o botão
-
     const btn = document.createElement('button');
     btn.className = 'back-to-top';
     btn.innerHTML = '<i class="fas fa-chevron-up"></i>';

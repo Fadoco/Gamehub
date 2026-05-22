@@ -13,21 +13,18 @@ function renderGames(games) {
         createSection("Jogos em Destaque", featured, storeSections);
     }
 
-    // 2. Sistema Automático Otimizado: Conta frequências de tags em uma única passagem
-    const tagCounts = {};
-    games.forEach(game => {
-        if (game.tags) {
-            game.tags.forEach(tag => {
-                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-            });
-        }
-    });
-
-    // Filtra categorias populares (mínimo 3 jogos) e ordena pela contagem
-    const filteredCategories = Object.entries(tagCounts)
-        .filter(([name, count]) => count >= 3)
-        .map(([name, count]) => ({ name, count }))
-        .sort((a, b) => b.count - a.count);
+    // 2. Sistema Totalmente Automático: Extrai todas as tags únicas do catálogo
+    const allTags = games.flatMap(game => game.tags);
+    const uniqueCategories = [...new Set(allTags)].sort();
+    
+    // Melhoria: Ordena as categorias pela popularidade (quantos jogos ela tem)
+    // e filtra para mostrar apenas categorias que tenham pelo menos 3 jogos
+    const filteredCategories = uniqueCategories.map(tag => ({
+        name: tag,
+        count: games.filter(g => g.tags.includes(tag)).length
+    }))
+    .filter(cat => cat.count >= 3)
+    .sort((a, b) => b.count - a.count);
 
     // Executa a criação de cada seção baseada nas categorias filtradas
     filteredCategories.forEach(cat => {
@@ -54,13 +51,13 @@ function createSection(title, games, parentContainer) {
     const grid = section.querySelector('.game-grid');
     const footer = section.querySelector('.section-footer');
     
-    window.setupPagination(games, grid, footer);
+    setupPagination(games, grid, footer);
 }
 
 /**
  * Controla a exibição em lotes de 10 jogos
  */
-window.setupPagination = (games, grid, footer) => {
+function setupPagination(games, grid, footer) {
     let displayedCount = 0;
     const limit = 10;
     footer.innerHTML = '';
@@ -78,4 +75,14 @@ window.setupPagination = (games, grid, footer) => {
         }
     };
     showNextBatch();
+}
+
+function createFooter(parent) {
+    let footer = parent.querySelector('.section-footer');
+    if (!footer) {
+        footer = document.createElement('div');
+        footer.className = 'section-footer';
+        parent.appendChild(footer);
+    }
+    return footer;
 }

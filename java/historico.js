@@ -22,5 +22,3 @@ function renderHistory() {
         </div>
     `).join('');
 }
-
-document.addEventListener('DOMContentLoaded', renderHistory);

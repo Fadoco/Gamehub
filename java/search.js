@@ -12,14 +12,12 @@ function debounce(func, timeout = 300) {
 }
 
 function initSearch() {
-    const searchElements = {
-        input: document.querySelector('.search-box input'),
-        icon: document.querySelector('.search-box i'),
-        box: document.querySelector('.search-box'),
-        tags: document.querySelectorAll('.tag-btn')
-    };
+    const searchInput = document.querySelector('.search-box input');
+    const searchIcon = document.querySelector('.search-box i');
+    const searchBox = document.querySelector('.search-box');
+    const tagButtons = document.querySelectorAll('.tag-btn');
     
-    if (!searchElements.input) return;
+    if (!searchInput) return;
 
     // Cria o container de sugestões dinamicamente caso não exista
     let suggestionsContainer = document.getElementById('search-suggestions');
@@ -27,33 +25,28 @@ function initSearch() {
         suggestionsContainer = document.createElement('div');
         suggestionsContainer.id = 'search-suggestions';
         suggestionsContainer.className = 'search-suggestions';
-        searchElements.box.appendChild(suggestionsContainer);
+        searchBox.appendChild(suggestionsContainer);
     }
-
-    // Cache de tags únicas para evitar reprocessamento constante
-    const allUniqueTags = window.allGamesData 
-        ? [...new Set(window.allGamesData.flatMap(game => game.tags || []))]
-        : [];
 
     const processInput = (e) => {
         const searchTerm = e.target.value.toLowerCase().trim();
         const searchWords = searchTerm.split(' ').filter(word => word.length > 0);
 
+        // 2. Lógica das Sugestões (Dropdown)
         if (searchWords.length === 0) {
             suggestionsContainer.style.display = 'none';
             return;
         }
 
-        if (!window.allGamesData) return;
-
         // Busca inteligente: o jogo deve conter todas as palavras da pesquisa no título ou nas tags
-        const matchedGames = window.allGamesData.filter(game => {
+        const matchedGames = allGamesData.filter(game => {
             const gameData = (game.title + ' ' + game.tags.join(' ')).toLowerCase();
             return searchWords.every(word => gameData.includes(word));
         }).slice(0, 3); // Limita a 3 sugestões de jogos
 
-        // Busca categorias que combinam
-        const matchedTags = allUniqueTags.filter(tag => 
+        // Busca categorias (tags) que combinam
+        const allTags = [...new Set(allGamesData.flatMap(game => game.tags))];
+        const matchedTags = allTags.filter(tag => 
             tag.toLowerCase().includes(searchTerm)
         ).slice(0, 2); // Limita a 2 tags
 
@@ -61,31 +54,32 @@ function initSearch() {
     };
 
     // Aplica o debounce de 300ms no input
-    searchElements.input.addEventListener('input', debounce(processInput, 300));
+    searchInput.addEventListener('input', debounce(processInput, 300));
 
-    // Lógica de Redirecionamento (Enter ou Lupa)
+    // 3. Lógica de Redirecionamento (Enter ou Lupa)
     const performSearch = (query) => {
-        const term = query || searchElements.input.value.trim();
+        const term = query || searchInput.value.trim();
         if (!term) return;
-        const buscaPath = window.IS_SUBFOLDER ? 'busca.html' : 'html/busca.html';
+        const isSubfolder = window.location.pathname.includes('/html/');
+        const buscaPath = isSubfolder ? 'busca.html' : 'html/busca.html';
         window.location.href = `${buscaPath}?q=${encodeURIComponent(term)}`;
     };
 
-    searchElements.input.addEventListener('keydown', (e) => {
+    searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') performSearch();
     });
 
-    searchElements.icon.addEventListener('click', () => performSearch());
+    searchIcon.addEventListener('click', () => performSearch());
 
     // Fecha o dropdown ao clicar fora da busca
     document.addEventListener('click', (e) => {
-        if (!searchElements.box.contains(e.target)) {
+        if (!searchBox.contains(e.target)) {
             suggestionsContainer.style.display = 'none';
         }
     });
 
     // Lógica para clicar nas tags de filtro
-    searchElements.tags.forEach(btn => {
+    tagButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const tag = btn.getAttribute('data-tag');
             performSearch(tag);
@@ -102,22 +96,22 @@ function renderSuggestions(games, tags, container, performSearch) {
     }
 
     container.style.display = 'block';
-    const placeholder = window.IS_SUBFOLDER ? '../img/placeholder.png' : 'img/placeholder.png';
 
     // Adiciona jogos sugeridos (Mini-Cards)
     games.forEach(game => {
         const div = document.createElement('div');
         div.className = 'suggestion-card';
-        const gameImg = game.image || placeholder;
-
         div.innerHTML = `
-            <img src="${gameImg}" alt="${game.title}" onerror="this.src='${placeholder}'; this.onerror=null;">
+            <img src="${game.image}" alt="${game.title}">
             <div class="suggestion-text">
                 <span class="suggestion-name">${game.title}</span>
                 <span class="suggestion-meta">Jogo</span>
             </div>
         `;
-        div.onclick = () => window.location.href = window.IS_SUBFOLDER ? `jogo.html?id=${game.id}` : `html/jogo.html?id=${game.id}`;
+        div.onclick = () => {
+            const isSubfolder = window.location.pathname.includes('/html/');
+            window.location.href = isSubfolder ? `jogo.html?id=${game.id}` : `html/jogo.html?id=${game.id}`;
+        };
         container.appendChild(div);
     });
 
@@ -132,7 +126,9 @@ function renderSuggestions(games, tags, container, performSearch) {
                 <span class="suggestion-meta">Categoria</span>
             </div>
         `;
-        div.onclick = () => performSearch(tag);
+        div.onclick = () => {
+            performSearch(tag);
+        };
         container.appendChild(div);
     });
 }

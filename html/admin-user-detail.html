@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GameHub Admin - Detalhamento e gestão de conta de usuário específica.">
-    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
-    <title>Admin - Controle de Usuário | GameHub</title>
+    <title>Admin - Controle de Usuário</title>
     <link rel="stylesheet" href="../css/style global.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/global.js" defer></script>
@@ -23,9 +21,9 @@
         <div class="container">
             <nav>
                 <div class="logo" onclick="window.location.href='admin.html'" style="cursor:pointer">
-                    <i class="fas fa-arrow-left"></i> <span style="text-transform: uppercase;">Voltar ao Painel</span>
+                    <i class="fas fa-arrow-left"></i> Voltar ao Painel
                 </div>
-                <div id="target-user-header" style="text-transform: none; color: var(--accent); font-weight: bold; font-size: 1.1rem;">Carregando usuário...</div>
+                <div id="target-user-header" style="text-transform: none; color: var(--accent); font-weight: bold;"></div>
             </nav>
         </div>
     </header>
@@ -41,8 +39,8 @@
                 
                 <div class="form-group">
                     <label>Novo Saldo (R$)</label>
-                    <input type="number" step="0.01" id="new-balance-input" placeholder="Ex: 100.00" aria-label="Digite o novo valor do saldo">
-                    <button class="buy-button" onclick="updateUserBalance()" style="margin-top: 10px; width: 100%;" aria-label="Confirmar alteração de saldo">Atualizar Saldo</button>
+                    <input type="number" step="0.01" id="new-balance-input" placeholder="Ex: 100.00">
+                    <button class="buy-button" onclick="updateUserBalance()" style="margin-top: 10px; width: 100%;">Atualizar Saldo</button>
                 </div>
             </section>
 
@@ -52,8 +50,8 @@
                 <div class="form-group">
                     <label>Adicionar Jogo por ID</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="number" id="add-game-id" placeholder="ID do Jogo (ex: 1)" aria-label="ID do jogo para adicionar">
-                        <button class="nav-button" onclick="addGameToUser()" style="white-space: nowrap;" aria-label="Adicionar jogo à biblioteca">Adicionar</button>
+                        <input type="number" id="add-game-id" placeholder="ID do Jogo (ex: 1)">
+                        <button class="nav-button" onclick="addGameToUser()" style="white-space: nowrap;">Adicionar</button>
                     </div>
                 </div>
                 
@@ -80,23 +78,5 @@
             </section>
         </div>
     </main>
-
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-bottom">
-                &copy; 2026 GameHub Admin. Acesso Restrito.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Overlay de Carregamento Global -->
-    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
-        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-        <p style="margin-top: 15px; font-weight: bold; letter-spacing: 2px; color: white;">ATUALIZANDO DADOS...</p>
-    </div>
-
-    <style>
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
 </body>
 </html>

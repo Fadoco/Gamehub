@@ -3,36 +3,19 @@
  */
 
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
-const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
-
 if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 window.auth = firebase.auth();
 const auth = window.auth;
 
-// Conecta ao emulador de autenticação do Firebase se estiver rodando localmente
-if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    try {
-        auth.useEmulator('http://localhost:9099');
-        console.log('Conectado ao emulador de autenticação Firebase em http://localhost:9099');
-    } catch (e) {
-        console.warn('Não foi possível conectar ao emulador de autenticação:', e);
-    }
-}
-
 // Inicializa o Firestore com segurança
 window.db = null;
 try {
     window.db = firebase.firestore();
-    // Se o Auth usa emulador, o Firestore também deve usar para manter a consistência local
-    if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-        window.db.useEmulator('localhost', 8080);
-        console.log('Conectado ao emulador do Firestore em localhost:8080');
-    }
 } catch (e) {
     console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
 }
@@ -121,11 +104,8 @@ auth.onAuthStateChanged((user) => {
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
 
-    // Verifica se o bypass de login está ativo no localStorage
-    const isSkipActive = localStorage.getItem('skipLogin') === 'true';
-
     if (!user) {
-        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) {
+        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
             const loginPath = window.IS_SUBFOLDER ? 'login.html' : 'html/login.html';
             window.location.href = loginPath;
             return;
@@ -146,7 +126,7 @@ auth.onAuthStateChanged((user) => {
     checkUserSession(user);
 
     // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
-    if ((DESATIVAR_LOGIN_PARA_TESTE || isSkipActive) && !user) return;
+    if (DESATIVAR_LOGIN_PARA_TESTE && !user) return;
 
     if (user) {
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
@@ -156,9 +136,11 @@ auth.onAuthStateChanged((user) => {
                 const existingData = doc.exists ? doc.data() : {};
                 let friendshipId = existingData.friendshipId;
 
-                // Gerar um friendshipId se não existir (6 dígitos aleatórios)
+                // Gerar um friendshipId se não existir
                 if (!friendshipId) {
-                    friendshipId = Math.floor(100000 + Math.random() * 900000);
+                    friendshipId = Math.floor(100000 + Math.random() * 900000); // 6-digit random number
+                    // TODO: Implement a more robust uniqueness check for friendshipId in a real application
+                    // For now, we assume low collision probability or handle it on the first write.
                 }
 
                 db.collection('users').doc(user.uid).set({
@@ -207,10 +189,11 @@ async function loadUserData(uid) {
             window.userFriendRequestsSent = data.friendRequestsSent || [];
             window.userFriendRequestsReceived = data.friendRequestsReceived || [];
         } else {
+            // Reset all user data if document doesn't exist
+            // This part might be redundant if the .set({merge:true}) above always creates a doc
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
             window.userBalance = 0.00; window.userHistory = [];
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
-            window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
         refreshCurrentPageUI();
         updateNavBadges(); // Agora atualiza badges e o widget da carteira
@@ -229,7 +212,7 @@ function refreshCurrentPageUI() {
         } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
             renderLibrary();
         } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
-            // renderProfile() é chamado por initProfilePage no perfil.js, que gerencia o UID da URL
+            renderProfile();
         } else if (typeof renderGames === 'function') {
             renderGames(allGamesData);
         }
@@ -326,7 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
                         email: user.email,
-                        friendshipId: Math.floor(100000 + Math.random() * 900000),
+                        // Generate friendshipId on first creation if not already set
+                        friendshipId: Math.floor(100000 + Math.random() * 900000), // 6-digit random number
                         friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
                 })
@@ -376,29 +360,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout
     if (btnLogout) {
         btnLogout.onclick = () => {
-            localStorage.removeItem('skipLogin'); // Remove o bypass ao deslogar
             auth.signOut().then(() => {
                 location.reload();
             });
         };
-    }
-
-    // --- Injeção Automática do Botão de Skip (Apenas para Teste Local) ---
-    // O botão só aparece se você estiver no localhost para não afetar o site real
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        const loginCard = document.querySelector('.login-card');
-        if (loginCard && window.location.pathname.includes('login.html')) {
-            const skipBtn = document.createElement('button');
-            skipBtn.id = 'btn-skip-login-dev';
-            skipBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Pular Login (Modo Teste)';
-            skipBtn.className = "nav-button"; // Usa o estilo de botão que você já tem
-            skipBtn.style.cssText = "width: 100%; margin-top: 15px; opacity: 0.6; font-size: 11px; justify-content: center; border-style: dashed; cursor: pointer;";
-            skipBtn.onclick = () => {
-                localStorage.setItem('skipLogin', 'true');
-                window.location.href = '../index.html';
-            };
-            loginCard.appendChild(skipBtn);
-        }
     }
 });
 
@@ -421,32 +386,6 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
         rankBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'ranking.html' : 'html/ranking.html';
         userMenu.prepend(rankBtn);
-    }
-
-    // Adiciona botão Notificações se não existir
-    if (userMenu && !document.getElementById('notif-wrapper')) {
-        const notifWrapper = document.createElement('div');
-        notifWrapper.id = 'notif-wrapper';
-        notifWrapper.className = 'notifications-wrapper';
-        notifWrapper.innerHTML = `
-            <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: var(--secondary); background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; position: relative;" title="Notificações">
-                <i class="fas fa-bell"></i>
-                <span id="notif-badge" class="notification-badge">0</span>
-            </button>
-            <div id="notif-dropdown" class="notifications-dropdown">
-                <div class="notifications-header">Pedidos de Amizade</div>
-                <div id="notif-list" class="notifications-list">
-                    <div class="empty-notif">Nenhuma notificação nova.</div>
-                </div>
-            </div>
-        `;
-        userMenu.prepend(notifWrapper);
-
-        const btn = document.getElementById('btn-notifications');
-        const dropdown = document.getElementById('notif-dropdown');
-        btn.onclick = (e) => { e.stopPropagation(); dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block'; if (dropdown.style.display === 'block') window.renderNotifications(); };
-        document.addEventListener('click', () => { dropdown.style.display = 'none'; });
-        dropdown.onclick = (e) => e.stopPropagation();
     }
 
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
@@ -546,17 +485,6 @@ function updateNavBadges() {
     const walletDisplay = document.getElementById('wallet-amount');
     if (walletDisplay) {
         walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    }
-
-    // Atualiza o sino de notificações
-    const notifBadge = document.getElementById('notif-badge');
-    if (notifBadge) {
-        const count = (window.userFriendRequestsReceived || []).length;
-        notifBadge.textContent = count;
-        notifBadge.style.display = count > 0 ? 'block' : 'none';
-        
-        const dropdown = document.getElementById('notif-dropdown');
-        if (dropdown && dropdown.style.display === 'block') window.renderNotifications();
     }
 }
 
@@ -679,128 +607,106 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Funções de Amizade (Lógica) ---
+// --- Funções de Amizade ---
 window.sendFriendRequest = async (targetUid) => {
-    if (!auth.currentUser) return showToast("Logue para adicionar amigos.", "info");
+    if (!auth.currentUser) {
+        showToast("Você precisa estar logado para enviar pedidos de amizade.", "info");
+        return;
+    }
     const myUid = auth.currentUser.uid;
-    if (myUid === targetUid) return showToast("Você não pode se adicionar.", "error");
-    if (window.userFriends.includes(targetUid)) return showToast("Já são amigos!", "info");
-    if (window.userFriendRequestsSent.includes(targetUid)) return showToast("Pedido já enviado.", "info");
+
+    if (myUid === targetUid) {
+        showToast("Você não pode enviar um pedido de amizade para si mesmo.", "error");
+        return;
+    }
+
+    // Verifica se já são amigos
+    if (window.userFriends.includes(targetUid)) {
+        showToast("Vocês já são amigos!", "info");
+        return;
+    }
+
+    // Verifica se já enviou um pedido
+    if (window.userFriendRequestsSent.includes(targetUid)) {
+        showToast("Pedido de amizade já enviado!", "info");
+        return;
+    }
+
+    // Verifica se já recebeu um pedido do alvo (nesse caso, aceita automaticamente)
+    if (window.userFriendRequestsReceived.includes(targetUid)) {
+        await window.acceptFriendRequest(targetUid);
+        return;
+    }
 
     try {
+        // Adiciona o pedido na lista de enviados do usuário atual
         await db.collection('users').doc(myUid).update({
             friendRequestsSent: firebase.firestore.FieldValue.arrayUnion(targetUid)
         });
+        // Adiciona o pedido na lista de recebidos do usuário alvo
         await db.collection('users').doc(targetUid).update({
             friendRequestsReceived: firebase.firestore.FieldValue.arrayUnion(myUid)
         });
         showToast("Pedido de amizade enviado!", "success");
+        // Atualiza os dados locais
         window.userFriendRequestsSent.push(targetUid);
         refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao enviar pedido.", "error"); }
+    } catch (error) {
+        console.error("Erro ao enviar pedido de amizade:", error);
+        showToast("Erro ao enviar pedido de amizade.", "error");
+    }
 };
 
 window.acceptFriendRequest = async (requesterUid) => {
     if (!auth.currentUser) return;
+    const myUid = auth.currentUser.uid;
+
     try {
-        toggleLoader(true);
-        const myUid = auth.currentUser.uid;
-        const myRef = db.collection('users').doc(myUid);
-        const requesterRef = db.collection('users').doc(requesterUid);
-
-        await db.runTransaction(async (transaction) => {
-            transaction.update(myRef, {
-                friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid),
-                friends: firebase.firestore.FieldValue.arrayUnion(requesterUid)
-            });
-            transaction.update(requesterRef, {
-                friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid),
-                friends: firebase.firestore.FieldValue.arrayUnion(myUid)
-            });
+        // Remove o pedido da lista de recebidos do usuário atual
+        await db.collection('users').doc(myUid).update({
+            friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid),
+            friends: firebase.firestore.FieldValue.arrayUnion(requesterUid) // Adiciona aos amigos
         });
-
-        showToast("Pedido aceito!", "success");
-        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        // Remove o pedido da lista de enviados do remetente e o adiciona aos amigos
+        await db.collection('users').doc(requesterUid).update({
+            friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid),
+            friends: firebase.firestore.FieldValue.arrayUnion(myUid) // Adiciona aos amigos
+        });
+        showToast("Pedido de amizade aceito!", "success");
+        // Atualiza os dados locais
+        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(uid => uid !== requesterUid);
         window.userFriends.push(requesterUid);
         refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao aceitar pedido.", "error"); }
-    finally { toggleLoader(false); }
+    } catch (error) {
+        console.error("Erro ao aceitar pedido de amizade:", error);
+        showToast("Erro ao aceitar pedido de amizade.", "error");
+    }
 };
 
 window.rejectFriendRequest = async (requesterUid) => {
     if (!auth.currentUser) return;
+    const myUid = auth.currentUser.uid;
+
     try {
-        const myUid = auth.currentUser.uid;
+        // Remove o pedido da lista de recebidos do usuário atual
         await db.collection('users').doc(myUid).update({
             friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid)
         });
+        // Remove o pedido da lista de enviados do remetente
         await db.collection('users').doc(requesterUid).update({
             friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid)
         });
-        showToast("Pedido rejeitado.", "info");
-        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        showToast("Pedido de amizade rejeitado.", "info");
+        // Atualiza os dados locais
+        window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(uid => uid !== requesterUid);
         refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao rejeitar.", "error"); }
+    } catch (error) {
+        console.error("Erro ao rejeitar pedido de amizade:", error);
+        showToast("Erro ao rejeitar pedido de amizade.", "error");
+    }
 };
 
 window.removeFriend = async (friendUid) => {
-    if (!auth.currentUser) return;
-    const myUid = auth.currentUser.uid;
-
-    window.customConfirm("Remover este amigo?", async () => {
-        try {
-            toggleLoader(true);
-            await db.collection('users').doc(myUid).update({
-                friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
-            });
-            await db.collection('users').doc(friendUid).update({
-                friends: firebase.firestore.FieldValue.arrayRemove(myUid)
-            });
-            showToast("Amigo removido.");
-            window.userFriends = window.userFriends.filter(id => id !== friendUid);
-            refreshCurrentPageUI();
-        } catch (error) { showToast("Erro ao remover.", "error"); }
-        finally { toggleLoader(false); }
-    });
-};
-
-// Lógica para buscar usuário pelo ID numérico
-window.findUserByFriendshipId = async (friendId) => {
-    const snapshot = await db.collection('users')
-        .where('friendshipId', '==', parseInt(friendId))
-        .limit(1)
-        .get();
-    return snapshot.empty ? null : { uid: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-};
-
-// Renderiza a lista de notificações (pedidos de amizade) no dropdown do sino
-window.renderNotifications = async () => {
-    const list = document.getElementById('notif-list');
-    if (!list) return;
-
-    const uids = window.userFriendRequestsReceived || [];
-    if (uids.length === 0) {
-        list.innerHTML = '<div class="empty-notif" style="padding: 15px; text-align: center; font-size: 13px; color: var(--text-secondary);">Nenhuma notificação nova.</div>';
-        return;
-    }
-
-    const html = await Promise.all(uids.map(async (uid) => {
-        const userDoc = await db.collection('users').doc(uid).get();
-        if (!userDoc.exists) return '';
-        const userData = userDoc.data();
-        const name = window.utils.getUserFriendlyName(userData);
-        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
-        return `
-            <div class="notification-item" style="display: flex; gap: 12px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center;">
-                <img src="${avatar}" style="width: 32px; height: 32px; border-radius: 50%;">
-                <div style="flex: 1; font-size: 12px;">
-                    <div style="margin-bottom: 6px; color: var(--text-main);"><strong>${name}</strong> quer ser seu amigo.</div>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="buy-button" onclick="window.acceptFriendRequest('${uid}')" style="padding: 4px 8px; font-size: 10px; margin:0; width: auto; height: auto;">Aceitar</button>
-                        <button class="nav-button" onclick="window.rejectFriendRequest('${uid}')" style="padding: 4px 8px; font-size: 10px; margin:0; width: auto; height: auto;">Recusar</button>
-                    </div>
-                </div>
-            </div>`;
-    }));
-    list.innerHTML = html.join('');
+    // TODO: Implement logic to remove friend from both users' friend lists
+    showToast("Funcionalidade de remover amigo ainda não implementada.", "info");
 };

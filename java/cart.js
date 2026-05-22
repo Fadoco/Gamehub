@@ -3,30 +3,25 @@
  */
 
 function renderCart() {
-    const elements = {
-        grid: document.getElementById('cart-grid'),
-        summary: document.getElementById('cart-summary'),
-        emptyMsg: document.getElementById('cart-empty'),
-        total: document.getElementById('cart-total'),
-        wallet: document.getElementById('cart-wallet-balance')
-    };
+    const grid = document.getElementById('cart-grid');
+    const summary = document.getElementById('cart-summary');
+    const emptyMsg = document.getElementById('cart-empty');
     
-    if (!elements.grid || !window.allGamesData || !window.allGamesData.length) return;
+    if (!grid || !allGamesData.length) return;
 
-    // Filtra jogos no carrinho com segurança de tipos
-    const cartGames = window.allGamesData.filter(game => 
-        window.userCart && window.userCart.some(cartId => String(cartId) === String(game.id))
-    );
+    // Filtra garantindo que a comparação de ID ignore se é string ou número
+    const cartGames = allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));
 
     if (cartGames.length === 0) {
-        elements.grid.innerHTML = '';
-        if (elements.summary) elements.summary.style.display = 'none';
-        if (elements.emptyMsg) elements.emptyMsg.style.display = 'block';
+        grid.innerHTML = '';
+        summary.style.display = 'none';
+        emptyMsg.style.display = 'block';
     } else {
-        if (elements.emptyMsg) elements.emptyMsg.style.display = 'none';
-        if (elements.summary) elements.summary.style.display = 'block';
+        emptyMsg.style.display = 'none';
+        summary.style.display = 'block';
         
-        elements.grid.innerHTML = cartGames.map(game => `
+        // Renderização customizada para o carrinho (Formato de Lista)
+        grid.innerHTML = cartGames.map(game => `
             <div class="cart-item">
                 <img src="${game.image}" alt="${game.title}">
                 <div class="item-details">
@@ -42,21 +37,24 @@ function renderCart() {
             </div>
         `).join('');
 
-        calculateTotal(cartGames, elements);
+        calculateTotal(cartGames);
     }
 }
 
-function calculateTotal(cartGames, elements) {
+function calculateTotal(cartGames) {
+    const totalElement = document.getElementById('cart-total');
+    if (!totalElement) return;
+
     const total = cartGames.reduce((acc, game) => {
-        const price = window.utils.parsePrice(game.currentPrice);
+        const price = utils.parsePrice(game.currentPrice);
         return acc + price;
     }, 0);
 
-    if (elements.total) {
-        elements.total.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    }
+    totalElement.textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
-    if (elements.wallet) {
-        elements.wallet.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    // Mostra o saldo atual do usuário no resumo para ele saber quanto tem
+    const walletInSummary = document.getElementById('cart-wallet-balance');
+    if (walletInSummary) {
+        walletInSummary.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     }
 }

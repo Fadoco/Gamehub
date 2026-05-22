@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário - GameHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style global.css">
+    <link rel="stylesheet" href="../css/perfil.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='../index.html'" style="cursor:pointer">GAMEHUB</div>
+                <div class="nav-items" id="user-menu">
+                    <button id="btn-login" class="nav-button">Entrar</button>
+                    <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-banner-container" id="profile-banner-container">
+            <!-- Banner será carregado aqui -->
+            <button class="btn-edit-profile" id="btn-edit-profile" style="display: none;">
+                <i class="fas fa-pencil-alt"></i> Editar Perfil
+            </button>
+        </div>
+
+        <div class="profile-container">
+            <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Avatar do Usuário" class="profile-avatar" id="profile-avatar">
+            <h1 id="profile-display-name">Nome do Usuário</h1>
+            <p class="profile-bio" id="profile-bio">Carregando biografia...</p>
+            <span class="profile-id" id="profile-friendship-id">ID de Amizade: #XXXXXX</span>
+
+            <!-- Botão para adicionar amigo (visível apenas em perfis de outros usuários) -->
+            <button class="buy-button" id="btn-add-friend" style="margin-top: 20px; display: none;">
+                <i class="fas fa-user-plus"></i> Adicionar Amigo
+            </button>
+
+            <!-- Formulário de Edição de Perfil (visível apenas no próprio perfil) -->
+            <form id="edit-profile-form" class="edit-profile-form">
+                <h2>Editar Perfil</h2>
+                <div class="form-group">
+                    <label for="edit-display-name">Nome de Exibição:</label>
+                    <input type="text" id="edit-display-name" placeholder="Seu nome de exibição">
+                </div>
+                <div class="form-group">
+                    <label for="edit-bio">Biografia:</label>
+                    <textarea id="edit-bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-avatar-url">URL do Avatar:</label>
+                    <input type="url" id="edit-avatar-url" placeholder="URL da sua imagem de perfil">
+                </div>
+                <div class="form-group">
+                    <label for="edit-banner-url">URL do Banner:</label>
+                    <input type="url" id="edit-banner-url" placeholder="URL da sua imagem/vídeo de banner">
+                </div>
+                <div class="form-group">
+                    <label for="edit-banner-type">Tipo de Banner:</label>
+                    <select id="edit-banner-type">
+                        <option value="image">Imagem</option>
+                        <option value="video">Vídeo</option>
+                    </select>
+                </div>
+                <button type="submit" class="buy-button">Salvar Alterações</button>
+                <button type="button" class="nav-button" id="cancel-edit-profile">Cancelar</button>
+            </form>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-games">0</span>
+                    <span class="stat-label">Jogos na Biblioteca</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-friends">0</span>
+                    <span class="stat-label">Amigos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-balance">R$ 0,00</span>
+                    <span class="stat-label">Saldo na Carteira</span>
+                </div>
+            </div>
+
+            <!-- Seção de Pedidos de Amizade (apenas para o próprio perfil) -->
+            <div class="profile-section" id="friend-requests-section" style="display: none;">
+                <h2>Pedidos de Amizade Recebidos</h2>
+                <div id="friend-requests-list">
+                    <!-- Pedidos de amizade serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Seção de Amigos (para o próprio perfil e outros) -->
+            <div class="profile-section" id="friends-section">
+                <h2>Amigos</h2>
+                <div id="friends-list">
+                    <!-- Lista de amigos será carregada aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/global.js"></script>
+    <script src="../java/auth.js"></script>
+    <script src="../java/perfil.js"></script>
+</body>
+</html>
