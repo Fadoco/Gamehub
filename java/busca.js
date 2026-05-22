@@ -40,14 +40,6 @@ function renderSearchResults(games) {
     const grid = document.getElementById('grid-busca');
     const footer = document.getElementById('footer-busca');
     
-    if (!grid || !footer) return;
-
-    if (filteredGames.length === 0) {
-        grid.innerHTML = '<p style="color: #bdc3c7; text-align: center; margin-top: 20px;">Nenhum jogo encontrado.</p>';
-        footer.innerHTML = '';
-        return;
-    }
-
     if (typeof setupPagination === 'function') {
         setupPagination(filteredGames, grid, footer);
     }

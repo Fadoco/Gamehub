@@ -33,7 +33,7 @@
             <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Avatar do Usuário" class="profile-avatar" id="profile-avatar">
             <h1 id="profile-display-name">Nome do Usuário</h1>
             <p class="profile-bio" id="profile-bio">Carregando biografia...</p>
-            <span class="profile-id" id="profile-friendship-id" style="cursor: pointer;" title="Clique para copiar">ID de Amizade: #XXXXXX</span>
+            <span class="profile-id" id="profile-friendship-id">ID de Amizade: #XXXXXX</span>
 
             <!-- Botão para adicionar amigo (visível apenas em perfis de outros usuários) -->
             <button class="buy-button" id="btn-add-friend" style="margin-top: 20px; display: none;">
@@ -96,11 +96,6 @@
             <!-- Seção de Amigos (para o próprio perfil e outros) -->
             <div class="profile-section" id="friends-section">
                 <h2>Amigos</h2>
-                <div id="add-by-id-container" style="display: none; margin-bottom: 20px; gap: 10px; display: flex;">
-                    <input type="number" id="input-friend-id" placeholder="Digite o ID #123456" 
-                           style="flex: 1; padding: 10px; border-radius: 4px; border: 1px solid var(--card-border); background: var(--bg-dark); color: white;">
-                    <button class="buy-button" onclick="handleAddFriendById()" style="padding: 10px 20px;">Adicionar</button>
-                </div>
                 <div id="friends-list">
                     <!-- Lista de amigos será carregada aqui -->
                 </div>

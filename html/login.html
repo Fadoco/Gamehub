@@ -9,12 +9,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <!-- Firebase Storage SDK não é necessário para login -->
     <script src="../java/firebase-config.js"></script>
     <script src="../java/auth.js" defer></script>
 </head>
 <body>
     <div class="login-page-container">
+        <div class="background-overlay"></div>
+
         <div class="login-card">
             <h1>GameHub</h1>
             
@@ -27,7 +28,7 @@
                     <div class="form-group">
                         <input type="password" id="password" placeholder="Senha" required>
                     </div>
-                    <p class="toggle-form" id="forgot-password-link" style="margin-bottom: 15px; display: block; text-align: right;">Esqueci minha senha</p>
+                    <p class="toggle-form" id="forgot-password-link">Esqueci minha senha</p>
                     <button type="submit" class="buy-button">Entrar no GameHub</button>
                 </form>
                 <p class="toggle-form" onclick="toggleForms()">Não tem conta? Cadastre-se</p>

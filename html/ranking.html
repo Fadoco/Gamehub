@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de Usuários - GameHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style global.css">
+    <style>
+        main { padding-top: 40px; min-height: 80vh; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='../index.html'" style="cursor:pointer">GAMEHUB</div>
+                <div class="nav-items" id="user-menu">
+                    <button id="btn-login" class="nav-button">Entrar</button>
+                    <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="ranking-container">
+            <h1 style="text-align: center; color: var(--accent); margin-bottom: 10px;">🏆 Ranking de Riqueza</h1>
+            <p style="text-align: center; color: var(--secondary); margin-bottom: 30px;">Os usuários com maior saldo na carteira GameHub.</p>
+            
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Usuário</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody id="ranking-list-body">
+                    <!-- Preenchido via ranking.js -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/global.js"></script>
+    <script src="../java/auth.js"></script>
+    <script src="../java/ranking.js"></script>
+</body>
+</html>

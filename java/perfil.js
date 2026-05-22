@@ -1,189 +1,264 @@
 /**
- * Lógica para renderizar a página de perfil do usuário.
+ * Lógica específica para a página de perfil do usuário.
  */
-function renderProfile() {
-    const container = document.getElementById('profile-content');
-    const user = firebase.auth().currentUser;
 
-    if (!container) return;
+// Estado Global da Página
+const ProfileState = {
+    uid: null,
+    data: null,
+    isMyProfile: false
+};
 
-    if (!user) {
-        container.innerHTML = `
-            <div class="profile-container">
-                <h2>Acesso Negado</h2>
-                <p>Você precisa estar logado para ver seu perfil.</p>
-                <button class="nav-button" onclick="window.location.href='login.html'">Ir para Login</button>
-            </div>`;
+// Referências de elementos cacheificadas
+let el = {};
+
+function cacheElements() {
+    el = {
+        displayName: document.getElementById('profile-display-name'),
+        bio: document.getElementById('profile-bio'),
+        avatar: document.getElementById('profile-avatar'),
+        banner: document.getElementById('profile-banner-container'),
+        friendId: document.getElementById('profile-friendship-id'),
+        btnEdit: document.getElementById('btn-edit-profile'),
+        btnAddFriend: document.getElementById('btn-add-friend'),
+        editForm: document.getElementById('edit-profile-form'),
+        statGames: document.getElementById('stat-games'),
+        statFriends: document.getElementById('stat-friends'),
+        statBalance: document.getElementById('stat-balance'),
+        sectionReq: document.getElementById('friend-requests-section'),
+        listReq: document.getElementById('friend-requests-list'),
+        listFriends: document.getElementById('friends-list'),
+        addByIdBox: document.getElementById('add-by-id-container'),
+        cancelEdit: document.getElementById('cancel-edit-profile')
+    };
+};
+
+async function initProfilePage() {
+    // Aguarda dependências críticas
+    if (!window.db || !window.auth || !window.utils || !window.auth.currentUser) {
+        return setTimeout(initProfilePage, 500);
+    }
+
+    cacheElements();
+
+    const params = new URLSearchParams(window.location.search);
+    ProfileState.uid = params.get('uid') || window.auth.currentUser.uid;
+    ProfileState.isMyProfile = ProfileState.uid === window.auth.currentUser.uid;
+
+    // Escuta mudanças em tempo real no perfil
+    window.db.collection('users').doc(ProfileState.uid).onSnapshot(async (doc) => {
+        if (doc.exists) {
+            ProfileState.data = doc.data();
+            await renderProfile();
+        } else {
+            document.querySelector('main.container').innerHTML = "<h2 style='text-align:center; margin-top: 50px;'>Perfil não encontrado.</h2>";
+        }
+    });
+}
+
+async function renderProfile() {
+    const data = ProfileState.data;
+    if (!data) return;
+
+    // 1. Informações Básicas
+    el.displayName.textContent = window.utils.getUserFriendlyName(data);
+    el.bio.textContent = data.bio || "Nenhuma biografia definida.";
+    el.avatar.src = data.avatar || `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(data)}&background=27ae60&color=fff`;
+    el.friendId.textContent = `ID de Amizade: #${data.friendshipId || 'N/A'}`;
+    
+    el.friendId.onclick = () => {
+        if (data.friendshipId) {
+            navigator.clipboard.writeText(String(data.friendshipId));
+            showToast("ID copiado!", "success");
+        }
+    };
+
+    renderBanner(data);
+
+    // 2. Configuração de Visibilidade (Meu Perfil vs Outro)
+    if (ProfileState.isMyProfile) {
+        setupMyProfileUI(data);
+    } else {
+        setupOtherProfileUI();
+    }
+
+    // 3. Estatísticas
+    el.statGames.textContent = (data.library || []).length;
+    el.statFriends.textContent = (data.friends || []).length;
+    el.statBalance.textContent = `R$ ${(data.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+    // Renderizar Pedidos de Amizade Recebidos (apenas para o próprio perfil)
+    if (ProfileState.isMyProfile) await renderRequests();
+
+    // 4. Lista de Amigos
+    renderFriendsList(data.friends || []);
+}
+
+function renderBanner(data) {
+    if (data.bannerURL) {
+        el.banner.innerHTML = data.bannerType === 'video' 
+            ? `<video class="profile-banner-media" src="${data.bannerURL}" autoplay loop muted></video>`
+            : `<img class="profile-banner-media" src="${data.bannerURL}" alt="Banner">`;
+    } else {
+        el.banner.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
+        el.banner.innerHTML = '';
+    }
+}
+
+function setupMyProfileUI(data) {
+    el.btnEdit.style.display = 'block';
+    el.btnAddFriend.style.display = 'none';
+    el.sectionReq.style.display = 'block';
+    el.addByIdBox.style.display = 'flex';
+
+    // Preencher formulário
+    const form = el.editForm;
+    if (form.style.display !== 'flex') form.style.display = 'none';
+    
+    document.getElementById('edit-display-name').value = data.displayName || '';
+    document.getElementById('edit-bio').value = data.bio || '';
+    document.getElementById('edit-avatar-url').value = data.avatar || '';
+    document.getElementById('edit-banner-url').value = data.bannerURL || '';
+    document.getElementById('edit-banner-type').value = data.bannerType || 'image';
+
+    el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
+    el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
+    form.onsubmit = handleEditProfile;
+}
+
+function setupOtherProfileUI() {
+    el.btnEdit.style.display = 'none';
+    el.sectionReq.style.display = 'none';
+    el.addByIdBox.style.display = 'none';
+
+    const btn = el.btnAddFriend;
+    btn.style.display = 'block';
+    
+    const uid = ProfileState.uid;
+    if (window.userFriends && window.userFriends.includes(uid)) {
+        btn.textContent = "Amigo"; btn.disabled = true; btn.style.background = "#27ae60";
+    } else if (window.userFriendRequestsSent.includes(uid)) {
+        btn.textContent = "Pedido Enviado"; btn.disabled = true; btn.style.background = "var(--secondary)";
+    } else if (window.userFriendRequestsReceived.includes(uid)) {
+        btn.textContent = "Aceitar Pedido"; btn.disabled = false; btn.style.background = "var(--accent)";
+        btn.onclick = () => window.acceptFriendRequest(uid);
+    } else {
+        btn.textContent = "Adicionar Amigo"; btn.disabled = false; btn.style.background = "var(--accent)";
+        btn.onclick = () => window.sendFriendRequest(uid);
+    }
+}
+
+async function renderRequests() {
+    const uids = window.userFriendRequestsReceived || [];
+    
+    if (uids.length === 0) {
+        el.listReq.innerHTML = "<p>Nenhum pedido pendente.</p>";
         return;
     }
 
-    // 1. Encontrar o jogo mais caro na biblioteca
-    const ownedGames = allGamesData.filter(g => window.userLibrary.some(id => String(id) === String(g.id)));
-    let mostExpensive = "Nenhum jogo na coleção";
-    if (ownedGames.length > 0) {
-        const expensiveGame = ownedGames.reduce((prev, curr) => utils.parsePrice(curr.currentPrice) > utils.parsePrice(prev.currentPrice) ? curr : prev);
-        mostExpensive = `${expensiveGame.title} (${expensiveGame.currentPrice})`;
-    }
-
-    // 2. Pegar a compra mais recente do histórico
-    let mostRecent = "Nenhuma compra registrada";
-    if (window.userHistory && window.userHistory.length > 0) {
-        mostRecent = Array.isArray(window.userHistory[0].items) ? window.userHistory[0].items.join(', ') : "Nenhuma compra registrada";
-    }
-
-    // 3. Agrupar favoritos por categoria (tag)
-    const favGames = allGamesData.filter(g => window.userFavorites.some(id => String(id) === String(g.id)));
-    const favsByCategory = {};
-    favGames.forEach(game => {
-        game.tags.forEach(tag => {
-            if (!favsByCategory[tag]) favsByCategory[tag] = [];
-            favsByCategory[tag].push(game.title);
-        });
-    });
-
-    const displayName = user.displayName || user.email.split('@')[0];
-    const photoURL = window.userAvatar || user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
-
-    let bannerHtml = '';
-    if (window.userBannerURL) {
-        if (window.userBannerType === 'video') {
-            bannerHtml = `<video class="profile-banner-media" src="${window.userBannerURL}" autoplay muted loop></video>`;
-        } else {
-            bannerHtml = `<img class="profile-banner-media" src="${window.userBannerURL}" alt="Banner">`;
-        }
-    } else {
-        bannerHtml = `<div class="profile-banner-media" style="background: var(--gradient);"></div>`;
-    }
-
-    container.innerHTML = `
-        <div class="profile-banner-container">
-            ${bannerHtml}
-        </div>
-        <div class="profile-container">
-            <button class="btn-edit-profile" onclick="toggleEditProfile()"><i class="fas fa-edit"></i> Editar Perfil</button>
-            
-            <img src="${photoURL}" alt="Avatar" class="profile-avatar">
-            <h1>${displayName}</h1>
-            <p style="color: #bdc3c7;">${user.email}</p>
-
-            <div id="edit-profile-form" class="edit-profile-form">
-                <h3>Personalizar Perfil</h3>
-                <div class="form-group">
-                    <label>Novo Nickname</label>
-                    <input type="text" id="edit-nick" value="${displayName}">
+    const html = await Promise.all(uids.map(async (uid) => {
+        const userDoc = await window.db.collection('users').doc(uid).get();
+        if (!userDoc.exists) return '';
+        const userData = userDoc.data();
+        const name = window.utils.getUserFriendlyName(userData);
+        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
+        return `
+            <div class="friend-request-card">
+                <img src="${avatar}" alt="Avatar" class="rank-avatar">
+                <span class="friend-request-name">${name}</span>
+                <div class="friend-request-actions">
+                    <button class="buy-button" onclick="window.acceptFriendRequest('${uid}')">Aceitar</button>
+                    <button class="nav-button" onclick="window.rejectFriendRequest('${uid}')">Rejeitar</button>
                 </div>
-                <div class="form-group">
-                    <label>Bio / Descrição</label>
-                    <textarea id="edit-bio" rows="3">${window.userBio}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>URL da Foto de Perfil</label>
-                    <input type="url" id="edit-avatar" value="${window.userAvatar}" placeholder="Link da imagem">
-                </div>
-                <div class="form-group">
-                    <label>URL do Banner</label>
-                    <input type="url" id="edit-banner-url" value="${window.userBannerURL}" placeholder="Link da imagem ou vídeo">
-                </div>
-                <div class="form-group">
-                    <label>Tipo de Banner</label>
-                    <select id="edit-banner-type">
-                        <option value="image" ${window.userBannerType === 'image' ? 'selected' : ''}>Imagem</option>
-                        <option value="video" ${window.userBannerType === 'video' ? 'selected' : ''}>Vídeo</option>
-                    </select>
-                </div>
-                <button class="buy-button" onclick="saveProfileChanges()">Salvar Alterações</button>
-            </div>
-
-            <p class="profile-bio">${window.userBio || 'Nenhuma descrição adicionada.'}</p>
-
-            <div class="profile-id" title="Use este ID no painel Admin para gerenciar seu saldo">ID: ${user.uid}</div>
-            
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <span class="stat-value">R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                    <span class="stat-label">Saldo em Carteira</span>
-                </div>
-                <div class="stat-item" style="cursor:pointer" onclick="window.location.href='biblioteca.html'">
-                    <span class="stat-value">${window.userLibrary.length}</span>
-                    <span class="stat-label">Jogos na Biblioteca</span>
-                </div>
-                <div class="stat-item" style="cursor:pointer" onclick="window.location.href='carrinho.html'">
-                    <span class="stat-value">${window.userCart.length}</span>
-                    <span class="stat-label">Itens no Carrinho</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">${window.userFavorites.length}</span>
-                    <span class="stat-label">Favoritos</span>
-                </div>
-            </div>
-
-            <div class="profile-section">
-                <h2>Destaques da Coleção</h2>
-                <div class="highlight-grid">
-                    <div class="highlight-card">
-                        <span class="highlight-label">Mais Recente Adquirido</span>
-                        <span class="highlight-title">${mostRecent}</span>
-                    </div>
-                    <div class="highlight-card">
-                        <span class="highlight-label">Item mais Valioso</span>
-                        <span class="highlight-title">${mostExpensive}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-section">
-                <h2>Favoritos por Categoria</h2>
-                ${Object.keys(favsByCategory).length === 0 ? '<p style="color:#7f8c8d">Você ainda não favoritou nenhum jogo.</p>' : 
-                    Object.entries(favsByCategory).map(([tag, titles]) => `
-                        <span class="fav-category-title">${tag}</span>
-                        <div class="fav-list">
-                            ${titles.map(t => `<div class="fav-item">${t}</div>`).join('')}
-                        </div>
-                    `).join('')
-                }
-            </div>
-        </div>
-    `;
+            </div>`;
+    }));
+    el.listReq.innerHTML = html.join('');
 }
 
-window.toggleEditProfile = () => {
-    const form = document.getElementById('edit-profile-form');
-    if (form) form.style.display = form.style.display === 'flex' ? 'none' : 'flex';
-};
+async function renderFriendsList(friendsUids) {
+    if (friendsUids.length === 0) {
+        el.listFriends.innerHTML = "<p>Nenhum amigo para exibir.</p>";
+        return;
+    }
 
-window.saveProfileChanges = async () => {
-    const nick = document.getElementById('edit-nick').value;
-    const bio = document.getElementById('edit-bio').value;
-    const avatarURL = document.getElementById('edit-avatar').value;
-    const bannerURLInput = document.getElementById('edit-banner-url').value;
-    let bannerType = document.getElementById('edit-banner-type').value;
+    const html = await Promise.all(friendsUids.map(async (uid) => {
+        const userDoc = await window.db.collection('users').doc(uid).get();
+        if (!userDoc.exists) return '';
+        const userData = userDoc.data();
+        const name = window.utils.getUserFriendlyName(userData);
+        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
+        return `
+            <div class="friend-card" onclick="window.location.href='perfil.html?uid=${uid}'">
+                <img src="${avatar}" alt="Avatar" class="rank-avatar">
+                <span class="friend-name">${name}</span>
+                ${ProfileState.isMyProfile ? `<button class="nav-button remove-friend-btn" onclick="event.stopPropagation(); window.removeFriend('${uid}')"><i class="fas fa-user-minus"></i></button>` : ''}
+            </div>`;
+    }));
+    el.listFriends.innerHTML = html.join('');
+}
 
-    const user = firebase.auth().currentUser;
-    if (!user) return;
 
-    toggleLoader(true);
+window.handleAddFriendById = async () => {
+    const idInput = document.getElementById('input-friend-id');
+    const friendId = parseInt(idInput.value);
+
+    if (!friendId) return showToast("Digite um ID válido.", "error");
+    if (friendId === ProfileState.data?.friendshipId) return showToast("Este é o seu próprio ID!", "info");
+
     try {
-        let finalAvatar = avatarURL;
-        let finalBanner = bannerURLInput;
+        toggleLoader(true);
+        const userFound = await window.findUserByFriendshipId(friendId);
 
-        // Atualiza o Display Name no Firebase Auth
-        await user.updateProfile({ displayName: nick, photoURL: finalAvatar });
-        
-        // Atualiza os dados no Firestore
-        await window.db.collection('users').doc(user.uid).update({
-            displayName: nick,
-            bio: bio,
-            avatar: finalAvatar,
-            bannerURL: finalBanner,
-            bannerType: bannerType
-        });
-
-        showToast("Perfil atualizado com sucesso!", "success");
-        location.reload(); // Recarrega para aplicar as mudanças
-    } catch (e) {
-        console.error("Erro ao atualizar perfil:", e);
-        showToast("Erro ao salvar alterações.", "error");
+        if (!userFound) {
+            showToast("Usuário não encontrado com este ID.", "error");
+        } else {
+            const targetUid = userFound.uid;
+            await window.sendFriendRequest(targetUid);
+            idInput.value = ""; // Limpa o input após enviar o pedido
+        }
+    } catch (error) {
+        console.error("Erro ao buscar ID ou enviar pedido:", error);
+        showToast("Erro ao buscar ID ou enviar pedido.", "error");
     } finally {
         toggleLoader(false);
     }
 };
+
+async function handleEditProfile(event) {
+    event.preventDefault();
+    if (!window.auth.currentUser) return;
+
+    const displayName = document.getElementById('edit-display-name').value;
+    const bio = document.getElementById('edit-bio').value;
+    const avatar = document.getElementById('edit-avatar-url').value;
+    const bannerURL = document.getElementById('edit-banner-url').value;
+    const bannerType = document.getElementById('edit-banner-type').value;
+
+    try {
+        // Atualiza o displayName no Firebase Auth
+        await window.auth.currentUser.updateProfile({
+            displayName: displayName,
+            photoURL: avatar // Firebase Auth photoURL é usado para avatar
+        });
+
+        // Atualiza os dados no Firestore
+        await window.db.collection('users').doc(window.auth.currentUser.uid).update({
+            displayName: displayName,
+            bio: bio,
+            avatar: avatar,
+            bannerURL: bannerURL,
+            bannerType: bannerType
+        });
+
+        showToast("Perfil atualizado com sucesso!", "success");
+        document.getElementById('edit-profile-form').style.display = 'none';
+        document.getElementById('btn-edit-profile').style.display = 'block';
+        // Recarrega os dados do usuário para atualizar a UI
+        await window.loadUserData(window.auth.currentUser.uid);
+    } catch (error) {
+        console.error("Erro ao atualizar perfil:", error);
+        showToast("Erro ao atualizar perfil: " + error.message, "error");
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initProfilePage);

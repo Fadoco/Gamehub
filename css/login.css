@@ -1,42 +1,117 @@
-/* Estilos específicos para a página de login */
+/* Estilos específicos para a página de login inspirada na Steam */
+
 .login-page-container {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-header) 100%);
+    background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), url('../img/Imagemlogo.png');
+    background-size: cover;
+    position: relative;
 }
+
+.background-overlay {
+    display: none; /* Remove o gradiente da Steam */
+}
+
+/* Card de login centralizado e semi-transparente */
 .login-card {
-    background: var(--bg-header);
-    padding: 40px;
+    background: #202020; /* Fundo sólido da Epic */
+    padding: 50px 40px;
     border-radius: 8px;
-    box-shadow: 0 10px 30px var(--shadow);
+    box-shadow: none;
     width: 90%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
+    z-index: 2;
+    backdrop-filter: none;
 }
+
 .login-card h1 {
     color: var(--accent);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 2px;
+    font-size: 28px;
+    text-align: center;
 }
+
 .login-card p {
-    color: #bdc3c7;
+    color: #afb1b4;
+    font-size: 14px;
     margin-bottom: 25px;
+    text-align: center;
 }
-.login-card .buy-button {
+
+/* Estilização dos campos de input baseada na Steam */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group input {
     width: 100%;
     padding: 12px;
-    background: var(--accent);
+    background-color: #333333;
+    border: 1px solid #1c1e21;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent); /* Usa a cor de destaque do seu site ao focar */
+}
+
+/* Link de esqueci a senha alinhado à direita */
+#forgot-password-link {
+    margin-top: -5px;
+    margin-bottom: 20px;
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: #8f98a0;
+    text-decoration: none;
+}
+
+#forgot-password-link:hover {
+    color: #fff;
+}
+
+/* Botão de entrar/criar conta modificado */
+.login-card .buy-button {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent); /* Azul sólido */
     border: none;
     color: white;
     border-radius: 4px;
     font-weight: bold;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: var(--transition);
-    font-size: 16px;
+    font-size: 14px;
+    margin-top: 20px;
 }
-.login-card .buy-button:hover { background: #1e70cc; transform: scale(1.02); } /* Ajustado para a cor do accent */
-.toggle-form { margin-top: 15px; font-size: 13px; color: var(--accent); cursor: pointer; text-decoration: underline; }
-.btn-google { width: 100%; padding: 12px; background: white; color: #444; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; margin-top: 10px; }
+
+.login-card .buy-button:hover {
+    filter: brightness(1.2);
+    transform: none; /* Mantém fixo como o da Steam */
+}
+
+/* Links de alternância (Cadastre-se / Voltar) */
+.toggle-form {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+.toggle-form:hover {
+    text-decoration: underline;
+    color: #fff;
+}

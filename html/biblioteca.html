@@ -12,7 +12,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/global.js" defer></script>
-    <script src="../java/search.js" defer></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/library.js" defer></script>
 </head>
@@ -22,20 +21,9 @@
             <nav>
                 <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
                 <div class="nav-items">
-                    <div class="search-box">
-                        <input type="text" placeholder="buscar">
-                        <i class="fas fa-search"></i>
-                    </div>
                     <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
                     <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
-                    
-                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
-                        <i class="fas fa-wallet"></i>
-                        <span id="wallet-amount">R$ 0,00</span>
-                    </div>
-
-                    <div class="user-profile" id="user-menu" style="display: none;">
-                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
+                    <div class="user-profile" id="user-menu">
                         <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
                         <button id="btn-logout" class="nav-button" style="background:none; border:none; cursor:pointer; color:var(--accent)">Sair</button>
                     </div>
