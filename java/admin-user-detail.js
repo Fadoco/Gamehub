@@ -89,9 +89,9 @@ window.addGameToUser = async () => {
     if (!gameId) return;
     
     const currentLib = targetUserData.library || [];
-    if (currentLib.includes(gameId)) return showToast("Usuário já possui este jogo", "info");
+    if (currentLib.some(id => String(id) === String(gameId))) return showToast("Usuário já possui este jogo", "info");
 
-    const newLib = [...currentLib, gameId];
+    const newLib = [...currentLib, String(gameId)];
     await window.db.collection('users').doc(targetUid).update({ library: newLib });
     showToast("Jogo adicionado!", "success");
     input.value = "";
@@ -99,7 +99,7 @@ window.addGameToUser = async () => {
 
 window.removeGameFromUser = async (gameId) => {
     window.customConfirm("Remover este jogo da biblioteca do usuário?", async () => {
-        const newLib = (targetUserData.library || []).filter(id => id !== gameId);
+        const newLib = (targetUserData.library || []).filter(id => String(id) !== String(gameId));
         await window.db.collection('users').doc(targetUid).update({ library: newLib });
         showToast("Jogo removido.");
     });

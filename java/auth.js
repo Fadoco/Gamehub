@@ -33,6 +33,27 @@ window.userAvatar = "";    // URL da foto customizada
 window.userBannerURL = ""; // URL do banner
 window.userBannerType = "image"; // Tipo de banner (image/video)
 
+function getLoginPagePath() {
+    return window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
+}
+
+function openLoginModalOrRedirect() {
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+        loginModal.style.display = 'flex';
+        return;
+    }
+    window.location.href = getLoginPagePath();
+}
+
+function normalizeIdList(list) {
+    return Array.isArray(list) ? list.map(id => String(id)) : [];
+}
+
+function idInList(list, id) {
+    return Array.isArray(list) && list.some(item => String(item) === String(id));
+}
+
 // Função auxiliar para o Loader
 function toggleLoader(show) {
     const loader = document.getElementById('loading-overlay');
@@ -100,10 +121,10 @@ auth.onAuthStateChanged((user) => {
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
 
+    const hasLoginModal = !!document.getElementById('login-modal');
     if (!user) {
-        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE) {
-            const loginPath = window.IS_SUBFOLDER ? 'login.html' : 'html/login.html';
-            window.location.href = loginPath;
+        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !hasLoginModal) {
+            window.location.href = getLoginPagePath();
             return;
         }
     } else {
@@ -157,9 +178,9 @@ async function loadUserData(uid) {
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
-            window.userFavorites = data.favorites || [];
-            window.userCart = data.cart || [];
-            window.userLibrary = data.library || [];
+            window.userFavorites = normalizeIdList(data.favorites);
+            window.userCart = normalizeIdList(data.cart);
+            window.userLibrary = normalizeIdList(data.library);
             window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
             window.userHistory = data.history || [];
             window.userBio = data.bio || "";
@@ -206,10 +227,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
     // Abrir modal de login ao clicar no botão "Entrar" do header
-    if (btnLogin && loginModal) {
+    if (btnLogin) {
         btnLogin.onclick = (e) => {
             e.preventDefault();
-            loginModal.style.display = 'flex';
+            const loginModal = document.getElementById('login-modal');
+            if (loginModal) {
+                loginModal.style.display = 'flex';
+            } else {
+                window.location.href = getLoginPagePath();
+            }
         };
     }
 
@@ -416,14 +442,15 @@ window.toggleFavorite = async (event, gameId) => {
     }
 
     if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
-        document.getElementById('login-modal').style.display = 'flex';
+        openLoginModalOrRedirect();
         return;
     }
 
-    if (window.userFavorites.includes(gameId)) {
-        window.userFavorites = window.userFavorites.filter(id => id !== gameId);
+    const gameIdStr = String(gameId);
+    if (idInList(window.userFavorites, gameId)) {
+        window.userFavorites = window.userFavorites.filter(id => String(id) !== gameIdStr);
     } else {
-        window.userFavorites.push(gameId);
+        window.userFavorites.push(gameIdStr);
     }
 
     if (auth.currentUser && db) {
@@ -437,7 +464,7 @@ window.toggleFavorite = async (event, gameId) => {
 
 // Função para atualizar contadores no menu (opcional)
 function updateNavBadges() {
-    const cartBtn = document.querySelector('.nav-button .fa-shopping-cart')?.parentElement;
+    const cartBtn = document.getElementById('nav-cart');
     if (cartBtn) {
         cartBtn.setAttribute('data-count', window.userCart.length);
     }
@@ -446,6 +473,8 @@ function updateNavBadges() {
     const walletDisplay = document.getElementById('wallet-amount');
     if (walletDisplay) {
         walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        const walletWidget = document.getElementById('user-wallet');
+        if (walletWidget) walletWidget.style.display = 'flex';
     }
 }
 
@@ -457,17 +486,17 @@ window.toggleCart = async (gameId) => {
     }
 
     // Verifica se o jogo já está na biblioteca
-    if (window.userLibrary.includes(gameId)) {
+    if (idInList(window.userLibrary, gameId)) {
         showToast("Você já possui este jogo!", "info");
         return;
     }
 
-    const index = window.userCart.indexOf(gameId);
-    if (index > -1) {
-        window.userCart.splice(index, 1);
+    const gameIdStr = String(gameId);
+    if (idInList(window.userCart, gameId)) {
+        window.userCart = window.userCart.filter(id => String(id) !== gameIdStr);
         showToast("Removido do carrinho.");
     } else {
-        window.userCart.push(gameId);
+        window.userCart.push(gameIdStr);
         showToast("Adicionado ao carrinho!", "success");
     }
 

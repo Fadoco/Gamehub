@@ -40,7 +40,8 @@ window.renderToContainer = (games, container, clear = true) => {
 
     games.forEach(game => {
         // Gerar ícones de plataformas dinamicamente
-        const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
+        const platformsHtml = (game.platforms || []).map(icon => `<i class="${icon}"></i>`).join('');
+        const tagsText = Array.isArray(game.tags) ? game.tags.join(', ') : '';
         
         // Lógica de exibição de preço e desconto
         const hasDiscount = game.discount > 0;
@@ -48,7 +49,7 @@ window.renderToContainer = (games, container, clear = true) => {
         const oldPriceHtml = hasDiscount ? `<span class="old-price">${game.oldPrice}</span>` : '';
         const priceClass = hasDiscount ? 'game-price sale' : 'game-price';
 
-        const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
+        const isFavorite = window.userFavorites && window.userFavorites.some(id => String(id) === String(game.id));
         const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
 
         container.innerHTML += `
@@ -65,7 +66,7 @@ window.renderToContainer = (games, container, clear = true) => {
                     <div class="game-details">
                         <p class="game-title">${game.title}</p>
                         <div class="game-platforms">${platformsHtml}</div>
-                        <span class="game-tags">${game.tags.join(', ')}</span>
+                        <span class="game-tags">${tagsText}</span>
                     </div>
                     <div class="price-container">
                         <div class="price-box">${oldPriceHtml}<p class="${priceClass}">${game.currentPrice}</p></div>
@@ -101,6 +102,8 @@ async function fetchGamesData() {
         allGamesData = allGamesData.map(game => { // Usar IS_SUBFOLDER aqui
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
+            const tags = Array.isArray(game.tags) ? game.tags : (Array.isArray(game.Tags) ? game.Tags : []);
+            const platforms = Array.isArray(game.platforms) ? game.platforms : (Array.isArray(game.Platforms) ? game.Platforms : []);
             
             // 2. Ajusta caminhos de imagens locais para subpastas (ex: de 'img/...' para '../img/...')
             if (imgPath && !imgPath.startsWith('http') && IS_SUBFOLDER && !imgPath.startsWith('../')) {
@@ -110,8 +113,10 @@ async function fetchGamesData() {
             return {
                 ...game,
                 image: imgPath,
+                tags,
+                platforms,
                 // Padroniza também a descrição para facilitar o uso nos outros scripts
-                description: game.description || game.Description
+                description: game.description || game.Description || ''
             };
         });
 

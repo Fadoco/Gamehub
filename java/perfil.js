@@ -28,7 +28,7 @@ function renderProfile() {
     // 2. Pegar a compra mais recente do histórico
     let mostRecent = "Nenhuma compra registrada";
     if (window.userHistory && window.userHistory.length > 0) {
-        mostRecent = window.userHistory[0].items.join(', '); // Pega os itens da última transação
+        mostRecent = Array.isArray(window.userHistory[0].items) ? window.userHistory[0].items.join(', ') : "Nenhuma compra registrada";
     }
 
     // 3. Agrupar favoritos por categoria (tag)

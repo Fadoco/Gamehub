@@ -11,11 +11,14 @@ function renderGameDetails(games) {
     const game = games.find(g => String(g.id) === String(gameId));
 
     if (game) {
+        const tags = Array.isArray(game.tags) ? game.tags : [];
+        const platforms = Array.isArray(game.platforms) ? game.platforms : [];
+
         // Preenche os elementos da página com os dados do JSON
         document.title = `GameHub - ${game.title}`;
         document.getElementById('game-title-detail').textContent = game.title;
         document.getElementById('game-image-detail').src = game.image;
-        document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
+        document.getElementById('game-tags-detail').textContent = tags.join(', ');
 
         // Preenche a descrição usando o campo já normalizado pelo global.js
         const descElement = document.getElementById('game-description-detail');
@@ -38,12 +41,12 @@ function renderGameDetails(games) {
             buyBtn.onclick = () => window.toggleCart(game.id);
             
             // Muda o texto se já estiver no carrinho ou biblioteca
-            if (window.userLibrary && window.userLibrary.includes(game.id)) {
+            if (window.userLibrary && window.userLibrary.some(id => String(id) === String(game.id))) {
                 buyBtn.textContent = "Na Biblioteca";
                 buyBtn.style.background = "#27ae60"; // Verde para indicar posse
                 buyBtn.style.cursor = "default";
                 buyBtn.disabled = true;
-            } else if (window.userCart && window.userCart.includes(game.id)) {
+            } else if (window.userCart && window.userCart.some(id => String(id) === String(game.id))) {
                 buyBtn.textContent = "Remover do Carrinho";
                 buyBtn.style.background = "var(--accent)";
                 buyBtn.disabled = false;
@@ -55,7 +58,7 @@ function renderGameDetails(games) {
         }
 
         const platformsContainer = document.getElementById('game-platforms-detail');
-        platformsContainer.innerHTML = game.platforms.map(icon => `<i class="${icon}"></i>`).join(' ');
+        platformsContainer.innerHTML = platforms.map(icon => `<i class="${icon}"></i>`).join(' ');
     } else {
         // Se o jogo não for encontrado, exibe uma mensagem de erro
         const detailContainer = document.querySelector('.game-detail-container');
