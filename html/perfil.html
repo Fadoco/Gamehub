@@ -129,17 +129,26 @@
     <div id="login-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Entrar no GameHub</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="E-mail" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" placeholder="Senha" required>
-                </div>
-                <p class="toggle-form" id="forgot-password-modal-link" style="cursor:pointer; font-size: 0.8em; color: var(--accent); margin-bottom: 15px;">Esqueci minha senha</p>
-                <button type="submit" class="buy-button">Entrar</button>
-            </form>
+            <div id="modal-login-section">
+                <h2>Entrar no GameHub</h2>
+                <form id="login-form">
+                    <div class="form-group"><input type="email" id="email" placeholder="E-mail" required></div>
+                    <div class="form-group"><input type="password" id="password" placeholder="Senha" required></div>
+                    <p class="toggle-form" id="forgot-password-modal-link" style="cursor:pointer; font-size: 12px; color: var(--accent); margin-bottom: 20px; text-align: right;">Esqueci minha senha</p>
+                    <button type="submit" class="buy-button" style="width: 100%;">Entrar</button>
+                </form>
+                <p onclick="toggleModalForms()" class="toggle-form" style="margin-top: 20px; text-align: center;">Não tem conta? Cadastre-se</p>
+            </div>
+            <div id="modal-signup-section" style="display: none;">
+                <h2>Criar Conta</h2>
+                <form id="signup-form">
+                    <div class="form-group"><input type="text" id="signup-name" placeholder="Nick / Nome" required></div>
+                    <div class="form-group"><input type="email" id="signup-email" placeholder="E-mail" required></div>
+                    <div class="form-group"><input type="password" id="signup-password" placeholder="Senha" required></div>
+                    <button type="submit" class="buy-button" style="width: 100%;">Confirmar Cadastro</button>
+                </form>
+                <p onclick="toggleModalForms()" class="toggle-form" style="margin-top: 20px; text-align: center;">Já tem conta? Entrar</p>
+            </div>
         </div>
     </div>
 
@@ -155,9 +164,9 @@
         </div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/global.js"></script>
     <script src="../java/auth.js"></script>

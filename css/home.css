@@ -44,8 +44,8 @@ h2 {
 /* Grid de jogos: Responsiva com auto-fill */
 .game-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Reduzido o mínimo para ser mais flexível */
+    gap: 20px;
 }
 
 /* Card de jogo: Container principal */
@@ -196,12 +196,41 @@ h2 {
     border-color: rgba(255, 255, 255, 0.22);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .tag-system {
+        justify-content: center;
+        text-align: center;
+    }
+    .tag-list {
+        justify-content: center;
+    }
     .game-grid { 
-        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); 
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
         gap: 10px; 
     }
-    .tag-system { justify-content: center; text-align: center; }
-    .tag-list { justify-content: center; }
     .game-title { font-size: 0.95em; }
+}
+
+/* --- Sistema de Favoritos (Botão no Card) --- */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favorite-btn:hover { background: rgba(0, 0, 0, 0.8); transform: scale(1.1); }
+.favorite-btn.active {
+    color: var(--accent);
 }

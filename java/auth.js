@@ -60,6 +60,17 @@ function toggleLoader(show) {
     if (loader) loader.style.display = show ? 'flex' : 'none';
 }
 
+// Função para alternar entre Login e Cadastro dentro do Modal
+window.toggleModalForms = () => {
+    const loginSec = document.getElementById('modal-login-section');
+    const signupSec = document.getElementById('modal-signup-section');
+    if (loginSec && signupSec) {
+        const isLoginVisible = loginSec.style.display !== 'none';
+        loginSec.style.display = isLoginVisible ? 'none' : 'block';
+        signupSec.style.display = isLoginVisible ? 'block' : 'none';
+    }
+};
+
 // Sistema de Notificação Customizado
 window.showToast = (message, type = 'info') => {
     let container = document.getElementById('toast-container');
