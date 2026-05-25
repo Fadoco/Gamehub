@@ -133,13 +133,20 @@ auth.onAuthStateChanged((user) => {
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
     const isHtmlFolder = window.location.pathname.includes('/html/');
+    // Detecção robusta de subpasta para redirecionamento
+    const isActuallySubfolder = window.location.pathname.split('/').length > 2;
 
     // Verifica se o bypass de login está ativo no localStorage
     const isSkipActive = localStorage.getItem('skipLogin') === 'true';
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) {
-            const loginPath = window.IS_SUBFOLDER ? (isHtmlFolder ? 'login.html' : '../html/login.html') : 'html/login.html';
+            let loginPath = 'html/login.html';
+            if (isHtmlFolder) {
+                loginPath = 'login.html';
+            } else if (isActuallySubfolder) {
+                loginPath = '../html/login.html';
+            }
             window.location.href = loginPath;
             return;
         }
@@ -427,7 +434,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
 
     // Função auxiliar para resolver caminhos de páginas dentro de /html/
     const getPath = (file) => {
-        if (!window.IS_SUBFOLDER) return `html/${file}`;
+        if (!window.IS_SUBFOLDER && !isHtmlFolder) return `html/${file}`;
         return isHtmlFolder ? file : `../html/${file}`;
     };
 

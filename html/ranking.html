@@ -15,9 +15,20 @@
         <div class="container">
             <nav>
                 <div class="logo" onclick="window.location.href='../index.html'" style="cursor:pointer">GAMEHUB</div>
-                <div class="nav-items" id="user-menu">
-                    <button id="btn-login" class="nav-button">Entrar</button>
-                    <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                <div class="nav-items">
+                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
+                    <a href="biblioteca.html" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                        <i class="fas fa-wallet"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+                    <div class="user-profile" id="user-menu" style="display: none;">
+                        <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Perfil">
+                        <button id="btn-login" class="nav-button">Entrar</button>
+                        <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -43,12 +54,12 @@
         </div>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
-    <script src="../java/global.js"></script>
-    <script src="../java/auth.js"></script>
-    <script src="../java/ranking.js"></script>
+    <script src="../java/auth.js" defer></script>
+    <script src="../java/global.js" defer></script>
+    <script src="../java/ranking.js" defer></script>
 </body>
 </html>
