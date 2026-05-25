@@ -4,9 +4,8 @@
 
 let selectedGameToBet = null;
 const sounds = {
-    // Agora apontando para arquivos locais que você baixará
-    spin: new Audio('assets/csgo-case-open.mp3'), 
-    tick: new Audio('../assets/sounds/tick.mp3')
+    // Caminhos corrigidos para a pasta assets local
+    spin: new Audio('assets/csgo-case-open.mp3')
 };
 
 // Mapeamento de IDs para Tipos
@@ -144,13 +143,6 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
 
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
-
-    let ticks = 0;
-    const interval = setInterval(() => {
-        ticks++;
-        playSound(sounds.tick);
-        if (ticks > 40) clearInterval(interval);
-    }, 110); 
 }
 
 let revealTimer;
@@ -185,6 +177,9 @@ window.closeBoxModal = () => {
 };
 
 window.openBox = async (tier) => {
+    // Toca o som imediatamente no clique
+    playSound(sounds.spin);
+
     if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
     
     const boxCosts = { 'bronze': 30, 'gold': 150 };
@@ -228,20 +223,11 @@ window.openBox = async (tier) => {
     }
 
     rail.offsetHeight;
-    const itemWidth = 130;
+    const itemWidth = 130; // 120 width + 10 margin
     const targetPos = (40 * itemWidth) - (rail.parentElement.offsetWidth / 2) + (itemWidth / 2);
-
-    playSound(sounds.spin);
     
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
-
-    let ticks = 0;
-    const interval = setInterval(() => {
-        ticks++;
-        playSound(sounds.tick);
-        if (ticks > 40) clearInterval(interval);
-    }, 120);
 
     // 3. Revelação e Salvamento
     setTimeout(async () => {
@@ -283,6 +269,9 @@ window.openBox = async (tier) => {
 };
 
 async function startUpgradeSpin() {
+    // Toca o som imediatamente no clique
+    playSound(sounds.spin);
+
     if (!selectedGameToBet || !window.auth.currentUser) return;
     
     const gameId = selectedGameToBet.id;
@@ -292,8 +281,6 @@ async function startUpgradeSpin() {
     
     spinBtn.disabled = true;
     spinBtn.textContent = "Girando...";
-    
-    playSound(sounds.spin);
 
     // 1. Probabilidades baseadas no nível atual
     let winProb, stayProb; // O resto é a probabilidade de perder
