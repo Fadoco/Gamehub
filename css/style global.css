@@ -663,3 +663,13 @@ nav {
 .notif-accept { background: #27ae60; color: white; }
 .notif-reject { background: #c0392b; color: white; }
 .empty-notif { padding: 20px; text-align: center; color: #7f8c8d; font-size: 13px; }
+
+/* --- Ranks de Melhoria de Jogo --- */
+.upgrade-rank {
+    font-weight: 900;
+    margin-left: 5px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+.rank-rare { color: #0078f2; }      /* Azul - Raro (+) */
+.rank-epic { color: #a335ee; }      /* Roxo - Épico (++) */
+.rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */

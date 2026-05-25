@@ -1,0 +1,89 @@
+/* Estilos específicos da Roleta e Caixas */
+.rewards-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.roulette-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    overflow: hidden;
+    background: #181818;
+    border: 2px solid var(--secondary);
+    border-radius: 8px;
+    height: 150px;
+}
+.roulette-selector {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    z-index: 10;
+    box-shadow: 0 0 15px var(--accent);
+}
+.roulette-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: transform 7s cubic-bezier(0.15, 0, 0.05, 1);
+    will-change: transform;
+}
+
+.roulette-card {
+    min-width: 120px;
+    height: 120px;
+    margin: 0 5px;
+    border-radius: 6px;
+    background: var(--secondary);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    position: relative;
+}
+
+.roulette-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.roulette-card.win-card { border-color: #4ade80; box-shadow: 0 0 15px #4ade80; }
+.roulette-card.stay-card { border-color: #3b82f6; box-shadow: 0 0 15px #3b82f6; }
+.roulette-card.lose-card { border-color: #ef4444; box-shadow: 0 0 15px #ef4444; }
+
+.card-label {
+    position: absolute;
+    bottom: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: rgba(0,0,0,0.7);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.boxes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.box-card {
+    background: var(--secondary);
+    padding: 30px 20px;
+    border-radius: 8px;
+    border-bottom: 4px solid transparent;
+}
+.tier-gold { border-color: #f1c40f; }
+.tier-bronze { border-color: #cd7f32; }

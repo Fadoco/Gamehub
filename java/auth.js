@@ -43,6 +43,7 @@ window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
 window.userBalance = 0;    // Saldo da carteira
+window.userUpgrades = {};  // Armazenamento de melhorias { gameId: level }
 window.ADMIN_EMAILS = ["fadoco12311@gmail.com", "gabrielmomo6759@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
 window.userBio = "";       // Descrição do perfil
@@ -131,13 +132,14 @@ auth.onAuthStateChanged((user) => {
     const isWelcomePage = window.location.pathname.includes('welcome.html');
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
+    const isHtmlFolder = window.location.pathname.includes('/html/');
 
     // Verifica se o bypass de login está ativo no localStorage
     const isSkipActive = localStorage.getItem('skipLogin') === 'true';
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) {
-            const loginPath = window.IS_SUBFOLDER ? 'login.html' : 'html/login.html';
+            const loginPath = window.IS_SUBFOLDER ? (isHtmlFolder ? 'login.html' : '../html/login.html') : 'html/login.html';
             window.location.href = loginPath;
             return;
         }
@@ -178,6 +180,7 @@ auth.onAuthStateChanged((user) => {
                     favorites: existingData.favorites ?? [],
                     cart: existingData.cart ?? [],
                     library: existingData.library ?? [],
+                    upgrades: existingData.upgrades ?? {},
                     history: existingData.history ?? [],
                     bio: existingData.bio ?? "",
                     avatar: existingData.avatar ?? "",
@@ -207,6 +210,7 @@ async function loadUserData(uid) {
             window.userFavorites = data.favorites || [];
             window.userCart = data.cart || [];
             window.userLibrary = data.library || [];
+            window.userUpgrades = data.upgrades || {};
             window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
             window.userHistory = data.history || []; // Histórico de compras
             window.userBio = data.bio || "";
@@ -219,7 +223,7 @@ async function loadUserData(uid) {
             window.userFriendRequestsReceived = data.friendRequestsReceived || [];
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
-            window.userBalance = 0.00; window.userHistory = [];
+            window.userUpgrades = {}; window.userBalance = 0.00; window.userHistory = [];
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
             window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
@@ -291,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (isNewUser) {
                         showToast("Bem-vindo ao GameHub!", "success");
-                        window.location.href = isLoginPage ? '../html/welcome.html' : 'html/welcome.html';
+                        window.location.href = isLoginPage ? 'welcome.html' : (window.IS_SUBFOLDER ? 'welcome.html' : 'html/welcome.html');
                     } else {
                         console.log("Login bem-sucedido.");
                         if (isLoginPage) {
@@ -419,7 +423,14 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
-    
+    const isHtmlFolder = window.location.pathname.includes('/html/');
+
+    // Função auxiliar para resolver caminhos de páginas dentro de /html/
+    const getPath = (file) => {
+        if (!window.IS_SUBFOLDER) return `html/${file}`;
+        return isHtmlFolder ? file : `../html/${file}`;
+    };
+
     if (userMenu) userMenu.style.display = 'flex';
 
     // Adiciona botão Ranking se não existir (Visível para todos)
@@ -430,7 +441,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
         rankBtn.style.cssText = "font-size: 18px; color: #f1c40f; background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; transition: 0.3s;";
         rankBtn.title = "Ranking de Riqueza";
         rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
-        rankBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'ranking.html' : 'html/ranking.html';
+        rankBtn.onclick = () => window.location.href = getPath('ranking.html');
         userMenu.prepend(rankBtn);
     }
 
@@ -482,7 +493,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
                 adminBtn.onmouseover = () => adminBtn.style.color = 'var(--accent)';
                 adminBtn.onmouseout = () => adminBtn.style.color = 'var(--secondary)';
 
-                adminBtn.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'admin.html' : 'html/admin.html';
+                adminBtn.onclick = () => window.location.href = getPath('admin.html');
                 userMenu.insertBefore(adminBtn, btnLogout);
             }
         }
@@ -499,7 +510,7 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
             userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
             userImg.style.display = 'block';
             // Torna a foto de perfil clicável para ir ao perfil
-            userImg.onclick = () => window.location.href = window.location.pathname.includes('/html/') ? 'perfil.html' : 'html/perfil.html';
+            userImg.onclick = () => window.location.href = getPath('perfil.html');
         }
 
         // Atualiza a exibição da carteira
@@ -680,13 +691,18 @@ window.purchaseLibrary = async () => {
 document.addEventListener('DOMContentLoaded', () => {
     const btnCart = document.getElementById('nav-cart');
     const btnLibrary = document.getElementById('nav-library');
-    const isSubfolder = window.location.pathname.includes('/html/');
+    const isHtmlFolder = window.location.pathname.includes('/html/');
+
+    const getPath = (file) => {
+        if (!window.IS_SUBFOLDER) return `html/${file}`;
+        return isHtmlFolder ? file : `../html/${file}`;
+    };
 
     if (btnCart) {
-        btnCart.onclick = () => window.location.href = isSubfolder ? 'carrinho.html' : 'html/carrinho.html';
+        btnCart.onclick = () => window.location.href = getPath('carrinho.html');
     }
     if (btnLibrary) {
-        btnLibrary.onclick = () => window.location.href = isSubfolder ? 'biblioteca.html' : 'html/biblioteca.html';
+        btnLibrary.onclick = () => window.location.href = getPath('biblioteca.html');
     }
 });
 

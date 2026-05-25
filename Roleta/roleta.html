@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Roleta e Caixas</title>
+    <link rel="stylesheet" href="../css/style global.css">
+    <link rel="stylesheet" href="roleta.css"> <!-- CSS local da pasta -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/global.js" defer></script>
+    <script src="../java/auth.js" defer></script>
+    <script src="roleta.js" defer></script> <!-- JS local da pasta -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
+                <div class="nav-items">
+                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
+                    <a href="#" id="nav-library" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
+                    <a href="#" id="nav-cart" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <a href="roleta.html" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
+
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='../html/historico.html'">
+                        <i class="fas fa-wallet"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="rewards-section">
+            <div class="section-header">
+                <h2><i class="fas fa-dice"></i> Roleta da Sorte</h2>
+                <p>Aposte um jogo da sua biblioteca e tente a sorte para ganhar um título épico!</p>
+            </div>
+            
+            <div class="roulette-wrapper">
+                <div class="roulette-selector"></div>
+                <div class="roulette-container" id="roulette-rail">
+                    <div class="roulette-placeholder">Carregando itens...</div>
+                </div>
+            </div>
+
+            <div class="bet-controls">
+                <div class="selected-game-preview" id="selected-game-display">
+                    <p>Nenhum jogo selecionado para aposta</p>
+                </div>
+                
+                <button id="btn-spin" class="buy-button" disabled>Girar e Melhorar Jogo</button>
+                
+                <div class="inventory-section">
+                    <h3>Seu Inventário (Jogos Apostáveis)</h3>
+                    <p class="inventory-hint">Jogos gratuitos não podem ser apostados.</p>
+                    <div class="inventory-grid" id="bet-inventory-grid">
+                        <!-- Jogos elegíveis serão injetados aqui via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="rewards-section">
+            <div class="section-header">
+                <h2><i class="fas fa-box-open"></i> Caixas Misteriosas</h2>
+                <p>Abra caixas temáticas e garanta chaves de jogos aleatórios.</p>
+            </div>
+
+            <div class="boxes-grid">
+                <div class="box-card tier-bronze">
+                    <div class="box-image"><i class="fas fa-box"></i></div>
+                    <h3>Caixa Bronze</h3>
+                    <p>Jogos casuais e indie</p>
+                    <span class="box-price">R$ 5,00</span>
+                    <button class="nav-button">Abrir Caixa</button>
+                </div>
+
+                <div class="box-card tier-gold">
+                    <div class="box-image"><i class="fas fa-gift"></i></div>
+                    <h3>Caixa Lendária</h3>
+                    <p>Apenas jogos AAA</p>
+                    <span class="box-price">R$ 50,00</span>
+                    <button class="nav-button">Abrir Caixa</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-bottom">
+        &copy; 2026 GameHub - Sistema de Recompensas.
+    </footer>
+</body>
+</html>

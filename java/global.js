@@ -5,7 +5,8 @@
 let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 
 // Detecta uma única vez se estamos em uma subpasta
-window.IS_SUBFOLDER = window.location.pathname.includes('/html/');
+const pathParts = window.location.pathname.split('/');
+window.IS_SUBFOLDER = pathParts.length > 2 && !window.location.pathname.endsWith('index.html');
 const IS_SUBFOLDER = window.IS_SUBFOLDER;
 
 // Utilitários Globais
@@ -30,7 +31,15 @@ window.utils = {
 window.renderToContainer = (games, container, clear = true) => {
     if (!container) return;
 
-    const gamePagePath = IS_SUBFOLDER ? 'jogo.html' : 'html/jogo.html';
+    // Define o caminho correto para a página de detalhes do jogo independente de onde estamos
+    let gamePagePath = 'html/jogo.html';
+    if (IS_SUBFOLDER) {
+        if (window.location.pathname.includes('/html/')) {
+            gamePagePath = 'jogo.html';
+        } else {
+            gamePagePath = '../html/jogo.html';
+        }
+    }
 
     const html = games.map(game => {
         // Gerar ícones de plataformas dinamicamente
@@ -45,6 +54,15 @@ window.renderToContainer = (games, container, clear = true) => {
         const isFavorite = window.userFavorites && window.userFavorites.includes(game.id);
         const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
 
+        // Lógica de Rank/Upgrade
+        const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
+        let upgradeHtml = '';
+        if (upgradeLevel > 0) {
+            const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary');
+            const pluses = '+'.repeat(upgradeLevel);
+            upgradeHtml = `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
+        }
+
         return `
             <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card">
@@ -57,7 +75,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 </div>
                 <div class="game-info">
                     <div class="game-details">
-                        <p class="game-title">${game.title}</p>
+                        <p class="game-title">${game.title}${upgradeHtml}</p>
                         <div class="game-platforms">${platformsHtml}</div>
                         <span class="game-tags">${game.tags.join(', ')}</span>
                     </div>
@@ -134,7 +152,8 @@ function routePageRendering() {
         { file: 'carrinho.html', func: typeof renderCart === 'function' ? renderCart : null },
         { file: 'biblioteca.html', func: typeof renderLibrary === 'function' ? renderLibrary : null },
         { file: 'historico.html', func: typeof renderHistory === 'function' ? renderHistory : null },
-        { file: 'perfil.html', func: typeof renderProfile === 'function' ? renderProfile : null }
+        { file: 'perfil.html', func: typeof renderProfile === 'function' ? renderProfile : null },
+        { file: 'roleta.html', func: typeof renderRoulette === 'function' ? renderRoulette : null }
     ];
 
     const activeRoute = routes.find(r => path.includes(r.file));
