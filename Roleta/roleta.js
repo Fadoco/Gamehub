@@ -4,8 +4,8 @@
 
 let selectedGameToBet = null;
 const sounds = {
-    // Usando áudios públicos para testes e desenvolvimento
-    spin: new Audio('https://raw.githubusercontent.com/Aris-Tottle/Casino-Slot-Machine/master/sounds/spin.mp3'), 
+    // Áudio de abertura de caixa do CS:GO (MyInstants)
+    spin: new Audio('https://www.myinstants.com/media/sounds/csgo-case-open.mp3'), 
     tick: new Audio('https://raw.githubusercontent.com/Aris-Tottle/Casino-Slot-Machine/master/sounds/click.mp3')
 };
 
@@ -30,6 +30,10 @@ function renderRoulette() {
     inventoryGrid.innerHTML = bettableGames.map(game => `
         <div class="bet-item" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
             <img src="${game.image}" alt="${game.title}">
+            <div class="bet-item-info">
+                <span class="bet-item-name">${game.title}</span>
+                <span class="bet-item-price">${game.currentPrice}</span>
+            </div>
         </div>
     `).join('');
 }
@@ -88,11 +92,13 @@ function generateRouletteRail(winnerType, winningGame) {
         // O card de índice 55 será o nosso vencedor
         if (i === 55) {
             card.classList.add(winnerType + '-card');
-            card.innerHTML = `<img src="${winningGame.image}"><span class="card-label">${winnerType.toUpperCase()}</span>`;
+            card.innerHTML = `<span class="q-mark">?</span><span class="card-label">${winnerType === 'win' ? 'UPGRADE!' : (winnerType === 'stay' ? 'NADA' : 'PERDEU')}</span>`;
         } else {
-            // Preenche o resto com jogos aleatórios para efeito visual
-            const randomGame = allGamesData[Math.floor(Math.random() * allGamesData.length)];
-            card.innerHTML = `<img src="${randomGame.image}">`;
+            // Preenche o resto com pontos de interrogação aleatórios para efeito visual
+            const types = ['win', 'stay', 'lose'];
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            card.classList.add(randomType + '-card');
+            card.innerHTML = `<span class="q-mark">?</span>`;
         }
         rail.appendChild(card);
     }
