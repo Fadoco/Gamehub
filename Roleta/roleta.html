@@ -77,21 +77,45 @@
                 <div class="box-card tier-bronze">
                     <div class="box-image"><i class="fas fa-box"></i></div>
                     <h3>Caixa Bronze</h3>
-                    <p>Jogos casuais e indie</p>
-                    <span class="box-price">R$ 5,00</span>
+                    <p>Jogos de entrada e Indies</p>
+                    <span class="box-price">R$ 30,00</span>
                     <button class="nav-button" onclick="openBox('bronze')">Abrir Caixa</button>
                 </div>
 
                 <div class="box-card tier-gold">
                     <div class="box-image"><i class="fas fa-gift"></i></div>
                     <h3>Caixa Lendária</h3>
-                    <p>Apenas jogos AAA</p>
-                    <span class="box-price">R$ 50,00</span>
+                    <p>Grandes lançamentos e AAAs</p>
+                    <span class="box-price">R$ 150,00</span>
                     <button class="nav-button" onclick="openBox('gold')">Abrir Caixa</button>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Modal de Abertura de Caixa -->
+    <div id="box-opening-modal" class="modal" style="display: none;">
+        <div class="modal-content roulette-modal">
+            <span class="close-modal" onclick="closeBoxModal()">&times;</span>
+            <h2 id="modal-box-title">Abrindo Caixa...</h2>
+            <div class="roulette-wrapper modal-roulette">
+                <div class="roulette-selector"></div>
+                <div class="roulette-container" id="modal-roulette-rail">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+            <div id="modal-result-info" style="margin-top: 20px; min-height: 50px;"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Resultado Final (Drama Reveal) -->
+    <div id="result-reveal-modal" class="modal" style="display: none; z-index: 3000;">
+        <div class="modal-content reveal-card-content">
+            <h2 id="reveal-result-title">RESULTADO!</h2>
+            <div id="reveal-card-target"></div>
+            <button class="buy-button" onclick="closeRevealModal()">Continuar</button>
+        </div>
+    </div>
 
     <footer class="footer-bottom">
         &copy; 2026 GameHub - Sistema de Recompensas.

@@ -4,13 +4,14 @@
 
 let selectedGameToBet = null;
 const sounds = {
-    // Links de áudio corrigidos e mais estáveis
-    spin: new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'), 
-    tick: new Audio('https://www.soundjay.com/buttons/sounds/button-27.mp3')
+    // Agora apontando para arquivos locais que você baixará
+    spin: new Audio('assets/csgo-case-open.mp3'), 
+    tick: new Audio('../assets/sounds/tick.mp3')
 };
 
 // Garante que o áudio não trave o script se falhar
 const playSound = (sound) => {
+    if (!sound) return;
     sound.currentTime = 0;
     sound.play().catch(e => console.warn("Áudio bloqueado ou indisponível:", e));
 };
@@ -92,33 +93,30 @@ window.selectGameForBet = (gameId) => {
     }
 };
 
-function generateRouletteRail(winnerType, winningGame) {
-    const rail = document.getElementById('roulette-rail');
+function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-rail') {
+    const rail = document.getElementById(targetRailId);
+    if (!rail) return;
+
     rail.style.transition = 'none';
     rail.style.transform = 'translateX(0px)';
     rail.innerHTML = '';
 
     const totalItems = 60; // Quantidade de cards para dar sensação de velocidade
     const itemWidth = 130; // largura do card (120) + margem (10)
-    
+
     for (let i = 0; i < totalItems; i++) {
         const card = document.createElement('div');
         card.className = 'roulette-card';
-        
-        const isWinner = (i === 55);
-        // Se for o vencedor (card 55), aplica o tipo real. Se não, aleatório.
+
+        const isWinner = (i === 40); // Mudamos para 40 para garantir que o scroll pare bem
         const type = isWinner ? winnerType : ['win', 'stay', 'lose'][Math.floor(Math.random() * 3)];
-        
-        // Limpa classes anteriores e aplica a nova
-        card.classList.remove('win-card', 'stay-card', 'lose-card');
-        
-        if (type === 'win') card.classList.add('win-card');
-        else if (type === 'stay') card.classList.add('stay-card');
-        else if (type === 'lose') card.classList.add('lose-card');
+
+        if (type === 'win') card.className = 'roulette-card win-card';
+        else if (type === 'stay') card.className = 'roulette-card stay-card';
+        else card.className = 'roulette-card lose-card';
 
         card.innerHTML = `<span class="q-mark">?</span>`;
         if (isWinner) {
-            // Texto do selo baseado no resultado real
             const label = winnerType === 'win' ? 'UPGRADE!' : (winnerType === 'stay' ? 'NADA' : 'PERDEU!');
             card.innerHTML += `<span class="card-label">${label}</span>`;
         }
@@ -130,8 +128,8 @@ function generateRouletteRail(winnerType, winningGame) {
     rail.offsetHeight; 
 
     // Calcula a parada exata (centralizado no seletor)
-    const containerWidth = document.querySelector('.roulette-wrapper').offsetWidth;
-    const targetPos = (55 * itemWidth) - (containerWidth / 2) + (itemWidth / 2);
+    const wrapper = rail.parentElement;
+    const targetPos = (40 * itemWidth) - (wrapper.offsetWidth / 2) + (itemWidth / 2);
 
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
@@ -141,20 +139,47 @@ function generateRouletteRail(winnerType, winningGame) {
     const interval = setInterval(() => {
         ticks++;
         playSound(sounds.tick);
-        if (ticks > 55) clearInterval(interval);
+        if (ticks > 40) clearInterval(interval);
     }, 110); 
 }
+
+window.showRevealModal = (cardElement, titleText) => {
+    const target = document.getElementById('reveal-card-target');
+    const title = document.getElementById('reveal-result-title');
+    const modal = document.getElementById('result-reveal-modal');
+    
+    if (!target || !modal) return;
+    
+    target.innerHTML = '';
+    const clone = cardElement.cloneNode(true);
+    clone.style.margin = '0'; // Remove margens do rail
+    target.appendChild(clone);
+    
+    title.textContent = titleText;
+    modal.style.display = 'flex';
+};
+
+window.closeRevealModal = () => {
+    document.getElementById('result-reveal-modal').style.display = 'none';
+};
+
+window.closeBoxModal = () => {
+    document.getElementById('box-opening-modal').style.display = 'none';
+    document.getElementById('modal-result-info').innerHTML = '';
+};
 
 window.openBox = async (tier) => {
     if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
     
-    const boxCosts = { 'bronze': 5, 'gold': 50 };
+    const boxCosts = { 'bronze': 30, 'gold': 150 };
     const cost = boxCosts[tier];
 
     if (window.userBalance < cost) return window.showToast("Saldo insuficiente!", "error");
 
-    const spinBtn = document.querySelector(`.box-card.tier-${tier} .nav-button`);
-    spinBtn.disabled = true;
+    // Mostrar Modal
+    const modal = document.getElementById('box-opening-modal');
+    modal.style.display = 'flex';
+    document.getElementById('modal-box-title').textContent = `Abrindo Caixa ${tier.toUpperCase()}...`;
 
     // 1. Selecionar ganhador
     let pool = allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
@@ -164,7 +189,7 @@ window.openBox = async (tier) => {
     const rarity = getRarityInfo(winningGame.currentPrice);
 
     // 2. Preparar Trilho de Mistério
-    const rail = document.getElementById('roulette-rail');
+    const rail = document.getElementById('modal-roulette-rail');
     rail.style.transition = 'none';
     rail.style.transform = 'translateX(0px)';
     rail.innerHTML = '';
@@ -174,7 +199,7 @@ window.openBox = async (tier) => {
         card.className = 'roulette-card';
         
         let displayRarity;
-        if (i === 55) {
+        if (i === 40) {
             displayRarity = rarity;
         } else {
             const randomGame = pool[Math.floor(Math.random() * pool.length)];
@@ -188,32 +213,33 @@ window.openBox = async (tier) => {
 
     rail.offsetHeight;
     const itemWidth = 130;
-    const containerWidth = document.querySelector('.roulette-wrapper').offsetWidth;
-    const targetPos = (55 * itemWidth) - (containerWidth / 2) + (itemWidth / 2);
+    const targetPos = (40 * itemWidth) - (rail.parentElement.offsetWidth / 2) + (itemWidth / 2);
 
     playSound(sounds.spin);
     
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
 
-    // Som de Tick
     let ticks = 0;
     const interval = setInterval(() => {
         ticks++;
-        const tickClone = sounds.tick.cloneNode();
-        tickClone.volume = 0.5;
-        tickClone.play().catch(() => {});
-        if (ticks > 55) clearInterval(interval);
-    }, 110);
+        playSound(sounds.tick);
+        if (ticks > 40) clearInterval(interval);
+    }, 120);
 
     // 3. Revelação e Salvamento
     setTimeout(async () => {
-        // Revelar o vencedor no trilho
-        const winnerCard = rail.children[55];
+        const winnerCard = rail.children[40];
+        winnerCard.classList.remove('rarity-gray'); // Limpa para mostrar real
+        winnerCard.classList.add(rarity.class);
         winnerCard.innerHTML = `
             <img src="${winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">
             <span class="card-label" style="background:rgba(0,0,0,0.8);">${winningGame.title}</span>
         `;
+
+        // Fecha modal da caixa e mostra o grande reveal
+        window.closeBoxModal();
+        window.showRevealModal(winnerCard, "VOCÊ GANHOU!");
 
         try {
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
@@ -236,8 +262,6 @@ window.openBox = async (tier) => {
             renderRoulette();
         } catch (e) {
             console.error(e);
-        } finally {
-            spinBtn.disabled = false;
         }
     }, 7200);
 };
@@ -281,15 +305,21 @@ async function startUpgradeSpin() {
     // 4. Aguarda a animação terminar (7 segundos) para atualizar o banco de dados
     setTimeout(async () => {
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+        const rail = document.getElementById('roulette-rail');
+        const winnerCard = rail ? rail.children[40] : null;
+
         try {
             if (winnerType === 'win') {
                 // SUCESSO: Aumenta o nível
                 const newLevel = currentLevel + 1;
                 await userRef.set({ upgrades: { [gameId]: newLevel } }, { merge: true });
+                
+                if (winnerCard) window.showRevealModal(winnerCard, "UPGRADE BEM-SUCEDIDO!");
                 window.showToast(`BOA! Seu jogo agora é Rank ${newLevel}!`, "success");
             } 
             else if (winnerType === 'stay') {
                 // NEUTRO: Não ganha nada, mas mantém o jogo
+                if (winnerCard) window.showRevealModal(winnerCard, "NADA MUDOU...");
                 window.showToast("A roleta parou no meio... Você manteve seu jogo.", "info");
             } 
             else {
@@ -308,6 +338,7 @@ async function startUpgradeSpin() {
                 // Remove localmente para refletir na UI imediatamente
                 window.userLibrary = window.userLibrary.filter(id => Number(id) !== idParaRemover);
                 
+                if (winnerCard) window.showRevealModal(winnerCard, "JOGO PERDIDO!");
                 window.showToast("QUE AZAR! Você perdeu o jogo na aposta.", "error");
             }
             

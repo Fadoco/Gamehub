@@ -1,10 +1,31 @@
 /* Estilos específicos da Roleta e Caixas */
 
-/* Reset de tamanhos para imagens no inventário */
-.inventory-grid .bet-item img {
-    width: 100% !important;
+/* Correção Crítica: Tamanho dos Jogos no Inventário */
+#bet-inventory-grid.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+    gap: 12px !important;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+}
+
+#bet-inventory-grid .bet-item {
+    width: 110px !important;
+    height: auto !important;
+    background: var(--secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+
+#bet-inventory-grid .bet-item img {
+    width: 110px !important;
     height: 110px !important;
     object-fit: cover !important;
+    display: block !important;
 }
 
 .rewards-section {
@@ -43,10 +64,12 @@
     height: 100%;
     transition: transform 7s cubic-bezier(0.15, 0, 0.05, 1);
     will-change: transform;
+    padding-left: 0;
 }
 
 .roulette-card {
     min-width: 120px;
+    max-width: 120px;
     height: 120px;
     margin: 0 5px;
     border-radius: 6px;
@@ -61,12 +84,13 @@
     position: relative;
 }
 
-/* Definição explícita de cores para evitar inversão */
-.win-card { border: 3px solid #ffd700 !important; } /* DOURADO */
-.stay-card { border: 3px solid #808080 !important; } /* CINZA */
-.lose-card { border: 3px solid #ff4d4d !important; } /* VERMELHO */
+/* Cores Corrigidas: Dourado (Win), Cinza (Stay), Vermelho (Lose) */
+.win-card { border: 3px solid #ffd700 !important; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.3); }
+.stay-card { border: 3px solid #808080 !important; box-shadow: none; }
+.lose-card { border: 3px solid #ff4d4d !important; box-shadow: inset 0 0 15px rgba(255, 77, 77, 0.3); }
 
 .win-card .q-mark { color: #ffd700 !important; }
+.stay-card .q-mark { color: #808080 !important; }
 .lose-card .q-mark { color: #ff4d4d !important; }
 
 /* Raridades por Valor (Bordas e Sombras) */
@@ -194,3 +218,44 @@
 }
 .tier-gold { border-color: #f1c40f; }
 .tier-bronze { border-color: #cd7f32; }
+
+/* Estilos do Modal de Abertura */
+.roulette-modal {
+    max-width: 850px !important;
+    width: 95% !important;
+    text-align: center;
+    background: #121212 !important;
+    border: 2px solid var(--accent) !important;
+}
+
+.modal-roulette {
+    margin: 30px auto !important;
+}
+
+/* Estilos do Modal de Revelação (Drama) */
+.reveal-card-content {
+    background: #0a0a0a !important;
+    border: 3px solid var(--accent) !important;
+    animation: drama-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+    box-shadow: 0 0 100px rgba(0, 120, 242, 0.4) !important;
+}
+
+@keyframes drama-pop {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+#reveal-card-target {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+#reveal-card-target .roulette-card {
+    transform: scale(2.5); /* Card gigante para drama */
+    border-width: 2px !important;
+    pointer-events: none;
+}
