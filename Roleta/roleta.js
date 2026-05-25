@@ -3,23 +3,22 @@
  */
 
 let selectedGameToBet = null;
-const sounds = {
-    // Caminhos corrigidos para a pasta assets local
-    spin: new Audio('assets/csgo-case-open.mp3')
-};
+
+// Áudio simplificado
+const spinAudio = new Audio('assets/csgo-case-open.mp3');
 
 // Mapeamento de IDs para Tipos
 const CARD_TYPES = {
-    STAY: 0, // Cinza - Nada
-    LOSE: 1, // Vermelho - Perda
-    WIN: 2   // Dourado - Ganhou
+    STAY: 0, // NADA (Cinza)
+    LOSE: 1, // PERDEU (Vermelho)
+    WIN: 2   // UPGRADE (Dourado)
 };
 
-// Garante que o áudio não trave o script se falhar
-const playSound = (sound) => {
-    if (!sound) return;
-    sound.currentTime = 0;
-    sound.play().catch(e => console.warn("Áudio bloqueado ou indisponível:", e));
+// Função direta para tocar o som
+const playSpinSound = () => {
+    spinAudio.pause();
+    spinAudio.currentTime = 0;
+    spinAudio.play().catch(e => console.warn("Aguardando interação para áudio:", e));
 };
 
 // Helper para definir raridade baseada no preço
@@ -121,18 +120,22 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
         const cardId = isWinner ? winnerId : Math.floor(Math.random() * 3);
         
         card.className = 'roulette-card';
-        card.setAttribute('data-card-id', cardId);
+        card.dataset.cardId = cardId; // Define o ID para o CSS colorir
 
-        // Aplica a classe CSS baseada no ID
-        if (cardId === CARD_TYPES.WIN) card.classList.add('win-card');
-        else if (cardId === CARD_TYPES.STAY) card.classList.add('stay-card');
-        else card.classList.add('lose-card');
-
-        card.innerHTML = `<span class="q-mark">?</span>`;
-        if (isWinner) {
-            const label = cardId === CARD_TYPES.WIN ? 'UPGRADE!' : (cardId === CARD_TYPES.STAY ? 'NADA' : 'PERDEU!');
-            card.innerHTML += `<span class="card-label">${label}</span>`;
+        let labelText = "";
+        if (cardId === CARD_TYPES.WIN) {
+            card.classList.add('win-card'); 
+            labelText = "UPGRADE!";
+        } else if (cardId === CARD_TYPES.STAY) {
+            card.classList.add('stay-card'); 
+            labelText = "NADA";
+        } else {
+            card.classList.add('lose-card'); 
+            labelText = "PERDEU!";
         }
+
+        // Injeta o ponto de interrogação e o label fixo
+        card.innerHTML = `<span class="q-mark">?</span><span class="card-label">${labelText}</span>`;
 
         rail.appendChild(card);
     }
@@ -177,8 +180,8 @@ window.closeBoxModal = () => {
 };
 
 window.openBox = async (tier) => {
-    // Toca o som imediatamente no clique
-    playSound(sounds.spin);
+    // SOM IMEDIATO NO CLIQUE
+    playSpinSound();
 
     if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
     
@@ -269,8 +272,8 @@ window.openBox = async (tier) => {
 };
 
 async function startUpgradeSpin() {
-    // Toca o som imediatamente no clique
-    playSound(sounds.spin);
+    // SOM IMEDIATO NO CLIQUE
+    playSpinSound();
 
     if (!selectedGameToBet || !window.auth.currentUser) return;
     

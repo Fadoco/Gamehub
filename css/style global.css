@@ -663,7 +663,6 @@ nav {
 .notif-accept { background: #27ae60; color: white; }
 .notif-reject { background: #c0392b; color: white; }
 .empty-notif { padding: 20px; text-align: center; color: #7f8c8d; font-size: 13px; }
-
 /* --- Ranks de Melhoria de Jogo --- */
 .upgrade-rank {
     font-weight: 900;

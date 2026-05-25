@@ -1,7 +1,7 @@
 /* Estilos específicos da Roleta e Caixas */
 
 .rewards-section {
-    background: radial-gradient(circle at top, rgba(0, 120, 242, 0.15) 0%, rgba(18, 18, 18, 1) 100%);
+    background: radial-gradient(circle at top, rgba(0, 120, 242, 0.08) 0%, rgba(15, 15, 15, 1) 100%);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 50px 40px;
@@ -13,11 +13,12 @@
 }
 
 .section-header h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 10px;
     background: linear-gradient(90deg, #fff, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: 800;
 }
 
 .roulette-wrapper {
@@ -26,11 +27,13 @@
     max-width: 780px;
     margin: 0 auto 30px;
     overflow: hidden;
-    background: #000;
-    border: 4px solid #222;
-    border-radius: 15px;
+    background: #050505;
+    border: 3px solid #222;
+    border-radius: 12px;
     height: 150px;
-    box-shadow: inset 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(0, 120, 242, 0.3);
+    box-shadow: inset 0 0 40px #000, 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
 }
 
 /* Luzes de Cassino */
@@ -38,21 +41,22 @@
     position: absolute;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 3px;
     display: flex;
     justify-content: space-around;
     z-index: 12;
+    pointer-events: none;
 }
 
 .casino-lights.top { top: 2px; }
 .casino-lights.bottom { bottom: 2px; }
 
-.casino-lights::after {
+.casino-lights::before {
     content: '';
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle, var(--accent) 20%, transparent 20%);
-    background-size: 20px 4px;
+    background-image: radial-gradient(circle, #00aaff 20%, transparent 20%);
+    background-size: 25px 3px;
     animation: lights-flow 2s linear infinite;
 }
 
@@ -63,14 +67,13 @@
 
 .roulette-selector {
     position: absolute;
-    top: 0;
-    left: 50%;
+    top: 0; left: 50%;
     transform: translateX(-50%);
     width: 3px;
     height: 100%;
-    background: #fff;
+    background: var(--accent);
     z-index: 10;
-    box-shadow: 0 0 20px #fff, 0 0 40px var(--accent);
+    box-shadow: 0 0 20px var(--accent);
 }
 
 .roulette-container {
@@ -79,44 +82,41 @@
     height: 100%;
     transition: transform 7s cubic-bezier(0.15, 0, 0.05, 1);
     will-change: transform;
-    padding: 0; /* Removido para garantir centralização perfeita */
+    padding: 0 10px;
 }
 
 .roulette-card {
     width: 120px;
-    height: 110px;
-    margin: 0 5px; /* Total 130px de largura por card */
+    height: 120px;
+    margin: 0 5px;
     border-radius: 8px;
-    background: linear-gradient(145deg, #252525, #0a0a0a);
+    background: #111;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #333;
+    border: 2px solid #222;
     flex-shrink: 0;
     position: relative;
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
 /* Cores Fixas via Classes e Data Attributes para evitar inversão */
 .win-card, .roulette-card[data-card-id="2"] { 
-    border-color: #ffd700 !important;
-    background: linear-gradient(145deg, #2a2200, #000);
-    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.3); 
+    border-color: #ffd700 !important; 
+    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2);
 }
 .stay-card, .roulette-card[data-card-id="0"] { 
-    border-color: #444 !important; 
-    opacity: 0.7;
+    border-color: #444 !important;
 }
 .lose-card, .roulette-card[data-card-id="1"] { 
     border-color: #ff4d4d !important;
-    background: linear-gradient(145deg, #2a0000, #000);
-    box-shadow: inset 0 0 20px rgba(255, 77, 77, 0.2), 0 0 15px rgba(255, 77, 77, 0.3); 
+    box-shadow: inset 0 0 20px rgba(255, 77, 77, 0.2);
 }
 
 .win-card .q-mark, .roulette-card[data-card-id="2"] .q-mark { color: #ffd700 !important; text-shadow: 0 0 15px #ffd700; }
-.stay-card .q-mark, .roulette-card[data-card-id="0"] .q-mark { color: #444 !important; }
+.stay-card .q-mark, .roulette-card[data-card-id="0"] .q-mark { color: #555 !important; }
 .lose-card .q-mark, .roulette-card[data-card-id="1"] .q-mark { color: #ff4d4d !important; text-shadow: 0 0 15px #ff4d4d; }
 
 /* Raridades por Valor (Bordas e Sombras) */
@@ -217,9 +217,9 @@
     max-height: 400px;
     overflow-y: auto;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .bet-item {
@@ -227,9 +227,9 @@
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: #1a1a1a;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -243,7 +243,7 @@
 
 .bet-item.selected {
     border-color: var(--accent);
-    box-shadow: 0 0 15px var(--accent);
+    box-shadow: 0 0 15px rgba(0, 120, 242, 0.5);
     background: rgba(0, 120, 242, 0.1);
 }
 
@@ -280,8 +280,8 @@
 .box-card {
     background: var(--secondary);
     padding: 30px 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: 0.3s;
     position: relative;
     overflow: hidden;
