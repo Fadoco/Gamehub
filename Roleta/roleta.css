@@ -1,4 +1,12 @@
 /* Estilos específicos da Roleta e Caixas */
+
+/* Reset de tamanhos para imagens no inventário */
+.inventory-grid .bet-item img {
+    width: 100% !important;
+    height: 110px !important;
+    object-fit: cover !important;
+}
+
 .rewards-section {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -53,6 +61,35 @@
     position: relative;
 }
 
+/* Definição explícita de cores para evitar inversão */
+.win-card { border: 3px solid #ffd700 !important; } /* DOURADO */
+.stay-card { border: 3px solid #808080 !important; } /* CINZA */
+.lose-card { border: 3px solid #ff4d4d !important; } /* VERMELHO */
+
+.win-card .q-mark { color: #ffd700 !important; }
+.lose-card .q-mark { color: #ff4d4d !important; }
+
+/* Raridades por Valor (Bordas e Sombras) */
+.rarity-gray { border-color: #808080; box-shadow: inset 0 0 15px rgba(128, 128, 128, 0.2); }
+.rarity-green { border-color: #2ecc71; box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.2); }
+.rarity-purple { border-color: #9b59b6; box-shadow: inset 0 0 15px rgba(155, 89, 182, 0.2); }
+.rarity-gold { border-color: #f1c40f; box-shadow: inset 0 0 15px rgba(241, 196, 15, 0.2); }
+
+/* Raridade Mítica (RGB Animado) */
+.rarity-mythic {
+    border-width: 2px;
+    animation: rgb-rainbow 3s linear infinite;
+}
+
+@keyframes rgb-rainbow {
+    0% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+    20% { border-color: #ffff00; box-shadow: 0 0 15px #ffff00; }
+    40% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+    60% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; }
+    80% { border-color: #0000ff; box-shadow: 0 0 15px #0000ff; }
+    100% { border-color: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
+}
+
 .q-mark {
     font-size: 3rem;
     font-weight: bold;
@@ -60,15 +97,10 @@
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Cores dos cards da roleta */
-.roulette-card.win-card { border-color: #ffd700; color: #ffd700; box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); }
-.roulette-card.win-card .q-mark { color: #ffd700; }
-
-.roulette-card.stay-card { border-color: #c0c0c0; color: #c0c0c0; box-shadow: inset 0 0 20px rgba(192, 192, 192, 0.2); }
-.roulette-card.stay-card .q-mark { color: #c0c0c0; }
-
-.roulette-card.lose-card { border-color: #ff4d4d; color: #ff4d4d; box-shadow: inset 0 0 20px rgba(255, 77, 77, 0.2); }
-.roulette-card.lose-card .q-mark { color: #ff4d4d; }
+/* Overrides para os cards vencedores da Roleta de Upgrade */
+.win-card .q-mark { color: #ffd700; }
+.stay-card .q-mark { color: #c0c0c0; }
+.lose-card .q-mark { color: #ff4d4d; }
 
 .card-label {
     position: absolute;
@@ -78,6 +110,12 @@
     background: rgba(0,0,0,0.7);
     padding: 2px 6px;
     border-radius: 4px;
+    color: white;
+    text-align: center;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .boxes-grid {
@@ -85,6 +123,69 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
+
+/* --- Estilos para o Inventário (Correção do tamanho dos jogos) --- */
+.inventory-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+}
+
+.bet-item {
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.bet-item img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.bet-item-info {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: center;
+}
+
+.bet-item-name {
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-main);
+}
+
+.bet-item-price {
+    font-size: 10px;
+    color: var(--accent);
+}
+
+.bet-item.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
 .box-card {
     background: var(--secondary);
     padding: 30px 20px;

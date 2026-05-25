@@ -4,10 +4,26 @@
 
 let selectedGameToBet = null;
 const sounds = {
-    // Áudio de abertura de caixa do CS:GO (MyInstants)
-    spin: new Audio('https://www.myinstants.com/media/sounds/csgo-case-open.mp3'), 
-    tick: new Audio('https://raw.githubusercontent.com/Aris-Tottle/Casino-Slot-Machine/master/sounds/click.mp3')
+    // Links de áudio corrigidos e mais estáveis
+    spin: new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'), 
+    tick: new Audio('https://www.soundjay.com/buttons/sounds/button-27.mp3')
 };
+
+// Garante que o áudio não trave o script se falhar
+const playSound = (sound) => {
+    sound.currentTime = 0;
+    sound.play().catch(e => console.warn("Áudio bloqueado ou indisponível:", e));
+};
+
+// Helper para definir raridade baseada no preço
+function getRarityInfo(priceStr) {
+    const price = window.utils.parsePrice(priceStr);
+    if (price < 50) return { class: 'rarity-gray', label: 'Comum' };
+    if (price <= 100) return { class: 'rarity-green', label: 'Incomum' };
+    if (price <= 150) return { class: 'rarity-purple', label: 'Raro' };
+    if (price < 300) return { class: 'rarity-gold', label: 'Épico' };
+    return { class: 'rarity-mythic', label: 'Mítico' };
+}
 
 function renderRoulette() {
     console.log("Sistema de Recompensas inicializado...");
@@ -89,17 +105,24 @@ function generateRouletteRail(winnerType, winningGame) {
         const card = document.createElement('div');
         card.className = 'roulette-card';
         
-        // O card de índice 55 será o nosso vencedor
-        if (i === 55) {
-            card.classList.add(winnerType + '-card');
-            card.innerHTML = `<span class="q-mark">?</span><span class="card-label">${winnerType === 'win' ? 'UPGRADE!' : (winnerType === 'stay' ? 'NADA' : 'PERDEU')}</span>`;
-        } else {
-            // Preenche o resto com pontos de interrogação aleatórios para efeito visual
-            const types = ['win', 'stay', 'lose'];
-            const randomType = types[Math.floor(Math.random() * types.length)];
-            card.classList.add(randomType + '-card');
-            card.innerHTML = `<span class="q-mark">?</span>`;
+        const isWinner = (i === 55);
+        // Se for o vencedor (card 55), aplica o tipo real. Se não, aleatório.
+        const type = isWinner ? winnerType : ['win', 'stay', 'lose'][Math.floor(Math.random() * 3)];
+        
+        // Limpa classes anteriores e aplica a nova
+        card.classList.remove('win-card', 'stay-card', 'lose-card');
+        
+        if (type === 'win') card.classList.add('win-card');
+        else if (type === 'stay') card.classList.add('stay-card');
+        else if (type === 'lose') card.classList.add('lose-card');
+
+        card.innerHTML = `<span class="q-mark">?</span>`;
+        if (isWinner) {
+            // Texto do selo baseado no resultado real
+            const label = winnerType === 'win' ? 'UPGRADE!' : (winnerType === 'stay' ? 'NADA' : 'PERDEU!');
+            card.innerHTML += `<span class="card-label">${label}</span>`;
         }
+
         rail.appendChild(card);
     }
 
@@ -113,17 +136,111 @@ function generateRouletteRail(winnerType, winningGame) {
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
 
-    // Tocar som de tick baseado no movimento (aproximado)
+    // Tocar som de tick
     let ticks = 0;
     const interval = setInterval(() => {
         ticks++;
-        // Toca o som de tick apenas se o áudio estiver carregado
+        playSound(sounds.tick);
+        if (ticks > 55) clearInterval(interval);
+    }, 110); 
+}
+
+window.openBox = async (tier) => {
+    if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
+    
+    const boxCosts = { 'bronze': 5, 'gold': 50 };
+    const cost = boxCosts[tier];
+
+    if (window.userBalance < cost) return window.showToast("Saldo insuficiente!", "error");
+
+    const spinBtn = document.querySelector(`.box-card.tier-${tier} .nav-button`);
+    spinBtn.disabled = true;
+
+    // 1. Selecionar ganhador
+    let pool = allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
+    if (tier === 'gold') pool = pool.filter(g => window.utils.parsePrice(g.currentPrice) > 50);
+    
+    const winningGame = pool[Math.floor(Math.random() * pool.length)];
+    const rarity = getRarityInfo(winningGame.currentPrice);
+
+    // 2. Preparar Trilho de Mistério
+    const rail = document.getElementById('roulette-rail');
+    rail.style.transition = 'none';
+    rail.style.transform = 'translateX(0px)';
+    rail.innerHTML = '';
+
+    for (let i = 0; i < 60; i++) {
+        const card = document.createElement('div');
+        card.className = 'roulette-card';
+        
+        let displayRarity;
+        if (i === 55) {
+            displayRarity = rarity;
+        } else {
+            const randomGame = pool[Math.floor(Math.random() * pool.length)];
+            displayRarity = getRarityInfo(randomGame.currentPrice);
+        }
+        
+        card.classList.add(displayRarity.class);
+        card.innerHTML = `<span class="q-mark">?</span>`;
+        rail.appendChild(card);
+    }
+
+    rail.offsetHeight;
+    const itemWidth = 130;
+    const containerWidth = document.querySelector('.roulette-wrapper').offsetWidth;
+    const targetPos = (55 * itemWidth) - (containerWidth / 2) + (itemWidth / 2);
+
+    playSound(sounds.spin);
+    
+    rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
+    rail.style.transform = `translateX(-${targetPos}px)`;
+
+    // Som de Tick
+    let ticks = 0;
+    const interval = setInterval(() => {
+        ticks++;
         const tickClone = sounds.tick.cloneNode();
         tickClone.volume = 0.5;
         tickClone.play().catch(() => {});
         if (ticks > 55) clearInterval(interval);
-    }, 110); 
-}
+    }, 110);
+
+    // 3. Revelação e Salvamento
+    setTimeout(async () => {
+        // Revelar o vencedor no trilho
+        const winnerCard = rail.children[55];
+        winnerCard.innerHTML = `
+            <img src="${winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">
+            <span class="card-label" style="background:rgba(0,0,0,0.8);">${winningGame.title}</span>
+        `;
+
+        try {
+            const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+            const newBalance = window.userBalance - cost;
+            
+            // Se o usuário já tiver o jogo, ele ganha o valor do jogo de volta como consolação
+            if (window.userLibrary.includes(winningGame.id)) {
+                const refund = window.utils.parsePrice(winningGame.currentPrice) * 0.5;
+                await userRef.update({ balance: newBalance + refund });
+                window.showToast(`Você já tinha o jogo! Recebeu R$ ${refund.toFixed(2)} de compensação.`, "info");
+            } else {
+                await userRef.update({
+                    balance: newBalance,
+                    library: firebase.firestore.FieldValue.arrayUnion(winningGame.id)
+                });
+                window.showToast(`PARABÉNS! Você ganhou ${winningGame.title}!`, "success");
+            }
+
+            await window.loadUserData(window.auth.currentUser.uid);
+            renderRoulette();
+        } catch (e) {
+            console.error(e);
+        } finally {
+            spinBtn.disabled = false;
+        }
+    }, 7200);
+};
 
 async function startUpgradeSpin() {
     if (!selectedGameToBet || !window.auth.currentUser) return;
@@ -136,9 +253,7 @@ async function startUpgradeSpin() {
     spinBtn.disabled = true;
     spinBtn.textContent = "Girando...";
     
-    // Tocar som de início de giro
-    sounds.spin.currentTime = 0;
-    sounds.spin.play().catch(e => console.warn("Áudio bloqueado pelo navegador:", e));
+    playSound(sounds.spin);
 
     // 1. Probabilidades baseadas no nível atual
     let winProb, stayProb; // O resto é a probabilidade de perder
@@ -178,11 +293,21 @@ async function startUpgradeSpin() {
                 window.showToast("A roleta parou no meio... Você manteve seu jogo.", "info");
             } 
             else {
-                // PERDA: Remove o jogo da biblioteca e apaga os upgrades dele
+                // Lógica de Remoção Corrigida
+                const idParaRemover = Number(gameId);
+                
+                // Atualiza o banco (tenta remover tanto como número quanto string por segurança)
                 await userRef.update({
-                    library: firebase.firestore.FieldValue.arrayRemove(gameId),
+                    library: firebase.firestore.FieldValue.arrayRemove(idParaRemover),
                     [`upgrades.${gameId}`]: firebase.firestore.FieldValue.delete()
                 });
+                await userRef.update({
+                    library: firebase.firestore.FieldValue.arrayRemove(String(gameId))
+                });
+
+                // Remove localmente para refletir na UI imediatamente
+                window.userLibrary = window.userLibrary.filter(id => Number(id) !== idParaRemover);
+                
                 window.showToast("QUE AZAR! Você perdeu o jogo na aposta.", "error");
             }
             
