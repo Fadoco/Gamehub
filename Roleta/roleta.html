@@ -44,6 +44,8 @@
             </div>
             
             <div class="roulette-wrapper">
+                <div class="casino-lights top"></div>
+                <div class="casino-lights bottom"></div>
                 <div class="roulette-selector"></div>
                 <div class="roulette-container" id="roulette-rail">
                     <div class="roulette-placeholder">Carregando itens...</div>
@@ -109,7 +111,7 @@
     </div>
 
     <!-- Modal de Resultado Final (Drama Reveal) -->
-    <div id="result-reveal-modal" class="modal" style="display: none; z-index: 3000;">
+    <div id="result-reveal-modal" class="modal" style="display: none; z-index: 3000;" onclick="closeRevealModal()">
         <div class="modal-content reveal-card-content">
             <h2 id="reveal-result-title">RESULTADO!</h2>
             <div id="reveal-card-target"></div>

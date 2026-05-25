@@ -1,103 +1,129 @@
 /* Estilos específicos da Roleta e Caixas */
 
-/* Correção Crítica: Tamanho dos Jogos no Inventário */
-#bet-inventory-grid.inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
-    gap: 12px !important;
-    max-height: 350px;
-    overflow-y: auto;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-}
-
-#bet-inventory-grid .bet-item {
-    width: 110px !important;
-    height: auto !important;
-    background: var(--secondary);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 2px solid transparent;
-}
-
-#bet-inventory-grid .bet-item img {
-    width: 110px !important;
-    height: 110px !important;
-    object-fit: cover !important;
-    display: block !important;
-}
-
 .rewards-section {
-    background: rgba(255, 255, 255, 0.03);
+    background: radial-gradient(circle at top, rgba(0, 120, 242, 0.15) 0%, rgba(18, 18, 18, 1) 100%);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 40px;
+    border-radius: 20px;
+    padding: 50px 40px;
     margin-bottom: 40px;
     text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
+
+.section-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .roulette-wrapper {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 780px;
     margin: 0 auto 30px;
     overflow: hidden;
-    background: #181818;
-    border: 2px solid var(--secondary);
-    border-radius: 8px;
+    background: #000;
+    border: 4px solid #222;
+    border-radius: 15px;
     height: 150px;
+    box-shadow: inset 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(0, 120, 242, 0.3);
 }
+
+/* Luzes de Cassino */
+.casino-lights {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 12;
+}
+
+.casino-lights.top { top: 2px; }
+.casino-lights.bottom { bottom: 2px; }
+
+.casino-lights::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, var(--accent) 20%, transparent 20%);
+    background-size: 20px 4px;
+    animation: lights-flow 2s linear infinite;
+}
+
+@keyframes lights-flow {
+    from { background-position: 0 0; }
+    to { background-position: 40px 0; }
+}
+
 .roulette-selector {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 4px;
+    width: 3px;
     height: 100%;
-    background: var(--accent);
+    background: #fff;
     z-index: 10;
-    box-shadow: 0 0 15px var(--accent);
+    box-shadow: 0 0 20px #fff, 0 0 40px var(--accent);
 }
+
 .roulette-container {
     display: flex;
     align-items: center;
     height: 100%;
     transition: transform 7s cubic-bezier(0.15, 0, 0.05, 1);
     will-change: transform;
-    padding-left: 0;
+    padding: 0 20px;
 }
 
 .roulette-card {
-    min-width: 120px;
-    max-width: 120px;
-    height: 120px;
+    width: 120px;
+    height: 110px;
     margin: 0 5px;
-    border-radius: 6px;
-    background: #1a1a1a;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #252525, #0a0a0a);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid #333;
     flex-shrink: 0;
     position: relative;
+    transition: all 0.3s ease;
 }
 
-/* Cores Corrigidas: Dourado (Win), Cinza (Stay), Vermelho (Lose) */
-.win-card { border: 3px solid #ffd700 !important; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.3); }
-.stay-card { border: 3px solid #808080 !important; box-shadow: none; }
-.lose-card { border: 3px solid #ff4d4d !important; box-shadow: inset 0 0 15px rgba(255, 77, 77, 0.3); }
+/* Cores Fixas via Classes e Data Attributes para evitar inversão */
+.win-card, .roulette-card[data-card-id="2"] { 
+    border-color: #ffd700 !important;
+    background: linear-gradient(145deg, #2a2200, #000);
+    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.3); 
+}
+.stay-card, .roulette-card[data-card-id="0"] { 
+    border-color: #444 !important; 
+    opacity: 0.7;
+}
+.lose-card, .roulette-card[data-card-id="1"] { 
+    border-color: #ff4d4d !important;
+    background: linear-gradient(145deg, #2a0000, #000);
+    box-shadow: inset 0 0 20px rgba(255, 77, 77, 0.2), 0 0 15px rgba(255, 77, 77, 0.3); 
+}
 
-.win-card .q-mark { color: #ffd700 !important; }
-.stay-card .q-mark { color: #808080 !important; }
-.lose-card .q-mark { color: #ff4d4d !important; }
+.win-card .q-mark, .roulette-card[data-card-id="2"] .q-mark { color: #ffd700 !important; text-shadow: 0 0 15px #ffd700; }
+.stay-card .q-mark, .roulette-card[data-card-id="0"] .q-mark { color: #444 !important; }
+.lose-card .q-mark, .roulette-card[data-card-id="1"] .q-mark { color: #ff4d4d !important; text-shadow: 0 0 15px #ff4d4d; }
 
 /* Raridades por Valor (Bordas e Sombras) */
-.rarity-gray { border-color: #808080; box-shadow: inset 0 0 15px rgba(128, 128, 128, 0.2); }
-.rarity-green { border-color: #2ecc71; box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.2); }
-.rarity-purple { border-color: #9b59b6; box-shadow: inset 0 0 15px rgba(155, 89, 182, 0.2); }
-.rarity-gold { border-color: #f1c40f; box-shadow: inset 0 0 15px rgba(241, 196, 15, 0.2); }
+.rarity-gray { border-color: #808080 !important; }
+.rarity-green { border-color: #2ecc71 !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3); }
+.rarity-purple { border-color: #9b59b6 !important; box-shadow: 0 0 15px rgba(155, 89, 182, 0.3); }
+.rarity-gold { border-color: #f1c40f !important; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
 
 /* Raridade Mítica (RGB Animado) */
 .rarity-mythic {
@@ -121,11 +147,6 @@
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Overrides para os cards vencedores da Roleta de Upgrade */
-.win-card .q-mark { color: #ffd700; }
-.stay-card .q-mark { color: #c0c0c0; }
-.lose-card .q-mark { color: #ff4d4d; }
-
 .card-label {
     position: absolute;
     bottom: 5px;
@@ -140,6 +161,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 5;
 }
 
 .boxes-grid {
@@ -148,39 +170,58 @@
     gap: 20px;
 }
 
-/* --- Estilos para o Inventário (Correção do tamanho dos jogos) --- */
+/* --- Estilos para o Inventário Polido --- */
 .inventory-section {
     margin-top: 40px;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
 }
 
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fill, 110px);
+    justify-content: center;
     gap: 12px;
-    max-height: 350px;
+    max-height: 400px;
     overflow-y: auto;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bet-item {
+    width: 110px;
     cursor: pointer;
-    transition: var(--transition);
-    background: var(--secondary);
-    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #1a1a1a;
+    border-radius: 10px;
     overflow: hidden;
-    border: 2px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.bet-item:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.bet-item.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent);
+    background: rgba(0, 120, 242, 0.1);
 }
 
 .bet-item img {
-    width: 100%;
+    width: 110px;
+    height: 110px;
     aspect-ratio: 1/1;
     object-fit: cover;
+    filter: brightness(0.9);
 }
 
 .bet-item-info {
@@ -199,23 +240,33 @@
     text-overflow: ellipsis;
     color: var(--text-main);
 }
-
 .bet-item-price {
     font-size: 10px;
     color: var(--accent);
-}
-
-.bet-item.selected {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
+    font-weight: bold;
 }
 
 .box-card {
     background: var(--secondary);
     padding: 30px 20px;
     border-radius: 8px;
-    border-bottom: 4px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
 }
+
+.box-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+}
+
+.box-card:hover::before { left: 100%; }
+
 .tier-gold { border-color: #f1c40f; }
 .tier-bronze { border-color: #cd7f32; }
 

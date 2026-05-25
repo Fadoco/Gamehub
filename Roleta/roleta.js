@@ -9,6 +9,13 @@ const sounds = {
     tick: new Audio('../assets/sounds/tick.mp3')
 };
 
+// Mapeamento de IDs para Tipos
+const CARD_TYPES = {
+    STAY: 0, // Cinza - Nada
+    LOSE: 1, // Vermelho - Perda
+    WIN: 2   // Dourado - Ganhou
+};
+
 // Garante que o áudio não trave o script se falhar
 const playSound = (sound) => {
     if (!sound) return;
@@ -101,40 +108,43 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
     rail.style.transform = 'translateX(0px)';
     rail.innerHTML = '';
 
-    const totalItems = 60; // Quantidade de cards para dar sensação de velocidade
-    const itemWidth = 130; // largura do card (120) + margem (10)
+    const totalItems = 60;
+    const itemWidth = 130;
+
+    // Converte tipo string para ID numérico se necessário
+    const winnerId = winnerType === 'win' ? CARD_TYPES.WIN : (winnerType === 'stay' ? CARD_TYPES.STAY : CARD_TYPES.LOSE);
 
     for (let i = 0; i < totalItems; i++) {
         const card = document.createElement('div');
+        const isWinner = (i === 40);
+        
+        // Escolhe um ID aleatório para os outros cards
+        const cardId = isWinner ? winnerId : Math.floor(Math.random() * 3);
+        
         card.className = 'roulette-card';
+        card.setAttribute('data-card-id', cardId);
 
-        const isWinner = (i === 40); // Mudamos para 40 para garantir que o scroll pare bem
-        const type = isWinner ? winnerType : ['win', 'stay', 'lose'][Math.floor(Math.random() * 3)];
-
-        if (type === 'win') card.className = 'roulette-card win-card';
-        else if (type === 'stay') card.className = 'roulette-card stay-card';
-        else card.className = 'roulette-card lose-card';
+        // Aplica a classe CSS baseada no ID
+        if (cardId === CARD_TYPES.WIN) card.classList.add('win-card');
+        else if (cardId === CARD_TYPES.STAY) card.classList.add('stay-card');
+        else card.classList.add('lose-card');
 
         card.innerHTML = `<span class="q-mark">?</span>`;
         if (isWinner) {
-            const label = winnerType === 'win' ? 'UPGRADE!' : (winnerType === 'stay' ? 'NADA' : 'PERDEU!');
+            const label = cardId === CARD_TYPES.WIN ? 'UPGRADE!' : (cardId === CARD_TYPES.STAY ? 'NADA' : 'PERDEU!');
             card.innerHTML += `<span class="card-label">${label}</span>`;
         }
 
         rail.appendChild(card);
     }
 
-    // Força reflow para o navegador notar a mudança de 'transition: none'
     rail.offsetHeight; 
-
-    // Calcula a parada exata (centralizado no seletor)
     const wrapper = rail.parentElement;
     const targetPos = (40 * itemWidth) - (wrapper.offsetWidth / 2) + (itemWidth / 2);
 
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
 
-    // Tocar som de tick
     let ticks = 0;
     const interval = setInterval(() => {
         ticks++;
@@ -143,6 +153,7 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
     }, 110); 
 }
 
+let revealTimer;
 window.showRevealModal = (cardElement, titleText) => {
     const target = document.getElementById('reveal-card-target');
     const title = document.getElementById('reveal-result-title');
@@ -157,10 +168,15 @@ window.showRevealModal = (cardElement, titleText) => {
     
     title.textContent = titleText;
     modal.style.display = 'flex';
+
+    // Fecha automaticamente após 5 segundos
+    clearTimeout(revealTimer);
+    revealTimer = setTimeout(closeRevealModal, 5000);
 };
 
 window.closeRevealModal = () => {
     document.getElementById('result-reveal-modal').style.display = 'none';
+    clearTimeout(revealTimer);
 };
 
 window.closeBoxModal = () => {
