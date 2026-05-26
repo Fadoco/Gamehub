@@ -1,88 +1,105 @@
 /**
- * Lógica específica para a página inicial (renderização da grid de jogos).
+ * Lógica de renderização da Home Premium
  */
 
 function renderGames(games) {
-    const storeSections = document.getElementById('store-sections');
-    if (!storeSections) return;
-    storeSections.innerHTML = ''; // Limpa o "Carregando..."
+    if (!games || games.length === 0) return;
 
-    // 1. Criar Seção de Destaques (Sempre no topo)
-    const featured = games.filter(g => g.featured);
-    if (featured.length > 0) {
-        createSection("Jogos em Destaque", featured, storeSections);
+    // 1. Configurar Hero (Destaques)
+    const featured = games.filter(g => g.featured).slice(0, 5);
+    setupHero(featured);
+
+    // 2. Configurar Promoções (Jogos com desconto)
+    const discounted = games.filter(g => g.discount > 0).slice(0, 6);
+    const promoContainer = document.getElementById('promo-cards-container');
+    if (promoContainer) {
+        promoContainer.innerHTML = discounted.map(game => `
+            <article class="promo-card" onclick="window.location.href='html/jogo.html?id=${game.id}'">
+                <img src="${game.image}" class="promo-card__thumb" style="object-fit: cover;">
+                <div class="promo-card__meta">
+                    <strong>${game.title}</strong>
+                    <span class="tag">-${game.discount}%</span>
+                    <div class="price-row">
+                        <span class="old-price">${game.oldPrice}</span>
+                        <strong>${game.currentPrice}</strong>
+                    </div>
+                </div>
+            </article>
+        `).join('');
     }
 
-    // 2. Sistema Totalmente Automático: Extrai todas as tags únicas do catálogo
-    const allTags = games.flatMap(game => game.tags);
-    const uniqueCategories = [...new Set(allTags)].sort();
-    
-    // Melhoria: Ordena as categorias pela popularidade (quantos jogos ela tem)
-    // e filtra para mostrar apenas categorias que tenham pelo menos 3 jogos
-    const filteredCategories = uniqueCategories.map(tag => ({
-        name: tag,
-        count: games.filter(g => g.tags.includes(tag)).length
-    }))
-    .filter(cat => cat.count >= 3)
-    .sort((a, b) => b.count - a.count);
+    // 3. Configurar Listas (Charts)
+    renderChartList('chart-best-sellers', games.slice(10, 15));
+    renderChartList('chart-free-games', games.filter(g => window.utils.parsePrice(g.currentPrice) === 0).slice(0, 5), true);
+    renderChartList('chart-new-releases', games.slice(0, 5));
+}
 
-    // Executa a criação de cada seção baseada nas categorias filtradas
-    filteredCategories.forEach(cat => {
-        const filtered = games.filter(g => g.tags.includes(cat.name));
-        createSection(`Jogos de ${cat.name}`, filtered, storeSections);
+function setupHero(featuredGames) {
+    const navList = document.getElementById('hero-nav-list');
+    if (!navList || featuredGames.length === 0) return;
+
+    // Renderiza lista lateral
+    navList.innerHTML = featuredGames.map((game, index) => `
+        <div class="hero-list__item ${index === 0 ? 'active' : ''}" data-index="${index}">
+            <img src="${game.image}" class="thumb" style="width: 50px; height: 65px; object-fit: cover; border-radius: 8px;">
+            <div>
+                <span>${game.title}</span>
+                <small>${game.tags[0]}</small>
+            </div>
+        </div>
+    `).join('');
+
+    // Função para atualizar o card principal
+    const updateMainCard = (game) => {
+        document.getElementById('hero-title').textContent = game.title;
+        document.getElementById('hero-description').textContent = game.Description;
+        document.getElementById('hero-current-price').textContent = game.currentPrice;
+        document.getElementById('hero-old-price').textContent = game.oldPrice || "";
+        document.getElementById('hero-discount').textContent = `-${game.discount}%`;
+        document.getElementById('hero-discount').style.display = game.discount > 0 ? 'block' : 'none';
+        document.getElementById('hero-main-card').style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${game.image}')`;
+        document.getElementById('hero-main-card').style.backgroundSize = 'cover';
+        document.getElementById('hero-main-card').style.backgroundPosition = 'center';
+        
+        document.getElementById('hero-buy-btn').onclick = () => window.location.href = `html/jogo.html?id=${game.id}`;
+        document.getElementById('hero-cart-btn').onclick = () => window.toggleCart(game.id);
+    };
+
+    // Inicializa primeiro jogo
+    updateMainCard(featuredGames[0]);
+
+    // Evento de clique na navegação lateral
+    document.querySelectorAll('.hero-list__item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.hero-list__item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            updateMainCard(featuredGames[this.dataset.index]);
+        });
     });
 }
 
-/**
- * Cria dinamicamente o HTML de uma seção (Título + Grid)
- */
-function createSection(title, games, parentContainer) {
-    const section = document.createElement('section');
-    section.className = 'store-section';
-    section.style.marginTop = '40px';
-    
-    section.innerHTML = `
-        <h2>${title}</h2>
-        <div class="game-grid"></div>
-        <div class="section-footer" style="text-align: center; margin-top: 20px;"></div>
-    `;
-    
-    parentContainer.appendChild(section);
-    const grid = section.querySelector('.game-grid');
-    const footer = section.querySelector('.section-footer');
-    
-    setupPagination(games, grid, footer);
+function renderChartList(elementId, games, isFree = false) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+
+    container.innerHTML = games.map(game => `
+        <li onclick="window.location.href='html/jogo.html?id=${game.id}'" style="cursor:pointer">
+            <img src="${game.image}" class="chart-thumb" style="object-fit: cover;">
+            <div>
+                <strong>${game.title}</strong>
+                ${game.discount > 0 ? `<span class="tag">-${game.discount}%</span>` : 
+                  (isFree ? '<span class="status">Gratuito</span>' : '')}
+            </div>
+            ${!isFree ? `<span class="price">${game.currentPrice}</span>` : ''}
+        </li>
+    `).join('');
 }
 
-/**
- * Controla a exibição em lotes de 10 jogos
- */
-function setupPagination(games, grid, footer) {
-    let displayedCount = 0;
-    const limit = 10;
-    footer.innerHTML = '';
-
-    const showNextBatch = () => {
-        const batch = games.slice(displayedCount, displayedCount + limit);
-        renderToContainer(batch, grid, displayedCount === 0);
-        displayedCount += batch.length;
-
-        if (displayedCount >= games.length) {
-            footer.innerHTML = '';
-        } else {
-            footer.innerHTML = `<button class="btn-see-more">Ver Mais</button>`;
-            footer.querySelector('.btn-see-more').onclick = showNextBatch;
-        }
-    };
-    showNextBatch();
-}
-
-function createFooter(parent) {
-    let footer = parent.querySelector('.section-footer');
-    if (!footer) {
-        footer = document.createElement('div');
-        footer.className = 'section-footer';
-        parent.appendChild(footer);
+// Atualiza o badge do carrinho no header
+window.addEventListener('load', () => {
+    const badge = document.getElementById('cart-count-badge');
+    if (badge) {
+        const count = window.userCart ? window.userCart.length : 0;
+        badge.textContent = count > 0 ? `(${count})` : "";
     }
-    return footer;
-}
+});

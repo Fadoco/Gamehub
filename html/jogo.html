@@ -17,40 +17,39 @@
     <script src="../java/global.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <div class="primary-nav">
-                    <div class="logo" onclick="window.location.href='../index.html'">GameHub</div>
-                    <a href="../index.html" class="nav-button">Loja</a>
-                    <a href="#" id="nav-library" class="nav-button">Biblioteca</a>
-                    <a href="../Roleta/roleta.html" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
-                </div>
-                
-                <div class="secondary-nav">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Pesquisar">
-                    </div>
-
-                    <a href="#" id="nav-cart" class="nav-button icon-only" title="Carrinho">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                    
-                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
-                        <i class="fas fa-wallet"></i>
-                        <span id="wallet-amount">R$ 0,00</span>
-                    </div>
-                    
-                    <div class="user-profile" id="user-menu" style="display: none;">
-                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
-                        <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
-                        <button id="btn-login" class="nav-button" style="background: none; border: 1px solid var(--accent); padding: 5px 10px; border-radius: 4px;">Entrar</button>
-                        <button id="btn-logout" class="nav-button" style="display: none; font-size: 10px; color: var(--accent);">Sair</button>
-                    </div>
-                </div>
+    <header class="topbar">
+        <div class="topbar__left">
+            <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
+            <nav class="topbar__menu">
+                <a href="../index.html">Loja</a>
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="../Roleta/roleta.html">Roleta</a>
+                <a href="ranking.html">Ranking</a>
             </nav>
         </div>
+        <div class="topbar__actions">
+            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                <i class="fas fa-coins"></i>
+                <span id="wallet-amount">R$ 0,00</span>
+            </div>
+            
+            <div class="user-profile" id="user-menu" style="display: none;">
+                <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
+                <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer;">
+                <button id="btn-login" class="btn btn-primary">Entrar</button>
+                <button id="btn-logout" class="btn btn-ghost" style="display: none;">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <header class="main-header">
+        <nav class="section-nav">
+            <a href="../index.html">Descobrir</a>
+            <a href="ranking.html">Ranking</a>
+            <a href="carrinho.html">Carrinho <span id="cart-count-badge"></span></a>
+            <a href="perfil.html">Perfil</a>
+            <a href="admin.html" id="nav-admin-link" style="display: none;">Adm</a>
+        </nav>
     </header>
 
     <main class="container">

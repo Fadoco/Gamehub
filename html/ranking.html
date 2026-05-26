@@ -5,33 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking de Usuários - GameHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel=\"stylesheet\" href=\"../css/style-global.css\">
+    <link rel="stylesheet" href="../css/style-global.css">
     <style>
         main { padding-top: 40px; min-height: 80vh; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo" onclick="window.location.href='../index.html'" style="cursor:pointer">GAMEHUB</div>
-                <div class="nav-items">
-                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
-                    <a href="biblioteca.html" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
-                    <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
-                    
-                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
-                        <i class="fas fa-wallet"></i>
-                        <span id="wallet-amount">R$ 0,00</span>
-                    </div>
-                    <div class="user-profile" id="user-menu" style="display: none;">
-                        <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Perfil">
-                        <button id="btn-login" class="nav-button">Entrar</button>
-                        <button id="btn-logout" class="nav-button" style="display:none">Sair</button>
-                    </div>
-                </div>
+    <header class="topbar">
+        <div class="topbar__left">
+            <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
+            <nav class="topbar__menu">
+                <a href="../index.html">Loja</a>
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="../Roleta/roleta.html">Roleta</a>
+                <a href="ranking.html" class="active">Ranking</a>
             </nav>
         </div>
+        <div class="topbar__actions">
+            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                <i class="fas fa-coins"></i>
+                <span id="wallet-amount">R$ 0,00</span>
+            </div>
+            
+            <div class="user-profile" id="user-menu" style="display: none;">
+                <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
+                <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer;">
+                <button id="btn-login" class="btn btn-primary">Entrar</button>
+                <button id="btn-logout" class="btn btn-ghost" style="display: none;">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <header class="main-header">
+        <nav class="section-nav">
+            <a href="../index.html">Descobrir</a>
+            <a class="active" href="ranking.html">Ranking</a>
+            <a href="carrinho.html">Carrinho <span id="cart-count-badge"></span></a>
+            <a href="biblioteca.html">Biblioteca</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="admin.html" id="nav-admin-link" style="display: none;">Adm</a>
+        </nav>
     </header>
 
     <main class="container">

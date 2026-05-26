@@ -5,9 +5,7 @@
 let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 
 // Detecta uma única vez se estamos em uma subpasta
-const pathParts = window.location.pathname.split('/');
-window.IS_SUBFOLDER = pathParts.length > 2 && !window.location.pathname.endsWith('index.html');
-const IS_SUBFOLDER = window.IS_SUBFOLDER;
+window.IS_SUBFOLDER = window.location.pathname.includes('/html/') || window.location.pathname.includes('/Roleta/');
 
 // Utilitários Globais
 window.utils = {
@@ -21,6 +19,10 @@ window.utils = {
     getUserFriendlyName: (user) => {
         if (!user) return 'Usuário';
         return user.displayName || (user.email ? user.email.split('@')[0] : 'Usuário');
+    },
+    getPath: (file) => {
+        if (!window.IS_SUBFOLDER) return file.includes('html/') || file.includes('Roleta/') ? file : `html/${file}`;
+        return file.replace('html/', '').replace('../', '');
     }
 };
 
@@ -31,7 +33,7 @@ window.utils = {
 window.renderToContainer = (games, container, clear = true) => {
     if (!container) return;
 
-    // Define o caminho correto para a página de detalhes do jogo independente de onde estamos
+    const IS_SUBFOLDER = window.IS_SUBFOLDER;
     let gamePagePath = 'html/jogo.html';
     if (IS_SUBFOLDER) {
         if (window.location.pathname.includes('/html/')) {
@@ -96,7 +98,7 @@ window.renderToContainer = (games, container, clear = true) => {
 
 async function fetchGamesData() {
     try {
-        // Tenta carregar do Firestore primeiro (Melhor Performance e Escala)
+        const IS_SUBFOLDER = window.IS_SUBFOLDER;
         if (window.db) {
             const snapshot = await window.db.collection('games').get();
             if (!snapshot.empty) {
@@ -116,7 +118,7 @@ async function fetchGamesData() {
         }
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
-        allGamesData = allGamesData.map(game => { // Usar IS_SUBFOLDER aqui
+        allGamesData = allGamesData.map(game => { 
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
             
@@ -144,7 +146,7 @@ async function fetchGamesData() {
  * Decide qual função de renderização chamar com base na página atual
  */
 function routePageRendering() {
-    const path = window.location.pathname;
+    const path = window.location.pathname.toLowerCase();
     
     const routes = [
         { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [allGamesData] },
@@ -171,6 +173,9 @@ function routePageRendering() {
         renderGames(allGamesData);
     }
 }
+
+// Atalho global para forçar atualização da UI
+window.refreshUI = routePageRendering;
 
 /**
  * Inicializa o botão "Voltar ao Topo" globalmente

@@ -129,14 +129,8 @@ window.customConfirm = (message, onConfirm) => {
 auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin-user-detail.html');
-    const isWelcomePage = window.location.pathname.includes('welcome.html');
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user.email.toLowerCase());
-    const isHtmlFolder = window.location.pathname.includes('/html/');
-    // Detecção robusta de subpasta para redirecionamento
-    const isActuallySubfolder = window.location.pathname.split('/').length > 2;
-
-    // Verifica se o bypass de login está ativo no localStorage
     const isSkipActive = localStorage.getItem('skipLogin') === 'true';
 
     if (!user) {
@@ -480,6 +474,12 @@ function checkUserSession(user) { // isAdmin é calculado aqui dentro
 
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     const isAdmin = user && adminList.includes(user?.email?.toLowerCase());
+
+    // Atualiza visibilidade do link ADM estático se existir
+    const navAdminLink = document.getElementById('nav-admin-link');
+    if (navAdminLink) {
+        navAdminLink.style.display = isAdmin ? 'inline-block' : 'none';
+    }
 
     if (user) {
         const displayName = window.utils.getUserFriendlyName(user);
