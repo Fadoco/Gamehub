@@ -7,7 +7,7 @@ let targetUserData = null;
 
 async function initUserDetail() {
     if (!targetUid) return window.location.href = 'admin.html';
-    if (!window.db || !allGamesData.length) return setTimeout(initUserDetail, 500);
+    if (!window.db || !window.allGamesData.length) return setTimeout(initUserDetail, 500);
 
     // Escuta mudanças em tempo real no usuário selecionado
     window.db.collection('users').doc(targetUid).onSnapshot(doc => {
@@ -45,7 +45,7 @@ function renderUserPanel() {
         libraryDiv.innerHTML = "<p>Biblioteca vazia.</p>";
     } else {
         libraryDiv.innerHTML = libIds.map(id => {
-            const game = allGamesData.find(g => String(g.id) === String(id));
+            const game = window.allGamesData.find(g => String(g.id) === String(id));
             return `
                 <div class="user-admin-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
                     <div>
@@ -102,7 +102,7 @@ window.removeGameFromUser = async (gameId) => {
         const newLib = (targetUserData.library || []).filter(id => id !== gameId);
 
         // Encontra o título do jogo para removê-lo também do histórico (que usa strings de título)
-        const game = allGamesData.find(g => String(g.id) === String(gameId));
+        const game = window.allGamesData.find(g => String(g.id) === String(gameId));
         const gameTitle = game ? game.title : null;
 
         let newHistory = (targetUserData.history || []).map(order => ({

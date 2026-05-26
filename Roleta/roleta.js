@@ -31,10 +31,10 @@ function renderRoulette() {
     console.log("Sistema de Recompensas inicializado...");
     
     const inventoryGrid = document.getElementById('bet-inventory-grid');
-    if (!inventoryGrid || !allGamesData || allGamesData.length === 0) return;
+    if (!inventoryGrid || !window.allGamesData || window.allGamesData.length === 0) return;
 
     // Filtrar jogos da biblioteca que NÃO são gratuitos (Preço > 0)
-    const bettableGames = allGamesData.filter(game => {
+    const bettableGames = window.allGamesData.filter(game => {
         const isOwned = window.userLibrary.some(libId => String(libId) === String(game.id));
         const isNotFree = window.utils.parsePrice(game.currentPrice) > 0;
         return isOwned && isNotFree;
@@ -57,7 +57,7 @@ function renderRoulette() {
 }
 
 window.selectGameForBet = (gameId) => {
-    const game = allGamesData.find(g => String(g.id) === String(gameId));
+    const game = window.allGamesData.find(g => String(g.id) === String(gameId));
     if (!game) return;
     const currentLevel = window.userUpgrades[game.id] || 0;
 
@@ -192,7 +192,7 @@ window.openBox = async (tier) => {
     document.getElementById('modal-box-title').textContent = `Abrindo Caixa ${tier.toUpperCase()}...`;
 
     // 1. Selecionar ganhador
-    let pool = allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
+    let pool = window.allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
     if (tier === 'gold') pool = pool.filter(g => window.utils.parsePrice(g.currentPrice) > 50);
     
     const winningGame = pool[Math.floor(Math.random() * pool.length)];

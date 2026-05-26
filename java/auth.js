@@ -238,11 +238,11 @@ async function loadUserData(uid) {
 
 // Função auxiliar para atualizar a interface da página atual sem recarregar
 function refreshCurrentPageUI() {
-    if (typeof allGamesData !== 'undefined' && allGamesData.length > 0) {
+    if (window.allGamesData && window.allGamesData.length > 0) {
         if (window.location.pathname.includes('jogo.html') && typeof renderGameDetails === 'function') {
-            renderGameDetails(allGamesData);
+            renderGameDetails(window.allGamesData);
         } else if (window.location.pathname.includes('busca.html') && typeof renderSearchResults === 'function') {
-            renderSearchResults(allGamesData);
+            renderSearchResults(window.allGamesData);
         } else if (window.location.pathname.includes('carrinho.html') && typeof renderCart === 'function') {
             renderCart();
         } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
@@ -250,7 +250,7 @@ function refreshCurrentPageUI() {
         } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
             // renderProfile() é chamado por initProfilePage no perfil.js, que gerencia o UID da URL
         } else if (typeof renderGames === 'function') {
-            renderGames(allGamesData);
+            renderGames(window.allGamesData);
         }
     }
 }
@@ -639,7 +639,7 @@ window.purchaseLibrary = async () => {
     }
 
     // Calcula o total da compra baseado nos dados globais
-    const cartGames = allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
+    const cartGames = window.allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
     const totalPurchase = cartGames.reduce((acc, game) => acc + utils.parsePrice(game.currentPrice), 0);
 
     if (window.userBalance < totalPurchase) {

@@ -2,7 +2,7 @@
  * Lógica global para carregar dados e inicializar funcionalidades comuns.
  */
 
-let allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
+window.allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 
 // Detecta uma única vez se estamos em uma subpasta
 window.IS_SUBFOLDER = window.location.pathname.includes('/html/') || window.location.pathname.includes('/Roleta/');
@@ -102,7 +102,7 @@ async function fetchGamesData() {
         if (window.db) {
             const snapshot = await window.db.collection('games').get();
             if (!snapshot.empty) {
-                allGamesData = snapshot.docs.map(doc => ({
+                window.allGamesData = snapshot.docs.map(doc => ({
                     firestoreId: doc.id,
                     ...doc.data()
                 }));
@@ -111,14 +111,14 @@ async function fetchGamesData() {
         }
 
         // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
-        if (allGamesData.length === 0) {
+        if (window.allGamesData.length === 0) {
             const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
             const response = await fetch(jsonPath);
-            allGamesData = await response.json();
+            window.allGamesData = await response.json();
         }
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
-        allGamesData = allGamesData.map(game => { 
+        window.allGamesData = window.allGamesData.map(game => { 
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
             
@@ -149,8 +149,8 @@ function routePageRendering() {
     const path = window.location.pathname.toLowerCase();
     
     const routes = [
-        { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [allGamesData] },
-        { file: 'busca.html', func: typeof renderSearchResults === 'function' ? renderSearchResults : null, args: [allGamesData] },
+        { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [window.allGamesData] },
+        { file: 'busca.html', func: typeof renderSearchResults === 'function' ? renderSearchResults : null, args: [window.allGamesData] },
         { file: 'carrinho.html', func: typeof renderCart === 'function' ? renderCart : null },
         { file: 'biblioteca.html', func: typeof renderLibrary === 'function' ? renderLibrary : null },
         { file: 'historico.html', func: typeof renderHistory === 'function' ? renderHistory : null },
@@ -161,7 +161,7 @@ function routePageRendering() {
     const activeRoute = routes.find(r => path.includes(r.file));
 
     // Só executa renderização se allGamesData foi carregado
-    if (!allGamesData || allGamesData.length === 0) {
+    if (!window.allGamesData || window.allGamesData.length === 0) {
         console.warn("Dados dos jogos ainda não foram carregados. Renderização adiada.");
         return;
     }
@@ -170,7 +170,7 @@ function routePageRendering() {
         if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
         else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);
     } else if (typeof renderGames === 'function') {
-        renderGames(allGamesData);
+        renderGames(window.allGamesData);
     }
 }
 
