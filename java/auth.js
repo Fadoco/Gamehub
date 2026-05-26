@@ -434,13 +434,6 @@ function checkUserSession(user) {
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
-
-    // Remover links redundantes da Topbar
-    document.querySelectorAll('.topbar__menu a').forEach(link => {
-        const text = link.textContent.trim().toLowerCase();
-        if (text === "loja" || text === "descobrir") link.remove();
-    });
-
     // Limpar sub-header (section-nav) deixando apenas o botão aleatório
     const sectionNav = document.querySelector('.section-nav');
     if (sectionNav) {
@@ -465,44 +458,11 @@ function checkUserSession(user) {
         if (btnLogin) btnLogin.style.display = 'none';
 
         if (userMenu) {
-            userMenu.style.display = 'flex';
-            userMenu.style.width = '100%';
+            userMenu.style.display = 'flex'; // Garante que o menu esteja visível
+            userMenu.style.width = 'auto'; // Ajusta a largura para o conteúdo dinâmico
             userMenu.innerHTML = ''; // Limpa para reconstruir na ordem correta
 
-            // 1. Biblioteca
-            const libBtn = document.createElement('a');
-            libBtn.className = 'nav-button';
-            libBtn.innerHTML = '<i class="fas fa-book"></i> <span>Biblioteca</span>';
-            libBtn.onclick = () => window.location.href = getPath('biblioteca.html');
-            userMenu.appendChild(libBtn);
-
-            // 2. Roleta
-            const roulBtn = document.createElement('a');
-            roulBtn.className = 'nav-button roulette';
-            roulBtn.innerHTML = '<i class="fas fa-dharmachakra"></i> <span>Roleta</span>';
-            roulBtn.onclick = () => window.location.href = isHtmlFolder ? 'roleta.html' : 'html/roleta.html';
-            userMenu.appendChild(roulBtn);
-
-            // 3. Ranking
-            const rankBtn = document.createElement('a');
-            rankBtn.className = 'nav-button';
-            rankBtn.innerHTML = '<i class="fas fa-trophy"></i> <span>Ranking</span>';
-            rankBtn.onclick = () => window.location.href = getPath('ranking.html');
-            userMenu.appendChild(rankBtn);
-
-            // 4. Carrinho
-            const cartBtn = document.createElement('a');
-            cartBtn.className = 'nav-button';
-            cartBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> <span>Carrinho</span>';
-            cartBtn.onclick = () => window.location.href = getPath('carrinho.html');
-            userMenu.appendChild(cartBtn);
-
-            // Espaçador para empurrar os próximos itens para a direita
-            const spacer = document.createElement('div');
-            spacer.style.marginLeft = 'auto';
-            userMenu.appendChild(spacer);
-
-            // 5. Botão Admin (se for o caso)
+            // 1. Botão Admin (se for o caso) - Movido para antes do sininho conforme o pedido
             if (isAdmin) {
                 const adminBtn = document.createElement('button');
                 adminBtn.className = 'nav-button';
@@ -512,7 +472,7 @@ function checkUserSession(user) {
                 userMenu.appendChild(adminBtn);
             }
 
-            // 6. Sininho (Notificações)
+            // 2. Sininho (Notificações)
             const notifWrapper = document.createElement('div');
             notifWrapper.id = 'notif-wrapper';
             notifWrapper.className = 'notifications-wrapper';
@@ -540,24 +500,19 @@ function checkUserSession(user) {
             document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
             dropdown.onclick = (e) => e.stopPropagation();
 
-            // 7. Link de Perfil (Texto)
-            const profileBtn = document.createElement('a');
-            profileBtn.className = 'nav-button';
-            profileBtn.innerHTML = '<i class="fas fa-user"></i> <span>Perfil</span>';
-            profileBtn.onclick = () => window.location.href = getPath('perfil.html');
-            userMenu.appendChild(profileBtn);
-
-            // 8. Fotinha do Perfil (Avatar)
-            const userAvatar = document.createElement('div');
-            userAvatar.className = 'user-profile';
+            // 3. Fotinha do Perfil (Avatar) com nome abaixo
+            const userAvatarContainer = document.createElement('div');
+            userAvatarContainer.className = 'user-profile-display'; // Nova classe para estilização
             const displayName = window.utils.getUserFriendlyName(user);
-            userAvatar.innerHTML = `
+            userAvatarContainer.innerHTML = `
                 <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`}" 
                      style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent); cursor: pointer;"
                      title="${displayName}"
-                     onclick="window.location.href='${getPath('perfil.html')}'">
+                     onclick="window.location.href='${getPath('perfil.html')}'"> <!-- Apenas a imagem é clicável para o perfil -->
+                <span style="font-size: 12px; color: var(--text-secondary); display: block; text-align: center; margin-top: 4px;">${displayName}</span>
             `;
-            userMenu.appendChild(userAvatar);
+            userAvatarContainer.onclick = () => window.location.href = getPath('perfil.html'); // Torna o container inteiro clicável
+            userMenu.appendChild(userAvatarContainer);
 
             // Botão Logout
             const logoutBtn = document.createElement('button');

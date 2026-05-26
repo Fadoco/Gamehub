@@ -43,12 +43,14 @@
     </header>
 
     <header class="main-header">
+        <div class="searchbar">
+            <i class="fas fa-search searchbar__icon"></i>
+            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+        </div>
         <nav class="section-nav">
-            <a href="../index.html">Descobrir</a>
-            <a href="ranking.html">Ranking</a>
-            <a href="carrinho.html">Carrinho <span id="cart-count-badge"></span></a>
-            <a href="perfil.html">Perfil</a>
-            <a href="admin.html" id="nav-admin-link" style="display: none;">Adm</a>
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
+                <i class="fas fa-dice"></i> Jogo Aleatório
+            </button>
         </nav>
     </header>
 

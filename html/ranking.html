@@ -16,10 +16,10 @@
         <div class="topbar__left">
             <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
             <nav class="topbar__menu">
+                <a href="../index.html">Loja</a>
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
                 <a href="ranking.html" class="active">Ranking</a>
-                <a href="carrinho.html">Carrinho</a>
             </nav>
         </div>
         <div class="topbar__actions">
@@ -27,13 +27,10 @@
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
-            
-            <div class="user-profile" id="user-menu" style="display: none;">
-                <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
-                <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer;">
-                <button id="btn-login" class="btn btn-primary">Entrar</button>
-                <button id="btn-logout" class="btn btn-ghost" style="display: none;">Sair</button>
-            </div>
+            <!-- user-menu será preenchido dinamicamente por auth.js -->
+            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <!-- btn-login será exibido se o usuário não estiver logado -->
+            <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
     </header>
 

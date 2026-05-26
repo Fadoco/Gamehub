@@ -14,10 +14,10 @@
         <div class="topbar__left">
             <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
             <nav class="topbar__menu">
+                <a href="../index.html">Loja</a>
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
                 <a href="ranking.html">Ranking</a>
-                <a href="carrinho.html">Carrinho</a>
             </nav>
         </div>
         <div class="topbar__actions">
@@ -25,12 +25,160 @@
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
-            
-            <div class="user-profile" id="user-menu" style="display: none;">
-                <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
-                <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer;">
-                <button id="btn-login" class="btn btn-primary">Entrar</button>
-                <button id="btn-logout" class="btn btn-ghost" style="display: none;">Sair</button>
+            <!-- user-menu será preenchido dinamicamente por auth.js -->
+            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <!-- btn-login será exibido se o usuário não estiver logado -->
+            <button id="btn-login" class="btn btn-primary">Entrar</button>
+        </div>
+    </header>
+
+    <header class="main-header">
+        <div class="searchbar">
+            <i class="fas fa-search searchbar__icon"></i>
+            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+        </div>
+        <nav class="section-nav">
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
+                <i class="fas fa-dice"></i> Jogo Aleatório
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="profile-banner-container" id="profile-banner-container">
+            <!-- Banner será carregado aqui -->
+            <button class="btn-edit-profile" id="btn-edit-profile" style="display: none;">
+                <i class="fas fa-pencil-alt"></i> Editar Perfil
+            </button>
+        </div>
+
+        <div class="profile-container">
+            <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff" alt="Avatar do Usuário" class="profile-avatar" id="profile-avatar">
+            <h1 id="profile-display-name">Nome do Usuário</h1>
+            <p class="profile-bio" id="profile-bio">Carregando biografia...</p>
+            <span class="profile-id" id="profile-friendship-id" style="cursor: pointer;" title="Clique para copiar">ID de Amizade: #XXXXXX</span>
+
+            <!-- Botão para adicionar amigo (visível apenas em perfis de outros usuários) -->
+            <button class="buy-button" id="btn-add-friend" style="margin-top: 20px; display: none;">
+                <i class="fas fa-user-plus"></i> Adicionar Amigo
+            </button>
+
+            <!-- Formulário de Edição de Perfil (visível apenas no próprio perfil) -->
+            <form id="edit-profile-form" class="edit-profile-form">
+                <h2>Editar Perfil</h2>
+                <div class="form-group">
+                    <label for="edit-display-name">Nome de Exibição:</label>
+                    <input type="text" id="edit-display-name" placeholder="Seu nome de exibição">
+                </div>
+                <div class="form-group">
+                    <label for="edit-bio">Biografia:</label>
+                    <textarea id="edit-bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-avatar-url">URL do Avatar:</label>
+                    <input type="url" id="edit-avatar-url" placeholder="URL da sua imagem de perfil">
+                </div>
+                <div class="form-group">
+                    <label for="edit-banner-url">URL do Banner:</label>
+                    <input type="url" id="edit-banner-url" placeholder="URL da sua imagem/vídeo de banner">
+                </div>
+                <div class="form-group">
+                    <label for="edit-banner-type">Tipo de Banner:</label>
+                    <select id="edit-banner-type">
+                        <option value="image">Imagem</option>
+                        <option value="video">Vídeo</option>
+                    </select>
+                </div>
+                <button type="submit" class="buy-button">Salvar Alterações</button>
+                <button type="button" class="nav-button" id="cancel-edit-profile">Cancelar</button>
+            </form>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-games">0</span>
+                    <span class="stat-label">Jogos na Biblioteca</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-friends">0</span>
+                    <span class="stat-label">Amigos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-balance">R$ 0,00</span>
+                    <span class="stat-label">Saldo na Carteira</span>
+                </div>
+            </div>
+
+            <!-- Seção de Pedidos de Amizade (apenas para o próprio perfil) -->
+            <div class="profile-section" id="friend-requests-section" style="display: none;">
+                <h2>Pedidos de Amizade Recebidos</h2>
+                <div id="friend-requests-list">
+                    <!-- Pedidos de amizade serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Seção de Amigos (para o próprio perfil e outros) -->
+            <div class="profile-section" id="friends-section">
+                <h2>Amigos</h2>
+                <div id="add-by-id-container" style="display: none; margin-bottom: 20px; gap: 10px; display: flex;">
+                    <input type="number" id="input-friend-id" placeholder="Digite o ID #123456" 
+                           style="flex: 1; padding: 10px; border-radius: 4px; border: 1px solid var(--card-border); background: var(--bg-dark); color: white;">
+                    <button class="buy-button" onclick="handleAddFriendById()" style="padding: 10px 20px;">Adicionar</button>
+                </div>
+                <div id="friends-list">
+                    <!-- Lista de amigos será carregada aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Login (Necessário para ações de favoritos/carrinho se deslogado) -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-login-section">
+                <h2>Entrar no GameHub</h2>
+                <form id="login-form">
+                    <div class="form-group"><input type="email" id="email" placeholder="E-mail" required></div>
+                    <div class="form-group"><input type="password" id="password" placeholder="Senha" required></div>
+                    <p class="toggle-form" id="forgot-password-modal-link" style="cursor:pointer; font-size: 12px; color: var(--accent); margin-bottom: 20px; text-align: right;">Esqueci minha senha</p>
+                    <button type="submit" class="buy-button" style="width: 100%;">Entrar</button>
+                </form>
+                <p onclick="toggleModalForms()" class="toggle-form" style="margin-top: 20px; text-align: center;">Não tem conta? Cadastre-se</p>
+            </div>
+            <div id="modal-signup-section" style="display: none;">
+                <h2>Criar Conta</h2>
+                <form id="signup-form">
+                    <div class="form-group"><input type="text" id="signup-name" placeholder="Nick / Nome" required></div>
+                    <div class="form-group"><input type="email" id="signup-email" placeholder="E-mail" required></div>
+                    <div class="form-group"><input type="password" id="signup-password" placeholder="Senha" required></div>
+                    <button type="submit" class="buy-button" style="width: 100%;">Confirmar Cadastro</button>
+                </form>
+                <p onclick="toggleModalForms()" class="toggle-form" style="margin-top: 20px; text-align: center;">Já tem conta? Entrar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Carregamento Global -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="loader"></div>
+        <p>AGUARDE...</p>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/auth.js" defer></script>
+    <script src="../java/global.js" defer></script>
+    <script src="../java/perfil.js" defer></script>
+</body>
+</html>
             </div>
         </div>
     </header>
