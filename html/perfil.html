@@ -6,6 +6,7 @@
     <title>Perfil do Usuário - GameHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/header-footer.css">
     <link rel="stylesheet" href="../css/perfil.css">
 </head>
 <body>
@@ -13,10 +14,10 @@
         <div class="topbar__left">
             <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
             <nav class="topbar__menu">
-                <a href="../index.html">Loja</a>
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
                 <a href="ranking.html">Ranking</a>
+                <a href="carrinho.html">Carrinho</a>
             </nav>
         </div>
         <div class="topbar__actions">
@@ -35,13 +36,14 @@
     </header>
 
     <header class="main-header">
+        <div class="searchbar">
+            <i class="fas fa-search searchbar__icon"></i>
+            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+        </div>
         <nav class="section-nav">
-            <a href="../index.html">Descobrir</a>
-            <a href="ranking.html">Ranking</a>
-            <a href="carrinho.html">Carrinho <span id="cart-count-badge"></span></a>
-            <a href="biblioteca.html">Biblioteca</a>
-            <a class="active" href="perfil.html">Meu Perfil</a>
-            <a href="admin.html" id="nav-admin-link" style="display: none;">Adm</a>
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
+                <i class="fas fa-dice"></i> Jogo Aleatório
+            </button>
         </nav>
     </header>
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameHub - Sua Loja de Jogos</title>
     <link rel="stylesheet" href="css/style-global.css">
+    <link rel="stylesheet" href="css/header-footer.css">
     <link rel="stylesheet" href="css/home.css">
     <!-- Importação do Font Awesome para ícones (lupa, biblioteca, dados) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -23,10 +24,10 @@
         <div class="topbar__left">
             <div class="brand" onclick="window.location.href='index.html'" style="cursor:pointer">GameHub</div>
             <nav class="topbar__menu">
-                <a href="index.html" class="active">Loja</a>
                 <a href="html/biblioteca.html">Biblioteca</a>
                 <a href="Roleta/roleta.html">Roleta</a>
                 <a href="html/ranking.html">Ranking</a>
+                <a href="html/carrinho.html">Carrinho</a>
             </nav>
         </div>
         <div class="topbar__actions">
@@ -50,12 +51,9 @@
             <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
         </div>
         <nav class="section-nav">
-            <a class="active" href="#">Descobrir</a>
-            <a href="html/ranking.html">Ranking</a>
-            <a href="html/carrinho.html">Carrinho <span id="cart-count-badge"></span></a>
-            <a href="html/perfil.html">Perfil</a>
-            <a href="#" id="nav-notif-link" onclick="document.getElementById('btn-notifications').click(); return false;">Notificações</a>
-            <a href="html/admin.html" id="nav-admin-link" style="display: none;">Adm</a>
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
+                <i class="fas fa-dice"></i> Jogo Aleatório
+            </button>
         </nav>
     </header>
 

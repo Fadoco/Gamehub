@@ -262,6 +262,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const forgotPasswordModalLink = document.getElementById('forgot-password-modal-link');
 
+    // Configuração do logotipo para redirecionar à loja (Home)
+    const brand = document.querySelector('.brand');
+    if (brand) {
+        brand.style.cursor = 'pointer';
+        brand.onclick = () => {
+            const isHtmlFolder = window.location.pathname.includes('/html/');
+            window.location.href = isHtmlFolder ? '../index.html' : 'index.html';
+        };
+    }
+
     // Abrir modal de login ao clicar no botão "Entrar" do header
     if (btnLogin && loginModal) {
         btnLogin.onclick = (e) => {
@@ -418,106 +428,143 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function checkUserSession(user) { // isAdmin é calculado aqui dentro
+function checkUserSession(user) {
     const btnLogin = document.getElementById('btn-login');
     const btnLogout = document.getElementById('btn-logout');
     const userNameSpan = document.getElementById('user-name');
     const userImg = document.querySelector('.user-profile img');
     const userMenu = document.getElementById('user-menu');
-    const isHtmlFolder = window.location.pathname.includes('/html/');
+
+    // Remover links redundantes da Topbar
+    document.querySelectorAll('.topbar__menu a').forEach(link => {
+        const text = link.textContent.trim().toLowerCase();
+        if (text === "loja" || text === "descobrir") link.remove();
+    });
+
+    // Limpar sub-header (section-nav) deixando apenas o botão aleatório
+    const sectionNav = document.querySelector('.section-nav');
+    if (sectionNav) {
+        sectionNav.innerHTML = `
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()" style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-dice"></i> <span>Jogo Aleatório</span>
+            </button>
+        `;
+    }
 
     // Função auxiliar para resolver caminhos de páginas dentro de /html/
+    const isHtmlFolder = window.location.pathname.includes('/html/');
     const getPath = (file) => {
         if (!window.IS_SUBFOLDER && !isHtmlFolder) return `html/${file}`;
         return isHtmlFolder ? file : `../html/${file}`;
     };
 
-    if (userMenu) userMenu.style.display = 'flex';
-
-    // Adiciona botão Ranking se não existir (Visível para todos)
-    if (userMenu && !document.getElementById('btn-ranking')) {
-        const rankBtn = document.createElement('button');
-        rankBtn.id = 'btn-ranking';
-        rankBtn.className = 'nav-button';
-        rankBtn.style.cssText = "font-size: 18px; color: #f1c40f; background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; transition: 0.3s;";
-        rankBtn.title = "Ranking de Riqueza";
-        rankBtn.innerHTML = '<i class="fas fa-trophy"></i>';
-        rankBtn.onclick = () => window.location.href = getPath('ranking.html');
-        userMenu.prepend(rankBtn);
-    }
-
-    // Adiciona botão Notificações se não existir
-    if (userMenu && !document.getElementById('notif-wrapper')) {
-        const notifWrapper = document.createElement('div');
-        notifWrapper.id = 'notif-wrapper';
-        notifWrapper.className = 'notifications-wrapper';
-        notifWrapper.innerHTML = `
-            <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: var(--secondary); background: none; border: none; cursor: pointer; margin: 0 10px; display: flex; align-items: center; position: relative;" title="Notificações">
-                <i class="fas fa-bell"></i>
-                <span id="notif-badge" class="notification-badge">0</span>
-            </button>
-            <div id="notif-dropdown" class="notifications-dropdown">
-                <div class="notifications-header">Pedidos de Amizade</div>
-                <div id="notif-list" class="notifications-list">
-                    <div class="empty-notif">Nenhuma notificação nova.</div>
-                </div>
-            </div>
-        `;
-        userMenu.prepend(notifWrapper);
-
-        const btn = document.getElementById('btn-notifications');
-        const dropdown = document.getElementById('notif-dropdown');
-        btn.onclick = (e) => { e.stopPropagation(); dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block'; if (dropdown.style.display === 'block') window.renderNotifications(); };
-        document.addEventListener('click', () => { dropdown.style.display = 'none'; });
-        dropdown.onclick = (e) => e.stopPropagation();
-    }
-
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
-    const isAdmin = user && adminList.includes(user?.email?.toLowerCase());
-
-    // Atualiza visibilidade do link ADM estático se existir
-    const navAdminLink = document.getElementById('nav-admin-link');
-    if (navAdminLink) {
-        navAdminLink.style.display = isAdmin ? 'inline-block' : 'none';
-    }
+    const isAdmin = user && adminList.includes(user.email.toLowerCase());
 
     if (user) {
-        const displayName = window.utils.getUserFriendlyName(user);
         if (btnLogin) btnLogin.style.display = 'none';
-        if (btnLogout) btnLogout.style.display = 'block';
-        
-        // Adiciona botão Admin se não existir
-        if (userMenu && !document.getElementById('btn-admin')) {
+
+        if (userMenu) {
+            userMenu.style.display = 'flex';
+            userMenu.style.width = '100%';
+            userMenu.innerHTML = ''; // Limpa para reconstruir na ordem correta
+
+            // 1. Biblioteca
+            const libBtn = document.createElement('a');
+            libBtn.className = 'nav-button';
+            libBtn.innerHTML = '<i class="fas fa-book"></i> <span>Biblioteca</span>';
+            libBtn.onclick = () => window.location.href = getPath('biblioteca.html');
+            userMenu.appendChild(libBtn);
+
+            // 2. Roleta
+            const roulBtn = document.createElement('a');
+            roulBtn.className = 'nav-button roulette';
+            roulBtn.innerHTML = '<i class="fas fa-dharmachakra"></i> <span>Roleta</span>';
+            roulBtn.onclick = () => window.location.href = isHtmlFolder ? 'roleta.html' : 'html/roleta.html';
+            userMenu.appendChild(roulBtn);
+
+            // 3. Ranking
+            const rankBtn = document.createElement('a');
+            rankBtn.className = 'nav-button';
+            rankBtn.innerHTML = '<i class="fas fa-trophy"></i> <span>Ranking</span>';
+            rankBtn.onclick = () => window.location.href = getPath('ranking.html');
+            userMenu.appendChild(rankBtn);
+
+            // 4. Carrinho
+            const cartBtn = document.createElement('a');
+            cartBtn.className = 'nav-button';
+            cartBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> <span>Carrinho</span>';
+            cartBtn.onclick = () => window.location.href = getPath('carrinho.html');
+            userMenu.appendChild(cartBtn);
+
+            // Espaçador para empurrar os próximos itens para a direita
+            const spacer = document.createElement('div');
+            spacer.style.marginLeft = 'auto';
+            userMenu.appendChild(spacer);
+
+            // 5. Botão Admin (se for o caso)
             if (isAdmin) {
                 const adminBtn = document.createElement('button');
-                adminBtn.id = 'btn-admin';
                 adminBtn.className = 'nav-button';
-                // Bonequinho Admin grande e visível ao lado da foto
-                adminBtn.style.cssText = "font-size: 22px; color: var(--secondary); background: none; border: none; cursor: pointer; margin: 0 12px; display: flex; align-items: center; transition: 0.3s;";
-                adminBtn.title = "Painel Administrativo";
                 adminBtn.innerHTML = '<i class="fas fa-user-shield"></i>';
-                
-                adminBtn.onmouseover = () => adminBtn.style.color = 'var(--accent)';
-                adminBtn.onmouseout = () => adminBtn.style.color = 'var(--secondary)';
-
+                adminBtn.title = "Painel Administrativo";
                 adminBtn.onclick = () => window.location.href = getPath('admin.html');
-                userMenu.insertBefore(adminBtn, btnLogout);
+                userMenu.appendChild(adminBtn);
             }
-        }
-        // Remove o botão Admin se o usuário não for admin e ele existir
-        else if (!isAdmin && document.getElementById('btn-admin')) {
-            document.getElementById('btn-admin').remove();
-        }
 
-        if (userNameSpan) {
-            userNameSpan.textContent = displayName;
-            userNameSpan.style.display = 'inline';
-        }
-        if (userImg) {
-            userImg.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
-            userImg.style.display = 'block';
-            // Torna a foto de perfil clicável para ir ao perfil
-            userImg.onclick = () => window.location.href = getPath('perfil.html');
+            // 6. Sininho (Notificações)
+            const notifWrapper = document.createElement('div');
+            notifWrapper.id = 'notif-wrapper';
+            notifWrapper.className = 'notifications-wrapper';
+            notifWrapper.innerHTML = `
+                <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: #ffffff; background: none; border: none; cursor: pointer; position: relative;" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-badge" class="notification-badge">0</span>
+                </button>
+                <div id="notif-dropdown" class="notifications-dropdown">
+                    <div class="notifications-header">Pedidos de Amizade</div>
+                    <div id="notif-list" class="notifications-list">
+                        <div class="empty-notif">Nenhuma notificação nova.</div>
+                    </div>
+                </div>
+            `;
+            userMenu.appendChild(notifWrapper);
+
+            const btnNotif = notifWrapper.querySelector('#btn-notifications');
+            const dropdown = notifWrapper.querySelector('#notif-dropdown');
+            btnNotif.onclick = (e) => {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                if (dropdown.style.display === 'block') window.renderNotifications();
+            };
+            document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
+            dropdown.onclick = (e) => e.stopPropagation();
+
+            // 7. Link de Perfil (Texto)
+            const profileBtn = document.createElement('a');
+            profileBtn.className = 'nav-button';
+            profileBtn.innerHTML = '<i class="fas fa-user"></i> <span>Perfil</span>';
+            profileBtn.onclick = () => window.location.href = getPath('perfil.html');
+            userMenu.appendChild(profileBtn);
+
+            // 8. Fotinha do Perfil (Avatar)
+            const userAvatar = document.createElement('div');
+            userAvatar.className = 'user-profile';
+            const displayName = window.utils.getUserFriendlyName(user);
+            userAvatar.innerHTML = `
+                <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`}" 
+                     style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent); cursor: pointer;"
+                     title="${displayName}"
+                     onclick="window.location.href='${getPath('perfil.html')}'">
+            `;
+            userMenu.appendChild(userAvatar);
+
+            // Botão Logout
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'nav-button';
+            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+            logoutBtn.onclick = () => auth.signOut().then(() => location.reload());
+            userMenu.appendChild(logoutBtn);
         }
 
         // Atualiza a exibição da carteira
@@ -837,4 +884,54 @@ window.renderNotifications = async () => {
             </div>`;
     }));
     list.innerHTML = html.join('');
+};
+
+// Lógica do Botão de Jogo Aleatório (Contextual)
+window.handleRandomGame = () => {
+    const games = window.allGamesData || [];
+    if (games.length === 0) {
+        showToast("Carregando dados dos jogos...", "info");
+        return;
+    }
+
+    const path = window.location.pathname;
+    
+    // Função interna para resolver o caminho da página de jogo
+    const getGamePath = (id) => {
+        if (path.includes('/html/')) return `jogo.html?id=${id}`;
+        if (path.includes('/Roleta/')) return `../html/jogo.html?id=${id}`;
+        return `html/jogo.html?id=${id}`;
+    };
+
+    // 1. Contexto de Biblioteca: Sorteia entre os jogos que o usuário já tem
+    if (path.includes('biblioteca.html')) {
+        if (!window.userLibrary || window.userLibrary.length === 0) {
+            return showToast("Sua biblioteca está vazia!", "info");
+        }
+        const randomId = window.userLibrary[Math.floor(Math.random() * window.userLibrary.length)];
+        window.location.href = getGamePath(randomId);
+    } 
+    // 2. Contexto de Roleta: Seleciona um jogo elegível para aposta
+    else if (path.includes('roleta.html')) {
+        const bettableGames = games.filter(game => {
+            const isOwned = window.userLibrary.some(libId => String(libId) === String(game.id));
+            const isNotFree = window.utils.parsePrice(game.currentPrice) > 0;
+            return isOwned && isNotFree;
+        });
+
+        if (bettableGames.length === 0) {
+            return showToast("Você não possui jogos pagos para apostar!", "info");
+        }
+
+        const randomGame = bettableGames[Math.floor(Math.random() * bettableGames.length)];
+        if (typeof window.selectGameForBet === 'function') {
+            window.selectGameForBet(randomGame.id);
+            showToast(`Sorteado para aposta: ${randomGame.title}`, "success");
+        }
+    } 
+    // 3. Contexto Geral (Loja/Busca): Sugere um jogo qualquer da loja
+    else {
+        const randomGame = games[Math.floor(Math.random() * games.length)];
+        window.location.href = getGamePath(randomGame.id);
+    }
 };
