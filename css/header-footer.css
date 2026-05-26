@@ -7,12 +7,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 18px;
+    gap: 30px;
     margin-bottom: 24px;
 }
 
 .topbar {
-    padding: 14px 22px;
+    padding: 10px 30px;
     border-radius: var(--radius);
     background: rgba(24, 24, 28, 0.95);
     border: 1px solid var(--border);
@@ -26,7 +26,7 @@
 .topbar__left {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 50px; /* Aumentado para separar o nome do menu */
 }
 
 .brand {
@@ -40,7 +40,7 @@
 
 .topbar__menu {
     display: flex;
-    gap: 18px;
+    gap: 30px; /* Espaço entre Loja, Biblioteca, etc */
 }
 
 .topbar__menu a {
@@ -60,15 +60,14 @@
 .topbar__actions {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-grow: 1;
+    gap: 25px; /* Espaço entre Carteira e Menu do Usuário */
+    justify-content: flex-end;
 }
 
 #user-menu {
     display: flex;
     align-items: center;
-    width: 100%;
-    gap: 15px;
+    gap: 25px; /* Espaço entre Sininho, Perfil e Sair */
 }
 
 /* Nova classe para o container da foto de perfil + nome */

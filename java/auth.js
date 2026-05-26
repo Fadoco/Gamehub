@@ -508,7 +508,7 @@ function checkUserSession(user) {
                 <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`}" 
                      style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent); cursor: pointer;"
                      title="${displayName}"
-                     onclick="window.location.href='${getPath('perfil.html')}'"> <!-- Apenas a imagem é clicável para o perfil -->
+                     onclick="window.location.href='${getPath('perfil.html')}'">
                 <span style="font-size: 12px; color: var(--text-secondary); display: block; text-align: center; margin-top: 4px;">${displayName}</span>
             `;
             userAvatarContainer.onclick = () => window.location.href = getPath('perfil.html'); // Torna o container inteiro clicável
