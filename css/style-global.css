@@ -23,7 +23,7 @@
     --transition: 0.15s ease-in-out;
 }
 
-/* --- Scrollbar Customizada (Estilo Premium) --- */
+/* --- Scrollbar Customizada --- */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -35,9 +35,7 @@
     border-radius: 10px;
     border: 2px solid var(--bg-dark);
 }
-::-webkit-scrollbar-thumb:hover {
-    background: #444;
-}
+::-webkit-scrollbar-thumb:hover { background: #444; }
 
 /* --- Configurações Globais --- */
 /* Reseta margens e padding padrão, define fonte e cor de fundo */
@@ -63,19 +61,19 @@ body {
 /* --- Cabeçalho (Header) --- */
 /* Estiliza o cabeçalho com fundo e sombra */
 header {
-    background-color: var(--bg-header);
+    background-color: var(--bg-header); /* Fundo do cabeçalho */
     padding: 0; 
     height: 52px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    position: sticky;
+    text-transform: none; /* Mantém o texto em formato normal */
+    border-bottom: 1px solid #333;
+    position: sticky; /* Fixa o cabeçalho no topo da página */
     top: 0;
     z-index: 1000;
 }
 
 header .container {
     height: 100%;
-    /* Sincroniza o alinhamento com o resto do site */
-    max-width: 1600px; 
+    max-width: 1600px; /* Sincroniza com o container global */
     padding: 0 4%; 
     display: flex;
     align-items: center;
@@ -90,12 +88,12 @@ nav {
     align-items: center;
 }
 
-.primary-nav, .secondary-nav {
+.primary-nav, .secondary-nav, .nav-items, .user-profile {
     display: flex;
     align-items: center;
 }
 
-.primary-nav {
+.primary-nav, .nav-items, .user-profile {
     gap: 10px;
 }
 
@@ -154,7 +152,7 @@ nav {
     background: var(--bg-header);
     border-radius: 4px;
     box-shadow: 0 10px 30px var(--shadow);
-    z-index: 1100;
+    z-index: 1100; /* Garante que fique acima de tudo */
     display: none; /* Escondido por padrão */
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -211,10 +209,13 @@ nav {
 .nav-button {
     text-decoration: none;
     color: var(--text-secondary);
-    font-size: 14px;
-    padding: 10px 15px;
+    font-size: 12px;
+    padding: 0 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     border-radius: 4px;
-    font-weight: 500;
+    font-weight: 600;
     transition: var(--transition);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -310,17 +311,17 @@ nav {
         padding: 15px 2%;
     }
     nav {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row; /* Mantém a linha no mobile */
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
     .logo {
-        font-size: 22px;
+        font-size: 18px;
     }
-    .nav-items { 
-        width: 100%; 
-        justify-content: center; 
+    .primary-nav, .secondary-nav, .nav-items { 
+        width: auto; 
         flex-wrap: wrap; 
-        gap: 15px; 
+        gap: 10px; 
     }
     .search-box {
         order: -1; /* Coloca a busca no topo */
@@ -732,7 +733,7 @@ h2.section-title {
 .game-grid {
     display: grid;
     /* O auto-fill com minmax garante que os cards se ajustem sozinhos ao tamanho da tela */
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); 
     gap: 25px;
     padding: 20px 0;
 }

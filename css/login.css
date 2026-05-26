@@ -9,17 +9,17 @@
     background-size: cover;
     position: relative;
 }
-
+ 
 .background-overlay {
     display: none; /* Remove o gradiente da Steam */
 }
 
 /* Card de login centralizado e semi-transparente */
 .login-card {
-    background: #202020; /* Fundo sólido da Epic */
+    background: #202020; /* Fundo sólido para o card de login */
     padding: 50px 40px;
     border-radius: 8px;
-    box-shadow: none;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     width: 90%;
     max-width: 420px;
     text-align: center;
@@ -84,7 +84,7 @@
 .login-card .buy-button {
     width: 100%;
     padding: 16px;
-    background: var(--accent); /* Azul sólido */
+    background: var(--accent-gradient);
     border: none;
     color: white;
     border-radius: 4px;
@@ -93,10 +93,11 @@
     cursor: pointer;
     font-size: 14px;
     margin-top: 20px;
+    transition: filter 0.2s ease;
 }
 
 .login-card .buy-button:hover {
-    filter: brightness(1.2);
+    filter: brightness(1.1);
     transform: none; /* Mantém fixo como o da Steam */
 }
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameHub - Sua Loja de Jogos</title>
-    <link rel="stylesheet" href="css/style global.css">
+    <link rel="stylesheet" href="css/style-global.css">
     <link rel="stylesheet" href="css/home.css">
     <!-- Importação do Font Awesome para ícones (lupa, biblioteca, dados) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -26,23 +26,25 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo" style="cursor:pointer" onclick="window.location.href='index.html'">GameHub</div>
+                <div class="primary-nav">
+                    <div class="logo" onclick="window.location.href='index.html'">GameHub</div>
+                    <a href="index.html" class="nav-button active">Loja</a>
+                    <a href="#" id="nav-library" class="nav-button">Biblioteca</a>
+                    <a href="Roleta/roleta.html" class="nav-button">Roleta</a>
+                </div>
                 
-                <div class="nav-items">
-                    <!-- Área de pesquisa rápida -->
+                <div class="secondary-nav">
                     <div class="search-box">
-                        <input type="text" placeholder="buscar">
                         <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Pesquisar">
                     </div>
 
-                    <!-- Links de acesso rápido às funcionalidades principais -->
-                    <a href="index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
-                    <a href="#" id="nav-library" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
-                    <a href="#" id="nav-cart" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
-                    <a href="Roleta/roleta.html" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
+                    <a href="#" id="nav-cart" class="nav-button icon-only" title="Carrinho">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                     
                     <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='html/historico.html'">
-                        <i class="fas fa-wallet"></i>
+                        <i class="fas fa-coins"></i>
                         <span id="wallet-amount">R$ 0,00</span>
                     </div>
                     

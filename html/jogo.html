@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameHub - Detalhes do Jogo</title>
-    <link rel="stylesheet" href="../css/style global.css">
+    <link rel="stylesheet" href="../css/style-global.css">
     <link rel="stylesheet" href="../css/jogo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Scripts Firebase e Auth -->
@@ -20,16 +20,22 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div> <!-- Logo sempre volta para a raiz -->
-                <div class="nav-items">
-                    <div class="search-box">
-                        <input type="text" placeholder="buscar">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
-                    <a href="#" id="nav-library" class="nav-button"><i class="fas fa-layer-group"></i> Biblioteca</a>
-                    <a href="#" id="nav-cart" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                <div class="primary-nav">
+                    <div class="logo" onclick="window.location.href='../index.html'">GameHub</div>
+                    <a href="../index.html" class="nav-button">Loja</a>
+                    <a href="#" id="nav-library" class="nav-button">Biblioteca</a>
                     <a href="../Roleta/roleta.html" class="nav-button roulette"><i class="fas fa-dice"></i> Roleta</a>
+                </div>
+                
+                <div class="secondary-nav">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Pesquisar">
+                    </div>
+
+                    <a href="#" id="nav-cart" class="nav-button icon-only" title="Carrinho">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                     
                     <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
                         <i class="fas fa-wallet"></i>

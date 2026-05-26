@@ -5,7 +5,7 @@
 .back-navigation {
     margin-bottom: 20px;
 }
-
+ 
 .back-button {
     display: inline-flex;
     align-items: center;
@@ -28,32 +28,47 @@
 
 .detail-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-bottom: 15px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
+}
+
+.detail-header h1 {
+    margin: 0;
+    flex: 1; /* Garante que o título ocupe o espaço disponível antes dos ícones */
+    min-width: 300px;
 }
 
 .detail-content {
     display: grid;
     grid-template-columns: 1fr 350px;
+    align-items: start; /* Essencial para permitir que o elemento sticky flutue */
     gap: 30px;
 }
 
 .detail-media img {
     width: 100%;
+    /* Definimos uma proporção de banner (16:9) para a página de detalhes */
+    aspect-ratio: 16 / 9; 
+    /* O cover garante que a imagem preencha o banner sem achatar */
+    object-fit: cover; 
+    object-position: center;
     border-radius: 4px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background-color: #1a1a1a;
 }
 
 .detail-buy-box {
     background: var(--bg-header);
-    padding: 25px;
-    border-radius: 4px;
-    height: fit-content;
+    padding: 20px;
+    border-radius: 8px;
+    position: sticky;
+    top: 72px; /* Altura do header (52px) + 20px de espaçamento */
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tags-row {
@@ -66,42 +81,77 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 25px;
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 0; /* Removido o fundo e padding para o estilo Epic */
+    background: transparent;
 }
 
 .current-price {
-    font-size: 1.5em;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-main);
 }
 
-.current-price.sale { color: var(--promo); }
+.current-price.sale { color: #fff; }
 
 .discount-badge {
-    background: var(--promo);
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-weight: bold;
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
 }
 
 .buy-button {
     width: 100%;
-    background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+    background: var(--accent-gradient);
     color: white;
     border: none;
-    padding: 15px;
-    font-size: 1.1em;
-    font-weight: bold;
+    padding: 18px;
+    font-size: 12px;
+    font-weight: 700;
     border-radius: 4px;
     cursor: pointer;
-    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: var(--transition), filter 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 116, 228, 0.2);
 }
 
 .buy-button:hover {
-    filter: brightness(1.2);
-    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(0, 116, 228, 0.4);
+}
+
+/* Melhoria na legibilidade da descrição (Estilo Epic) */
+#game-description-detail {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-top: 30px;
+    max-width: 90%;
+}
+
+/* Botões Secundários Estilo Epic (Carrinho/Desejos) */
+.secondary-button {
+    width: 100%;
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 @media (max-width: 1024px) {
@@ -114,5 +164,6 @@
     .detail-content {
         grid-template-columns: 1fr; /* Empilha as colunas */
     }
+    .detail-buy-box { position: static; margin-top: 20px; }
     .detail-header h1 { font-size: 1.5em; }
 }

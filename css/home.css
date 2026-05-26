@@ -2,6 +2,95 @@
  * DESCRIÇÃO: Estilização específica para a página inicial (Home/Loja).
  */
 
+/* --- Epic Style Carousel (Spotlight) --- */
+.featured-carousel {
+    display: grid;
+    grid-template-columns: 1fr 250px; /* Área grande + Barra lateral */
+    gap: 15px;
+    margin-bottom: 40px;
+    height: 480px;
+}
+
+.carousel-main {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #1a1a1a;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+
+.carousel-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.carousel-content .game-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    -webkit-line-clamp: 2;
+}
+
+.carousel-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.carousel-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: transparent;
+}
+
+.carousel-nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.carousel-nav-item.active {
+    background: var(--secondary);
+}
+
+.carousel-nav-item img {
+    width: 45px;
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.carousel-nav-item span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.carousel-nav-item.active span {
+    color: var(--text-main);
+}
+
 .tag-system {
     margin-bottom: 30px;
     display: flex;
@@ -9,7 +98,7 @@
     gap: 15px;
     flex-wrap: wrap;
 }
-
+ 
 .tag-label { font-size: 0.8em; color: #7f8c8d; text-transform: uppercase; }
 
 .tag-list { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -29,151 +118,6 @@
     background: rgba(43, 144, 255, 0.18);
     border-color: rgba(43, 144, 255, 0.45);
     transform: translateY(-1px);
-}
-
-/* --- Conteúdo Principal --- */
-/* Título principal */
-h2 {
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    color: var(--text-main);
-}
-
-/* Grid de jogos: Responsiva com auto-fill */
-.game-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Reduzido o mínimo para ser mais flexível */
-    gap: 20px;
-}
-
-/* Card de jogo: Container principal */
-.game-card {
-    background: var(--card-bg);
-    transition: opacity var(--transition);
-    cursor: pointer;
-    box-shadow: none;
-    border-radius: 4px; /* Cantos levemente arredondados */
-    overflow: hidden;
-    border: none;
-}
-
-/* Hover no card: Efeito de escala e mudança de fundo */
-.game-card:hover {
-    opacity: 0.7; /* Epic costuma usar um leve fade no hover */
-}
-
-/* Imagem do card: Preenche largura */
-.game-card img {
-    width: 100%;
-    aspect-ratio: 3/4; /* Proporção vertical estilo Epic */
-    object-fit: cover;
-    display: block;
-    border-radius: 8px;
-}
-
-/* Container de mídia: Posiciona elementos sobre imagem */
-.card-media {
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Badge de desconto: Verde para promoções */
-.discount-percent {
-    position: absolute;
-    bottom: 12px;
-    left: 0px;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    font-weight: 700;
-    font-size: 11px;
-    border-radius: 4px;
-    display: inline-block;
-    z-index: 10;
-}
-
-/* Informações do jogo: Flex para alinhar detalhes e preço */
-.game-info {
-    display: block;
-    background: transparent;
-    padding: 10px 0;
-    border: none;
-}
-
-/* Detalhes do jogo: Título, plataformas, tags */
-.game-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px;
-    flex: 1;
-}
-
-.game-title {
-    margin: 0;
-    font-size: 1rem;
-    color: var(--text-main);
-    font-weight: 400;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.game-platforms {
-    display: flex;
-    gap: 10px;
-    font-size: 0.78em;
-    color: #a8bcd4;
-}
-
-.game-tags {
-    font-size: 0.75rem;
-    color: #8da7c5;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Container de preço */
-.price-container {
-    display: flex;
-    margin-top: 5px;
-    background: transparent;
-    border: none;
-}
-
-.price-box {
-    display: flex;
-    gap: 8px;
-    padding: 0;
-    text-align: left;
-    align-items: center;
-}
-
-.old-price {
-    font-size: 0.72em;
-    text-decoration: line-through;
-    color: #8a9db8;
-    margin: 0;
-}
-
-.game-price {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    padding: 0;
-}
-
-.game-price.sale {
-    color: var(--accent);
 }
 
 /* Botão Ver Mais */

@@ -2,7 +2,7 @@
 .admin-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
-    gap: 25px;
+    gap: 30px;
     margin-top: 30px;
     align-items: start;
 }
@@ -15,7 +15,7 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: transform 0.2s ease;
 }
-
+ 
 .admin-card h2 { 
     margin-top: 0; 
     color: var(--accent); 
@@ -32,6 +32,7 @@
     height: 18px;
     background: var(--accent);
     border-radius: 2px;
+    flex-shrink: 0;
 }
 
 /* --- Formulários e Inputs --- */

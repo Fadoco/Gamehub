@@ -40,7 +40,7 @@ function renderGameDetails(games) {
             // Muda o texto se já estiver no carrinho ou biblioteca
             if (window.userLibrary && window.userLibrary.includes(game.id)) {
                 buyBtn.textContent = "Na Biblioteca";
-                buyBtn.style.background = "#27ae60"; // Verde para indicar posse
+                buyBtn.style.background = "#2a2a2a"; // Cinza escuro estilo Epic
                 buyBtn.style.cursor = "default";
                 buyBtn.disabled = true;
             } else if (window.userCart && window.userCart.includes(game.id)) {

@@ -7,7 +7,7 @@ function renderCart() {
     const summary = document.getElementById('cart-summary');
     const emptyMsg = document.getElementById('cart-empty');
     
-    if (!grid || !allGamesData.length) return;
+    if (!grid || !allGamesData || allGamesData.length === 0) return;
 
     // Filtra garantindo que a comparação de ID ignore se é string ou número
     const cartGames = allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));

@@ -1,0 +1,31 @@
+/**
+ * DESCRIÇÃO: Estilização exclusiva para a página de Biblioteca.
+ */
+
+/* Badge de contagem de jogos no título */
+.library-count-badge {
+    font-size: 0.5em;
+    color: var(--text-secondary);
+    vertical-align: middle;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+/* Na biblioteca, não exibimos preços ou descontos */
+#library-grid .price-container,
+#library-grid .discount-percent {
+    display: none;
+}
+
+/* Estado de Biblioteca Vazia */
+#library-empty {
+    text-align: center;
+    padding: 100px 20px;
+    color: var(--text-secondary);
+    background: var(--bg-header);
+    border-radius: 12px;
+    border: 1px dashed #333;
+}

@@ -4,9 +4,6 @@
 
 let selectedGameToBet = null;
 
-// Áudio simplificado
-const spinAudio = new Audio('assets/csgo-case-open.mp3');
-
 // Mapeamento de IDs para Tipos
 const CARD_TYPES = {
     STAY: 0, // NADA (Cinza)
@@ -14,11 +11,10 @@ const CARD_TYPES = {
     WIN: 2   // UPGRADE (Dourado)
 };
 
-// Função direta para tocar o som
+// Função direta para tocar o som (comentada - arquivo de áudio não disponível)
 const playSpinSound = () => {
-    spinAudio.pause();
-    spinAudio.currentTime = 0;
-    spinAudio.play().catch(e => console.warn("Aguardando interação para áudio:", e));
+    // Áudio desativado - arquivo não disponível
+    console.log("Som da roleta desativado");
 };
 
 // Helper para definir raridade baseada no preço
@@ -35,7 +31,7 @@ function renderRoulette() {
     console.log("Sistema de Recompensas inicializado...");
     
     const inventoryGrid = document.getElementById('bet-inventory-grid');
-    if (!inventoryGrid || !allGamesData.length) return;
+    if (!inventoryGrid || !allGamesData || allGamesData.length === 0) return;
 
     // Filtrar jogos da biblioteca que NÃO são gratuitos (Preço > 0)
     const bettableGames = allGamesData.filter(game => {

@@ -11,7 +11,7 @@
     flex-direction: column;
     gap: 20px;
 }
-
+ 
 /* Garante que o grid da home não interfira no carrinho */
 #cart-grid.game-grid {
     display: flex !important;
@@ -32,13 +32,15 @@
 
 .cart-item:hover {
     border-color: var(--accent);
-    transform: translateX(5px);
+    transform: none; /* Remove o pulo lateral do grid global */
+    background: rgba(12, 20, 38, 0.8);
 }
 
 .cart-item img {
-    width: 140px !important;
-    height: 80px !important;
+    width: 70px; /* Largura reduzida para estilo lista */
+    aspect-ratio: 3 / 4; /* Mantém a identidade visual da capa do jogo */
     object-fit: cover;
+    object-position: top center;
     border-radius: 4px;
     flex-shrink: 0;
 }
@@ -108,7 +110,7 @@
 
 .btn-checkout {
     width: 100%;
-    background: var(--accent);
+    background: var(--accent-gradient);
     color: white;
     border: none;
     padding: 15px;
@@ -116,10 +118,15 @@
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 116, 228, 0.2);
 }
 
-.btn-checkout:hover { background: #1e70cc; letter-spacing: 1px; }
+.btn-checkout:hover { 
+    filter: brightness(1.1);
+    letter-spacing: 1px; 
+    box-shadow: 0 6px 20px rgba(0, 116, 228, 0.4);
+}
 
 @media (max-width: 900px) {
     .cart-container { grid-template-columns: 1fr; }

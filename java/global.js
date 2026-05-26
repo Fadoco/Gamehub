@@ -158,6 +158,12 @@ function routePageRendering() {
 
     const activeRoute = routes.find(r => path.includes(r.file));
 
+    // Só executa renderização se allGamesData foi carregado
+    if (!allGamesData || allGamesData.length === 0) {
+        console.warn("Dados dos jogos ainda não foram carregados. Renderização adiada.");
+        return;
+    }
+
     if (activeRoute) {
         if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
         else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);

@@ -4,36 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameHub - Minha Biblioteca</title>
-    <link rel="stylesheet" href="../css/style global.css">
-    <link rel="stylesheet" href="../css/home.css">
+    <!-- Estilos específicos da Epic Games -->
+    <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/biblioteca.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Scripts de Integração -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/auth.js" defer></script>
-    <script src="../java/library.js" defer></script>
+    <script src="../java/search.js" defer></script>
 </head>
 <body>
     <header>
         <div class="container">
             <nav>
-                <div class="logo" style="cursor:pointer" onclick="window.location.href='../index.html'">GameHub</div>
-                <div class="nav-items">
-                    <a href="../index.html" class="nav-button"><i class="fas fa-store"></i> Loja</a>
-                    <a href="carrinho.html" class="nav-button"><i class="fas fa-shopping-cart"></i> Carrinho</a>
-                    
-                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
-                        <i class="fas fa-wallet"></i>
-                        <span id="wallet-amount">R$ 0,00</span>
+                <div class="primary-nav">
+                    <div class="logo" onclick="window.location.href='../index.html'">GameHub</div>
+                    <a href="../index.html" class="nav-button">Loja</a>
+                    <a href="biblioteca.html" class="nav-button active">Biblioteca</a>
+                    <a href="../Roleta/roleta.html" class="nav-button">Roleta</a>
+                </div>
+                
+                <div class="secondary-nav">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Pesquisar">
                     </div>
 
-                    <div class="user-profile" id="user-menu" style="display: flex;">
-                        <span id="user-name" style="display:none"></span>
+                    <a href="carrinho.html" id="nav-cart" class="nav-button icon-only" title="Carrinho">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    
+                    <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+                        <i class="fas fa-coins"></i>
+                        <span id="wallet-amount">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="user-profile" id="user-menu" style="display: none;">
+                        <span id="user-name" style="margin-right: 10px; font-size: 14px; display: none;"></span>
                         <img src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff" alt="Perfil">
-                        <button id="btn-login" class="nav-button" style="display:none">Entrar</button>
-                        <button id="btn-logout" class="nav-button" style="background:none; border:none; cursor:pointer; color:var(--accent); display:none">Sair</button>
+                        <button id="btn-logout" class="nav-button" style="display: none; font-size: 10px; color: var(--accent);">Sair</button>
                     </div>
                 </div>
             </nav>
@@ -41,20 +55,25 @@
     </header>
 
     <main class="container">
-        <section class="store-section" style="margin-top: 40px;">
-            <h1>Minha Biblioteca</h1>
-            <p id="library-empty" style="display: none; color: #bdc3c7;">Você ainda não possui jogos. Visite a loja para começar sua coleção!</p>
-            <div class="game-grid" id="library-grid">
-                <!-- Jogos da biblioteca serão injetados aqui -->
-            </div>
-        </section>
+        <h2 class="section-title">Minha Biblioteca <span id="library-count" class="library-count-badge">0</span></h2>
+        
+        <!-- Grid de jogos comprados -->
+        <div id="library-grid" class="game-grid">
+            <!-- Injetado via JS no auth.js -->
+        </div>
+
+        <!-- Estado vazio -->
+        <div id="library-empty" style="display: none;">
+            <i class="fas fa-gamepad" style="font-size: 3rem; margin-bottom: 20px; color: var(--text-secondary); display: block;"></i>
+            <h2>Sua biblioteca está vazia</h2>
+            <p>Você ainda não possui nenhum jogo. Visite a loja para descobrir novos títulos!</p>
+            <a href="../index.html" class="buy-button" style="display: inline-block; width: auto; margin-top: 20px; text-decoration: none; text-align: center;">Explorar Loja</a>
+        </div>
     </main>
 
     <footer class="main-footer">
         <div class="container">
-            <div class="footer-bottom">
-                &copy; 2026 GameHub. Todos os direitos reservados.
-            </div>
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
         </div>
     </footer>
 </body>
