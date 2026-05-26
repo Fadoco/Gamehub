@@ -127,6 +127,9 @@ window.customConfirm = (message, onConfirm) => {
 
 // --- VERIFICAÇÃO DE SEGURANÇA (Monitora o estado da sessão em tempo real) ---
 auth.onAuthStateChanged((user) => {
+    const isHtmlFolder = window.location.pathname.includes('/html/');
+    const isActuallySubfolder = window.location.pathname.includes('/Roleta/');
+    const isWelcomePage = window.location.pathname.includes('welcome.html');
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin-user-detail.html');
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
