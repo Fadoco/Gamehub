@@ -87,18 +87,34 @@ function setupHero(featuredGames) {
 
     // Função para atualizar o card principal
     const updateMainCard = (game) => {
-        document.getElementById('hero-title').textContent = game.title;
-        document.getElementById('hero-description').textContent = game.description;
-        document.getElementById('hero-current-price').textContent = game.currentPrice;
-        document.getElementById('hero-old-price').textContent = game.oldPrice || "";
-        document.getElementById('hero-discount').textContent = `-${game.discount}%`;
-        document.getElementById('hero-discount').style.display = game.discount > 0 ? 'block' : 'none';
-        document.getElementById('hero-main-card').style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${game.image}')`;
-        document.getElementById('hero-main-card').style.backgroundSize = 'cover';
-        document.getElementById('hero-main-card').style.backgroundPosition = 'center';
+        const elements = {
+            title: document.getElementById('hero-title'),
+            desc: document.getElementById('hero-description'),
+            price: document.getElementById('hero-current-price'),
+            oldPrice: document.getElementById('hero-old-price'),
+            discount: document.getElementById('hero-discount'),
+            card: document.getElementById('hero-main-card'),
+            buyBtn: document.getElementById('hero-buy-btn'),
+            cartBtn: document.getElementById('hero-cart-btn')
+        };
+
+        if (elements.title) elements.title.textContent = game.title;
+        if (elements.desc) elements.desc.textContent = game.description;
+        if (elements.price) elements.price.textContent = game.currentPrice;
+        if (elements.oldPrice) elements.oldPrice.textContent = game.oldPrice || "";
+        if (elements.discount) {
+            elements.discount.textContent = `-${game.discount}%`;
+            elements.discount.style.display = game.discount > 0 ? 'block' : 'none';
+        }
         
-        document.getElementById('hero-buy-btn').onclick = () => window.location.href = window.utils.getHtmlPath(`jogo.html?id=${game.id}`);
-        document.getElementById('hero-cart-btn').onclick = () => window.toggleCart(game.id);
+        if (elements.card) {
+            elements.card.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${game.image}')`;
+            elements.card.style.backgroundSize = 'cover';
+            elements.card.style.backgroundPosition = 'center';
+        }
+        
+        if (elements.buyBtn) elements.buyBtn.onclick = () => window.location.href = window.utils.getHtmlPath(`jogo.html?id=${game.id}`);
+        if (elements.cartBtn) elements.cartBtn.onclick = () => window.toggleCart(game.id);
     };
 
     // Inicializa primeiro jogo
@@ -119,6 +135,22 @@ function renderCategories(categories, container) {
         <div class="category-pill" onclick="window.location.href='${window.utils.getHtmlPath(`busca.html?q=${cat}`)}'">
             <i class="fas fa-tag"></i>
             <span>${cat}</span>
+        </div>
+    `).join('');
+}
+
+function renderBanners(games, container) {
+    container.innerHTML = games.map(game => `
+        <div class="banner-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'" style="cursor:pointer; position:relative; overflow:hidden; border-radius:12px; height:200px;">
+            <img src="${game.image}" style="width:100%; height:100%; object-fit:cover; position:absolute; z-index:1;">
+            <div style="position:absolute; z-index:2; bottom:0; left:0; right:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8));">
+                <span class="tag">OFERTA</span>
+                <h3 style="margin:5px 0;">${game.title}</h3>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span class="discount-percent">-${game.discount}%</span>
+                    <strong>${game.currentPrice}</strong>
+                </div>
+            </div>
         </div>
     `).join('');
 }

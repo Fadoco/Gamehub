@@ -12,10 +12,10 @@ function debounce(func, timeout = 300) {
 }
 
 function initSearch() {
-    const searchInput = document.querySelector('.search-box input');
-    const searchIcon = document.querySelector('.search-box i');
-    const searchBox = document.querySelector('.search-box');
-    const tagButtons = document.querySelectorAll('.tag-btn');
+    const searchInput = document.getElementById('main-search');
+    const searchIcon = document.querySelector('.searchbar__icon');
+    const searchBox = document.querySelector('.searchbar');
+    const tagButtons = document.querySelectorAll('.category-pill');
     
     if (!searchInput) return;
 
@@ -39,13 +39,13 @@ function initSearch() {
         }
 
         // Busca inteligente: o jogo deve conter todas as palavras da pesquisa no título ou nas tags
-        const matchedGames = allGamesData.filter(game => {
+        const matchedGames = (window.allGamesData || []).filter(game => {
             const gameData = (game.title + ' ' + game.tags.join(' ')).toLowerCase();
             return searchWords.every(word => gameData.includes(word));
         }).slice(0, 3); // Limita a 3 sugestões de jogos
 
         // Busca categorias (tags) que combinam
-        const allTags = [...new Set(allGamesData.flatMap(game => game.tags))];
+        const allTags = [...new Set((window.allGamesData || []).flatMap(game => game.tags))];
         const matchedTags = allTags.filter(tag => 
             tag.toLowerCase().includes(searchTerm)
         ).slice(0, 2); // Limita a 2 tags

@@ -16,8 +16,8 @@
             "Dirigir"
         ],
         "discount": 50,
-        "oldPrice": "R$ 199,90",
-        "currentPrice": "R$ 99,95",
+        "oldPrice": "R$ 61,99",
+        "currentPrice": "R$ 30,99",
         "featured": true
     },
     {
@@ -39,7 +39,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 249,50",
+        "currentPrice": "R$ 59,99",
         "featured": true
     },
     {
@@ -59,8 +59,8 @@
             "Multijogador"
         ],
         "discount": 20,
-        "oldPrice": "R$ 299,00",
-        "currentPrice": "R$ 239,20",
+        "oldPrice": "R$ 249,00",
+        "currentPrice": "R$ 199,20",
         "featured": true
     },
     {
@@ -126,7 +126,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -146,7 +146,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -208,7 +208,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -226,8 +226,8 @@
             "Mundo Aberto"
         ],
         "discount": 15,
-        "oldPrice": "R$ 279,90",
-        "currentPrice": "R$ 237,92",
+        "oldPrice": "R$ 349,90",
+        "currentPrice": "R$ 297,42",
         "featured": false
     },
     {
@@ -248,7 +248,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -270,8 +270,8 @@
             "História"
         ],
         "discount": 25,
-        "oldPrice": "R$ 199,90",
-        "currentPrice": "R$ 149,93",
+        "oldPrice": "R$ 299,90",
+        "currentPrice": "R$ 224,93",
         "featured": false
     },
     {
@@ -293,7 +293,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 89,90",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -355,7 +355,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -398,7 +398,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -460,7 +460,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 59,90",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -480,8 +480,8 @@
             "Narrativa"
         ],
         "discount": 15,
-        "oldPrice": "R$ 249,90",
-        "currentPrice": "R$ 212,42",
+        "oldPrice": "R$ 274,90",
+        "currentPrice": "R$ 233,66",
         "featured": false
     },
     {
@@ -500,8 +500,8 @@
             "Pixel Art"
         ],
         "discount": 0,
-        "oldPrice": "R$ 39,90",
-        "currentPrice": "R$ 39,90",
+        "oldPrice": "R$ 36,99",
+        "currentPrice": "R$ 36,99",
         "featured": false
     },
     {
@@ -521,7 +521,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": true
     },
     {
@@ -647,8 +647,8 @@
             "Desafio"
         ],
         "discount": 20,
-        "oldPrice": "R$ 249,90",
-        "currentPrice": "R$ 199,92",
+        "oldPrice": "R$ 264,90",
+        "currentPrice": "R$ 211,92",
         "featured": true
     },
     {
@@ -714,7 +714,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": true
     },
     {
@@ -735,8 +735,8 @@
             "Dirigir"
         ],
         "discount": 20,
-        "oldPrice": "R$ 129,90",
-        "currentPrice": "R$ 103,92",
+        "oldPrice": "R$ 109,90",
+        "currentPrice": "R$ 87,92",
         "featured": false
     },
     {
@@ -818,7 +818,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -838,7 +838,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -966,8 +966,8 @@
             "Anime"
         ],
         "discount": 0,
-        "oldPrice": "R$ 59,90",
-        "currentPrice": "R$ 59,90",
+        "oldPrice": null,
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -1161,8 +1161,8 @@
             "História"
         ],
         "discount": 10,
-        "oldPrice": "R$ 139,90",
-        "currentPrice": "R$ 125,91",
+        "oldPrice": "R$ 149,00",
+        "currentPrice": "R$ 134,10",
         "featured": false
     },
     {
@@ -1268,9 +1268,9 @@
             "Estratégia",
             "Relaxante"
         ],
-        "discount": 10,
-        "oldPrice": "R$ 199,90",
-        "currentPrice": "R$ 179,91",
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
         "featured": false
     },
     {
@@ -1397,7 +1397,7 @@
         ],
         "discount": 0,
         "oldPrice": null,
-        "currentPrice": "R$ 0,00",
+        "currentPrice": "Grátis",
         "featured": false
     }
 ]

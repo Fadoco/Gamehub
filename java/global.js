@@ -251,13 +251,15 @@ async function fetchGamesData() {
             if (response.ok) {
                 data = await response.json();
                 console.log("Dados carregados via JSON");
+            } else {
+                console.error("Erro ao carregar games.json:", response.statusText);
             }
         }
 
         window.allGamesData = data;
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
-        window.allGamesData = window.allGamesData.map(game => { 
+        window.allGamesData = (window.allGamesData || []).map(game => { 
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
             
@@ -269,8 +271,10 @@ async function fetchGamesData() {
             return {
                 ...game,
                 image: imgPath,
-                // Padroniza a descrição e IDs para garantir funcionamento das seções
-                description: game.description || game.Description
+                description: game.description || game.Description || "",
+                platforms: game.platforms || game.Platforms || [],
+                tags: game.tags || game.Tags || [],
+                id: game.id || game.ID
             };
         });
 

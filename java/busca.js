@@ -42,5 +42,7 @@ function renderSearchResults(games) {
     
     if (typeof setupPagination === 'function') {
         setupPagination(filteredGames, grid, footer);
+    } else if (grid) {
+        window.renderToContainer(filteredGames, grid, true);
     }
 }
