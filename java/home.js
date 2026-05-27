@@ -16,6 +16,13 @@ window.renderGames = function(games) {
         renderCategories(categories, catGrid);
     }
 
+    // 1.2. Banner de Destaque Secundário (Formato Largo)
+    const bannerGames = games.filter(g => !g.featured && g.discount > 0).slice(0, 2);
+    const bannerGrid = document.getElementById('banners-grid');
+    if (bannerGrid) {
+        renderBanners(bannerGames, bannerGrid);
+    }
+
     // 2. Configurar Promoções (Jogos com desconto)
     const discounted = games.filter(g => g.discount > 0).slice(0, 6);
     const promoContainer = document.getElementById('promo-cards-container');
@@ -145,4 +152,9 @@ function renderChartList(elementId, games, isFree = false) {
             ${!isFree ? `<span class="price">${game.currentPrice}</span>` : ''}
         </li>
     `).join('');
+}
+
+// Garante que a loja renderize se os dados chegarem antes do script terminar de carregar
+if (window.allGamesData && window.allGamesData.length > 0) {
+    window.renderGames(window.allGamesData);
 }

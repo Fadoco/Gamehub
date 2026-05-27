@@ -376,6 +376,32 @@ main {
     gap: 10px;
 }
 .category-pill:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+/* --- Banners Horizontais --- */
+.banners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 20px;
+}
+
+.wide-banner {
+    display: flex;
+    background: var(--bg-header);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    height: 200px;
+}
+
+.wide-banner img { width: 40%; object-fit: cover; }
+.wide-banner__content { padding: 20px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.wide-banner__content h3 { margin: 0; font-size: 1.3rem; }
+.wide-banner__content p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+
+.wide-banner:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
 }
 
 .chart-card {
