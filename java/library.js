@@ -2,7 +2,7 @@
  * Lógica para exibir os jogos da biblioteca do usuário.
  */
 
-function renderLibrary() {
+window.renderLibrary = function() {
     const grid = document.getElementById('library-grid');
     const emptyMsg = document.getElementById('library-empty');
     const countBadge = document.getElementById('library-count');
@@ -22,4 +22,4 @@ function renderLibrary() {
         // Reutilizamos a função de renderização global
         window.renderToContainer(libraryGames, grid, true);
     }
-}
+};

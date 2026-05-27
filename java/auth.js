@@ -202,7 +202,7 @@ auth.onAuthStateChanged((user) => {
         window.userFavorites = [];
         window.userCart = [];
         window.userLibrary = [];
-        refreshCurrentPageUI();
+        if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges();
     }
 });
@@ -233,28 +233,9 @@ async function loadUserData(uid) {
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
             window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
-        refreshCurrentPageUI();
+        if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
-}
-
-// Função auxiliar para atualizar a interface da página atual sem recarregar
-function refreshCurrentPageUI() {
-    if (window.allGamesData && window.allGamesData.length > 0) {
-        if (window.location.pathname.includes('jogo.html') && typeof renderGameDetails === 'function') {
-            renderGameDetails(window.allGamesData);
-        } else if (window.location.pathname.includes('busca.html') && typeof renderSearchResults === 'function') {
-            renderSearchResults(window.allGamesData);
-        } else if (window.location.pathname.includes('carrinho.html') && typeof renderCart === 'function') {
-            renderCart();
-        } else if (window.location.pathname.includes('biblioteca.html') && typeof renderLibrary === 'function') {
-            renderLibrary();
-        } else if (window.location.pathname.includes('perfil.html') && typeof renderProfile === 'function') {
-            // renderProfile() é chamado por initProfilePage no perfil.js, que gerencia o UID da URL
-        } else if (typeof renderGames === 'function') {
-            renderGames(window.allGamesData);
-        }
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

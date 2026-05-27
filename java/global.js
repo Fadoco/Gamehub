@@ -275,7 +275,7 @@ async function fetchGamesData() {
 /**
  * Decide qual função de renderização chamar com base na página atual
  */
-function routePageRendering() {
+window.routePageRendering = function() {
     const path = window.location.pathname.toLowerCase();
     
     const routes = [
@@ -302,7 +302,7 @@ function routePageRendering() {
     } else if (typeof window.renderGames === 'function') {
         window.renderGames(window.allGamesData);
     }
-}
+};
 
 function initBackToTop() {
     const btn = document.createElement('button');

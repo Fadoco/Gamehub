@@ -81,7 +81,7 @@ function setupHero(featuredGames) {
     // Função para atualizar o card principal
     const updateMainCard = (game) => {
         document.getElementById('hero-title').textContent = game.title;
-        document.getElementById('hero-description').textContent = game.Description;
+        document.getElementById('hero-description').textContent = game.description;
         document.getElementById('hero-current-price').textContent = game.currentPrice;
         document.getElementById('hero-old-price').textContent = game.oldPrice || "";
         document.getElementById('hero-discount').textContent = `-${game.discount}%`;
@@ -105,6 +105,29 @@ function setupHero(featuredGames) {
             updateMainCard(featuredGames[this.dataset.index]);
         });
     });
+}
+
+function renderCategories(categories, container) {
+    container.innerHTML = categories.map(cat => `
+        <div class="category-pill" onclick="window.location.href='${window.utils.getHtmlPath(`busca.html?q=${cat}`)}'">
+            <i class="fas fa-tag"></i>
+            <span>${cat}</span>
+        </div>
+    `).join('');
+}
+
+function renderPosters(games, container) {
+    container.innerHTML = games.map(game => `
+        <div class="poster-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'">
+            <img src="${game.image}" alt="${game.title}">
+            <div class="poster-card__info">
+                <span class="eyebrow" style="color: var(--accent); font-size: 0.7rem; font-weight: bold;">DESTAQUE DA TEMPORADA</span>
+                <h3 style="margin: 5px 0; font-size: 1.2rem;">${game.title}</h3>
+                <p style="font-size: 0.8rem; color: #ccc; margin-bottom: 10px;">${(game.description || "").substring(0, 60)}...</p>
+                <button class="btn btn-primary" style="padding: 6px 15px; font-size: 0.8rem;">Ver Detalhes</button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderChartList(elementId, games, isFree = false) {
