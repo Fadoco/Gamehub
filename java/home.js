@@ -33,14 +33,21 @@ function renderGames(games) {
     renderChartList('chart-free-games', games.filter(g => window.utils.parsePrice(g.currentPrice) === 0).slice(0, 5), true);
     renderChartList('chart-new-releases', games.slice(0, 5));
 
-    // 4. Nova Seção: Novidades (assumindo que IDs maiores são mais novos)
+    // 4. Nova Seção: Posters (Destaques Verticais)
+    const posters = games.filter(g => g.featured).slice(0, 4);
+    const posterGrid = document.getElementById('poster-section-grid');
+    if (posterGrid) {
+        renderPosters(posters, posterGrid);
+    }
+
+    // 5. Novidades
     const newArrivals = [...games].sort((a, b) => b.id - a.id).slice(0, 12); // Top 12 mais novos
     const newArrivalsGrid = document.getElementById('new-arrivals-grid');
     if (newArrivalsGrid) {
         window.renderToContainer(newArrivals, newArrivalsGrid);
     }
 
-    // 5. Nova Seção: Mais Populares (exemplo: outra fatia de jogos)
+    // 6. Mais Populares
     // Em um sistema real, isso viria de dados de popularidade (vendas, visualizações, etc.)
     const mostPopular = [...games].sort(() => 0.5 - Math.random()).slice(0, 12); // Exemplo: 12 jogos aleatórios
     const mostPopularGrid = document.getElementById('most-popular-grid');
