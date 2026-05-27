@@ -229,23 +229,32 @@ window.renderToContainer = (games, container, clear = true) => {
 async function fetchGamesData() {
     try {
         const IS_SUBFOLDER = window.IS_SUBFOLDER;
-        if (window.db) {
-            const snapshot = await window.db.collection('games').get();
-            if (!snapshot.empty) {
-                window.allGamesData = snapshot.docs.map(doc => ({
-                    firestoreId: doc.id,
-                    ...doc.data()
-                }));
-                console.log("Dados carregados via Firestore");
+        let data = [];
+
+        // Tenta carregar do Firestore
+        try {
+            if (window.db) {
+                const snapshot = await window.db.collection('games').get();
+                if (!snapshot.empty) {
+                    data = snapshot.docs.map(doc => ({ firestoreId: doc.id, ...doc.data() }));
+                    console.log("Dados carregados via Firestore");
+                }
+            }
+        } catch (dbError) {
+            console.warn("Firestore inacessível, tentando fallback JSON...", dbError);
+        }
+
+        // Fallback para JSON se o Firestore falhar ou estiver vazio
+        if (data.length === 0) {
+            const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
+            const response = await fetch(jsonPath);
+            if (response.ok) {
+                data = await response.json();
+                console.log("Dados carregados via JSON");
             }
         }
 
-        // Se o Firestore estiver vazio ou falhar, usa o fallback JSON
-        if (window.allGamesData.length === 0) {
-            const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
-            const response = await fetch(jsonPath);
-            window.allGamesData = await response.json();
-        }
+        window.allGamesData = data;
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
         window.allGamesData = window.allGamesData.map(game => { 
@@ -260,12 +269,12 @@ async function fetchGamesData() {
             return {
                 ...game,
                 image: imgPath,
-                // Padroniza também a descrição para facilitar o uso nos outros scripts
+                // Padroniza a descrição e IDs para garantir funcionamento das seções
                 description: game.description || game.Description
             };
         });
 
-        routePageRendering();
+        window.routePageRendering();
 
     } catch (error) {
         console.error("Erro ao carregar o catálogo de jogos:", error);
@@ -279,13 +288,13 @@ window.routePageRendering = function() {
     const path = window.location.pathname.toLowerCase();
     
     const routes = [
-        { file: 'jogo.html', func: typeof renderGameDetails === 'function' ? renderGameDetails : null, args: [window.allGamesData] },
-        { file: 'busca.html', func: typeof renderSearchResults === 'function' ? renderSearchResults : null, args: [window.allGamesData] },
-        { file: 'carrinho.html', func: typeof renderCart === 'function' ? renderCart : null },
-        { file: 'biblioteca.html', func: typeof renderLibrary === 'function' ? renderLibrary : null },
-        { file: 'historico.html', func: typeof renderHistory === 'function' ? renderHistory : null },
-        { file: 'perfil.html', func: typeof renderProfile === 'function' ? renderProfile : null },
-        { file: 'roleta.html', func: typeof renderRoulette === 'function' ? renderRoulette : null }
+        { file: 'jogo.html', func: typeof window.renderGameDetails === 'function' ? window.renderGameDetails : null, args: [window.allGamesData] },
+        { file: 'busca.html', func: typeof window.renderSearchResults === 'function' ? window.renderSearchResults : null, args: [window.allGamesData] },
+        { file: 'carrinho.html', func: typeof window.renderCart === 'function' ? window.renderCart : null },
+        { file: 'biblioteca.html', func: typeof window.renderLibrary === 'function' ? window.renderLibrary : null },
+        { file: 'historico.html', func: typeof window.renderHistory === 'function' ? window.renderHistory : null },
+        { file: 'perfil.html', func: typeof window.renderProfile === 'function' ? window.renderProfile : null },
+        { file: 'roleta.html', func: typeof window.renderRoulette === 'function' ? window.renderRoulette : null }
     ];
 
     const activeRoute = routes.find(r => path.includes(r.file));
