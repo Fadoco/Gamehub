@@ -299,8 +299,8 @@ function routePageRendering() {
     if (activeRoute) {
         if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
         else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);
-    } else if (typeof renderGames === 'function') {
-        renderGames(window.allGamesData);
+    } else if (typeof window.renderGames === 'function') {
+        window.renderGames(window.allGamesData);
     }
 }
 

@@ -1,8 +1,8 @@
 /**
  * Lógica de renderização da Home Premium
  */
-
-function renderGames(games) {
+ 
+window.renderGames = function(games) {
     if (!games || games.length === 0) return;
 
     // 1. Configurar Hero (Destaques)

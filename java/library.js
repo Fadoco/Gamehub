@@ -5,9 +5,6 @@
 function renderLibrary() {
     const grid = document.getElementById('library-grid');
     const emptyMsg = document.getElementById('library-empty');
-    const titleElement = document.querySelector('main h1');
-    
-    if (!grid || !allGamesData.length) return;
     if (!grid || !window.allGamesData.length) return;
 
     // Filtra apenas os jogos que estão na lista de biblioteca do usuário
