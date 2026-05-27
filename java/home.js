@@ -9,6 +9,13 @@ window.renderGames = function(games) {
     const featured = games.filter(g => g.featured).slice(0, 5);
     setupHero(featured);
 
+    // 1.1. Categorias Populares (Navegação Visual)
+    const categories = ["Ação", "RPG", "Mundo Aberto", "Tiro", "Estratégia", "Terror"];
+    const catGrid = document.getElementById('categories-grid');
+    if (catGrid) {
+        renderCategories(categories, catGrid);
+    }
+
     // 2. Configurar Promoções (Jogos com desconto)
     const discounted = games.filter(g => g.discount > 0).slice(0, 6);
     const promoContainer = document.getElementById('promo-cards-container');

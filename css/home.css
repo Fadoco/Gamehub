@@ -342,10 +342,40 @@ main {
 
 .price-row {
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+.price-row strong {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* --- Categorias Populares --- */
+.categories-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: none;
+}
+.category-pill {
+    background: var(--bg-header);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
     gap: 10px;
-    font-size: 0.95rem;
-    flex-wrap: wrap; /* Evita corte em telas pequenas */
+}
+.category-pill:hover { border-color: var(--accent); background: var(--accent-soft); }
 }
 
 .chart-card {
