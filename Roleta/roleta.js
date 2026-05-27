@@ -3,6 +3,7 @@
  */
 
 let selectedGameToBet = null;
+let isActionInProgress = false; // Bloqueio global para evitar cliques múltiplos e bugs de saldo
 
 // Mapeamento de IDs para Tipos
 const CARD_TYPES = {
@@ -176,6 +177,8 @@ window.closeBoxModal = () => {
 };
 
 window.openBox = async (tier) => {
+    if (isActionInProgress) return;
+
     // SOM IMEDIATO NO CLIQUE
     playSpinSound();
 
@@ -185,6 +188,28 @@ window.openBox = async (tier) => {
     const cost = boxCosts[tier];
 
     if (window.userBalance < cost) return window.showToast("Saldo insuficiente!", "error");
+
+    isActionInProgress = true;
+
+    try {
+        // 1. Debitar saldo IMEDIATAMENTE no banco de dados para evitar gastos duplicados ou negativos
+        // Usamos increment(-cost) para garantir atomicidade no Firebase
+        const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+        await userRef.update({
+            balance: firebase.firestore.FieldValue.increment(-cost)
+        });
+
+        // Atualiza localmente para a UI refletir a cobrança imediatamente
+        window.userBalance -= cost;
+        const walletDisplay = document.getElementById('wallet-amount');
+        if (walletDisplay) {
+            walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        }
+    } catch (error) {
+        console.error("Erro ao processar débito da caixa:", error);
+        isActionInProgress = false;
+        return window.showToast("Erro ao processar pagamento. Tente novamente.", "error");
+    }
 
     // Mostrar Modal
     const modal = document.getElementById('box-opening-modal');
@@ -244,16 +269,14 @@ window.openBox = async (tier) => {
 
         try {
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-            const newBalance = window.userBalance - cost;
             
             // Se o usuário já tiver o jogo, ele ganha o valor do jogo de volta como consolação
             if (window.userLibrary.includes(winningGame.id)) {
                 const refund = window.utils.parsePrice(winningGame.currentPrice) * 0.5;
-                await userRef.update({ balance: newBalance + refund });
+                await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
                 window.showToast(`Você já tinha o jogo! Recebeu R$ ${refund.toFixed(2)} de compensação.`, "info");
             } else {
                 await userRef.update({
-                    balance: newBalance,
                     library: firebase.firestore.FieldValue.arrayUnion(winningGame.id)
                 });
                 window.showToast(`PARABÉNS! Você ganhou ${winningGame.title}!`, "success");
@@ -263,6 +286,8 @@ window.openBox = async (tier) => {
             renderRoulette();
         } catch (e) {
             console.error(e);
+        } finally {
+            isActionInProgress = false;
         }
     }, 7200);
 };
@@ -279,6 +304,7 @@ async function startUpgradeSpin() {
     const spinBtn = document.getElementById('btn-spin');
     
     spinBtn.disabled = true;
+    isActionInProgress = true;
     spinBtn.textContent = "Girando...";
 
     // 1. Probabilidades baseadas no nível atual
@@ -355,6 +381,7 @@ async function startUpgradeSpin() {
             window.showToast("Erro ao processar aposta.", "error");
         } finally {
             spinBtn.textContent = "Girar e Melhorar Jogo";
+            isActionInProgress = false;
         }
     }, 7200); // Tempo da animação + pequeno delay
 }
