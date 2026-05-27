@@ -14,7 +14,7 @@ function renderGames(games) {
     const promoContainer = document.getElementById('promo-cards-container');
     if (promoContainer) {
         promoContainer.innerHTML = discounted.map(game => `
-            <article class="promo-card" onclick="window.location.href='html/jogo.html?id=${game.id}'">
+            <article class="promo-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'">
                 <img src="${game.image}" class="promo-card__thumb" style="object-fit: cover;">
                 <div class="promo-card__meta">
                     <strong>${game.title}</strong>
@@ -32,6 +32,21 @@ function renderGames(games) {
     renderChartList('chart-best-sellers', games.slice(10, 15));
     renderChartList('chart-free-games', games.filter(g => window.utils.parsePrice(g.currentPrice) === 0).slice(0, 5), true);
     renderChartList('chart-new-releases', games.slice(0, 5));
+
+    // 4. Nova Seção: Novidades (assumindo que IDs maiores são mais novos)
+    const newArrivals = [...games].sort((a, b) => b.id - a.id).slice(0, 12); // Top 12 mais novos
+    const newArrivalsGrid = document.getElementById('new-arrivals-grid');
+    if (newArrivalsGrid) {
+        window.renderToContainer(newArrivals, newArrivalsGrid);
+    }
+
+    // 5. Nova Seção: Mais Populares (exemplo: outra fatia de jogos)
+    // Em um sistema real, isso viria de dados de popularidade (vendas, visualizações, etc.)
+    const mostPopular = [...games].sort(() => 0.5 - Math.random()).slice(0, 12); // Exemplo: 12 jogos aleatórios
+    const mostPopularGrid = document.getElementById('most-popular-grid');
+    if (mostPopularGrid) {
+        window.renderToContainer(mostPopular, mostPopularGrid);
+    }
 }
 
 function setupHero(featuredGames) {
@@ -83,7 +98,7 @@ function renderChartList(elementId, games, isFree = false) {
     if (!container) return;
 
     container.innerHTML = games.map(game => `
-        <li onclick="window.location.href='html/jogo.html?id=${game.id}'" style="cursor:pointer">
+        <li onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'" style="cursor:pointer">
             <img src="${game.image}" class="chart-thumb" style="object-fit: cover;">
             <div>
                 <strong>${game.title}</strong>

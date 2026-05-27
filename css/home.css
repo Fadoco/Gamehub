@@ -317,6 +317,9 @@ main {
 .promo-card__meta strong {
     display: block;
     font-size: 0.98rem;
+    white-space: nowrap; /* Adicionado para truncar texto */
+    overflow: hidden;    /* Adicionado para truncar texto */
+    text-overflow: ellipsis; /* Adicionado para truncar texto */
 }
 
 .promo-card__meta .tag {
@@ -390,6 +393,9 @@ main {
 .chart-card strong {
     display: block;
     font-size: 0.95rem;
+    white-space: nowrap; /* Adicionado para truncar texto */
+    overflow: hidden;    /* Adicionado para truncar texto */
+    text-overflow: ellipsis; /* Adicionado para truncar texto */
 }
 
 .chart-card .tag,
