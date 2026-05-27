@@ -60,9 +60,7 @@ function initSearch() {
     const performSearch = (query) => {
         const term = query || searchInput.value.trim();
         if (!term) return;
-        const isSubfolder = window.location.pathname.includes('/html/');
-        const buscaPath = isSubfolder ? 'busca.html' : 'html/busca.html';
-        window.location.href = `${buscaPath}?q=${encodeURIComponent(term)}`;
+        window.location.href = `${window.utils.getHtmlPath('busca.html')}?q=${encodeURIComponent(term)}`;
     };
 
     searchInput.addEventListener('keydown', (e) => {
@@ -108,10 +106,7 @@ function renderSuggestions(games, tags, container, performSearch) {
                 <span class="suggestion-meta">Jogo</span>
             </div>
         `;
-        div.onclick = () => {
-            const isSubfolder = window.location.pathname.includes('/html/');
-            window.location.href = isSubfolder ? `jogo.html?id=${game.id}` : `html/jogo.html?id=${game.id}`;
-        };
+        div.onclick = () => window.location.href = window.utils.getHtmlPath(`jogo.html?id=${game.id}`);
         container.appendChild(div);
     });
 

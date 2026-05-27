@@ -3,6 +3,7 @@
  */
 
 window.allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
+window.isActionInProgress = false; // Trava global para evitar operações duplicadas (compras/roleta)
 
 // Detecta uma única vez se estamos em uma subpasta
 window.IS_SUBFOLDER = window.location.pathname.includes('/html/') || window.location.pathname.includes('/Roleta/');
@@ -20,11 +21,150 @@ window.utils = {
         if (!user) return 'Usuário';
         return user.displayName || (user.email ? user.email.split('@')[0] : 'Usuário');
     },
-    getPath: (file) => {
-        if (!window.IS_SUBFOLDER) return file.includes('html/') || file.includes('Roleta/') ? file : `html/${file}`;
-        return file.replace('html/', '').replace('../', '');
+    // Resolve o caminho relativo para um arquivo HTML a partir da página atual
+    // targetHtmlFile: o nome do arquivo HTML (ex: 'jogo.html', 'admin.html', 'index.html')
+    getHtmlPath: (targetHtmlFile) => { 
+        const currentPath = window.location.pathname; 
+        const isCurrentInHtmlFolder = currentPath.includes('/html/'); 
+        const isCurrentInRoletaFolder = currentPath.includes('/Roleta/'); 
+ 
+        if (targetHtmlFile === 'index.html') { // Caso especial para a página inicial
+            return isCurrentInHtmlFolder || isCurrentInRoletaFolder ? '../index.html' : 'index.html';
+        }
+        if (isCurrentInHtmlFolder) {
+            return targetHtmlFile; // Se já estamos em /html/, o link é direto (ex: 'jogo.html')
+        } else if (isCurrentInRoletaFolder) {
+            return `../html/${targetHtmlFile}`; // Se estamos em /Roleta/, precisamos subir um nível e ir para /html/
+        } else { // Da raiz
+            return `html/${targetHtmlFile}`;
+        }
     }
 };
+
+// Função para atualizar contadores no menu (opcional) - Movida de auth.js
+window.updateNavBadges = () => { 
+    const cartBtn = document.querySelector('.nav-button .fa-shopping-cart')?.parentElement;
+    if (cartBtn) {
+        cartBtn.setAttribute('data-count', window.userCart.length);
+    }
+ 
+    // Garante que o saldo no Header esteja atualizado
+    const walletDisplay = document.getElementById('wallet-amount');
+    if (walletDisplay) {
+        walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    }
+ 
+    // Atualiza o sino de notificações
+    const notifBadge = document.getElementById('notif-badge');
+    if (notifBadge) {
+        const count = (window.userFriendRequestsReceived || []).length;
+        notifBadge.textContent = count;
+        notifBadge.style.display = count > 0 ? 'block' : 'none';
+        
+        const dropdown = document.getElementById('notif-dropdown');
+        if (dropdown && dropdown.style.display === 'block') window.renderNotifications();
+    }
+};
+
+// Função para renderizar a UI do cabeçalho com base no estado de autenticação - Movida de auth.js
+window.checkUserSession = (user) => { 
+    const btnLogin = document.getElementById('btn-login');
+    const userMenu = document.getElementById('user-menu');
+    const sectionNav = document.querySelector('.section-nav');
+
+    // Limpar sub-header (section-nav) deixando apenas o botão aleatório
+    if (sectionNav) {
+        sectionNav.innerHTML = `
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()" style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-dice"></i> <span>Jogo Aleatório</span>
+            </button>
+        `;
+    }
+
+    const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+    const isAdmin = user && adminList.includes(user.email.toLowerCase());
+
+    if (user) {
+        if (btnLogin) btnLogin.style.display = 'none'; 
+
+        if (userMenu) {
+            userMenu.style.display = 'flex';
+            userMenu.style.width = 'auto';
+            userMenu.innerHTML = '';
+
+            // 1. Botão Admin (se for o caso)
+            if (isAdmin) {
+                const adminBtn = document.createElement('button');
+                adminBtn.className = 'nav-button';
+                adminBtn.innerHTML = '<i class="fas fa-user-shield"></i>';
+                adminBtn.title = "Painel Administrativo";
+                adminBtn.onclick = () => window.location.href = window.utils.getHtmlPath('admin.html'); 
+                userMenu.appendChild(adminBtn);
+            }
+
+            // 2. Sininho (Notificações)
+            const notifWrapper = document.createElement('div');
+            notifWrapper.id = 'notif-wrapper';
+            notifWrapper.className = 'notifications-wrapper';
+            notifWrapper.innerHTML = `
+                <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: #ffffff; background: none; border: none; cursor: pointer; position: relative;" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-badge" class="notification-badge">0</span>
+                </button>
+                <div id="notif-dropdown" class="notifications-dropdown">
+                    <div class="notifications-header">Pedidos de Amizade</div>
+                    <div id="notif-list" class="notifications-list">
+                        <div class="empty-notif">Nenhuma notificação nova.</div>
+                    </div>
+                </div>
+            `;
+            userMenu.appendChild(notifWrapper);
+
+            const btnNotif = notifWrapper.querySelector('#btn-notifications');
+            const dropdown = notifWrapper.querySelector('#notif-dropdown');
+            btnNotif.onclick = (e) => {
+                e.stopPropagation(); 
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                if (dropdown.style.display === 'block') window.renderNotifications();
+            };
+            document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
+            dropdown.onclick = (e) => e.stopPropagation();
+
+            // 3. Fotinha do Perfil (Avatar) com nome abaixo
+            const userAvatarContainer = document.createElement('div');
+            userAvatarContainer.className = 'user-profile-display';
+            const displayName = window.utils.getUserFriendlyName(user);
+            userAvatarContainer.innerHTML = `
+                <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`}" 
+                     style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent); cursor: pointer;"
+                     title="${displayName}"
+                     onclick="window.location.href='${window.utils.getHtmlPath('perfil.html')}'"> 
+                <span style="font-size: 12px; color: var(--text-secondary); display: block; text-align: center; margin-top: 4px;">${displayName}</span>
+            `;
+            userAvatarContainer.onclick = () => window.location.href = window.utils.getHtmlPath('perfil.html');
+            userMenu.appendChild(userAvatarContainer);
+
+            // Botão Logout
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'nav-button'; 
+            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+            logoutBtn.onclick = () => window.auth.signOut().then(() => location.reload());
+            userMenu.appendChild(logoutBtn);
+        }
+ 
+        // Apenas mostra/esconde, o conteúdo é atualizado por updateNavBadges
+        const walletDisplay = document.getElementById('user-wallet');
+        if (walletDisplay) {
+            walletDisplay.style.display = 'flex'; 
+        } 
+    } else {
+        if (btnLogin) btnLogin.style.display = 'block';
+        // Sem usuário, garante que o menu do usuário esteja oculto e o botão de login visível
+        if (userMenu) userMenu.style.display = 'none';
+        const walletDisplay = document.getElementById('user-wallet');
+        if (walletDisplay) walletDisplay.style.display = 'none';
+    }
+}; 
 
 /**
  * Renderiza uma lista de jogos em um container HTML.
@@ -32,16 +172,6 @@ window.utils = {
  */
 window.renderToContainer = (games, container, clear = true) => {
     if (!container) return;
-
-    const IS_SUBFOLDER = window.IS_SUBFOLDER;
-    let gamePagePath = 'html/jogo.html';
-    if (IS_SUBFOLDER) {
-        if (window.location.pathname.includes('/html/')) {
-            gamePagePath = 'jogo.html';
-        } else {
-            gamePagePath = '../html/jogo.html';
-        }
-    }
 
     const html = games.map(game => {
         // Gerar ícones de plataformas dinamicamente
@@ -66,7 +196,7 @@ window.renderToContainer = (games, container, clear = true) => {
         }
 
         return `
-            <a href="${gamePagePath}?id=${game.id}" class="game-card-link" style="text-decoration: none; color: inherit;">
+            <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card">
                 <div class="card-media">
                     ${discountBadge}
@@ -174,12 +304,6 @@ function routePageRendering() {
     }
 }
 
-// Atalho global para forçar atualização da UI
-window.refreshUI = routePageRendering;
-
-/**
- * Inicializa o botão "Voltar ao Topo" globalmente
- */
 function initBackToTop() {
     const btn = document.createElement('button');
     btn.className = 'back-to-top';

@@ -137,10 +137,10 @@ auth.onAuthStateChanged((user) => {
     const isSkipActive = localStorage.getItem('skipLogin') === 'true';
 
     if (!user) {
-        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) {
-            let loginPath = 'html/login.html';
-            if (isHtmlFolder) {
-                loginPath = 'login.html';
+        if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) { // Se não logado e não na página de login/welcome
+            let loginPath = window.utils.getHtmlPath('login.html'); // Usa utilitário global
+            if (isHtmlFolder) { // Tratamento especial para acesso direto à pasta html
+                loginPath = 'login.html'; // Se já estiver na pasta html, usa apenas o nome do arquivo
             } else if (isActuallySubfolder) {
                 loginPath = '../html/login.html';
             }
@@ -160,7 +160,7 @@ auth.onAuthStateChanged((user) => {
         }
     }
 
-    checkUserSession(user);
+    window.checkUserSession(user);
 
     // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
     if ((DESATIVAR_LOGIN_PARA_TESTE || isSkipActive) && !user) return;
@@ -202,6 +202,8 @@ auth.onAuthStateChanged((user) => {
         window.userFavorites = [];
         window.userCart = [];
         window.userLibrary = [];
+        refreshCurrentPageUI();
+        window.updateNavBadges();
     }
 });
 
@@ -232,7 +234,7 @@ async function loadUserData(uid) {
             window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
         refreshCurrentPageUI();
-        updateNavBadges(); // Agora atualiza badges e o widget da carteira
+        window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
@@ -269,10 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const brand = document.querySelector('.brand');
     if (brand) {
         brand.style.cursor = 'pointer';
-        brand.onclick = () => {
-            const isHtmlFolder = window.location.pathname.includes('/html/');
-            window.location.href = isHtmlFolder ? '../index.html' : 'index.html';
-        };
+        brand.onclick = () => window.location.href = window.utils.getHtmlPath('index.html');
     }
 
     // Abrir modal de login ao clicar no botão "Entrar" do header
@@ -309,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (isNewUser) {
                         showToast("Bem-vindo ao GameHub!", "success");
-                        window.location.href = isLoginPage ? 'welcome.html' : (window.IS_SUBFOLDER ? 'welcome.html' : 'html/welcome.html');
+                        window.location.href = window.utils.getHtmlPath('welcome.html');
                     } else {
                         console.log("Login bem-sucedido.");
                         if (isLoginPage) {
@@ -361,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(() => {
                     showToast("Conta criada com sucesso!", "success");
-                    window.location.href = 'welcome.html';
+                    window.location.href = window.utils.getHtmlPath('welcome.html');
                 })
                 .catch((error) => {
                     console.error("Erro no Cadastro:", error);
@@ -424,120 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
             skipBtn.style.cssText = "width: 100%; margin-top: 15px; opacity: 0.6; font-size: 11px; justify-content: center; border-style: dashed; cursor: pointer;";
             skipBtn.onclick = () => {
                 localStorage.setItem('skipLogin', 'true');
-                window.location.href = '../index.html';
+                window.location.href = window.utils.getHtmlPath('index.html');
             };
             loginCard.appendChild(skipBtn);
         }
     }
 });
-
-function checkUserSession(user) {
-    const btnLogin = document.getElementById('btn-login');
-    const btnLogout = document.getElementById('btn-logout');
-    const userNameSpan = document.getElementById('user-name');
-    const userImg = document.querySelector('.user-profile img');
-    const userMenu = document.getElementById('user-menu');
-    // Limpar sub-header (section-nav) deixando apenas o botão aleatório
-    const sectionNav = document.querySelector('.section-nav');
-    if (sectionNav) {
-        sectionNav.innerHTML = `
-            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()" style="display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-dice"></i> <span>Jogo Aleatório</span>
-            </button>
-        `;
-    }
-
-    // Função auxiliar para resolver caminhos de páginas dentro de /html/
-    const isHtmlFolder = window.location.pathname.includes('/html/');
-    const getPath = (file) => {
-        if (!window.IS_SUBFOLDER && !isHtmlFolder) return `html/${file}`;
-        return isHtmlFolder ? file : `../html/${file}`;
-    };
-
-    const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
-    const isAdmin = user && adminList.includes(user.email.toLowerCase());
-
-    if (user) {
-        if (btnLogin) btnLogin.style.display = 'none';
-
-        if (userMenu) {
-            userMenu.style.display = 'flex'; // Garante que o menu esteja visível
-            userMenu.style.width = 'auto'; // Ajusta a largura para o conteúdo dinâmico
-            userMenu.innerHTML = ''; // Limpa para reconstruir na ordem correta
-
-            // 1. Botão Admin (se for o caso) - Movido para antes do sininho conforme o pedido
-            if (isAdmin) {
-                const adminBtn = document.createElement('button');
-                adminBtn.className = 'nav-button';
-                adminBtn.innerHTML = '<i class="fas fa-user-shield"></i>';
-                adminBtn.title = "Painel Administrativo";
-                adminBtn.onclick = () => window.location.href = getPath('admin.html');
-                userMenu.appendChild(adminBtn);
-            }
-
-            // 2. Sininho (Notificações)
-            const notifWrapper = document.createElement('div');
-            notifWrapper.id = 'notif-wrapper';
-            notifWrapper.className = 'notifications-wrapper';
-            notifWrapper.innerHTML = `
-                <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: #ffffff; background: none; border: none; cursor: pointer; position: relative;" title="Notificações">
-                    <i class="fas fa-bell"></i>
-                    <span id="notif-badge" class="notification-badge">0</span>
-                </button>
-                <div id="notif-dropdown" class="notifications-dropdown">
-                    <div class="notifications-header">Pedidos de Amizade</div>
-                    <div id="notif-list" class="notifications-list">
-                        <div class="empty-notif">Nenhuma notificação nova.</div>
-                    </div>
-                </div>
-            `;
-            userMenu.appendChild(notifWrapper);
-
-            const btnNotif = notifWrapper.querySelector('#btn-notifications');
-            const dropdown = notifWrapper.querySelector('#notif-dropdown');
-            btnNotif.onclick = (e) => {
-                e.stopPropagation();
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-                if (dropdown.style.display === 'block') window.renderNotifications();
-            };
-            document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
-            dropdown.onclick = (e) => e.stopPropagation();
-
-            // 3. Fotinha do Perfil (Avatar) com nome abaixo
-            const userAvatarContainer = document.createElement('div');
-            userAvatarContainer.className = 'user-profile-display'; // Nova classe para estilização
-            const displayName = window.utils.getUserFriendlyName(user);
-            userAvatarContainer.innerHTML = `
-                <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`}" 
-                     style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent); cursor: pointer;"
-                     title="${displayName}"
-                     onclick="window.location.href='${getPath('perfil.html')}'">
-                <span style="font-size: 12px; color: var(--text-secondary); display: block; text-align: center; margin-top: 4px;">${displayName}</span>
-            `;
-            userAvatarContainer.onclick = () => window.location.href = getPath('perfil.html'); // Torna o container inteiro clicável
-            userMenu.appendChild(userAvatarContainer);
-
-            // Botão Logout
-            const logoutBtn = document.createElement('button');
-            logoutBtn.className = 'nav-button';
-            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-            logoutBtn.onclick = () => auth.signOut().then(() => location.reload());
-            userMenu.appendChild(logoutBtn);
-        }
-
-        // Atualiza a exibição da carteira
-        const walletDisplay = document.getElementById('wallet-amount');
-        if (walletDisplay) {
-            walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            document.getElementById('user-wallet').style.display = 'flex';
-        }
-    } else {
-        if (btnLogin) btnLogin.style.display = 'block';
-        if (btnLogout) btnLogout.style.display = 'none';
-        if (userNameSpan) userNameSpan.style.display = 'none';
-        if (userImg) userImg.style.display = 'block'; // Mostra avatar padrão mesmo deslogado
-    }
-}
 
 // Função global para favoritar/desfavoritar
 window.toggleFavorite = async (event, gameId) => {
@@ -567,31 +458,6 @@ window.toggleFavorite = async (event, gameId) => {
     }
 
     refreshCurrentPageUI();
-};
-
-// Função para atualizar contadores no menu (opcional)
-function updateNavBadges() {
-    const cartBtn = document.querySelector('.nav-button .fa-shopping-cart')?.parentElement;
-    if (cartBtn) {
-        cartBtn.setAttribute('data-count', window.userCart.length);
-    }
-
-    // Garante que o saldo no Header esteja atualizado
-    const walletDisplay = document.getElementById('wallet-amount');
-    if (walletDisplay) {
-        walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    }
-
-    // Atualiza o sino de notificações
-    const notifBadge = document.getElementById('notif-badge');
-    if (notifBadge) {
-        const count = (window.userFriendRequestsReceived || []).length;
-        notifBadge.textContent = count;
-        notifBadge.style.display = count > 0 ? 'block' : 'none';
-        
-        const dropdown = document.getElementById('notif-dropdown');
-        if (dropdown && dropdown.style.display === 'block') window.renderNotifications();
-    }
 }
 
 // Função para Adicionar/Remover do Carrinho
@@ -623,12 +489,12 @@ window.toggleCart = async (gameId) => {
     }
     
     refreshCurrentPageUI();
-    updateNavBadges();
+    window.updateNavBadges();
 };
 
 // Simulação de Compra (Move do Carrinho para Biblioteca)
 window.purchaseLibrary = async () => {
-    if (window.userCart.length === 0) {
+    if (window.userCart.length === 0 || window.isActionInProgress) {
         showToast("Carrinho vazio!", "error");
         return;
     }
@@ -640,7 +506,7 @@ window.purchaseLibrary = async () => {
 
     // Calcula o total da compra baseado nos dados globais
     const cartGames = window.allGamesData.filter(game => window.userCart.some(id => String(id) === String(game.id)));
-    const totalPurchase = cartGames.reduce((acc, game) => acc + utils.parsePrice(game.currentPrice), 0);
+    const totalPurchase = cartGames.reduce((acc, game) => acc + window.utils.parsePrice(game.currentPrice), 0);
 
     if (window.userBalance < totalPurchase) {
         showToast("Saldo insuficiente!", "error");
@@ -648,6 +514,7 @@ window.purchaseLibrary = async () => {
     }
 
     window.customConfirm(`Total: R$ ${totalPurchase.toFixed(2)}\nDeseja finalizar a compra?`, async () => {
+        window.isActionInProgress = true;
         toggleLoader(true);
         
         // Adiciona itens do carrinho à biblioteca (sem duplicar)
@@ -671,7 +538,8 @@ window.purchaseLibrary = async () => {
             toggleLoader(false);
             showToast("Compra realizada (Offline)!", "success");
             refreshCurrentPageUI();
-            updateNavBadges();
+            window.updateNavBadges();
+            window.isActionInProgress = false;
             return;
         }
 
@@ -690,33 +558,16 @@ window.purchaseLibrary = async () => {
             
             toggleLoader(false);
             showToast("Compra finalizada com sucesso!", "success");
-            updateNavBadges();
+            window.updateNavBadges();
             location.reload();
         } catch (error) {
             toggleLoader(false);
             showToast("Erro ao processar compra.", "error");
+        } finally {
+            window.isActionInProgress = false;
         }
     });
 };
-
-// Eventos para os botões do Header
-document.addEventListener('DOMContentLoaded', () => {
-    const btnCart = document.getElementById('nav-cart');
-    const btnLibrary = document.getElementById('nav-library');
-    const isHtmlFolder = window.location.pathname.includes('/html/');
-
-    const getPath = (file) => {
-        if (!window.IS_SUBFOLDER) return `html/${file}`;
-        return isHtmlFolder ? file : `../html/${file}`;
-    };
-
-    if (btnCart) {
-        btnCart.onclick = () => window.location.href = getPath('carrinho.html');
-    }
-    if (btnLibrary) {
-        btnLibrary.onclick = () => window.location.href = getPath('biblioteca.html');
-    }
-});
 
 // --- Funções de Amizade (Lógica) ---
 window.sendFriendRequest = async (targetUid) => {
@@ -855,10 +706,10 @@ window.handleRandomGame = () => {
     const path = window.location.pathname;
     
     // Função interna para resolver o caminho da página de jogo
-    const getGamePath = (id) => {
-        if (path.includes('/html/')) return `jogo.html?id=${id}`;
-        if (path.includes('/Roleta/')) return `../html/jogo.html?id=${id}`;
-        return `html/jogo.html?id=${id}`;
+    const getGamePath = (gameId) => {
+        // Usa a função global para resolver o caminho
+        const targetFile = `jogo.html?id=${gameId}`;
+        return window.utils.getHtmlPath(targetFile);
     };
 
     // 1. Contexto de Biblioteca: Sorteia entre os jogos que o usuário já tem
@@ -890,6 +741,6 @@ window.handleRandomGame = () => {
     // 3. Contexto Geral (Loja/Busca): Sugere um jogo qualquer da loja
     else {
         const randomGame = games[Math.floor(Math.random() * games.length)];
-        window.location.href = getGamePath(randomGame.id);
+        window.location.href = window.utils.getHtmlPath(`jogo.html?id=${randomGame.id}`);
     }
 };

@@ -61,7 +61,7 @@ function setupHero(featuredGames) {
         document.getElementById('hero-main-card').style.backgroundSize = 'cover';
         document.getElementById('hero-main-card').style.backgroundPosition = 'center';
         
-        document.getElementById('hero-buy-btn').onclick = () => window.location.href = `html/jogo.html?id=${game.id}`;
+        document.getElementById('hero-buy-btn').onclick = () => window.location.href = window.utils.getHtmlPath(`jogo.html?id=${game.id}`);
         document.getElementById('hero-cart-btn').onclick = () => window.toggleCart(game.id);
     };
 
@@ -94,12 +94,3 @@ function renderChartList(elementId, games, isFree = false) {
         </li>
     `).join('');
 }
-
-// Atualiza o badge do carrinho no header
-window.addEventListener('load', () => {
-    const badge = document.getElementById('cart-count-badge');
-    if (badge) {
-        const count = window.userCart ? window.userCart.length : 0;
-        badge.textContent = count > 0 ? `(${count})` : "";
-    }
-});
