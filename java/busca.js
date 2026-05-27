@@ -2,7 +2,7 @@
  * Lógica para processar e exibir os resultados na página busca.html
  */
 
-function renderSearchResults(games) {
+window.renderSearchResults = function(games) {
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q')?.toLowerCase().trim() || "";
     const queryWords = query.split(' ').filter(w => w.length > 0);
@@ -10,7 +10,10 @@ function renderSearchResults(games) {
     const queryDisplay = document.getElementById('search-query-text');
     if (queryDisplay) queryDisplay.textContent = query;
 
-    if (queryWords.length === 0) return;
+    if (queryWords.length === 0) {
+        if (queryDisplay) queryDisplay.textContent = "nenhum termo digitado";
+        return;
+    }
 
     // Filtragem Inteligente com Ranqueamento
     const results = games.map(game => {
@@ -40,9 +43,14 @@ function renderSearchResults(games) {
     const grid = document.getElementById('grid-busca');
     const footer = document.getElementById('footer-busca');
     
-    if (typeof setupPagination === 'function') {
-        setupPagination(filteredGames, grid, footer);
-    } else if (grid) {
-        window.renderToContainer(filteredGames, grid, true);
+    if (grid) {
+        if (filteredGames.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                                <h3>Nenhum jogo encontrado para "${query}"</h3>
+                                <p>Tente termos mais genéricos ou verifique a ortografia.</p>
+                              </div>`;
+        } else {
+            window.renderToContainer(filteredGames, grid, true);
+        }
     }
-}
+};

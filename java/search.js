@@ -15,7 +15,6 @@ function initSearch() {
     const searchInput = document.getElementById('main-search');
     const searchIcon = document.querySelector('.searchbar__icon');
     const searchBox = document.querySelector('.searchbar');
-    const tagButtons = document.querySelectorAll('.category-pill');
     
     if (!searchInput) return;
 
@@ -76,12 +75,13 @@ function initSearch() {
         }
     });
 
-    // Lógica para clicar nas tags de filtro
-    tagButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tag = btn.getAttribute('data-tag');
-            performSearch(tag);
-        });
+    // Delegação de Eventos para categorias dinâmicas
+    document.addEventListener('click', (e) => {
+        const categoryBtn = e.target.closest('.category-pill');
+        if (categoryBtn) {
+            const tag = categoryBtn.querySelector('span')?.textContent || categoryBtn.getAttribute('data-tag');
+            if (tag) performSearch(tag);
+        }
     });
 }
 
