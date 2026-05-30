@@ -104,7 +104,6 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
     rail.innerHTML = '';
 
     const totalItems = 60;
-    const itemWidth = 130;
 
     // Converte tipo string para ID numérico se necessário
     const winnerId = winnerType === 'win' ? CARD_TYPES.WIN : (winnerType === 'stay' ? CARD_TYPES.STAY : CARD_TYPES.LOSE);
@@ -139,11 +138,11 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
 
     rail.offsetHeight; 
     const wrapper = rail.parentElement;
-    
-    // Cálculo preciso baseado na linha central invisível do container
-    // Adicionamos um deslocamento aleatório de +/- 30% da largura do card para parecer mais natural
-    const randomInnerOffset = Math.floor(Math.random() * (itemWidth * 0.6)) - (itemWidth * 0.3);
-    const targetPos = (40 * itemWidth) + (itemWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
+    const winnerCard = rail.children[40];
+
+    // Alinha o centro real do elemento vencedor com o centro do container
+    const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
+    const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
 
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;
@@ -251,10 +250,11 @@ window.openBox = async (tier) => {
     }
 
     rail.offsetHeight;
-    const itemWidth = 130; // 120 width + 10 margin
     const wrapper = rail.parentElement;
-    const randomInnerOffset = Math.floor(Math.random() * (itemWidth * 0.6)) - (itemWidth * 0.3);
-    const targetPos = (40 * itemWidth) + (itemWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
+    const winnerCard = rail.children[40];
+
+    const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
+    const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
     
     rail.style.transition = 'transform 7s cubic-bezier(0.15, 0, 0.05, 1)';
     rail.style.transform = `translateX(-${targetPos}px)`;

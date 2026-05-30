@@ -74,6 +74,7 @@
     background: var(--accent);
     z-index: 10;
     box-shadow: 0 0 20px var(--accent);
+    pointer-events: none; /* Linha apenas decorativa, não interfere em cliques */
 }
 
 .roulette-container {
@@ -86,6 +87,7 @@
 }
 
 .roulette-card {
+    box-sizing: border-box; /* Garante que a largura de 120px inclua a borda */
     width: 120px;
     height: 120px;
     margin: 0 5px;
