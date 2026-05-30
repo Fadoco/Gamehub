@@ -29,7 +29,7 @@ window.renderGames = function(games) {
     if (promoContainer) {
         promoContainer.innerHTML = discounted.map(game => `
             <article class="promo-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'">
-                <img src="${game.image}" class="promo-card__thumb" style="object-fit: cover;">
+                <img src="${game.coverUrl || game.image}" class="promo-card__thumb" style="object-fit: cover;">
                 <div class="promo-card__meta">
                     <strong>${game.title}</strong>
                     <span class="tag">-${game.discount}%</span>
@@ -77,7 +77,7 @@ function setupHero(featuredGames) {
     // Renderiza lista lateral
     navList.innerHTML = featuredGames.map((game, index) => `
         <div class="hero-list__item ${index === 0 ? 'active' : ''}" data-index="${index}">
-            <img src="${game.image}" class="thumb" style="width: 50px; height: 65px; object-fit: cover; border-radius: 8px;">
+            <img src="${game.coverUrl || game.image}" class="thumb" style="width: 50px; height: 65px; object-fit: cover; border-radius: 8px;">
             <div>
                 <span>${game.title}</span>
                 <small>${game.tags[0]}</small>
@@ -158,7 +158,7 @@ function renderBanners(games, container) {
 function renderPosters(games, container) {
     container.innerHTML = games.map(game => `
         <div class="poster-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'">
-            <img src="${game.image}" alt="${game.title}">
+            <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="poster-card__info">
                 <span class="eyebrow" style="color: var(--accent); font-size: 0.7rem; font-weight: bold;">DESTAQUE DA TEMPORADA</span>
                 <h3 style="margin: 5px 0; font-size: 1.2rem;">${game.title}</h3>
@@ -175,7 +175,7 @@ function renderChartList(elementId, games, isFree = false) {
 
     container.innerHTML = games.map(game => `
         <li onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'" style="cursor:pointer">
-            <img src="${game.image}" class="chart-thumb" style="object-fit: cover;">
+            <img src="${game.coverUrl || game.image}" class="chart-thumb" style="object-fit: cover;">
             <div>
                 <strong>${game.title}</strong>
                 ${game.discount > 0 ? `<span class="tag">-${game.discount}%</span>` : 

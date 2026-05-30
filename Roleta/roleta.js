@@ -50,7 +50,7 @@ function renderRoulette() {
 
     inventoryGrid.innerHTML = bettableGames.map(game => `
         <div class="bet-item" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
-            <img src="${game.image}" alt="${game.title}">
+            <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="bet-item-info">
                 <span class="bet-item-name">${game.title}</span>
                 <span class="bet-item-price">${(() => {
@@ -86,7 +86,7 @@ window.selectGameForBet = (gameId) => {
         display.classList.add('active');
         display.innerHTML = `
             <div style="display:flex; align-items:center; gap:15px; width:100%">
-                <img src="${game.image}" style="width:50px; border-radius:4px;">
+                <img src="${game.coverUrl || game.image}" style="width:50px; border-radius:4px;">
                 <div style="text-align:left">
                     <strong style="display:block">${game.title} ${rankText}</strong>
                     <span style="font-size:12px; color:var(--accent)">Rank Atual: ${currentLevel} | Alvo: ${currentLevel + 1}</span>
@@ -331,7 +331,7 @@ window.openBox = async (tier) => {
         winnerCard.className = 'roulette-card';
         winnerCard.classList.add(rarity.class);
         winnerCard.innerHTML = `
-            <img src="${winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">
+            <img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">
             <span class="card-label" style="background:rgba(0,0,0,0.8);">${winningGame.title}</span>
         `;
 

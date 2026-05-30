@@ -4,6 +4,7 @@
         "title": "Euro Truck Simulator 2",
         "Description": "Viaje por toda a Europa dirigindo caminhões licenciados, gerenciando rotas, combustível e manutenção. Expanda sua empresa de transporte, contrate motoristas e enfrente tráfego realista, clima variável e contratos de carga desafiadores.",
         "image": "img/Euro Truck Simulator 2.webp",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -25,6 +26,7 @@
         "title": "Subnaltica 2",
         "Description": "Explore oceanos alienígenas, construa bases submarinas é colecione recursos para sobreviver. Enfrente criaturas marinhas, personalize equipamentos e descubra mistérios de civilizações perdidas sob o mar.",
         "image": "img/Subnaltica 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -47,6 +49,7 @@
         "title": "Forza Horizon 6",
         "Description": "Pilote carros de alta performance em um festival de corridas de mundo aberto com pistas variadas, desafios de drift, eventos off-road e personalização completa de veículos. Descubra novos lugares, participe de campeonatos e aperfeiçoe seu estilo de direção.",
         "image": "img/Forza Horizon 6.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -68,6 +71,7 @@
         "title": "Hades II",
         "Description": "Enfrente inimigos míticos em um roguelike frenético, usando habilidades únicas e armas diversas. Progrida com melhorias permanentes, conheça personagens do panteão grego e experimente uma história que evolui a cada tentativa de fuga do submundo.",
         "image": "img/Hades II.jfif",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -90,6 +94,7 @@
         "title": "outbound",
         "Description": "Aventure-se em um planeta selvagem e desconhecido, recolhendo recursos, construindo abrigo e lutando pela sobrevivência. Enfrente biomas hostis, perigos naturais e criaturas alienígenas enquanto descobre o passado do mundo.",
         "image": "img/outbound.avif",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2681060/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -111,6 +116,7 @@
         "title": "Apex Legends",
         "Description": "Participe de batalhas em equipes com heróis táticos, cada um com habilidades únicas. Sobreviva em um battle royale rápido, coordene o uso de gadgets e armas, e aproveite atualizações constantes com novos mapas e personagens.",
         "image": "img/Apex Legends.webp",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -134,6 +140,7 @@
         "title": "Dota 2",
         "Description": "Lidere seu time em batalhas 5v5 intensas, escolhendo entre mais de 120 heróis com habilidades únicas. Equilibre farm, visão e controle de objetivos para destruir a base inimiga em partidas estratégicas de alto nível.",
         "image": "img/Dota 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -154,6 +161,7 @@
         "title": "Dying Light The Beast",
         "Description": "Explore uma cidade infestada por zumbis usando parkour, armas improvisadas e combate corpo a corpo. Melhore suas habilidades, complete missões e enfrente monstros perigosos em um mundo aberto sombrio.",
         "image": "img/Dying Light The Beast.jfif",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2422030/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -177,6 +185,7 @@
         "title": "Invincible VS",
         "Description": "Lute com heróis e vilões em batalhas estilo quadrinhos, combinando poderes únicos e combos explosivos. Enfrente chefes poderosos e personalize sua equipe para vencer duelos frenéticos.",
         "image": "img/Invincible VS.png",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1531201509_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -196,6 +205,7 @@
         "title": "League of Legends",
         "Description": "Participe de partidas competitivas em equipe, escolhendo campeões com habilidades únicas. Trabalhe em conjunto para controlar o mapa, destruir torres e conquistar objetivos estratégicos.",
         "image": "img/League of Legends.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/21779-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -216,6 +226,7 @@
         "title": "Marvel's Spider-Man 2",
         "Description": "Balance pelos céus de Nova York como Peter Parker e Miles Morales, enfrente vilões clássicos e use acrobacias de teia e combate dinâmico para proteger a cidade.",
         "image": "img/Marvel's Spider-Man 2.png",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/518002_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-playstation"
         ],
@@ -235,6 +246,7 @@
         "title": "Overwatch 2",
         "Description": "Junte-se a uma equipe de heróis com habilidades distintas em um shooter objetivo. Coordene ataques, defesas e utilitários em partidas rápidas e competitivas com atualizações contínuas.",
         "image": "img/Overwatch.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2357570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -256,6 +268,7 @@
         "title": "Red Dead Redemption 2",
         "Description": "Mergulhe no Velho Oeste com uma narrativa profunda, missões de história, caça, acampamentos e interações realistas. Siga Arthur Morgan enquanto escolhe entre honra ou sobrevivência em um mundo aberto imersivo.",
         "image": "img/Red Dead Redemption 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -279,6 +292,7 @@
         "title": "Rocket League",
         "Description": "Conecte futebol e carros turbo em partidas de alta velocidade com saltos, boosts e dribles. Jogue solo ou em equipe em arenas competitivas e suba de ranking com habilidades de mecânica e coordenação.",
         "image": "img/Rocket League.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252950/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -301,6 +315,7 @@
         "title": "Sinisistar 2",
         "Description": "Revisite o estilo arcade retrô em um shooter intenso, enfrentando ondas de inimigos, chefes desafiadores e coletando power-ups para sobreviver.",
         "image": "img/Sinisistar 2.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/551239845_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -321,6 +336,7 @@
         "title": "Street Fighter 6",
         "Description": "Entre nas arenas de luta com gráficos modernos e um sistema de combate acessível. Treine combos, use movimentos especiais e desafie jogadores online em um evento global de luta.",
         "image": "img/Street Fighter 6.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -343,6 +359,7 @@
         "title": "Teamfight Tactics",
         "Description": "Monte um time de campeões em um auto battler com sinergias e estratégias de posicionamento. Adapte sua composição conforme o jogo evolui e escolha itens inteligentes para dominar as batalhas automáticas.",
         "image": "img/Teamfight Tactics.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/513143-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -363,6 +380,7 @@
         "title": "Tom Clancy's Rainbow Six Siege",
         "Description": "Jogue um shooter tático onde destruição ambiental e operadores especializados definem o ritmo. Planeje ataques, use gadgets e coopere com seu time para controlar pontos e eliminar o inimigo.",
         "image": "img/Tom Clancy's Rainbow Six Siege.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -385,6 +403,7 @@
         "title": "Valorant",
         "Description": "Combine mira precisa com habilidades de agentes em um shooter tático 5v5. Compre armas, use utilitários estratégicos e trabalhe com sua equipe para dominar cada rodada.",
         "image": "img/Valorant.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/516575-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -406,6 +425,7 @@
         "title": "Age of Empires IV",
         "Description": "Comande civilizações em batalhas históricas, gerencie exércitos e recursos em um RTS profundo com campanhas realistas.",
         "image": "img/Age of Empires IV.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1466860/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -426,6 +446,7 @@
         "title": "Ark Survival Ascended",
         "Description": "Sobreviva em um mundo pré-histórico com criaturas gigantes, construa bases e crie dinos para explorar e proteger seu território.",
         "image": "img/Ark Survival Ascended.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2378510/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -447,6 +468,7 @@
         "title": "Arknights Endfield",
         "Description": "Gerencie uma equipe de operadores em um jogo tático de defesa, com história sombria e estratégias de posicionamento de unidades.",
         "image": "img/arknights endfield.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1638363765_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -468,6 +490,7 @@
         "title": "Baldur's Gate 3",
         "Description": "RPG de fantasia com decisões profundas, combate por turnos e uma aventura épica na tradição de clássicos de Dungeons & Dragons.",
         "image": "img/Baldur's Gate 3.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -489,6 +512,7 @@
         "title": "Celeste",
         "Description": "Plataforma desafiadora com foco em precisão e narrativa emocional sobre superar medos enquanto escala a montanha Celeste.",
         "image": "img/Celeste.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/504230/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -509,6 +533,7 @@
         "title": "Counter-Strike 2",
         "Description": "Competitivo shooter tático com economia, habilidades de equipe e partidas intensas entre terroristas e contra-terroristas.",
         "image": "img/Counter-Strike 2.jpeg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -529,6 +554,7 @@
         "title": "Crusader Kings III",
         "Description": "Controle dinastias medievais em um grande simulador de estratégias políticas, alianças, casamentos e guerras.",
         "image": "img/Crusader Kings III.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1158310/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -549,6 +575,7 @@
         "title": "Cyberpunk 2077",
         "Description": "RPG futurista em Night City, com escolhas, personalização de implantes e missões eletrizantes em um mundo aberto neon.",
         "image": "img/Cyberpunk 2077.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -570,6 +597,7 @@
         "title": "Dead Cells",
         "Description": "Ação roguelike com combate fluido, armas variadas e fases geradas proceduralmente em busca da próxima tentativa de fuga.",
         "image": "img/Dead Cells.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/588650/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -591,6 +619,7 @@
         "title": "Deep Rock Galactic",
         "Description": "Jogo cooperativo de mineração espacial, onde anões enfrentam cavernas alienígenas enquanto coletam recursos e lutam por suas vidas.",
         "image": "img/Deep Rock Galactic.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/548430/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -612,6 +641,7 @@
         "title": "Don't Starve Together",
         "Description": "Survival cooperativo em um mundo sombrio e cheio de perigos, onde você precisa craftar, gerenciar fome e derrotar criaturas bizarras.",
         "image": "img/Don't Starve Together.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322330/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -633,6 +663,7 @@
         "title": "Elden Ring",
         "Description": "RPG de ação em mundo aberto criado por FromSoftware e George R.R. Martin, com combate desafiador e exploração mística.",
         "image": "img/Elden Ring.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -656,6 +687,7 @@
         "title": "Factorio",
         "Description": "Automatize fábricas complexas, otimize cadeias de produção e defenda suas linhas de suprimentos contra inimigos alienígenas.",
         "image": "img/Factorio.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/427520/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -677,6 +709,7 @@
         "title": "Fallout 4",
         "Description": "RPG pós-apocalíptico em Boston, com construção de assentamentos, armas customizáveis e uma trama cheia de facções.",
         "image": "img/Fallout 4.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/377160/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -700,6 +733,7 @@
         "title": "Genshin Impact",
         "Description": "RPG de ação gratuito com exploração elemental, mundo aberto impressionante e uma variedade de personagens colecionáveis.",
         "image": "img/Genshin Impact.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -722,6 +756,7 @@
         "title": "Grand Theft Auto V",
         "Description": "Mundo aberto criminoso em Los Santos, com missões de assalto, direção, multiplayer e muita ação urbana.",
         "image": "img/Grand Theft Auto V.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -744,6 +779,7 @@
         "title": "Hearts of Iron IV",
         "Description": "Grande estratégia da Segunda Guerra Mundial, controlando frentes, produção e diplomacia em escala global.",
         "image": "img/Hearts of Iron IV.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/394360/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -764,6 +800,7 @@
         "title": "Helldivers 2",
         "Description": "Tiro cooperativo intenso em uma guerra intergaláctica, com queda de equipamentos, coordenação e inimigos implacáveis.",
         "image": "img/Helldivers 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -785,6 +822,7 @@
         "title": "Hollow Knight",
         "Description": "Metroidvania sombrio com exploração profunda, combate preciso e um mundo submerso cheio de segredos.",
         "image": "img/Hollow Knight.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -806,6 +844,7 @@
         "title": "Honkai Impact",
         "Description": "RPG de ação anime com personagens colecionáveis, combate dinâmico e história futurista cheia de mistério.",
         "image": "img/honkai impact.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1671200/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -826,6 +865,7 @@
         "title": "Honkai Star Rail",
         "Description": "RPG de exploração espacial com batalhas por turnos, personagens estilizados e um universo de fantasia sci-fi.",
         "image": "img/honkai star rail.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -846,6 +886,7 @@
         "title": "It Takes Two",
         "Description": "Aventura cooperativa criativa com mecânicas únicas para cada personagem, onde você resolve puzzles e reconstrói um relacionamento.",
         "image": "img/It Takes Two.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -868,6 +909,7 @@
         "title": "Left 4 Dead 2",
         "Description": "Shooter cooperativo com zumbis, sobrevivência e hordas rápidas. Junte-se aos sobreviventes e lute até o próximo ponto seguro.",
         "image": "img/Left 4 Dead 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/550/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -889,6 +931,7 @@
         "title": "Lethal Company",
         "Description": "Explore fábricas perigosas com seus amigos, colete recursos e evite criaturas enquanto trabalha sob pressão constante.",
         "image": "img/Lethal Company.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1966720/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -910,6 +953,7 @@
         "title": "Minecraft",
         "Description": "Jogo emocionante com muitas aventuras e desafios.",
         "image": "img/Minecraf.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/27471_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -931,6 +975,7 @@
         "title": "Monster Hunter World",
         "Description": "Cace monstros gigantes em ambientes vivos, equipe armas e armaduras e coopere com outros caçadores.",
         "image": "img/Monster Hunter World.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -954,6 +999,7 @@
         "title": "Neverness to Everness",
         "Description": "Aventura de fantasia com exploração surreal, missões encantadoras e um mundo misterioso para descobrir.",
         "image": "img/neverness to everness.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/NevernessToEverness-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -975,6 +1021,7 @@
         "title": "Outer Wilds",
         "Description": "Explore um sistema solar em constante mudança, resolva mistérios e use um ciclo temporal para desvendar segredos antigos.",
         "image": "img/Outer Wilds.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753640/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -998,6 +1045,7 @@
         "title": "Overcooked 2",
         "Description": "Jogo de cozinha cooperativa com receitas malucas, tempo apertado e muita bagunça em cozinha junto com amigos.",
         "image": "img/Overcooked 2.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/728880/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1021,6 +1069,7 @@
         "title": "Palworld",
         "Description": "Capture criaturas, construa bases e enfrente perigos em um mundo que mistura aventura e sobrevivência com monstros.",
         "image": "img/Palworld.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1042,6 +1091,7 @@
         "title": "Phasmophobia",
         "Description": "Caça fantasmas cooperativa em locais assombrados, com ferramentas paranormais e sustos em equipe.",
         "image": "img/Phasmophobia.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/739630/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1062,6 +1112,7 @@
         "title": "Project Zomboid",
         "Description": "Simulador de sobrevivência zumbi com crafting, controle de ferimentos e um mundo aberto implacável.",
         "image": "img/Project Zomboid.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/108600/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1083,6 +1134,7 @@
         "title": "RimWorld",
         "Description": "Gerencie colonos, construções e eventos imprevisíveis em uma colônia espacial isolada.",
         "image": "img/RimWorld.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1104,6 +1156,7 @@
         "title": "Rust",
         "Description": "Sobreviva em um mundo aberto hostil, construa bases, colete recursos e enfrente outros jogadores e criaturas.",
         "image": "img/Rust.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1125,6 +1178,7 @@
         "title": "Sea of Thieves",
         "Description": "Aventure-se como pirata em alto mar, busque tesouros, lute contra outros navios e explore ilhas misteriosas.",
         "image": "img/Sea of Thieves.avif",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -1147,6 +1201,7 @@
         "title": "Skyrim (The Elder Scrolls V)",
         "Description": "RPG de mundo aberto em Tamriel, com dragões, magia, guildas e liberdade total de exploração.",
         "image": "img/Skyrim (The Elder Scrolls V).jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/489830/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1170,6 +1225,7 @@
         "title": "Slay the Spire",
         "Description": "Misture roguelike e deckbuilding para escalar uma torre cheia de inimigos com cartas e poderes únicos.",
         "image": "img/Slay the Spire.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1191,6 +1247,7 @@
         "title": "Stardew Valley",
         "Description": "Gerencie sua fazenda, cultive plantações, crie animais e construa relacionamentos com moradores de uma vila charmosa.",
         "image": "img/Stardew Valley.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1214,6 +1271,7 @@
         "title": "Terraria",
         "Description": "Aventura em 2D com exploração, mineração, construção e chefes épicos em um mundo pixelado cheio de segredos.",
         "image": "img/Terraria.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1237,6 +1295,7 @@
         "title": "The Binding of Isaac Rebirth",
         "Description": "Roguelike macabro com salas geradas, poderes estranhos e uma grande variedade de itens para combinar.",
         "image": "img/The Binding of Isaac Rebirth.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/250900/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1257,6 +1316,7 @@
         "title": "The Sims 4",
         "Description": "Crie personagens, construa casas e controle vidas em um simulador social que permite criar histórias próprias.",
         "image": "img/The Sims 4.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1278,6 +1338,7 @@
         "title": "The Witcher 3 Wild Hunt",
         "Description": "RPG narrativo com caçadas de monstros, decisões morais difíceis e um mundo aberto vibrante cheio de detalhes.",
         "image": "img/The Witcher 3 Wild Hunt.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1301,6 +1362,7 @@
         "title": "Untitled Goose Game",
         "Description": "Controle um ganso travesso e cause caos em uma vila, completando objetivos divertidos e engraçados.",
         "image": "img/Untitled Goose Game.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1100600/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1323,6 +1385,7 @@
         "title": "Valheim",
         "Description": "Sobreviva em um mundo viking mitológico com construção, caça, exploração e batalhas contra criaturas lendárias.",
         "image": "img/Valheim.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1344,6 +1407,7 @@
         "title": "Vampire Survivors",
         "Description": "Roguelike simples e viciante onde você sobrevive a ondas de inimigos enquanto melhora ataques automáticos e habilidades.",
         "image": "img/Vampire Survivors.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1794680/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1364,6 +1428,7 @@
         "title": "Warhammer 40,000",
         "Description": "Jogo de estratégia sombria no universo Warhammer 40K, com combates táticos e temas de guerra futurista.",
         "image": "img/Warhammer 40,000.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/55150/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1384,6 +1449,7 @@
         "title": "Wuthering Waves",
         "Description": "RPG de ação anime com exploração e batalhas estilizadas em um mundo cheio de fantasias e mistérios.",
         "image": "img/wuthering waves.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1178618799_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
         ],

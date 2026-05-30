@@ -195,6 +195,9 @@ window.renderToContainer = (games, container, clear = true) => {
             upgradeHtml = `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
         }
 
+        // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
+        const displayImg = game.coverUrl || game.image;
+
         // Cálculo de valorização por Upgrade
         const basePriceNum = window.utils.parsePrice(game.currentPrice);
         const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
@@ -212,7 +215,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 <article class="game-card">
                 <div class="card-media">
                     ${discountBadge}
-                    <img src="${game.image}" alt="${game.title}">
+                    <img src="${displayImg}" alt="${game.title}">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
                         <i class="${favIcon}"></i>
                     </button>
@@ -274,6 +277,7 @@ async function fetchGamesData() {
         window.allGamesData = (window.allGamesData || []).map(game => { 
             // 1. Resolve inconsistência: aceita 'image' ou 'Image' do JSON
             let imgPath = game.image || game.Image;
+            let coverPath = game.coverUrl || game.CoverUrl || null;
             
             // 2. Ajusta caminhos de imagens locais para subpastas (ex: de 'img/...' para '../img/...')
             if (imgPath && !imgPath.startsWith('http') && IS_SUBFOLDER && !imgPath.startsWith('../')) {
@@ -283,6 +287,7 @@ async function fetchGamesData() {
             return {
                 ...game,
                 image: imgPath,
+                coverUrl: coverPath,
                 description: game.description || game.Description || "",
                 platforms: game.platforms || game.Platforms || [],
                 tags: game.tags || game.Tags || [],
