@@ -95,6 +95,40 @@ window.selectGameForBet = (gameId) => {
     }
 };
 
+/**
+ * Cria e injeta as 4 categorias de caixas na interface (Bronze, Prata, Ouro e Diamante).
+ * Isso garante que a UI reflita exatamente os valores e regras de raridade.
+ */
+function renderBoxes() {
+    const grid = document.querySelector('.boxes-grid');
+    if (!grid) return;
+
+    const boxTypes = [
+        { id: 'bronze', name: 'Bronze', cost: 30, color: '#cd7f32', range: 'Até R$ 70' },
+        { id: 'silver', name: 'Prata', cost: 80, color: '#bdc3c7', range: 'R$ 70 - R$ 150' },
+        { id: 'gold', name: 'Ouro', cost: 180, color: '#f1c40f', range: 'R$ 150 - R$ 280' },
+        { id: 'diamond', name: 'Diamante', cost: 450, color: '#00e5ff', range: 'Acima de R$ 280' }
+    ];
+
+    grid.innerHTML = boxTypes.map(box => `
+        <div class="box-card tier-${box.id}">
+            <div class="box-tag" style="background: ${box.color}; color: #000; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 20px; position: absolute; top: 10px; right: 10px; text-transform: uppercase;">
+                ${box.id}
+            </div>
+            <h3 style="color: ${box.color}; margin-top: 10px;">Caixa ${box.name}</h3>
+            <p style="font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px;">
+                Contém: ${box.range}
+            </p>
+            <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px ${box.color}44)">
+                📦
+            </div>
+            <button class="buy-button" onclick="openBox('${box.id}')">
+                Abrir R$ ${box.cost.toFixed(2)}
+            </button>
+        </div>
+    `).join('');
+}
+
 function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-rail') {
     const rail = document.getElementById(targetRailId);
     if (!rail) return;
@@ -420,6 +454,9 @@ async function startUpgradeSpin() {
 // Escutar mudanças no Firebase para atualizar o inventário se o usuário ganhar/perder algo
 if (window.auth) {
     window.auth.onAuthStateChanged(() => {
-        setTimeout(renderRoulette, 1000); // Pequeno delay para garantir que global.js carregou os dados
+        setTimeout(() => {
+            renderRoulette();
+            renderBoxes();
+        }, 1000); // Pequeno delay para garantir que global.js carregou os dados
     });
 }
