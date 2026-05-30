@@ -187,7 +187,12 @@ window.openBox = async (tier) => {
 
     if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
     
-    const boxCosts = { 'bronze': 30, 'gold': 150 };
+    const boxCosts = { 
+        'bronze': 30, 
+        'silver': 80, 
+        'gold': 180, 
+        'diamond': 450 
+    };
     const cost = boxCosts[tier];
 
     if (window.userBalance < cost) return window.showToast("Saldo insuficiente!", "error");
@@ -220,10 +225,28 @@ window.openBox = async (tier) => {
     document.getElementById('modal-box-title').textContent = `Abrindo Caixa ${tier.toUpperCase()}...`;
 
     // 1. Selecionar ganhador
-    let pool = window.allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
-    if (tier === 'gold') pool = pool.filter(g => window.utils.parsePrice(g.currentPrice) > 50);
+    let pool = [];
+    const allGames = window.allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
+
+    if (tier === 'bronze') {
+        pool = allGames.filter(g => window.utils.parsePrice(g.currentPrice) <= 70);
+    } else if (tier === 'silver') {
+        pool = allGames.filter(g => {
+            const p = window.utils.parsePrice(g.currentPrice);
+            return p > 70 && p <= 150;
+        });
+    } else if (tier === 'gold') {
+        pool = allGames.filter(g => {
+            const p = window.utils.parsePrice(g.currentPrice);
+            return p > 150 && p <= 280;
+        });
+    } else if (tier === 'diamond') {
+        pool = allGames.filter(g => window.utils.parsePrice(g.currentPrice) > 280);
+    }
     
-    const winningGame = pool[Math.floor(Math.random() * pool.length)];
+    // Fallback caso a pool esteja vazia por falta de jogos cadastrados naquela faixa
+    const finalPool = pool.length > 0 ? pool : allGames;
+    const winningGame = finalPool[Math.floor(Math.random() * finalPool.length)];
     const rarity = getRarityInfo(winningGame.currentPrice);
 
     // 2. Preparar Trilho de Mistério
@@ -240,12 +263,12 @@ window.openBox = async (tier) => {
         if (i === 40) {
             displayRarity = rarity;
         } else {
-            const randomGame = pool[Math.floor(Math.random() * pool.length)];
+            const randomGame = finalPool[Math.floor(Math.random() * finalPool.length)];
             displayRarity = getRarityInfo(randomGame.currentPrice);
         }
         
         card.classList.add(displayRarity.class);
-        card.innerHTML = `<span class="q-mark">?</span>`;
+        card.innerHTML = `<span class="q-mark">?</span><span class="card-label">${displayRarity.label}</span>`;
         rail.appendChild(card);
     }
 
@@ -262,7 +285,9 @@ window.openBox = async (tier) => {
     // 3. Revelação e Salvamento
     setTimeout(async () => {
         const winnerCard = rail.children[40];
-        winnerCard.classList.remove('rarity-gray'); // Limpa para mostrar real
+        
+        // Limpa classes de raridade genéricas antes de aplicar a final
+        winnerCard.className = 'roulette-card';
         winnerCard.classList.add(rarity.class);
         winnerCard.innerHTML = `
             <img src="${winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">

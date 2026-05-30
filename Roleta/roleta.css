@@ -122,10 +122,15 @@
 .lose-card .q-mark, .roulette-card[data-card-id="1"] .q-mark { color: #ff4d4d !important; text-shadow: 0 0 15px #ff4d4d; }
 
 /* Raridades por Valor (Bordas e Sombras) */
-.rarity-gray { border-color: #808080 !important; }
-.rarity-green { border-color: #2ecc71 !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3); }
+.rarity-gray { border-color: #808080 !important; } .rarity-gray .q-mark { color: #555 !important; }
+.rarity-green { border-color: #2ecc71 !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3); } 
+.rarity-green .q-mark { color: #2ecc71 !important; text-shadow: 0 0 10px #2ecc71; }
 .rarity-purple { border-color: #9b59b6 !important; box-shadow: 0 0 15px rgba(155, 89, 182, 0.3); }
+.rarity-purple .q-mark { color: #9b59b6 !important; text-shadow: 0 0 10px #9b59b6; }
 .rarity-gold { border-color: #f1c40f !important; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
+.rarity-gold .q-mark { color: #f1c40f !important; text-shadow: 0 0 15px #f1c40f; }
+
+.rarity-mythic .q-mark { color: #fff !important; text-shadow: 0 0 20px #fff; }
 
 /* Raridade Mítica (RGB Animado) */
 .rarity-mythic {
@@ -301,7 +306,9 @@
 .box-card:hover::before { left: 100%; }
 
 .tier-gold { border-color: #f1c40f; }
+.tier-silver { border-color: #bdc3c7; }
 .tier-bronze { border-color: #cd7f32; }
+.tier-diamond { border-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
 
 /* Estilos do Modal de Abertura */
 .roulette-modal {
