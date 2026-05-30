@@ -310,7 +310,7 @@ window.routePageRendering = function() {
         { file: 'biblioteca.html', func: typeof window.renderLibrary === 'function' ? window.renderLibrary : null },
         { file: 'historico.html', func: typeof window.renderHistory === 'function' ? window.renderHistory : null },
         { file: 'perfil.html', func: typeof window.renderProfile === 'function' ? window.renderProfile : null },
-        { file: 'roleta.html', func: typeof window.renderRoulette === 'function' ? window.renderRoulette : null }
+        { file: 'roleta.html', func: typeof window.renderRoulette === 'function' ? window.renderRoulette : null, args: [] }
     ];
 
     const activeRoute = routes.find(r => path.includes(r.file));

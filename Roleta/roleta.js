@@ -21,14 +21,16 @@ const playSpinSound = () => {
 // Helper para definir raridade baseada no preço
 function getRarityInfo(priceStr) {
     const price = window.utils.parsePrice(priceStr);
-    if (price < 50) return { class: 'rarity-gray', label: 'Comum' };
-    if (price <= 100) return { class: 'rarity-green', label: 'Incomum' };
+    if (price <= 70) return { class: 'rarity-gray', label: 'Comum' };
     if (price <= 150) return { class: 'rarity-purple', label: 'Raro' };
-    if (price < 300) return { class: 'rarity-gold', label: 'Épico' };
+    if (price <= 280) return { class: 'rarity-gold', label: 'Épico' };
     return { class: 'rarity-mythic', label: 'Mítico' };
 }
 
 function renderRoulette() {
+    // Primeiro, renderizamos as caixas (Bronze, Prata, Ouro, Diamante)
+    renderBoxes();
+
     console.log("Sistema de Recompensas inicializado...");
     
     const inventoryGrid = document.getElementById('bet-inventory-grid');
@@ -125,7 +127,7 @@ function renderBoxes() {
                 Contém: ${box.range}
             </p>
             <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px ${box.color}44)">
-                📦
+                ${box.id === 'diamond' ? '💎' : '📦'}
             </div>
             <button class="buy-button" onclick="openBox('${box.id}')">
                 Abrir R$ ${box.cost.toFixed(2)}
@@ -463,7 +465,6 @@ if (window.auth) {
     window.auth.onAuthStateChanged(() => {
         setTimeout(() => {
             renderRoulette();
-            renderBoxes();
         }, 1000); // Pequeno delay para garantir que global.js carregou os dados
     });
 }
