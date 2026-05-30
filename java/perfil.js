@@ -82,10 +82,29 @@ async function renderProfile() {
         setupOtherProfileUI();
     }
 
-    // 3. Estatísticas
+    // 3. Estatísticas e Patrimônio Total (Calcula valor dos upgrades)
+    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
+    let totalInventoryValue = 0;
+
+    (data.library || []).forEach(gameId => {
+        const game = window.allGamesData.find(g => String(g.id) === String(gameId));
+        if (game) {
+            const level = (data.upgrades || {})[gameId] || 0;
+            const basePrice = window.utils.parsePrice(game.currentPrice);
+            totalInventoryValue += basePrice * (multipliers[level] || 1);
+        }
+    });
+
     el.statGames.textContent = (data.library || []).length;
     el.statFriends.textContent = (data.friends || []).length;
     el.statBalance.textContent = `R$ ${(data.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+    // Atualiza o valor total da conta (Saldo + Inventário)
+    const totalWealth = (data.balance || 0) + totalInventoryValue;
+    const wealthEl = document.getElementById('profile-total-wealth');
+    if (wealthEl) {
+        wealthEl.textContent = `Patrimônio Total: R$ ${totalWealth.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    }
 
     // Renderizar Pedidos de Amizade Recebidos (apenas para o próprio perfil)
     if (ProfileState.isMyProfile) await renderRequests();

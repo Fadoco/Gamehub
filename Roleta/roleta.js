@@ -51,7 +51,12 @@ function renderRoulette() {
             <img src="${game.image}" alt="${game.title}">
             <div class="bet-item-info">
                 <span class="bet-item-name">${game.title}</span>
-                <span class="bet-item-price">${game.currentPrice}</span>
+                <span class="bet-item-price">${(() => {
+                    const level = window.userUpgrades[game.id] || 0;
+                    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
+                    const val = window.utils.parsePrice(game.currentPrice) * multipliers[level];
+                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : game.currentPrice;
+                })()}</span>
             </div>
         </div>
     `).join('');
@@ -337,7 +342,9 @@ window.openBox = async (tier) => {
             
             // Se o usuário já tiver o jogo, ele ganha o valor do jogo de volta como consolação
             if (window.userLibrary.includes(winningGame.id)) {
-                const refund = window.utils.parsePrice(winningGame.currentPrice) * 0.5;
+                const currentLevel = window.userUpgrades[winningGame.id] || 0;
+                const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
+                const refund = (window.utils.parsePrice(winningGame.currentPrice) * multipliers[currentLevel]) * 0.5;
                 await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
                 window.showToast(`Você já tinha o jogo! Recebeu R$ ${refund.toFixed(2)} de compensação.`, "info");
             } else {

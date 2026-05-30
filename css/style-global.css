@@ -301,15 +301,24 @@ body {
 
 .rank-val { font-weight: bold; color: #4ade80; font-family: 'JetBrains Mono', monospace; }
 
-/* --- Ranks de Melhoria de Jogo --- */
+/* --- Sistema de Melhorias e Valorização --- */
 .upgrade-rank {
     font-weight: 900;
     margin-left: 5px;
     text-shadow: 0 0 8px rgba(0,0,0,0.5);
+    font-family: 'JetBrains Mono', monospace;
 }
 .rank-rare { color: #0078f2; }      /* Azul - Raro (+) */
 .rank-epic { color: #a335ee; }      /* Roxo - Épico (++) */
 .rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */
+
+.game-price.valuation {
+    color: #4ade80 !important; /* Verde esmeralda para indicar valor de posse */
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
 /* --- Componentes Compartilhados de Cards de Jogo --- */
 h2.section-title {

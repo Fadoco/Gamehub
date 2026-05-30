@@ -71,9 +71,9 @@
     transform: translateX(-50%);
     width: 3px;
     height: 100%;
-    background: var(--accent);
+    background: #00aaff; /* Azul decorativo vibrante */
     z-index: 10;
-    box-shadow: 0 0 20px var(--accent);
+    box-shadow: 0 0 20px #00aaff, 0 0 40px rgba(0, 170, 255, 0.3);
     pointer-events: none; /* Linha apenas decorativa, não interfere em cliques */
 }
 
@@ -122,13 +122,17 @@
 .lose-card .q-mark, .roulette-card[data-card-id="1"] .q-mark { color: #ff4d4d !important; text-shadow: 0 0 15px #ff4d4d; }
 
 /* Raridades por Valor (Bordas e Sombras) */
-.rarity-gray { border-color: #808080 !important; } .rarity-gray .q-mark { color: #555 !important; }
-.rarity-green { border-color: #2ecc71 !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3); } 
-.rarity-green .q-mark { color: #2ecc71 !important; text-shadow: 0 0 10px #2ecc71; }
-.rarity-purple { border-color: #9b59b6 !important; box-shadow: 0 0 15px rgba(155, 89, 182, 0.3); }
-.rarity-purple .q-mark { color: #9b59b6 !important; text-shadow: 0 0 10px #9b59b6; }
-.rarity-gold { border-color: #f1c40f !important; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
-.rarity-gold .q-mark { color: #f1c40f !important; text-shadow: 0 0 15px #f1c40f; }
+.rarity-gray { border-color: #444 !important; } 
+.rarity-gray .q-mark { color: #555 !important; }
+
+.rarity-green { border-color: #2ecc71 !important; box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.2); } 
+.rarity-green .q-mark { color: #2ecc71 !important; text-shadow: 0 0 15px #2ecc71; }
+
+.rarity-purple { border-color: #9b59b6 !important; box-shadow: inset 0 0 15px rgba(155, 89, 182, 0.2); }
+.rarity-purple .q-mark { color: #9b59b6 !important; text-shadow: 0 0 15px #9b59b6; }
+
+.rarity-gold { border-color: #f1c40f !important; box-shadow: inset 0 0 20px rgba(241, 196, 15, 0.3); }
+.rarity-gold .q-mark { color: #f1c40f !important; text-shadow: 0 0 20px #f1c40f; }
 
 .rarity-mythic .q-mark { color: #fff !important; text-shadow: 0 0 20px #fff; }
 

@@ -195,6 +195,18 @@ window.renderToContainer = (games, container, clear = true) => {
             upgradeHtml = `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
         }
 
+        // Cálculo de valorização por Upgrade
+        const basePriceNum = window.utils.parsePrice(game.currentPrice);
+        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
+        const multiplier = multipliers[upgradeLevel] || 1;
+        const inventoryValue = basePriceNum * multiplier;
+
+        const isLibraryPage = window.location.pathname.includes('biblioteca.html');
+        const finalPriceClass = isLibraryPage ? 'game-price valuation' : priceClass;
+        const displayPrice = (isLibraryPage && inventoryValue > 0)
+            ? `Valor: R$ ${inventoryValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+            : game.currentPrice;
+
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card">
@@ -212,7 +224,7 @@ window.renderToContainer = (games, container, clear = true) => {
                         <span class="game-tags">${game.tags.join(', ')}</span>
                     </div>
                     <div class="price-container">
-                        <div class="price-box">${oldPriceHtml}<p class="${priceClass}">${game.currentPrice}</p></div>
+                        <div class="price-box">${isLibraryPage ? '' : oldPriceHtml}<p class="${finalPriceClass}">${displayPrice}</p></div>
                     </div>
                 </div>
                 </article>

@@ -14,10 +14,14 @@
     font-weight: 500;
 }
 
-/* Na biblioteca, não exibimos preços ou descontos */
-#library-grid .price-container,
+/* Na biblioteca, ocultamos as tags de desconto da loja */
 #library-grid .discount-percent {
     display: none;
+}
+
+/* Permitimos a exibição do container de preço para mostrar o 'Valor do Inventário' */
+#library-grid .price-container {
+    display: flex;
 }
 
 /* Estado de Biblioteca Vazia */
