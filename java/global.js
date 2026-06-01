@@ -78,6 +78,9 @@ window.checkUserSession = (user) => {
             <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()" style="display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-dice"></i> <span>Jogo Aleatório</span>
             </button>
+            <button id="btn-all-games" class="btn btn-ghost" onclick="window.location.href = window.utils.getHtmlPath('lista-jogos.html')" style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-th-list"></i> <span>Lista Completa</span>
+            </button>
         `;
     }
 
@@ -215,7 +218,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 <article class="game-card">
                 <div class="card-media">
                     ${discountBadge}
-                    <img src="${displayImg}" alt="${game.title}">
+                    <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
                         <i class="${favIcon}"></i>
                     </button>
@@ -262,15 +265,18 @@ async function fetchGamesData() {
         // Fallback para JSON se o Firestore falhar ou estiver vazio
         if (data.length === 0) {
             const jsonPath = IS_SUBFOLDER ? '../json/games.json' : 'json/games.json';
+            console.log("Tentando carregar games.json de:", jsonPath);
             const response = await fetch(jsonPath);
             if (response.ok) {
                 data = await response.json();
                 console.log("Dados carregados via JSON");
             } else {
+                console.error("Falha na resposta HTTP ao carregar games.json:", response.status, response.statusText);
                 console.error("Erro ao carregar games.json:", response.statusText);
             }
         }
 
+        console.log("Conteúdo final de window.allGamesData (antes da normalização):", data); // Adicionado para depuração
         window.allGamesData = data;
 
         // Normalização dos dados para resolver problemas de caminhos e nomes de campos (case-sensitive)
@@ -284,6 +290,11 @@ async function fetchGamesData() {
                 imgPath = '../' + imgPath;
             }
 
+            // Ajusta caminhos de capas verticais locais para subpastas
+            if (coverPath && !coverPath.startsWith('http') && IS_SUBFOLDER && !coverPath.startsWith('../')) {
+                coverPath = '../' + coverPath;
+            }
+
             return {
                 ...game,
                 image: imgPath,
@@ -294,6 +305,7 @@ async function fetchGamesData() {
                 id: game.id || game.ID
             };
         });
+        console.log("Conteúdo final de window.allGamesData (após normalização):", window.allGamesData); // Adicionado para depuração
 
         window.routePageRendering();
 
@@ -315,6 +327,7 @@ window.routePageRendering = function() {
         { file: 'biblioteca.html', func: typeof window.renderLibrary === 'function' ? window.renderLibrary : null },
         { file: 'historico.html', func: typeof window.renderHistory === 'function' ? window.renderHistory : null },
         { file: 'perfil.html', func: typeof window.renderProfile === 'function' ? window.renderProfile : null },
+        { file: 'lista-jogos.html', func: typeof window.renderAllGamesList === 'function' ? window.renderAllGamesList : null, args: [window.allGamesData] },
         { file: 'roleta.html', func: typeof window.renderRoulette === 'function' ? window.renderRoulette : null, args: [] }
     ];
 

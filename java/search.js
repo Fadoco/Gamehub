@@ -100,7 +100,7 @@ function renderSuggestions(games, tags, container, performSearch) {
         const div = document.createElement('div');
         div.className = 'suggestion-card';
         div.innerHTML = `
-            <img src="${game.coverUrl || game.image}" alt="${game.title}">
+            <img src="${game.coverUrl || game.image}" alt="${game.title}" referrerpolicy="no-referrer">
             <div class="suggestion-text">
                 <span class="suggestion-name">${game.title}</span>
                 <span class="suggestion-meta">Jogo</span>

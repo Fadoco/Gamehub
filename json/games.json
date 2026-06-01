@@ -160,7 +160,7 @@
         "id": 8,
         "title": "Dying Light The Beast",
         "Description": "Explore uma cidade infestada por zumbis usando parkour, armas improvisadas e combate corpo a corpo. Melhore suas habilidades, complete missões e enfrente monstros perigosos em um mundo aberto sombrio.",
-        "image": "img/Dying Light The Beast.jfif",
+        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2422030/library_hero.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2422030/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -184,7 +184,7 @@
         "id": 9,
         "title": "Invincible VS",
         "Description": "Lute com heróis e vilões em batalhas estilo quadrinhos, combinando poderes únicos e combos explosivos. Enfrente chefes poderosos e personalize sua equipe para vencer duelos frenéticos.",
-        "image": "img/Invincible VS.png",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1531201509_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1531201509_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -225,7 +225,7 @@
         "id": 11,
         "title": "Marvel's Spider-Man 2",
         "Description": "Balance pelos céus de Nova York como Peter Parker e Miles Morales, enfrente vilões clássicos e use acrobacias de teia e combate dinâmico para proteger a cidade.",
-        "image": "img/Marvel's Spider-Man 2.png",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/518002_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/518002_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-playstation"
@@ -314,7 +314,7 @@
         "id": 15,
         "title": "Sinisistar 2",
         "Description": "Revisite o estilo arcade retrô em um shooter intenso, enfrentando ondas de inimigos, chefes desafiadores e coletando power-ups para sobreviver.",
-        "image": "img/Sinisistar 2.jpg",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/551239845_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/551239845_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -445,7 +445,7 @@
         "id": 21,
         "title": "Ark Survival Ascended",
         "Description": "Sobreviva em um mundo pré-histórico com criaturas gigantes, construa bases e crie dinos para explorar e proteger seu território.",
-        "image": "img/Ark Survival Ascended.jpg",
+        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2378510/library_hero.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2378510/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -467,7 +467,7 @@
         "id": 22,
         "title": "Arknights Endfield",
         "Description": "Gerencie uma equipe de operadores em um jogo tático de defesa, com história sombria e estratégias de posicionamento de unidades.",
-        "image": "img/arknights endfield.jpg",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1638363765_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1638363765_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -864,7 +864,7 @@
         "id": 40,
         "title": "Honkai Star Rail",
         "Description": "RPG de exploração espacial com batalhas por turnos, personagens estilizados e um universo de fantasia sci-fi.",
-        "image": "img/honkai star rail.jpg",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -998,7 +998,7 @@
         "id": 46,
         "title": "Neverness to Everness",
         "Description": "Aventura de fantasia com exploração surreal, missões encantadoras e um mundo misterioso para descobrir.",
-        "image": "img/neverness to everness.jpg",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/NevernessToEverness-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/NevernessToEverness-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1448,7 +1448,7 @@
         "id": 66,
         "title": "Wuthering Waves",
         "Description": "RPG de ação anime com exploração e batalhas estilizadas em um mundo cheio de fantasias e mistérios.",
-        "image": "img/wuthering waves.jpg",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1178618799_IGDB-1920x1080.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1178618799_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
