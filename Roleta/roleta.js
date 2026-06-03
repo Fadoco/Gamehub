@@ -149,14 +149,14 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
     rail.style.transform = 'translateX(0px)';
     rail.innerHTML = '';
 
-    const totalItems = 60;
+    const totalItems = 80;
 
     // Converte tipo string para ID numérico se necessário
     const winnerId = winnerType === 'win' ? CARD_TYPES.WIN : (winnerType === 'stay' ? CARD_TYPES.STAY : CARD_TYPES.LOSE);
 
     for (let i = 0; i < totalItems; i++) {
         const card = document.createElement('div');
-        const isWinner = (i === 40);
+        const isWinner = (i === 65);
         
         // Escolhe um ID aleatório para os outros cards
         const cardId = isWinner ? winnerId : Math.floor(Math.random() * 3);
@@ -184,15 +184,15 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
 
     rail.offsetHeight; 
     const wrapper = rail.parentElement;
-    const winnerCard = rail.children[40];
+    const winnerCard = rail.children[65];
 
     // Alinha o centro real do elemento vencedor com o centro do container
     const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
     const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
 
-    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.5s
+    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.7s
     setTimeout(() => {
-        rail.style.transition = 'transform 5.5s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetPos}px)`;
     }, 1200);
 }
@@ -304,12 +304,12 @@ window.openBox = async (tier) => {
     rail.style.transform = 'translateX(0px)';
     rail.innerHTML = '';
 
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 80; i++) {
         const card = document.createElement('div');
         card.className = 'roulette-card';
         
         let displayRarity;
-        if (i === 40) {
+        if (i === 65) {
             displayRarity = rarity;
         } else {
             const randomGame = finalPool[Math.floor(Math.random() * finalPool.length)];
@@ -323,21 +323,21 @@ window.openBox = async (tier) => {
 
     rail.offsetHeight;
     const wrapper = rail.parentElement;
-    const winnerCard = rail.children[40];
+    const winnerCard = rail.children[65];
 
     const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
     const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
     
-    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.5s
+    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.7s
     setTimeout(() => {
-        rail.style.transition = 'transform 5.5s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetPos}px)`;
     }, 1200);
 
     // 3. Revelação e Salvamento
-    // Ajustado para 6.9s (1.2s de atraso + 5.5s de animação + 0.2s de margem)
+    // Ajustado para 7.1s (1.2s de atraso + 5.7s de animação + 0.2s de margem)
     setTimeout(async () => {
-        const winnerCard = rail.children[40];
+        const winnerCard = rail.children[65];
         
         // Limpa classes de raridade genéricas antes de aplicar a final
         winnerCard.className = 'roulette-card';
@@ -375,7 +375,7 @@ window.openBox = async (tier) => {
         } finally {
             isActionInProgress = false;
         }
-    }, 6900);
+    }, 7100);
 };
 
 async function startUpgradeSpin() {
@@ -417,11 +417,11 @@ async function startUpgradeSpin() {
     generateRouletteRail(winnerType, selectedGameToBet);
 
     // 4. Aguarda a animação terminar para atualizar o banco de dados
-    // Ajustado para 6.9s (1.2s de atraso + 5.5s de animação + 0.2s de margem)
+    // Ajustado para 7.1s (1.2s de atraso + 5.7s de animação + 0.2s de margem)
     setTimeout(async () => {
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
         const rail = document.getElementById('roulette-rail');
-        const winnerCard = rail ? rail.children[40] : null;
+        const winnerCard = rail ? rail.children[65] : null;
 
         try {
             if (winnerType === 'win') {
@@ -470,7 +470,7 @@ async function startUpgradeSpin() {
             spinBtn.textContent = "Girar e Melhorar Jogo";
             isActionInProgress = false;
         }
-    }, 6900); // Tempo da animação + pequeno delay
+    }, 7100); // Tempo da animação + pequeno delay
 }
 
 // Escutar mudanças no Firebase para atualizar o inventário se o usuário ganhar/perder algo
