@@ -382,6 +382,9 @@ window.openBox = async (tier) => {
 
             await window.loadUserData(window.auth.currentUser.uid);
             renderRoulette();
+            
+            // Tenta disparar o evento secreto após a emoção da caixa
+            setTimeout(window.triggerSecretEvent, 2000);
         } catch (e) {
             console.error(e);
         } finally {
@@ -393,7 +396,7 @@ window.openBox = async (tier) => {
 async function startUpgradeSpin() {
     // SOM IMEDIATO NO CLIQUE
     playSpinSound();
-
+    if (isActionInProgress) return; // Evita cliques múltiplos
     if (!selectedGameToBet || !window.auth.currentUser) return;
     
     const gameId = selectedGameToBet.id;

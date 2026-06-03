@@ -15,6 +15,8 @@
     --accent: #0074e4;
     --accent-soft: rgba(0, 116, 228, 0.18);
     --danger: #ff4d8d;
+    --glitch-red: #ff003c;
+    --glitch-blue: #00f0ff;
     --border: rgba(255, 255, 255, 0.08);
     --radius: 14px;
     --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
@@ -91,6 +93,74 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- SISTEMA DE CORRUPÇÃO (MERCADO NEGRO) --- */
+
+/* Congela o site inteiro: para transições, animações e cliques */
+.site-frozen, .site-frozen * {
+    pointer-events: none !important;
+    user-select: none !important;
+    animation-play-state: paused !important;
+    transition: none !important;
+    filter: contrast(1.2) brightness(0.8) grayscale(0.3);
+}
+
+.glitch-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #00ff00;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    text-align: center;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Camadas de interferência visual */
+.glitch-overlay::before, .glitch-overlay::after {
+    content: 'SYSTEM_CRITICAL_ERROR';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.8;
+}
+
+.glitch-overlay::before {
+    color: #ff003c;
+    z-index: -1;
+    animation: glitch-extreme 0.15s infinite;
+}
+
+/* Ruído de scanline (linhas de TV antiga) */
+.glitch-scanline {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 10001;
+    pointer-events: none;
+    animation: noise-anim 0.1s infinite;
+}
+
+@keyframes glitch-extreme {
+    0% { transform: translate(0); clip-path: inset(10% 0 20% 0); }
+    20% { transform: translate(-10px, 5px); clip-path: inset(40% 0 10% 0); }
+    40% { transform: translate(15px, -10px); clip-path: inset(70% 0 5% 0); }
+    60% { transform: translate(-5px, 10px); clip-path: inset(15% 0 60% 0); }
+    80% { transform: translate(10px, 5px); clip-path: inset(2% 0 80% 0); }
+    100% { transform: translate(0); }
+}
+
+@keyframes noise-anim {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(1px); }
+}
 .suggestion-card {
     display: flex;
     align-items: center;
@@ -311,6 +381,7 @@ body {
 .rank-rare { color: #0078f2; }      /* Azul - Raro (+) */
 .rank-epic { color: #a335ee; }      /* Roxo - Épico (++) */
 .rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */
+.rank-dark-matter { color: #ff0000; text-shadow: 0 0 12px #ff0000; font-weight: 900; } /* Vermelho - Proibido (!!!!) */
 
 .game-price.valuation {
     color: #4ade80 !important; /* Verde esmeralda para indicar valor de posse */
@@ -334,10 +405,38 @@ body {
     border-color: rgba(255, 180, 0, 1);
     animation: gold-aura-pulse 2s infinite alternate; /* Animação para o máximo */
 }
+.game-card.upgrade-aura-4, .bet-item.upgrade-aura-4 {
+    box-shadow: 0 0 30px #ff0000; /* Vermelho - Dark Matter */
+    border-color: #ff0000;
+    animation: dark-matter-pulse 1s infinite alternate;
+}
 
 @keyframes gold-aura-pulse {
     from { box-shadow: 0 0 15px rgba(255, 180, 0, 0.6), 0 0 0 rgba(255, 180, 0, 0); }
     to { box-shadow: 0 0 30px rgba(255, 180, 0, 1), 0 0 5px rgba(255, 180, 0, 0.3); }
+}
+
+@keyframes dark-matter-pulse {
+    from { box-shadow: 0 0 20px #ff0000, inset 0 0 10px #000; }
+    to { box-shadow: 0 0 40px #ff0000, inset 0 0 20px #000; }
+}
+
+/* Efeito Dark Matter na Capa: Escuro + Rachaduras Pretas */
+.dark-matter-media {
+    filter: brightness(0.4) contrast(1.4) grayscale(0.5);
+    position: relative;
+}
+.dark-matter-media::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(45deg, transparent 48%, #000 49%, #000 51%, transparent 52%),
+        linear-gradient(-30deg, transparent 48%, #000 49%, #000 51%, transparent 52%),
+        linear-gradient(110deg, transparent 48%, #000 49%, #000 51%, transparent 52%);
+    background-size: 100% 100%;
+    opacity: 0.8;
+    pointer-events: none;
 }
 
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SISTEMA CORROMPIDO - MERCADO NEGRO</title>
+    <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/mercado-negro.css">
+</head>
+<body>
+    <div class="black-market-container">
+        <h1 class="warning">CUIDADO: VOCÊ ESTÁ NO MERCADO NEGRO</h1>
+        <p>> Conexão criptografada... Bypassing Firestore rules...</p>
+
+        <!-- Seção: Roleta Especial -->
+        <section class="market-section">
+            <h2 class="market-title">> ROLETA PROIBIDA</h2>
+            <div class="special-roulette-wrapper">
+                <div class="roulette-selector"></div>
+                <div id="special-rail" class="special-rail"></div>
+            </div>
+            <button class="btn-hack" style="width: 100%; margin-top: 10px;" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 1.000,00)</button>
+        </section>
+        
+        <!-- Seção: Jogos com Desconto Obscuro -->
+        <section class="market-section">
+            <h2 class="market-title">> JOGOS DESVIADOS (DESCONTO DE 30%)</h2>
+            <div id="cheaper-games-list" class="market-list"></div>
+        </section>
+
+        <!-- Seção: Lavagem de Dinheiro (Venda de Upgrades) -->
+        <section class="market-section">
+            <h2 class="market-title">> REVENDA DE ITENS MELHORADOS</h2>
+            <p style="font-size: 10px; color: #888; margin-bottom: 10px;">Lave seus jogos com rank para obter créditos rápidos.</p>
+            <div id="sell-upgrades-list" class="market-list"></div>
+        </section>
+
+        <div class="market-list" style="margin-top: 40px; border: 1px solid #f00;">
+            <h2 class="market-title" style="color: #f00; padding: 10px;">> SERVIÇOS DE HACKER</h2>
+            <div class="secret-item">
+                <div>
+                    <strong>Selo de Admin Temporário</strong>
+                    <p style="font-size: 10px;">Acesso visual ao painel admin (60s)</p>
+                </div>
+                <span>R$ 5.000,00</span>
+                <button class="btn-hack" onclick="buyAdminTemporario()">COMPRAR</button>
+            </div>
+            <div class="secret-item">
+                <div>
+                    <strong>Lote de XP Corrompido</strong>
+                    <p style="font-size: 10px;">Aumenta todos os ranks para Lendário (+++)</p>
+                </div>
+                <span>R$ 15.000,00</span>
+                <button class="btn-hack" onclick="buyXPCorrompido()">COMPRAR</button>
+            </div>
+            <div class="secret-item">
+                <div>
+                    <strong>Chave de Jogo Proibido</strong>
+                    <p style="font-size: 10px;">Sorteia um jogo que não está no catálogo normal</p>
+                </div>
+                <span>R$ 2.500,00</span>
+                <button class="btn-hack" onclick="buyJogoProibido()">COMPRAR</button>
+            </div>
+        </div>
+        <button class="btn-hack" style="margin-top: 30px; width: 100%;" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/auth.js" defer></script>
+    <script src="../java/global.js" defer></script>
+    <script src="../java/mercado-negro.js" defer></script>
+</body>
+</html>

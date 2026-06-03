@@ -540,6 +540,7 @@ window.purchaseLibrary = async () => {
             toggleLoader(false);
             showToast("Compra finalizada com sucesso!", "success");
             window.updateNavBadges();
+            window.triggerSecretEvent(); // Chance de ir para o mercado negro após gastar
             location.reload();
         } catch (error) {
             toggleLoader(false);

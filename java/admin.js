@@ -17,6 +17,22 @@ async function loadUsersSystem() {
         return setTimeout(loadUsersSystem, 500); // Aguarda dependências globais
     }
 
+    // Injeta Botão de Teste do Mercado Negro (Estilo Hacker)
+    if (container && !document.getElementById('debug-hacker-btn')) {
+        const debugBtn = document.createElement('button');
+        debugBtn.id = 'debug-hacker-btn';
+        debugBtn.style.cssText = `
+            background: #000; color: #0f0; border: 1px solid #0f0; 
+            font-family: monospace; width: 100%; margin-bottom: 20px; 
+            padding: 12px; cursor: pointer; font-weight: bold;
+            text-shadow: 0 0 5px #0f0; box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+        `;
+        debugBtn.innerText = "> FORÇAR_CORRUPÇÃO_SISTEMA (MERCADO_NEGRO.EXE)";
+        debugBtn.onclick = () => window.triggerSecretEvent(true);
+        
+        container.parentNode.insertBefore(debugBtn, container);
+    }
+
     try {
         const snapshot = await window.db.collection('users').get();
         if (snapshot.empty) {

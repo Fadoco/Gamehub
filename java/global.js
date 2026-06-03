@@ -45,12 +45,52 @@ window.utils = {
 window.getUpgradeHtml = (gameId) => {
     const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
     if (upgradeLevel > 0) {
+        if (upgradeLevel === 4) return `<span class="upgrade-rank rank-dark-matter">!!!!</span>`;
         const isMax = upgradeLevel >= 3;
         const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary' + (isMax ? ' max-rank-anim' : ''));
         const pluses = '+'.repeat(upgradeLevel);
         return `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
     }
     return '';
+};
+
+// Função para disparar o evento raro do Mercado Negro
+window.triggerSecretEvent = (force = false) => {
+    const chance = Math.random();
+    if (force || chance <= 0.02) { 
+        console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
+
+        // 1. Congela o site visualmente e funcionalmente
+        document.documentElement.classList.add('site-frozen');
+
+        // 2. Cria os elementos de bug
+        const overlay = document.createElement('div');
+        overlay.className = 'glitch-overlay';
+        overlay.innerHTML = `
+            <div style="font-size: 4rem; font-weight: 900; margin-bottom: 20px;">[ ! ]</div>
+            <div id="glitch-text-status">> INITIALIZING_KERNEL_BYPASS...</div>
+            <div style="font-size: 0.8rem; margin-top: 40px; color: #555;">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+        `;
+
+        const scanline = document.createElement('div');
+        scanline.className = 'glitch-scanline';
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(scanline);
+
+        // 3. Simula uma sequência de falhas no texto
+        const status = overlay.querySelector('#glitch-text-status');
+        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; }, 400);
+        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; }, 800);
+        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; }, 1200);
+
+        // 4. Redireciona
+        setTimeout(() => {
+            window.location.href = window.utils.getHtmlPath('mercado-negro.html');
+        }, 2200);
+        return true;
+    }
+    return false;
 };
 
 // Função para atualizar contadores no menu (opcional) - Movida de auth.js
@@ -209,13 +249,14 @@ window.renderToContainer = (games, container, clear = true) => {
         if (upgradeLevel === 1) auraClass = 'upgrade-aura-1';
         else if (upgradeLevel === 2) auraClass = 'upgrade-aura-2';
         else if (upgradeLevel >= 3) auraClass = 'upgrade-aura-3'; // >=3 para rank máximo
+        else if (upgradeLevel === 4) auraClass = 'upgrade-aura-4';
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
 
         // Cálculo de valorização por Upgrade
         const basePriceNum = window.utils.parsePrice(game.currentPrice);
-        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
+        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 8.0 };
         const multiplier = multipliers[upgradeLevel] || 1;
         const inventoryValue = basePriceNum * multiplier;
 
