@@ -57,7 +57,10 @@ function renderRoulette() {
         <div class="bet-item" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="bet-item-info">
-                <span class="bet-item-name">${game.title}</span>
+                <span class="bet-item-name" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span>${game.title}</span>
+                    ${window.getUpgradeHtml(game.id)}
+                </span>
                 <span class="bet-item-price">${(() => {
                     const level = window.userUpgrades[game.id] || 0;
                     const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
@@ -85,16 +88,18 @@ window.selectGameForBet = (gameId) => {
     const spinBtn = document.getElementById('btn-spin');
 
     if (display) {
-        const colors = ['#0078f2', '#a335ee', '#ffb400'];
-        const rankText = currentLevel > 0 ? `<span style="color:${colors[currentLevel-1]}">${'+'.repeat(currentLevel)}</span>` : '';
+        const upgradeHtml = window.getUpgradeHtml(game.id);
+        const targetText = currentLevel >= 3 
+            ? `<span style="color:var(--promo)">Rank Máximo Atingido</span>` 
+            : `Rank Atual: ${currentLevel} | Alvo: ${currentLevel + 1}`;
         
         display.classList.add('active');
         display.innerHTML = `
-            <div style="display:flex; align-items:center; gap:15px; width:100%">
+            <div style="display:flex; align-items:center; gap:15px; width:100%;">
                 <img src="${game.coverUrl || game.image}" style="width:50px; border-radius:4px;">
-                <div style="text-align:left">
-                    <strong style="display:block">${game.title} ${rankText}</strong>
-                    <span style="font-size:12px; color:var(--accent)">Rank Atual: ${currentLevel} | Alvo: ${currentLevel + 1}</span>
+                <div style="text-align:left; display: flex; flex-direction: column; justify-content: center;">
+                    <strong style="display:flex; align-items: center; gap: 8px;">${game.title} ${upgradeHtml}</strong>
+                    <span style="font-size:12px; color:var(--accent)">${targetText}</span>
                 </div>
             </div>
         `;

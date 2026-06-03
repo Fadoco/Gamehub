@@ -41,6 +41,18 @@ window.utils = {
     }
 };
 
+// Helper para gerar o HTML do rank de upgrade
+window.getUpgradeHtml = (gameId) => {
+    const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
+    if (upgradeLevel > 0) {
+        const isMax = upgradeLevel >= 3;
+        const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary' + (isMax ? ' max-rank-anim' : ''));
+        const pluses = '+'.repeat(upgradeLevel);
+        return `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
+    }
+    return '';
+};
+
 // Função para atualizar contadores no menu (opcional) - Movida de auth.js
 window.updateNavBadges = () => { 
     const cartBtn = document.querySelector('.nav-button .fa-shopping-cart')?.parentElement;
@@ -191,12 +203,7 @@ window.renderToContainer = (games, container, clear = true) => {
 
         // Lógica de Rank/Upgrade
         const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
-        let upgradeHtml = '';
-        if (upgradeLevel > 0) {
-            const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary');
-            const pluses = '+'.repeat(upgradeLevel);
-            upgradeHtml = `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
-        }
+        const upgradeHtml = window.getUpgradeHtml(game.id);
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
