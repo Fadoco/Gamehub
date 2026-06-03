@@ -63,6 +63,61 @@ body {
 
 .btn-hack:hover { background: #0f0; color: #000; }
 
+/* Estilos para as Caixas Especiais */
+.boxes-grid-special {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.box-card-special {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.box-card-special::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+}
+
+.box-card-special:hover::before { left: 100%; }
+
+.box-card-special.tier-glitch { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+.box-card-special.tier-void { border-color: #a335ee; box-shadow: 0 0 15px rgba(163, 53, 238, 0.3); }
+
+.box-card-special .btn-hack:disabled {
+    background: #333 !important;
+    color: #777 !important;
+    border-color: #555 !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Estilos para o inventário de seleção de jogo (reutiliza .inventory-grid do roleta.css) */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 110px);
+    justify-content: center;
+    gap: 12px;
+    max-height: 300px; /* Altura limitada para scroll */
+    overflow-y: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* Estilos da Roleta Especial */
 .special-roulette-wrapper {
     height: 100px;

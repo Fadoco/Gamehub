@@ -21,46 +21,46 @@
             <button class="btn-hack" style="width: 100%; margin-top: 10px;" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 1.000,00)</button>
         </section>
         
+        <!-- Seção: Caixas Especiais do Mercado Negro -->
+        <section class="market-section">
+            <h2 class="market-title">> CAIXAS ESPECIAIS</h2>
+            <p style="font-size: 10px; color: #888; margin-bottom: 10px;">Abra caixas com chances aumentadas de upgrade para o jogo selecionado.</p>
+            <div class="boxes-grid-special">
+                <div class="box-card-special tier-glitch">
+                    <h3 style="color: #00ff00;">Caixa Glitch</h3>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px;">
+                        Upgrade garantido. Chance de Rank 4.
+                    </p>
+                    <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px #00ff0044)">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <button class="btn-hack" id="btn-open-glitch-box" onclick="openSpecialBox('glitch')" disabled>
+                        Abrir R$ 800,00
+                    </button>
+                </div>
+                <div class="box-card-special tier-void">
+                    <h3 style="color: #a335ee;">Caixa do Vazio</h3>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px;">
+                        Upgrade garantido. Alta chance de Rank 4.
+                    </p>
+                    <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px #a335ee44)">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <button class="btn-hack" id="btn-open-void-box" onclick="openSpecialBox('void')" disabled>
+                        Abrir R$ 3.000,00
+                    </button>
+                </div>
+            </div>
+            <h3 class="market-title" style="margin-top: 30px;">> SELECIONE UM JOGO PARA MELHORAR</h3>
+            <p style="font-size: 10px; color: #888; margin-bottom: 10px;">Apenas jogos da sua biblioteca que ainda não são Rank !!!!.</p>
+            <div id="special-box-inventory-grid" class="inventory-grid"></div>
+        </section>
+
         <!-- Seção: Jogos com Desconto Obscuro -->
         <section class="market-section">
             <h2 class="market-title">> JOGOS DESVIADOS (DESCONTO DE 30%)</h2>
             <div id="cheaper-games-list" class="market-list"></div>
         </section>
-
-        <!-- Seção: Lavagem de Dinheiro (Venda de Upgrades) -->
-        <section class="market-section">
-            <h2 class="market-title">> REVENDA DE ITENS MELHORADOS</h2>
-            <p style="font-size: 10px; color: #888; margin-bottom: 10px;">Lave seus jogos com rank para obter créditos rápidos.</p>
-            <div id="sell-upgrades-list" class="market-list"></div>
-        </section>
-
-        <div class="market-list" style="margin-top: 40px; border: 1px solid #f00;">
-            <h2 class="market-title" style="color: #f00; padding: 10px;">> SERVIÇOS DE HACKER</h2>
-            <div class="secret-item">
-                <div>
-                    <strong>Selo de Admin Temporário</strong>
-                    <p style="font-size: 10px;">Acesso visual ao painel admin (60s)</p>
-                </div>
-                <span>R$ 5.000,00</span>
-                <button class="btn-hack" onclick="buyAdminTemporario()">COMPRAR</button>
-            </div>
-            <div class="secret-item">
-                <div>
-                    <strong>Lote de XP Corrompido</strong>
-                    <p style="font-size: 10px;">Aumenta todos os ranks para Lendário (+++)</p>
-                </div>
-                <span>R$ 15.000,00</span>
-                <button class="btn-hack" onclick="buyXPCorrompido()">COMPRAR</button>
-            </div>
-            <div class="secret-item">
-                <div>
-                    <strong>Chave de Jogo Proibido</strong>
-                    <p style="font-size: 10px;">Sorteia um jogo que não está no catálogo normal</p>
-                </div>
-                <span>R$ 2.500,00</span>
-                <button class="btn-hack" onclick="buyJogoProibido()">COMPRAR</button>
-            </div>
-        </div>
         <button class="btn-hack" style="margin-top: 30px; width: 100%;" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
     </div>
 

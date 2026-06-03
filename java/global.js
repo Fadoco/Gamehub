@@ -62,6 +62,7 @@ window.triggerSecretEvent = (force = false) => {
 
         // 1. Congela o site visualmente e funcionalmente
         document.documentElement.classList.add('site-frozen');
+        document.body.classList.add('site-breaking-anim');
 
         // 2. Cria os elementos de bug
         const overlay = document.createElement('div');
@@ -78,16 +79,46 @@ window.triggerSecretEvent = (force = false) => {
         document.body.appendChild(overlay);
         document.body.appendChild(scanline);
 
-        // 3. Simula uma sequência de falhas no texto
-        const status = overlay.querySelector('#glitch-text-status');
-        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; }, 400);
-        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; }, 800);
-        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; }, 1200);
+        // 3. Injeção de Código Corrompido pela tela
+        const corruptedSnippets = [
+            "0xDEADBEEF", "SYSTEM_FAILURE", "const _0x4f21 = [];", "eval(atob('...'))", 
+            "Segmentation fault (core dumped)", "Bypassing Firewall...", "Accessing Kernel...", 
+            "ERROR_0x8004210B", "while(true){ fork(); }", "injecting_payload...", 
+            "WIPING_LOGS", "sudo rm -rf /", "HIDDEN_MARKET_ACCESS"
+        ];
 
-        // 4. Redireciona
+        const spawnCode = setInterval(() => {
+            const span = document.createElement('div');
+            span.className = 'corrupted-code-fragment';
+            span.innerText = corruptedSnippets[Math.floor(Math.random() * corruptedSnippets.length)];
+            
+            // Posição aleatória na tela
+            span.style.top = Math.random() * 100 + 'vh';
+            span.style.left = Math.random() * 100 + 'vw';
+            
+            // Tamanho e rotação aleatória
+            span.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            span.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            document.body.appendChild(span);
+            
+            // Remove o elemento após a animação
+            setTimeout(() => span.remove(), 800);
+        }, 60); // Cria um novo fragmento a cada 60ms
+
+        // 4. Simula uma sequência de falhas no texto do status
+        const status = overlay.querySelector('#glitch-text-status');
+        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; }, 1000);
+        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; }, 2000);
+        setTimeout(() => { status.innerText = "> HIJACKING_DB_CONNECTION..."; }, 3000);
+        setTimeout(() => { status.innerText = "> BYPASSING_SECURITY_LAYER..."; }, 4000);
+        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; }, 4500);
+
+        // 5. Redireciona após 5 segundos
         setTimeout(() => {
+            clearInterval(spawnCode);
             window.location.href = window.utils.getHtmlPath('mercado-negro.html');
-        }, 2200);
+        }, 5000);
         return true;
     }
     return false;
@@ -256,8 +287,8 @@ window.renderToContainer = (games, container, clear = true) => {
 
         // Cálculo de valorização por Upgrade
         const basePriceNum = window.utils.parsePrice(game.currentPrice);
-        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 8.0 };
-        const multiplier = multipliers[upgradeLevel] || 1;
+        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
+        const multiplier = multipliers[upgradeLevel] || 1; // Garante que Rank 4 use 9.0
         const inventoryValue = basePriceNum * multiplier;
 
         const isLibraryPage = window.location.pathname.includes('biblioteca.html');

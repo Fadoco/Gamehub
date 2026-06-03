@@ -29,58 +29,6 @@ async function processSecretPurchase(cost, itemName, actionFn) {
     });
 }
 
-// 1. Selo Admin Temporário (5k)
-window.buyAdminTemporario = () => {
-    processSecretPurchase(5000, "SELO ADMIN", async (userRef) => {
-        // Apenas um efeito visual conforme solicitado
-        console.log("Hacking admin status...");
-        localStorage.setItem('tempAdmin', 'true');
-        window.showToast("ACESSO VISUAL LIBERADO POR 60s.", "info");
-        
-        setTimeout(() => {
-            localStorage.removeItem('tempAdmin');
-            window.showToast("CONEXÃO ADMIN EXPIRADA.", "warning");
-        }, 60000);
-    });
-};
-
-// 2. Lote de XP Corrompido (15k)
-window.buyXPCorrompido = () => {
-    processSecretPurchase(15000, "XP CORROMPIDO", async (userRef) => {
-        if (!window.userLibrary || window.userLibrary.length === 0) {
-            throw new Error("Biblioteca vazia");
-        }
-
-        const updates = {};
-        window.userLibrary.forEach(gameId => {
-            updates[`upgrades.${gameId}`] = 3; // Nível Máximo
-        });
-
-        await userRef.update(updates);
-    });
-};
-
-// 3. Chave de Jogo Proibido (2.5k)
-window.buyJogoProibido = () => {
-    processSecretPurchase(2500, "JOGO PROIBIDO", async (userRef) => {
-        // Sorteia um jogo que o usuário não tem
-        const allGames = window.allGamesData || [];
-        const notOwned = allGames.filter(g => !window.userLibrary.includes(g.id));
-        
-        if (notOwned.length === 0) {
-            window.showToast("VOCÊ JÁ POSSUI TUDO. NADA É PROIBIDO.", "info");
-            return;
-        }
-
-        const randomGame = notOwned[Math.floor(Math.random() * notOwned.length)];
-        await userRef.update({
-            library: firebase.firestore.FieldValue.arrayUnion(randomGame.id)
-        });
-        
-        window.showToast(`VOCÊ DESBLOQUEOU: ${randomGame.title}`, "success");
-    });
-};
-
 // --- NOVAS FUNCIONALIDADES DO MERCADO NEGRO ---
 
 // 1. Renderizar Jogos Baratos (30% de desconto adicional)
@@ -110,58 +58,133 @@ function renderCheaperGames() {
     }).join('');
 }
 
+// Variável global para o jogo selecionado para as caixas especiais
+let selectedGameForSpecialBox = null;
+
+// Renderiza o inventário de jogos para seleção na caixa especial
+function renderSpecialBoxInventory() {
+    const inventoryGrid = document.getElementById('special-box-inventory-grid');
+    if (!inventoryGrid || !window.allGamesData || window.allGamesData.length === 0) return;
+
+    // Filtrar jogos da biblioteca que NÃO são gratuitos e NÃO são Rank 4 (Dark Matter)
+    const eligibleGames = window.allGamesData.filter(game => {
+        const isOwned = window.userLibrary.some(libId => String(libId) === String(game.id));
+        const isNotFree = window.utils.parsePrice(game.currentPrice) > 0;
+        const currentLevel = window.userUpgrades[game.id] || 0;
+        const isNotDarkMatter = currentLevel < 4;
+        return isOwned && isNotFree && isNotDarkMatter;
+    });
+
+    if (eligibleGames.length === 0) {
+        inventoryGrid.innerHTML = '<p style="grid-column: 1/-1; padding: 20px; font-size: 12px;">Você não possui jogos elegíveis para upgrade com caixas especiais (ou todos já são Rank !!!!).</p>';
+        return;
+    }
+
+    inventoryGrid.innerHTML = eligibleGames.map(game => {
+        const level = window.userUpgrades[game.id] || 0;
+        let auraClass = '';
+        if (level === 1) auraClass = 'upgrade-aura-1';
+        else if (level === 2) auraClass = 'upgrade-aura-2';
+        else if (level === 3) auraClass = 'upgrade-aura-3';
+        return `
+        <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForSpecialBox(${game.id})">
+            <img src="${game.coverUrl || game.image}" alt="${game.title}">
+            <div class="bet-item-info">
+                <span class="bet-item-name" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span>${game.title}</span>
+                    ${window.getUpgradeHtml(game.id)}
+                </span>
+                <span class="bet-item-price">${(() => {
+                    const level = window.userUpgrades[game.id] || 0;
+                    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
+                    const val = window.utils.parsePrice(game.currentPrice) * multipliers[level];
+                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : game.currentPrice;
+                })()}</span>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+window.selectGameForSpecialBox = (gameId) => {
+    const game = window.allGamesData.find(g => String(g.id) === String(gameId));
+    if (!game) return;
+
+    selectedGameForSpecialBox = game;
+
+    // Atualiza Visual
+    document.querySelectorAll('#special-box-inventory-grid .bet-item').forEach(el => {
+        el.classList.toggle('selected', el.getAttribute('data-id') == gameId);
+    });
+
+    // Habilita os botões das caixas especiais
+    document.getElementById('btn-open-glitch-box').disabled = false;
+    document.getElementById('btn-open-void-box').disabled = false;
+};
+
+// Função para abrir as caixas especiais
+window.openSpecialBox = async (tier) => {
+    if (window.isActionInProgress) return;
+    if (!selectedGameForSpecialBox) return window.showToast("Selecione um jogo para melhorar primeiro!", "error");
+
+    const boxCosts = {
+        'glitch': 800,
+        'void': 3000
+    };
+    const cost = boxCosts[tier];
+
+    if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");
+
+    window.isActionInProgress = true;
+    
+    window.customConfirm(`Confirmar abertura da ${tier.toUpperCase()} Box por R$ ${cost.toFixed(2)} para ${selectedGameForSpecialBox.title}?`, async () => {
+        try {
+            const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+            await userRef.update({
+                balance: firebase.firestore.FieldValue.increment(-cost)
+            });
+
+            const gameId = selectedGameForSpecialBox.id;
+            const currentLevel = window.userUpgrades[gameId] || 0;
+            let newLevel = currentLevel + 1;
+
+            // Lógica de upgrade para as caixas especiais
+            if (tier === 'glitch') {
+                // Glitch Box: Garante +1, se já for Rank 3, tem 50% de chance de ir para Dark Matter
+                if (currentLevel === 3 && Math.random() < 0.5) {
+                    newLevel = 4; // Dark Matter
+                } else if (currentLevel === 3) {
+                    newLevel = 3; // Permanece Rank 3 se falhar o Dark Matter
+                }
+            } else if (tier === 'void') {
+                // Void Box: Garante +1, se já for Rank 3, tem 80% de chance de ir para Dark Matter
+                if (currentLevel === 3 && Math.random() < 0.8) {
+                    newLevel = 4; // Dark Matter
+                } else if (currentLevel === 3) {
+                    newLevel = 3; // Permanece Rank 3 se falhar o Dark Matter
+                } else if (currentLevel === 2 && Math.random() < 0.3) { // Pequena chance de pular para Rank 4 direto do Rank 2
+                    newLevel = 4;
+                }
+            }
+
+            await userRef.update({ [`upgrades.${gameId}`]: newLevel });
+            window.showToast(`CAIXA ${tier.toUpperCase()} ABERTA! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
+            await window.loadUserData(window.auth.currentUser.uid);
+            renderSpecialBoxInventory(); // Atualiza a lista de jogos
+        } catch (error) {
+            console.error("Erro ao abrir caixa especial:", error);
+            window.showToast("ERRO NA OPERAÇÃO. Tente novamente.", "error");
+        } finally {
+            window.isActionInProgress = false;
+        }
+    });
+};
+
 window.buySecretGame = async (gameId, price) => {
     processSecretPurchase(price, "JOGO DESVIADO", async (userRef) => {
         await userRef.update({
             library: firebase.firestore.FieldValue.arrayUnion(gameId)
         });
-    });
-};
-
-// 2. Vender Jogos Melhorados (Lave seu lucro)
-function renderSellList() {
-    const container = document.getElementById('sell-upgrades-list');
-    if (!container || !window.userLibrary) return;
-
-    // Filtra jogos que possuem algum upgrade
-    const upgradedGames = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) > 0);
-
-    if (upgradedGames.length === 0) {
-        container.innerHTML = '<p style="padding:15px; font-size:12px;">NENHUM ITEM COM UPGRADE PARA REVENDA.</p>';
-        return;
-    }
-
-    container.innerHTML = upgradedGames.map(gameId => {
-        const game = window.allGamesData.find(g => String(g.id) === String(gameId));
-        const level = window.userUpgrades[gameId];
-        const multipliers = { 1: 1.5, 2: 2.5, 3: 4.0 };
-        const basePrice = window.utils.parsePrice(game.currentPrice);
-        const sellValue = (basePrice * multipliers[level]) * 0.6; // Vende por 60% do valor de mercado
-
-        return `
-            <div class="secret-item">
-                <div>
-                    <strong>${game.title} ${'+'.repeat(level)}</strong>
-                    <p style="font-size: 10px;">VALOR DE REVENDA (60%)</p>
-                </div>
-                <span style="color: #4ade80;">+ R$ ${sellValue.toFixed(2)}</span>
-                <button class="btn-hack" onclick="sellUpgradedItem(${gameId}, ${sellValue})">VENDER</button>
-            </div>
-        `;
-    }).join('');
-}
-
-window.sellUpgradedItem = async (gameId, value) => {
-    window.customConfirm(`Vender seu item por R$ ${value.toFixed(2)}? Esta ação é irreversível.`, async () => {
-        const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-        await userRef.update({
-            balance: firebase.firestore.FieldValue.increment(value),
-            library: firebase.firestore.FieldValue.arrayRemove(gameId),
-            [`upgrades.${gameId}`]: firebase.firestore.FieldValue.delete()
-        });
-        window.showToast("ITEM VENDIDO. RASTROS APAGADOS.", "success");
-        await window.loadUserData(window.auth.currentUser.uid);
-        renderSellList();
     });
 };
 
@@ -255,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aguarda carregar dados globais
     setTimeout(() => {
         renderCheaperGames();
-        renderSellList();
+        renderSpecialBoxInventory(); // Renderiza o inventário para as caixas especiais
         initSpecialRoulette();
     }, 1000);
 
