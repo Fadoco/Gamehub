@@ -13,7 +13,7 @@ const CARD_TYPES = {
 };
 
 // Função direta para tocar o som (comentada - arquivo de áudio não disponível)
-const spinAudio = new Audio('../assets/spin.mp3'); // Ajuste o nome do arquivo conforme necessário
+const spinAudio = new Audio('../assets/csgo-case-open.mp3'); // Ajuste o nome do arquivo conforme necessário
 
 const playSpinSound = () => {
     if (spinAudio) {
