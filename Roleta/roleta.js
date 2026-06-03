@@ -190,9 +190,9 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
     const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
     const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
 
-    // Adiciona atraso de 1.2s antes de iniciar a transição de 5s
+    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.5s
     setTimeout(() => {
-        rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transition = 'transform 5.5s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetPos}px)`;
     }, 1200);
 }
@@ -328,14 +328,14 @@ window.openBox = async (tier) => {
     const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
     const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
     
-    // Adiciona atraso de 1.2s antes de iniciar a transição de 5s
+    // Adiciona atraso de 1.2s antes de iniciar a transição de 5.5s
     setTimeout(() => {
-        rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transition = 'transform 5.5s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetPos}px)`;
     }, 1200);
 
     // 3. Revelação e Salvamento
-    // Ajustado para 6.4s (1.2s de atraso + 5s de animação + 0.2s de margem)
+    // Ajustado para 6.9s (1.2s de atraso + 5.5s de animação + 0.2s de margem)
     setTimeout(async () => {
         const winnerCard = rail.children[40];
         
@@ -375,7 +375,7 @@ window.openBox = async (tier) => {
         } finally {
             isActionInProgress = false;
         }
-    }, 6400);
+    }, 6900);
 };
 
 async function startUpgradeSpin() {
@@ -416,8 +416,8 @@ async function startUpgradeSpin() {
     // 3. Inicia a animação visual da roleta
     generateRouletteRail(winnerType, selectedGameToBet);
 
-    // 4. Aguarda a animação terminar (7 segundos) para atualizar o banco de dados
-    // Ajustado para 6.4s (1.2s de atraso + 5s de animação + 0.2s de margem)
+    // 4. Aguarda a animação terminar para atualizar o banco de dados
+    // Ajustado para 6.9s (1.2s de atraso + 5.5s de animação + 0.2s de margem)
     setTimeout(async () => {
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
         const rail = document.getElementById('roulette-rail');
@@ -470,7 +470,7 @@ async function startUpgradeSpin() {
             spinBtn.textContent = "Girar e Melhorar Jogo";
             isActionInProgress = false;
         }
-    }, 6400); // Tempo da animação + pequeno delay
+    }, 6900); // Tempo da animação + pequeno delay
 }
 
 // Escutar mudanças no Firebase para atualizar o inventário se o usuário ganhar/perder algo
