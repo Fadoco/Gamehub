@@ -12,15 +12,14 @@ const CARD_TYPES = {
     WIN: 2   // UPGRADE (Dourado)
 };
 
-// Função direta para tocar o som (comentada - arquivo de áudio não disponível)
-const spinAudio = new Audio('../assets/csgo-case-open.mp3'); // Ajuste o nome do arquivo conforme necessário
-
+// Busca o elemento de áudio definido no HTML
 const playSpinSound = () => {
-    if (spinAudio) {
-        spinAudio.pause(); // Para qualquer reprodução atual
-        spinAudio.currentTime = 0; // Volta para o início
-        spinAudio.volume = 0.5; // Define um volume razoável
-        spinAudio.play().catch(error => console.warn("Autoplay bloqueado ou arquivo não encontrado:", error));
+    const audio = document.getElementById('spin-sound-effect');
+    if (audio) {
+        audio.pause(); 
+        audio.currentTime = 0; 
+        audio.volume = 0.4; 
+        audio.play().catch(error => console.error("Erro ao tocar áudio. Verifique se o caminho 'assets/csgo-case-open.mp3' está correto no HTML.", error));
     }
 };
 
