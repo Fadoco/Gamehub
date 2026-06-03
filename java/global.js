@@ -205,6 +205,11 @@ window.renderToContainer = (games, container, clear = true) => {
         const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
         const upgradeHtml = window.getUpgradeHtml(game.id);
 
+        let auraClass = '';
+        if (upgradeLevel === 1) auraClass = 'upgrade-aura-1';
+        else if (upgradeLevel === 2) auraClass = 'upgrade-aura-2';
+        else if (upgradeLevel >= 3) auraClass = 'upgrade-aura-3'; // >=3 para rank máximo
+
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
 
@@ -222,7 +227,7 @@ window.renderToContainer = (games, container, clear = true) => {
 
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
-                <article class="game-card">
+                <article class="game-card ${auraClass}">
                 <div class="card-media">
                     ${discountBadge}
                     <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">

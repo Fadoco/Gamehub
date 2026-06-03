@@ -53,8 +53,14 @@ function renderRoulette() {
         return;
     }
 
-    inventoryGrid.innerHTML = bettableGames.map(game => `
-        <div class="bet-item" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
+    inventoryGrid.innerHTML = bettableGames.map(game => {
+        const level = window.userUpgrades[game.id] || 0;
+        let auraClass = '';
+        if (level === 1) auraClass = 'upgrade-aura-1';
+        else if (level === 2) auraClass = 'upgrade-aura-2';
+        else if (level >= 3) auraClass = 'upgrade-aura-3';
+        return `
+        <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="bet-item-info">
                 <span class="bet-item-name" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
@@ -69,7 +75,8 @@ function renderRoulette() {
                 })()}</span>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 window.selectGameForBet = (gameId) => {
