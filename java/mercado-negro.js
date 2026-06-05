@@ -117,7 +117,7 @@ window.selectGameForSpecialBox = (gameId) => {
 
     // Atualiza Visual
     document.querySelectorAll('#special-box-inventory-grid .bet-item').forEach(el => {
-        el.classList.toggle('selected', el.getAttribute('data-id') == gameId);
+        el.classList.toggle('selected', String(el.getAttribute('data-id')) === String(gameId));
     });
 
     // Atualiza o texto do botão da roleta baseado no rank
@@ -268,16 +268,27 @@ window.spinSpecialRoulette = async () => {
 
     // Preencher rail com cards temáticos
     rail.innerHTML = '';
+    const allGames = window.allGamesData || [];
+
     for(let i=0; i<50; i++) {
         const card = document.createElement('div');
         card.className = 'special-card';
+        
+        // Pega um jogo aleatório para preencher o trilho e dar "volume" visual
+        const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
+        const gameImg = randomGame?.coverUrl || randomGame?.image;
+
         if (i === 40) {
             card.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#333');
             card.innerHTML = resultType === 'win' ? (currentLevel === 3 ? 'DM' : 'UP') : (resultType === 'stay' ? 'OK' : 'XX');
             if (resultType === 'win' && currentLevel === 3) card.classList.add('rank-dark-matter');
         } else {
-            card.innerHTML = Math.random() > 0.5 ? '0x' : 'F1';
-            card.style.opacity = '0.3';
+            if (gameImg) {
+                card.innerHTML = `<img src="${gameImg}" style="width:100%; height:100%; object-fit:cover; opacity: 0.2; filter: grayscale(1);">`;
+            } else {
+                card.innerHTML = Math.random() > 0.5 ? '0x' : 'F1';
+                card.style.opacity = '0.2';
+            }
         }
         rail.appendChild(card);
     }
@@ -304,10 +315,23 @@ window.spinSpecialRoulette = async () => {
                 const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
                 await userRef.update({ [`upgrades.${gameId}`]: newLevel });
                 window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
-            } else if (resultType === 'stay') {
+                } 
+                else if (resultType === 'stay') {
                 window.showToast("CONEXÃO ESTÁVEL. NADA MUDOU.", "info");
-            } else {
-                window.showToast("FALHA CRÍTICA. CRÉDITOS PERDIDOS.", "error");
+                } 
+                else {
+                    // PERDA: Remove o jogo da conta
+                    const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+                    const idToRemove = isNaN(gameId) ? gameId : Number(gameId);
+                    
+                    await userRef.update({
+                        library: firebase.firestore.FieldValue.arrayRemove(idToRemove),
+                        [`upgrades.${gameId}`]: firebase.firestore.FieldValue.delete()
+                    });
+                    // Tenta remover como string também para garantir
+                    await userRef.update({ library: firebase.firestore.FieldValue.arrayRemove(String(gameId)) });
+
+                    window.showToast("FALHA CRÍTICA: SOFTWARE DELETADO DO SISTEMA.", "error");
             }
             await window.loadUserData(window.auth.currentUser.uid);
             renderSpecialBoxInventory();

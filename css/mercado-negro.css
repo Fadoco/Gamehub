@@ -140,8 +140,9 @@
 }
 
 .bet-item.selected {
-    border-color: #0f0;
-    box-shadow: 0 0 15px #0f0;
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 0, 0.2);
+    transform: scale(1.05);
 }
 
 .bet-item-info {
@@ -165,6 +166,7 @@
     display: flex;
     align-items: center;
     padding: 0 10px; /* Adicionado padding para consistência com roleta.css */
+    pointer-events: none; /* Evita que o usuário arraste o trilho */
 }
 
 .special-rail {
