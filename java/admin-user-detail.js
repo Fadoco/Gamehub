@@ -56,7 +56,7 @@ function renderUserPanel() {
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <label style="font-size: 10px; color: var(--text-secondary);">RANK:</label>
-                        <select class="admin-select" onchange="updateGameRank(${id}, this.value)" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                        <select class="admin-select" onchange="updateGameRank('${id}', this.value)" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px; border-radius: 4px; font-size: 12px; cursor: pointer;">
                             <option value="0" ${(targetUserData.upgrades?.[id] || 0) == 0 ? 'selected' : ''}>Padrão</option>
                             <option value="1" ${(targetUserData.upgrades?.[id] || 0) == 1 ? 'selected' : ''}>Raro (+)</option>
                             <option value="2" ${(targetUserData.upgrades?.[id] || 0) == 2 ? 'selected' : ''}>Épico (++)</option>
@@ -64,7 +64,7 @@ function renderUserPanel() {
                             <option value="4" ${(targetUserData.upgrades?.[id] || 0) == 4 ? 'selected' : ''}>Dark Matter (!!!!)</option>
                         </select>
                     </div>
-                    <button class="nav-button" onclick="removeGameFromUser(${id})" style="color: #e74c3c; border-color: rgba(231, 76, 60, 0.3);">
+                    <button class="nav-button" onclick="removeGameFromUser('${id}')" style="color: #e74c3c; border-color: rgba(231, 76, 60, 0.3);">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>

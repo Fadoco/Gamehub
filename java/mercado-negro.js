@@ -69,7 +69,7 @@ function renderSpecialBoxInventory() {
     // Filtrar jogos da biblioteca que NÃO são gratuitos e NÃO são Rank 4 (Dark Matter)
     const eligibleGames = window.allGamesData.filter(game => {
         const isOwned = window.userLibrary.some(libId => String(libId) === String(game.id));
-        const isNotFree = window.utils.parsePrice(game.currentPrice) > 0;
+        const isNotFree = window.utils.parsePrice(game.currentPrice) >= 0; // Mercado Negro aceita tudo
         const currentLevel = window.userUpgrades[game.id] || 0;
         const isNotDarkMatter = currentLevel < 4;
         return isOwned && isNotFree && isNotDarkMatter;
@@ -116,6 +116,12 @@ window.selectGameForSpecialBox = (gameId) => {
     document.querySelectorAll('#special-box-inventory-grid .bet-item').forEach(el => {
         el.classList.toggle('selected', el.getAttribute('data-id') == gameId);
     });
+
+    // Atualiza o texto do botão da roleta baseado no rank
+    const spinBtn = document.getElementById('btn-spin-special');
+    if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 1.000)" : "TENTAR UPGRADE (R$ 1.000)";
+    
+    window.showToast(`Jogo ${game.title} selecionado para corrupção.`, "info");
 
     // Habilita os botões das caixas especiais
     document.getElementById('btn-open-glitch-box').disabled = false;
@@ -223,20 +229,42 @@ function initSpecialRoulette() {
 window.spinSpecialRoulette = async () => {
     const cost = 1000;
     if (window.isActionInProgress) return; // Proteção contra spam
+    if (!selectedGameForSpecialBox) return window.showToast("SELECIONE UM ALVO NO INVENTÁRIO.", "error");
     if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE.", "error");
     
     window.isActionInProgress = true;
+
+    try {
+        const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+        
+        // DEDUÇÃO IMEDIATA: Segurança contra hacks de saldo e refresh
+        await userRef.update({ 
+            balance: firebase.firestore.FieldValue.increment(-cost) 
+        });
+
+        // Atualiza localmente para feedback visual instantâneo
+        window.userBalance -= cost;
+        if (window.updateNavBadges) window.updateNavBadges();
+        if (typeof window.playSpinSound === 'function') window.playSpinSound();
+
+    } catch (e) {
+        window.isActionInProgress = false;
+        return window.showToast("ERRO DE CONEXÃO COM O SERVIDOR.", "error");
+    }
+
     const rail = document.getElementById('special-rail');
     rail.style.transition = 'none';
     rail.style.transform = 'translateX(0px)';
 
-    // Probabilidades: 35% Win, 45% Stay, 20% Lose
+    const gameId = selectedGameForSpecialBox.id;
+    const currentLevel = window.userUpgrades[gameId] || 0;
+
+    // Lógica Dupla: Se rank 3, tenta Dark Matter. Se não, tenta Upgrade normal.
     const roll = Math.random() * 100;
     let resultType = 'lose';
-    if (roll < 35) resultType = 'win';
+    const winChance = currentLevel === 3 ? 20 : 40; // Menor chance para Dark Matter
+    if (roll < winChance) resultType = 'win';
     else if (roll < 80) resultType = 'stay';
-
-    const hasRank3 = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) === 3).length > 0;
 
     // Preencher rail com cards temáticos
     rail.innerHTML = '';
@@ -245,7 +273,8 @@ window.spinSpecialRoulette = async () => {
         card.className = 'special-card';
         if (i === 40) {
             card.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#333');
-            card.innerHTML = resultType === 'win' ? (hasRank3 ? 'DM' : 'L3') : (resultType === 'stay' ? 'OK' : 'XX');
+            // Se for vitória, mostra DM se for nível 3, ou o próximo nível se não for
+            card.innerHTML = resultType === 'win' ? (currentLevel === 3 ? 'DM' : 'UP') : (resultType === 'stay' ? 'OK' : 'XX');
         } else {
             card.innerHTML = Math.random() > 0.5 ? '0x' : 'F1';
             card.style.opacity = '0.3';
@@ -266,32 +295,18 @@ window.spinSpecialRoulette = async () => {
         
         setTimeout(async () => {
             try {
-                const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-                await userRef.update({ balance: firebase.firestore.FieldValue.increment(-cost) });
-
                 if (resultType === 'win') {
-                    // Busca itens Rank 3
-                    const rank3Games = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) === 3);
-                    
-                    if (rank3Games.length > 0) {
-                        const targetId = rank3Games[Math.floor(Math.random() * rank3Games.length)];
-                        await userRef.update({ [`upgrades.${targetId}`]: 4 });
-                        window.showToast("BYPASS COMPLETO: RANK DARK MATTER ATIVADO.", "success");
-                    } else {
-                        // Consolação: Upgrade aleatório para Rank 3
-                        const otherGames = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) < 3);
-                        if (otherGames.length > 0) {
-                            const targetId = otherGames[Math.floor(Math.random() * otherGames.length)];
-                            await userRef.update({ [`upgrades.${targetId}`]: 3 });
-                            window.showToast("ESTABILIDADE ALCANÇADA: RANK LENDÁRIO.", "success");
-                        }
-                    }
+                    const newLevel = currentLevel + 1;
+                    const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+                    await userRef.update({ [`upgrades.${gameId}`]: newLevel });
+                    window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
                 } else if (resultType === 'stay') {
                     window.showToast("CONEXÃO ESTÁVEL. NADA MUDOU.", "info");
                 } else {
                     window.showToast("FALHA CRÍTICA. CRÉDITOS PERDIDOS.", "error");
                 }
                 await window.loadUserData(window.auth.currentUser.uid);
+                renderSpecialBoxInventory();
             } finally {
                 window.isActionInProgress = false;
             }
@@ -301,12 +316,13 @@ window.spinSpecialRoulette = async () => {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    // Aguarda carregar dados globais
-    setTimeout(() => {
+    // Aguarda o auth carregar os dados antes de renderizar o inventário
+    window.auth.onAuthStateChanged((user) => {
+        if (!user) return;
         renderCheaperGames();
-        renderSpecialBoxInventory(); // Renderiza o inventário para as caixas especiais
+        renderSpecialBoxInventory();
         initSpecialRoulette();
-    }, 1000);
+    });
 
     console.log("%c MERCADO NEGRO ATIVO ", "background: #000; color: #0f0; font-size: 20px;");
     
