@@ -559,12 +559,12 @@ body {
 .rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */
 
 .rank-dark-matter { 
-    color: #ff003c; 
-    text-shadow: 0 0 2px #fff, 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 50px #000; 
+    color: #fff; /* Cor do texto principal branca para contraste */
+    text-shadow: 0 0 5px #fff, 0 0 15px #ff003c, 0 0 30px #ff003c, 0 0 50px rgba(255, 0, 60, 0.8); /* Brilho intenso em vermelho */
     font-weight: 950; 
-    animation: text-jitter 0.05s infinite, dm-glitch-color 1.2s infinite alternate; 
+    animation: text-jitter 0.05s infinite, dm-glitch-color 1.2s infinite alternate;
     letter-spacing: -1px;
-    filter: drop-shadow(0 0 5px #ff003c);
+    filter: drop-shadow(0 0 8px #ff003c); /* Sombra externa para destacar */
 }
 
 .game-price.valuation {

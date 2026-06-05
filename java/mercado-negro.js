@@ -226,7 +226,7 @@ function initSpecialRoulette() {
     for(let i=0; i<50; i++) {
         const card = document.createElement('div');
         card.className = 'special-card';
-        card.innerHTML = '?';
+        card.innerHTML = '<span class="q-mark">?</span>';
         rail.appendChild(card);
     }
 }
@@ -255,46 +255,30 @@ window.spinSpecialRoulette = async () => {
     if (roll < winChance) resultType = 'win';
     else if (roll < 80) resultType = 'stay';
 
+    // Preencher rail com cards temáticos
+    rail.innerHTML = '';
+    for(let i=0; i<50; i++) {
+        const card = document.createElement('div');
+        card.className = 'special-card';
+        card.innerHTML = '<span class="q-mark">?</span>';
+        rail.appendChild(card);
+    }
+
     try {
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
         await userRef.update({ balance: firebase.firestore.FieldValue.increment(-cost) });
         window.userBalance -= cost;
         if (window.updateNavBadges) window.updateNavBadges();
-        if (typeof window.playSpinSound === 'function') window.playSpinSound();
     } catch (e) {
         window.isActionInProgress = false;
         return window.showToast("FALHA NA CONEXÃO.", "error");
     }
 
-    // Preencher rail com cards temáticos
-    rail.innerHTML = '';
-    const allGames = window.allGamesData || [];
-
-    for(let i=0; i<50; i++) {
-        const card = document.createElement('div');
-        card.className = 'special-card';
-        
-        // Pega um jogo aleatório para preencher o trilho e dar "volume" visual
-        const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
-        const gameImg = randomGame?.coverUrl || randomGame?.image;
-
-        if (i === 40) {
-            card.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#333');
-            card.innerHTML = resultType === 'win' ? (currentLevel === 3 ? 'DM' : 'UP') : (resultType === 'stay' ? 'OK' : 'XX');
-            if (resultType === 'win' && currentLevel === 3) card.classList.add('rank-dark-matter');
-        } else {
-            if (gameImg) {
-                card.innerHTML = `<img src="${gameImg}" style="width:100%; height:100%; object-fit:cover; opacity: 0.2; filter: grayscale(1);">`;
-            } else {
-                card.innerHTML = Math.random() > 0.5 ? '0x' : 'F1';
-                card.style.opacity = '0.2';
-            }
-        }
-        rail.appendChild(card);
-    }
-
     // Força o reflow para resetar a posição antes de iniciar a animação
     rail.offsetHeight;
+
+    // SOM INICIAL E ATRASO (Sincronizado com roleta.js)
+    if (typeof window.playSpinSound === 'function') window.playSpinSound();
 
     setTimeout(() => {
         const cards = rail.children;
@@ -306,9 +290,23 @@ window.spinSpecialRoulette = async () => {
 
         rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetX}px)`;
-    }, 50);
+    }, 1200); // 1.2s de atraso para drama, igual roleta.js
         
     setTimeout(async () => {
+        const cards = rail.children;
+        const winnerCard = cards[40];
+        
+        // Revelação do Card Vencedor
+        winnerCard.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#333');
+        winnerCard.innerHTML = resultType === 'win' ? (currentLevel === 3 ? 'DM' : 'UP') : (resultType === 'stay' ? 'OK' : 'XX');
+        if (resultType === 'win' && currentLevel === 3) winnerCard.classList.add('rank-dark-matter');
+
+        // Pop-up de Resultado (Drama)
+        if (window.showRevealModal) {
+            const label = resultType === 'win' ? "BYPASS COMPLETO!" : (resultType === 'stay' ? "NADA MUDOU" : "SISTEMA CORROMPIDO");
+            window.showRevealModal(winnerCard, label);
+        }
+
         try {
             if (resultType === 'win') {
                 const newLevel = currentLevel + 1;
@@ -339,7 +337,7 @@ window.spinSpecialRoulette = async () => {
         } finally {
             window.isActionInProgress = false;
         }
-    }, 6000);
+    }, 7100); // 1.2s + 5.7s + margem de erro
 };
 
 // Função chamada pelo global.js quando os dados estão prontos

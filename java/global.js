@@ -52,8 +52,8 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
 // Helper para gerar o HTML do rank de upgrade
 window.getUpgradeHtml = (gameId) => {
     const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
-    if (upgradeLevel > 0) {
-        if (upgradeLevel === 4) return `<span class="upgrade-rank rank-dark-matter">!!!!</span>`;
+    if (upgradeLevel > 0) { // Se o nível de upgrade for maior que 0
+        if (upgradeLevel === 4) return `<span class="upgrade-rank rank-dark-matter">Dark Matter</span>`; // Exibe "Dark Matter"
         const isMax = upgradeLevel >= 3;
         const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary' + (isMax ? ' max-rank-anim' : ''));
         const pluses = '+'.repeat(upgradeLevel);
