@@ -127,54 +127,72 @@ window.openSpecialBox = async (tier) => {
     if (window.isActionInProgress) return;
     if (!selectedGameForSpecialBox) return window.showToast("Selecione um jogo para melhorar primeiro!", "error");
 
+    // SOM IMEDIATO (Mesmo da roleta original)
+    if (typeof window.playSpinSound === 'function') window.playSpinSound();
+
     const boxCosts = {
         'glitch': 800,
         'void': 3000
     };
     const cost = boxCosts[tier];
 
-    if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");
+    if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");    
 
-    window.isActionInProgress = true;
-    
     window.customConfirm(`Confirmar abertura da ${tier.toUpperCase()} Box por R$ ${cost.toFixed(2)} para ${selectedGameForSpecialBox.title}?`, async () => {
         try {
+            window.isActionInProgress = true;
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
             await userRef.update({
                 balance: firebase.firestore.FieldValue.increment(-cost)
             });
 
+            // Mostrar modal de abertura (reutilizando estrutura da roleta)
+            const modal = document.getElementById('box-opening-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.getElementById('modal-box-title').textContent = `CORROMPENDO ARQUIVOS...`;
+            }
+
             const gameId = selectedGameForSpecialBox.id;
             const currentLevel = window.userUpgrades[gameId] || 0;
             let newLevel = currentLevel + 1;
+            let success = true;
 
             // Lógica de upgrade para as caixas especiais
             if (tier === 'glitch') {
-                // Glitch Box: Garante +1, se já for Rank 3, tem 50% de chance de ir para Dark Matter
                 if (currentLevel === 3 && Math.random() < 0.5) {
                     newLevel = 4; // Dark Matter
                 } else if (currentLevel === 3) {
-                    newLevel = 3; // Permanece Rank 3 se falhar o Dark Matter
+                    newLevel = 3;
+                    success = false;
                 }
             } else if (tier === 'void') {
-                // Void Box: Garante +1, se já for Rank 3, tem 80% de chance de ir para Dark Matter
                 if (currentLevel === 3 && Math.random() < 0.8) {
-                    newLevel = 4; // Dark Matter
+                    newLevel = 4;
                 } else if (currentLevel === 3) {
-                    newLevel = 3; // Permanece Rank 3 se falhar o Dark Matter
-                } else if (currentLevel === 2 && Math.random() < 0.3) { // Pequena chance de pular para Rank 4 direto do Rank 2
+                    newLevel = 3;
+                    success = false;
+                } else if (currentLevel === 2 && Math.random() < 0.3) {
                     newLevel = 4;
                 }
             }
 
-            await userRef.update({ [`upgrades.${gameId}`]: newLevel });
-            window.showToast(`CAIXA ${tier.toUpperCase()} ABERTA! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
-            await window.loadUserData(window.auth.currentUser.uid);
-            renderSpecialBoxInventory(); // Atualiza a lista de jogos
+            // Simular atraso de "hacking"
+            setTimeout(async () => {
+                await userRef.update({ [`upgrades.${gameId}`]: newLevel });
+                if (modal) modal.style.display = 'none';
+                
+                if (success) window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
+                else window.showToast("FALHA NA INTEGRIDADE: O rank não mudou.", "info");
+                
+                await window.loadUserData(window.auth.currentUser.uid);
+                renderSpecialBoxInventory();
+                window.isActionInProgress = false;
+            }, 3000);
+
         } catch (error) {
             console.error("Erro ao abrir caixa especial:", error);
             window.showToast("ERRO NA OPERAÇÃO. Tente novamente.", "error");
-        } finally {
             window.isActionInProgress = false;
         }
     });

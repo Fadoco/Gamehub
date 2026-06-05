@@ -78,11 +78,11 @@ function displayUsers(list) {
     }
 
     container.innerHTML = list.map(user => `
-        <div class="user-admin-card" onclick="window.location.href='admin-user-detail.html?uid=${user.id}'" style="cursor:pointer">
+        <div class="user-admin-card" onclick="window.location.href='admin-user-detail.html?uid=${user.id}'" style="cursor:pointer;">
             <span class="user-name">${window.utils.getUserFriendlyName(user)}</span>
             <span class="user-email">${user.email || 'E-mail privado'}</span>
             <span class="user-id">UID: ${user.id}</span>
-            <div class="user-balance-tag">Saldo: R$ ${(user.balance || 0).toFixed(2)}</div>
+            <div class="user-balance-tag"><i class="fas fa-wallet" style="margin-right: 5px;"></i> R$ ${(user.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
         </div>
     `).join('');
 }

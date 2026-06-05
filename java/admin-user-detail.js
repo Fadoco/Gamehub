@@ -32,25 +32,37 @@ function renderUserPanel() {
     headerDiv.textContent = `Editando: ${userName}`;
     
     infoDiv.innerHTML = `
-        <p><strong>Email:</strong> ${targetUserData.email || 'Não informado'}</p>
-        <p><strong>UID:</strong> <small style="font-family: monospace;">${targetUid}</small></p>
-        <p style="font-size: 1.2rem; color: var(--promo); margin-top: 10px;">
-            <strong>Saldo Atual:</strong> R$ ${(targetUserData.balance || 0).toFixed(2)}
-        </p>
+        <div class="admin-panel-card" style="margin-bottom: 20px; border-left: 4px solid var(--accent);">
+            <p style="margin: 5px 0;"><strong>Email:</strong> ${targetUserData.email || 'Não informado'}</p>
+            <p style="margin: 5px 0;"><strong>UID:</strong> <small style="font-family: monospace; opacity: 0.6;">${targetUid}</small></p>
+            <p style="font-size: 1.4rem; color: #4ade80; margin: 15px 0 0 0; font-weight: 800;">
+                <i class="fas fa-coins"></i> R$ ${(targetUserData.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            </p>
+        </div>
     `;
 
     // Renderizar Biblioteca
     const libIds = targetUserData.library || [];
     if (libIds.length === 0) {
-        libraryDiv.innerHTML = "<p>Biblioteca vazia.</p>";
+        libraryDiv.innerHTML = "<p style='padding: 20px; opacity: 0.5;'>Este usuário não possui jogos.</p>";
     } else {
         libraryDiv.innerHTML = libIds.map(id => {
             const game = window.allGamesData.find(g => String(g.id) === String(id));
             return `
-                <div class="user-admin-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
-                    <div>
+                <div class="user-admin-card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 10px; background: rgba(255,255,255,0.02);">
+                    <div style="flex: 1;">
                         <div class="user-name" style="font-size: 1rem;">${game ? game.title : 'Jogo ID: ' + id}</div>
                         <div class="user-id">ID: ${id}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label style="font-size: 10px; color: var(--text-secondary);">RANK:</label>
+                        <select class="admin-select" onchange="updateGameRank(${id}, this.value)" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                            <option value="0" ${(targetUserData.upgrades?.[id] || 0) == 0 ? 'selected' : ''}>Padrão</option>
+                            <option value="1" ${(targetUserData.upgrades?.[id] || 0) == 1 ? 'selected' : ''}>Raro (+)</option>
+                            <option value="2" ${(targetUserData.upgrades?.[id] || 0) == 2 ? 'selected' : ''}>Épico (++)</option>
+                            <option value="3" ${(targetUserData.upgrades?.[id] || 0) == 3 ? 'selected' : ''}>Lendário (+++)</option>
+                            <option value="4" ${(targetUserData.upgrades?.[id] || 0) == 4 ? 'selected' : ''}>Dark Matter (!!!!)</option>
+                        </select>
                     </div>
                     <button class="nav-button" onclick="removeGameFromUser(${id})" style="color: #e74c3c; border-color: rgba(231, 76, 60, 0.3);">
                         <i class="fas fa-times"></i>
@@ -95,6 +107,18 @@ window.addGameToUser = async () => {
     await window.db.collection('users').doc(targetUid).update({ library: newLib });
     showToast("Jogo adicionado!", "success");
     input.value = "";
+};
+
+window.updateGameRank = async (gameId, newLevel) => {
+    const levelNum = parseInt(newLevel);
+    try {
+        await window.db.collection('users').doc(targetUid).update({
+            [`upgrades.${gameId}`]: levelNum
+        });
+        showToast("Rank do jogo atualizado!", "success");
+    } catch (e) {
+        showToast("Erro ao atualizar rank", "error");
+    }
 };
 
 window.removeGameFromUser = async (gameId) => {
