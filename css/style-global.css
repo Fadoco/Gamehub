@@ -553,10 +553,11 @@ body {
 
 .rank-dark-matter { 
     color: #ff003c; 
-    text-shadow: 0 0 2px #fff, 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 40px #000; 
+    text-shadow: 0 0 2px #fff, 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 50px #000; 
     font-weight: 950; 
-    animation: text-jitter 0.1s infinite, dm-glitch-color 1.5s infinite alternate; 
+    animation: text-jitter 0.05s infinite, dm-glitch-color 1.2s infinite alternate; 
     letter-spacing: -1px;
+    filter: drop-shadow(0 0 5px #ff003c);
 }
 
 .game-price.valuation {
@@ -582,11 +583,11 @@ body {
     animation: gold-aura-pulse 2s infinite alternate; /* Animação para o máximo */
 }
 .game-card.upgrade-aura-4, .bet-item.upgrade-aura-4 {
-    box-shadow: 0 0 15px #ff003c, inset 0 0 50px #000, 0 0 30px rgba(255, 0, 60, 0.4);
-    border: 1px solid #ff003c;
-    animation: dark-matter-pulse 0.3s infinite alternate, dm-border-flicker 0.8s infinite;
-    filter: saturate(2) contrast(1.5);
-    z-index: 5;
+    box-shadow: 0 0 25px #ff003c, inset 0 0 60px #000, 0 0 40px rgba(255, 0, 60, 0.6);
+    border: 2px solid #ff003c;
+    animation: dark-matter-pulse 0.2s infinite alternate, dm-border-flicker 0.6s infinite;
+    filter: saturate(2.5) contrast(1.8);
+    z-index: 10; /* Garante que fique acima de outros elementos */
     position: relative;
 }
 

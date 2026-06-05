@@ -1,39 +1,31 @@
 /**
  * Estilos exclusivos para o Mercado Negro (Vibe Terminal/Hack)
  */
-
-body { 
-    background: #000; 
-    color: #0f0; 
-    font-family: 'Courier New', monospace; 
-    overflow: hidden; 
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* O body é estilizado globalmente em style-global.css, não deve ser sobrescrito aqui */
 
 .black-market-container { 
     width: 100%;
-    max-width: 800px; 
+    max-width: 900px; 
     border: 1px solid #0f0; 
     padding: 20px; 
     box-shadow: 0 0 20px #0f0, inset 0 0 10px #0f0; 
     background: rgba(0, 20, 0, 0.9);
-    max-height: 90vh;
-    overflow-y: auto;
+    height: auto;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px; /* Mais espaço entre as seções */
 }
 
 .market-list {
-    margin-top: 20px;
+    margin-top: 0; /* Removido para usar o gap do flexbox */
     border: 1px solid #0f0;
 }
 
 .market-section {
-    margin-bottom: 40px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 5;
 }
 
 .market-title { font-size: 1.2rem; color: #0f0; margin-bottom: 15px; border-left: 5px solid #0f0; padding-left: 10px; }
@@ -164,6 +156,7 @@ body {
     overflow: hidden;
     display: flex;
     align-items: center;
+    padding: 0 10px; /* Adicionado padding para consistência com roleta.css */
 }
 
 .special-rail {
@@ -172,7 +165,7 @@ body {
 }
 
 .special-card {
-    width: 80px;
+    width: 100px; /* Tamanho fixo para garantir cálculo de transição */
     height: 80px;
     border: 1px solid #0f0;
     margin: 0 5px;

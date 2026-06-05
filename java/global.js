@@ -41,6 +41,14 @@ window.utils = {
     }
 };
 
+// Objeto para armazenar funções de renderização específicas de cada página
+window.pageRenderers = {};
+
+// Função para registrar renderizadores de página
+window.addPageRenderer = (pageFile, rendererFunction) => {
+    window.pageRenderers[pageFile.toLowerCase()] = rendererFunction;
+};
+
 // Helper para gerar o HTML do rank de upgrade
 window.getUpgradeHtml = (gameId) => {
     const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
@@ -404,18 +412,14 @@ async function fetchGamesData() {
 window.routePageRendering = function() {
     const path = window.location.pathname.toLowerCase();
     
-    const routes = [
-        { file: 'jogo.html', func: typeof window.renderGameDetails === 'function' ? window.renderGameDetails : null, args: [window.allGamesData] },
-        { file: 'busca.html', func: typeof window.renderSearchResults === 'function' ? window.renderSearchResults : null, args: [window.allGamesData] },
-        { file: 'carrinho.html', func: typeof window.renderCart === 'function' ? window.renderCart : null },
-        { file: 'biblioteca.html', func: typeof window.renderLibrary === 'function' ? window.renderLibrary : null },
-        { file: 'historico.html', func: typeof window.renderHistory === 'function' ? window.renderHistory : null },
-        { file: 'perfil.html', func: typeof window.renderProfile === 'function' ? window.renderProfile : null },
-        { file: 'lista-jogos.html', func: typeof window.renderAllGamesList === 'function' ? window.renderAllGamesList : null, args: [window.allGamesData] },
-        { file: 'roleta.html', func: typeof window.renderRoulette === 'function' ? window.renderRoulette : null, args: [] }
-    ];
-
-    const activeRoute = routes.find(r => path.includes(r.file));
+    // Encontra o renderizador para a página atual
+    let activeRenderer = null;
+    for (const file in window.pageRenderers) {
+        if (path.includes(file)) {
+            activeRenderer = window.pageRenderers[file];
+            break;
+        }
+    }
 
     // Só executa renderização se allGamesData foi carregado
     if (!window.allGamesData || window.allGamesData.length === 0) {
@@ -423,9 +427,20 @@ window.routePageRendering = function() {
         return;
     }
 
-    if (activeRoute) {
-        if (activeRoute.func) activeRoute.func(...(activeRoute.args || []));
-        else console.warn(`Função de renderização para ${activeRoute.file} não encontrada.`);
+    // Renderizadores padrão que sempre recebem allGamesData
+    if (path.includes('jogo.html') && typeof window.renderGameDetails === 'function') return window.renderGameDetails(window.allGamesData);
+    if (path.includes('busca.html') && typeof window.renderSearchResults === 'function') return window.renderSearchResults(window.allGamesData);
+    if (path.includes('lista-jogos.html') && typeof window.renderAllGamesList === 'function') return window.renderAllGamesList(window.allGamesData);
+    
+    // Renderizadores que não precisam de allGamesData ou o buscam internamente
+    if (path.includes('carrinho.html') && typeof window.renderCart === 'function') window.renderCart();
+    else if (path.includes('biblioteca.html') && typeof window.renderLibrary === 'function') window.renderLibrary();
+    else if (path.includes('historico.html') && typeof window.renderHistory === 'function') window.renderHistory();
+    else if (path.includes('perfil.html') && typeof window.renderProfile === 'function') window.renderProfile();
+    else if (path.includes('roleta.html') && typeof window.renderRoulette === 'function') window.renderRoulette();
+    else if (path.includes('mercado-negro.html') && typeof window.renderMercadoNegro === 'function') window.renderMercadoNegro();
+    else if (activeRenderer) {
+        activeRenderer(); // Chama o renderizador específico da página
     } else if (typeof window.renderGames === 'function') {
         window.renderGames(window.allGamesData);
     }

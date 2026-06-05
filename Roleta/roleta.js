@@ -489,10 +489,9 @@ async function startUpgradeSpin() {
 }
 
 // Escutar mudanças no Firebase para atualizar o inventário se o usuário ganhar/perder algo
-if (window.auth) {
-    window.auth.onAuthStateChanged(() => {
-        setTimeout(() => {
-            renderRoulette();
-        }, 1000); // Pequeno delay para garantir que global.js carregou os dados
-    });
-}
+// Adiciona a função de renderização da Roleta ao roteador global
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.addPageRenderer) {
+        window.addPageRenderer('roleta.html', window.renderRoulette);
+    }
+});

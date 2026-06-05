@@ -66,17 +66,21 @@ function renderSpecialBoxInventory() {
     const inventoryGrid = document.getElementById('special-box-inventory-grid');
     if (!inventoryGrid || !window.allGamesData || window.allGamesData.length === 0) return;
 
+    const library = window.userLibrary || [];
+    const upgrades = window.userUpgrades || {};
+
     // Filtrar jogos da biblioteca que NÃO são gratuitos e NÃO são Rank 4 (Dark Matter)
     const eligibleGames = window.allGamesData.filter(game => {
-        const isOwned = window.userLibrary.some(libId => String(libId) === String(game.id));
+        const isOwned = library.some(libId => String(libId) === String(game.id));
         const isNotFree = window.utils.parsePrice(game.currentPrice) >= 0; // Mercado Negro aceita tudo
-        const currentLevel = window.userUpgrades[game.id] || 0;
+        const currentLevel = upgrades[game.id] || 0;
         const isNotDarkMatter = currentLevel < 4;
         return isOwned && isNotFree && isNotDarkMatter;
     });
 
     if (eligibleGames.length === 0) {
         inventoryGrid.innerHTML = '<p style="grid-column: 1/-1; padding: 20px; font-size: 12px;">Você não possui jogos elegíveis para upgrade com caixas especiais (ou todos já são Rank !!!!).</p>';
+        document.getElementById('btn-spin-special').disabled = true; // Desabilita roleta se não houver jogos
         return;
     }
 
@@ -87,7 +91,7 @@ function renderSpecialBoxInventory() {
         else if (level === 2) auraClass = 'upgrade-aura-2';
         else if (level === 3) auraClass = 'upgrade-aura-3';
         return `
-        <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForSpecialBox(${game.id})">
+        <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForSpecialBox('${game.id}')">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="bet-item-info">
                 <span class="bet-item-name" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
@@ -95,7 +99,7 @@ function renderSpecialBoxInventory() {
                     ${window.getUpgradeHtml(game.id)}
                 </span>
                 <span class="bet-item-price">${(() => {
-                    const level = window.userUpgrades[game.id] || 0;
+                    const level = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
                     const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
                     const val = window.utils.parsePrice(game.currentPrice) * multipliers[level];
                     return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : game.currentPrice;
@@ -125,7 +129,9 @@ window.selectGameForSpecialBox = (gameId) => {
 
     // Habilita os botões das caixas especiais
     document.getElementById('btn-open-glitch-box').disabled = false;
+    document.getElementById('btn-open-glitch-box').onclick = () => window.openSpecialBox('glitch');
     document.getElementById('btn-open-void-box').disabled = false;
+    document.getElementById('btn-open-void-box').onclick = () => window.openSpecialBox('void');
 };
 
 // Função para abrir as caixas especiais
@@ -282,16 +288,20 @@ window.spinSpecialRoulette = async () => {
         rail.appendChild(card);
     }
 
-    setTimeout(() => {
-        const cards = rail.children;
-        const winnerCard = cards[40];
-        const wrapperWidth = rail.parentElement.offsetWidth;
-        
-        // Cálculo dinâmico para centralizar o card vencedor independente da tela
-        const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
+    // Usa requestAnimationFrame para garantir que o browser registre o reset da posição antes da animação
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            const cards = rail.children;
+            const winnerCard = cards[40];
+            const wrapperWidth = rail.parentElement.offsetWidth;
+            
+            // Cálculo dinâmico para centralizar o card vencedor independente da tela
+            const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
 
-        rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
-        rail.style.transform = `translateX(-${targetX}px)`;
+            rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
+            rail.style.transform = `translateX(-${targetX}px)`;
+        });
+    });
         
         setTimeout(async () => {
             try {
@@ -307,6 +317,7 @@ window.spinSpecialRoulette = async () => {
                 }
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
+                selectedGameForSpecialBox = null; // Limpa a seleção após a roleta
             } finally {
                 window.isActionInProgress = false;
             }
