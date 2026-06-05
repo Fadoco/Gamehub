@@ -17,6 +17,12 @@
     gap: 40px; /* Mais espaço entre as seções */
 }
 
+/* Garantir ordem das seções */
+.market-section.inventory-selection { order: 1; }
+.market-section.boxes-selection { order: 2; }
+.market-section.roulette-selection { order: 3; }
+.market-section.cheaper-games { order: 4; }
+
 .market-list {
     margin-top: 0; /* Removido para usar o gap do flexbox */
     border: 1px solid #0f0;
@@ -27,6 +33,8 @@
     position: relative;
     z-index: 5;
 }
+
+.market-section p.restriction-phrase { display: none; } /* Remove frase restritiva se necessário */
 
 .market-title { font-size: 1.2rem; color: #0f0; margin-bottom: 15px; border-left: 5px solid #0f0; padding-left: 10px; }
 

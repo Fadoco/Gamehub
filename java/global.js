@@ -76,9 +76,9 @@ window.triggerSecretEvent = (force = false) => {
         const overlay = document.createElement('div');
         overlay.className = 'glitch-overlay';
         overlay.innerHTML = `
-            <div style="font-size: 4rem; font-weight: 900; margin-bottom: 20px;">[ ! ]</div>
-            <div id="glitch-text-status">> INITIALIZING_KERNEL_BYPASS...</div>
-            <div style="font-size: 0.8rem; margin-top: 40px; color: #555;">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+            <div class="glitch-icon">[ ! ]</div>
+            <div id="glitch-text-status" class="glitch-status">> INITIALIZING_KERNEL_BYPASS...</div>
+            <div class="glitch-meta">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
         `;
 
         const scanline = document.createElement('div');
