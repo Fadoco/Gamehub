@@ -236,24 +236,32 @@ window.spinSpecialRoulette = async () => {
     if (roll < 35) resultType = 'win';
     else if (roll < 80) resultType = 'stay';
 
+    const hasRank3 = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) === 3).length > 0;
+
     // Preencher rail com cards temáticos
     rail.innerHTML = '';
     for(let i=0; i<50; i++) {
         const card = document.createElement('div');
         card.className = 'special-card';
         if (i === 40) {
-            card.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#444');
-            card.innerHTML = resultType === 'win' ? 'DM' : (resultType === 'stay' ? 'OK' : 'XX');
+            card.style.borderColor = resultType === 'win' ? '#f00' : (resultType === 'stay' ? '#0f0' : '#333');
+            card.innerHTML = resultType === 'win' ? (hasRank3 ? 'DM' : 'L3') : (resultType === 'stay' ? 'OK' : 'XX');
         } else {
-            card.innerHTML = Math.random() > 0.5 ? '??' : '!!';
+            card.innerHTML = Math.random() > 0.5 ? '0x' : 'F1';
+            card.style.opacity = '0.3';
         }
         rail.appendChild(card);
     }
 
     setTimeout(() => {
+        const cards = rail.children;
+        const winnerCard = cards[40];
+        const wrapperWidth = rail.parentElement.offsetWidth;
+        
+        // Cálculo dinâmico para centralizar o card vencedor independente da tela
+        const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
+
         rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
-        const cardWidth = 90; // 80px + 10px margem
-        const targetX = (40 * cardWidth) - (rail.parentElement.offsetWidth / 2) + (cardWidth / 2);
         rail.style.transform = `translateX(-${targetX}px)`;
         
         setTimeout(async () => {
@@ -268,7 +276,7 @@ window.spinSpecialRoulette = async () => {
                     if (rank3Games.length > 0) {
                         const targetId = rank3Games[Math.floor(Math.random() * rank3Games.length)];
                         await userRef.update({ [`upgrades.${targetId}`]: 4 });
-                        window.showToast("MATÉRIA ESCURA DETECTADA. RANK PROIBIDO ALCANÇADO.", "success");
+                        window.showToast("BYPASS COMPLETO: RANK DARK MATTER ATIVADO.", "success");
                     } else {
                         // Consolação: Upgrade aleatório para Rank 3
                         const otherGames = window.userLibrary.filter(id => (window.userUpgrades[id] || 0) < 3);
