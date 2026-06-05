@@ -13,7 +13,7 @@ const CARD_TYPES = {
 };
 
 // Busca o elemento de áudio definido no HTML
-const playSpinSound = () => {
+window.playSpinSound = () => {
     const audio = document.getElementById('spin-sound-effect');
     if (audio) {
         audio.pause(); 

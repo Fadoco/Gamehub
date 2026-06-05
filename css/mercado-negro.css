@@ -18,10 +18,10 @@
 }
 
 /* Garantir ordem das seções */
-.market-section.inventory-selection { order: 1; }
-.market-section.boxes-selection { order: 2; }
-.market-section.roulette-selection { order: 3; }
-.market-section.cheaper-games { order: 4; }
+.market-section:nth-of-type(1) { order: 1; } /* Seleção de Inventário */
+.market-section:nth-of-type(2) { order: 2; } /* Caixas */
+.market-section:nth-of-type(3) { order: 3; } /* Roleta */
+.market-section:nth-of-type(4) { order: 4; } /* Jogos Baratos */
 
 .market-list {
     margin-top: 0; /* Removido para usar o gap do flexbox */

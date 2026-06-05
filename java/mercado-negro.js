@@ -38,7 +38,7 @@ function renderCheaperGames() {
 
     // Pega 4 jogos aleatórios que o usuário não tem
     const available = window.allGamesData
-        .filter(g => !window.userLibrary.includes(g.id) && window.utils.parsePrice(g.currentPrice) > 0)
+        .filter(g => !window.userLibrary.some(id => String(id) === String(g.id)) && window.utils.parsePrice(g.currentPrice) > 0)
         .sort(() => 0.5 - Math.random())
         .slice(0, 4);
 
@@ -282,41 +282,40 @@ window.spinSpecialRoulette = async () => {
         rail.appendChild(card);
     }
 
-    // Usa requestAnimationFrame para garantir que o browser registre o reset da posição antes da animação
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            const cards = rail.children;
-            const winnerCard = cards[40];
-            const wrapperWidth = rail.parentElement.offsetWidth;
-            
-            // Cálculo dinâmico para centralizar o card vencedor independente da tela
-            const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
+    // Força o reflow para resetar a posição antes de iniciar a animação
+    rail.offsetHeight;
 
-            rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
-            rail.style.transform = `translateX(-${targetX}px)`;
-        });
-    });
+    setTimeout(() => {
+        const cards = rail.children;
+        const winnerCard = cards[40];
+        const wrapperWidth = rail.parentElement.offsetWidth;
         
-        setTimeout(async () => {
-            try {
-                if (resultType === 'win') {
-                    const newLevel = currentLevel + 1;
-                    const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-                    await userRef.update({ [`upgrades.${gameId}`]: newLevel });
-                    window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
-                } else if (resultType === 'stay') {
-                    window.showToast("CONEXÃO ESTÁVEL. NADA MUDOU.", "info");
-                } else {
-                    window.showToast("FALHA CRÍTICA. CRÉDITOS PERDIDOS.", "error");
-                }
-                await window.loadUserData(window.auth.currentUser.uid);
-                renderSpecialBoxInventory();
-                selectedGameForSpecialBox = null; // Limpa a seleção após a roleta
-            } finally {
-                window.isActionInProgress = false;
-            }
-        }, 6000);
+        // Cálculo dinâmico para centralizar o card vencedor independente da tela
+        const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
+
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transform = `translateX(-${targetX}px)`;
     }, 50);
+        
+    setTimeout(async () => {
+        try {
+            if (resultType === 'win') {
+                const newLevel = currentLevel + 1;
+                const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+                await userRef.update({ [`upgrades.${gameId}`]: newLevel });
+                window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
+            } else if (resultType === 'stay') {
+                window.showToast("CONEXÃO ESTÁVEL. NADA MUDOU.", "info");
+            } else {
+                window.showToast("FALHA CRÍTICA. CRÉDITOS PERDIDOS.", "error");
+            }
+            await window.loadUserData(window.auth.currentUser.uid);
+            renderSpecialBoxInventory();
+            selectedGameForSpecialBox = null; // Limpa a seleção após a roleta
+        } finally {
+            window.isActionInProgress = false;
+        }
+    }, 6000);
 };
 
 // Função chamada pelo global.js quando os dados estão prontos
