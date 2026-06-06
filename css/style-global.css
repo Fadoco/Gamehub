@@ -559,22 +559,72 @@ body {
 .rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */
 
 .rank-dark-matter { 
-    color: #fff; /* Cor do texto principal branca para contraste */
-    text-shadow: 0 0 5px #fff, 0 0 15px #ff003c, 0 0 30px #ff003c, 0 0 50px rgba(255, 0, 60, 0.8); /* Brilho intenso em vermelho */
-    font-weight: 950; 
-    animation: text-jitter 0.05s infinite, dm-glitch-color 1.2s infinite alternate;
-    letter-spacing: -1px;
-    filter: drop-shadow(0 0 8px #ff003c); /* Sombra externa para destacar */
+    color: #000 !important; /* Nome em Preto */
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 
+        0 0 5px #ff0000,
+        0 0 10px #ff0000,
+        0 0 15px #ff0000; /* Aura Vermelha Pulsante no texto */
+    animation: dm-text-pulse 1.5s infinite alternate ease-in-out, text-jitter 0.1s infinite;
+    position: relative;
+}
+
+@keyframes dm-text-pulse {
+    from { text-shadow: 0 0 5px #f00, 0 0 10px #f00; }
+    to { text-shadow: 0 0 15px #f00, 0 0 25px #ff0000, 0 0 35px #ff0000; }
+}
+
+/* Aura do Card Dark Matter */
+.game-card.upgrade-aura-4 {
+    background: #000 !important;
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 25px #ff0000, inset 0 0 40px #000 !important;
+    animation: dark-matter-pulse 2s infinite ease-in-out;
+}
+
+.game-card.upgrade-aura-4:hover {
+    animation: dark-matter-pulse 0.5s infinite ease-in-out, dm-card-shake 0.1s infinite !important;
+    filter: contrast(1.3) brightness(0.8) !important;
+}
+
+/* Efeito de Corrupção na Imagem */
+.dark-matter-media img {
+    filter: grayscale(1) contrast(1.5) brightness(0.5) !important;
+}
+
+.dark-matter-media::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'), 
+                linear-gradient(rgba(255,0,0,0.2), transparent);
+    mix-blend-mode: multiply;
+    animation: dm-media-flicker 0.3s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes dm-media-flicker {
+    0% { opacity: 0.8; }
+    100% { opacity: 0.4; transform: scale(1.02); }
+}
+
+@keyframes dm-card-shake {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(1px, 1px) rotate(0.2deg); }
+    50% { transform: translate(-1px, -1px) rotate(-0.2deg); }
+    75% { transform: translate(1px, -1px) rotate(0.1deg); }
+    100% { transform: translate(-1px, 1px) rotate(0deg); }
 }
 
 .game-price.valuation {
-    color: #4ade80 !important; /* Verde esmeralda para indicar valor de posse */
+    color: #ff0000 !important; 
     font-weight: 800;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
 /* --- Auras de Upgrade para Cards de Jogo --- */
 .game-card.upgrade-aura-1, .bet-item.upgrade-aura-1 {
     box-shadow: 0 0 10px rgba(0, 120, 242, 0.6); /* Azul - Raro */
@@ -590,11 +640,12 @@ body {
     animation: gold-aura-pulse 2s infinite alternate; /* Animação para o máximo */
 }
 .game-card.upgrade-aura-4, .bet-item.upgrade-aura-4 {
-    box-shadow: 0 0 30px #ff003c, inset 0 0 70px #000, 0 0 50px rgba(255, 0, 60, 0.5);
-    border: 2px solid #ff003c;
-    animation: dark-matter-pulse 0.15s infinite alternate, dm-border-flicker 0.5s infinite;
-    filter: saturate(3) contrast(2) brightness(1.2);
-    z-index: 10; /* Garante que fique acima de outros elementos */
+    background: #000 !important; /* Fundo do card em preto */
+    box-shadow: 0 0 25px #ff0000, inset 0 0 40px #000;
+    border: 2px solid #ff0000;
+    animation: dark-matter-pulse 2s infinite ease-in-out;
+    filter: contrast(1.2);
+    z-index: 10;
     position: relative;
 }
 
@@ -606,7 +657,7 @@ body {
 
 @keyframes dm-glitch-color {
     0%, 100% { color: #ff003c; filter: hue-rotate(0deg); }
-    50% { color: #fff; filter: hue-rotate(90deg); }
+    50% { color: #000; filter: hue-rotate(0deg); }
     95% { color: #00f0ff; }
 }
 

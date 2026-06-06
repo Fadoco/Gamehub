@@ -99,9 +99,8 @@ function renderSpecialBoxInventory() {
                 </span>
                 <span class="bet-item-price">${(() => {
                     const level = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
-                    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
-                    const val = window.utils.parsePrice(game.currentPrice) * multipliers[level];
-                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : game.currentPrice;
+                    const val = window.RankSystem.calculateValuation(window.utils.parsePrice(game.currentPrice), level);
+                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : game.currentPrice;
                 })()}</span>
             </div>
         </div>
@@ -122,7 +121,7 @@ window.selectGameForSpecialBox = (gameId) => {
 
     // Atualiza o texto do botão da roleta baseado no rank
     const spinBtn = document.getElementById('btn-spin-special');
-    if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 1.000)" : "TENTAR UPGRADE (R$ 1.000)";
+    if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 250)" : "TENTAR UPGRADE (R$ 250)";
     
     window.showToast(`Jogo ${game.title} selecionado para corrupção.`, "info");
 
@@ -136,20 +135,16 @@ window.selectGameForSpecialBox = (gameId) => {
 // Função para abrir as caixas especiais
 window.openSpecialBox = async (tier) => {
     if (window.isActionInProgress) return;
-    if (!selectedGameForSpecialBox) return window.showToast("Selecione um jogo para melhorar primeiro!", "error");
-
-    // Toca o som de abertura (usando a função global de roleta.js)
-    if (typeof window.playSpinSound === 'function') window.playSpinSound();
 
     const boxCosts = {
-        'glitch': 800,
-        'void': 3000
+        'glitch': 400,
+        'void': 500
     };
     const cost = boxCosts[tier];
 
     if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");    
 
-    window.customConfirm(`Confirmar abertura da ${tier.toUpperCase()} Box por R$ ${cost.toFixed(2)} para ${selectedGameForSpecialBox.title}?`, async () => {
+    window.customConfirm(`Confirmar abertura da ${tier.toUpperCase()} BOX por R$ ${cost.toFixed(2)}?`, async () => {
         try {
             window.isActionInProgress = true;
             
@@ -171,12 +166,7 @@ window.openSpecialBox = async (tier) => {
                 if (bar) bar.style.width = '0%';
             }
 
-            const gameId = selectedGameForSpecialBox.id;
-            const currentLevel = window.userUpgrades[gameId] || 0;
-            let newLevel = currentLevel + 1;
-            let success = true;
-
-            // Animação da barra de progresso
+            // Animação visual de "Hacking"
             let progress = 0;
             const interval = setInterval(() => {
                 progress += Math.random() * 15;
@@ -185,39 +175,51 @@ window.openSpecialBox = async (tier) => {
                 if (progress === 100) clearInterval(interval);
             }, 200);
 
-            // Lógica de upgrade
+            // Lógica de Seleção de Jogo (Loot)
+            const allGames = window.allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
+            let pool = [];
+
             if (tier === 'glitch') {
-                if (currentLevel >= 3) {
-                    if (Math.random() < 0.5) {
-                        newLevel = 4; // Dark Matter
-                    } else {
-                        newLevel = 3;
-                        success = false;
-                    }
-                }
+                // Glitch Box: Jogos acima de R$ 100
+                pool = allGames.filter(g => window.utils.parsePrice(g.currentPrice) >= 100);
             } else if (tier === 'void') {
-                if (currentLevel === 3 && Math.random() < 0.8) {
-                    newLevel = 4;
-                } else if (currentLevel === 3) {
-                    newLevel = 3;
-                    success = false;
-                } else if (currentLevel === 2 && Math.random() < 0.3) {
-                    newLevel = 4;
-                }
+                // Void Box: Jogos de elite (Acima de R$ 200)
+                pool = allGames.filter(g => window.utils.parsePrice(g.currentPrice) >= 200);
             }
+            
+            if (pool.length === 0) pool = allGames; // Fallback
+            const winningGame = pool[Math.floor(Math.random() * pool.length)];
 
             // Simular atraso de "hacking"
             setTimeout(async () => {
-                await userRef.update({ [`upgrades.${gameId}`]: newLevel });
-                
                 if (modal) modal.style.display = 'none';
                 
-                if (success) {
-                    window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel}!`, "success");
-                } else {
-                    window.showToast("FALHA NA INTEGRIDADE: O rank não mudou.", "info");
+                // Revelar no Modal de Resultado
+                if (window.showRevealModal) {
+                    // Criamos um elemento temporário para o modal de revelação usar
+                    const tempCard = document.createElement('div');
+                    tempCard.className = 'roulette-card rarity-mythic';
+                    tempCard.style.border = "2px solid #0f0";
+                    tempCard.innerHTML = `
+                        <img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover;">
+                        <span class="card-label" style="background: #000; color: #0f0;">${winningGame.title}</span>
+                    `;
+                    window.showRevealModal(tempCard, "SISTEMA SEQUESTRADO!");
                 }
 
+                // Adicionar à biblioteca
+                if (window.userLibrary.includes(winningGame.id)) {
+                    // Reembolso se já tiver (Mercado Negro é generoso: 70% de volta)
+                    const refund = window.utils.parsePrice(winningGame.currentPrice) * 0.7;
+                    await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
+                    window.showToast(`Software já detectado. Crédito de R$ ${refund.toFixed(2)} injetado.`, "info");
+                } else {
+                    await userRef.update({
+                        library: firebase.firestore.FieldValue.arrayUnion(winningGame.id)
+                    });
+                    window.showToast(`CONEXÃO ESTABELECIDA: ${winningGame.title} agora é seu.`, "success");
+                }
+                
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;
@@ -254,7 +256,7 @@ function initSpecialRoulette() {
 }
 
 window.spinSpecialRoulette = async () => {
-    const cost = 1000;
+    const cost = 250;
     if (window.isActionInProgress) return; // Proteção contra spam
     if (!selectedGameForSpecialBox) return window.showToast("ALVO NÃO SELECIONADO.", "error");
     

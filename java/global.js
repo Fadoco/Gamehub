@@ -49,19 +49,6 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
     window.pageRenderers[pageFile.toLowerCase()] = rendererFunction;
 };
 
-// Helper para gerar o HTML do rank de upgrade
-window.getUpgradeHtml = (gameId) => {
-    const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
-    if (upgradeLevel > 0) { // Se o nível de upgrade for maior que 0
-        if (upgradeLevel === 4) return `<span class="upgrade-rank rank-dark-matter">Dark Matter</span>`; // Exibe "Dark Matter"
-        const isMax = upgradeLevel >= 3;
-        const rankClass = upgradeLevel === 1 ? 'rank-rare' : (upgradeLevel === 2 ? 'rank-epic' : 'rank-legendary' + (isMax ? ' max-rank-anim' : ''));
-        const pluses = '+'.repeat(upgradeLevel);
-        return `<span class="upgrade-rank ${rankClass}">${pluses}</span>`;
-    }
-    return '';
-};
-
 // Função para disparar o evento raro do Mercado Negro
 window.triggerSecretEvent = (force = false) => {
     const chance = Math.random();
@@ -282,22 +269,18 @@ window.renderToContainer = (games, container, clear = true) => {
 
         // Lógica de Rank/Upgrade
         const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
-        const upgradeHtml = window.getUpgradeHtml(game.id);
+        const upgradeHtml = window.RankSystem.getUpgradeHtml(game.id);
+        const rankMeta = window.RankSystem.getRankMetadata(upgradeLevel);
 
-        let auraClass = '';
-        if (upgradeLevel === 1) auraClass = 'upgrade-aura-1';
-        else if (upgradeLevel === 2) auraClass = 'upgrade-aura-2';
-        else if (upgradeLevel >= 3) auraClass = 'upgrade-aura-3'; // >=3 para rank máximo
-        else if (upgradeLevel === 4) auraClass = 'upgrade-aura-4';
+        const auraClass = rankMeta.aura;
+        const mediaClass = rankMeta.media ? `card-media ${rankMeta.media}` : 'card-media';
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
 
         // Cálculo de valorização por Upgrade
         const basePriceNum = window.utils.parsePrice(game.currentPrice);
-        const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
-        const multiplier = multipliers[upgradeLevel] || 1; // Garante que Rank 4 use 9.0
-        const inventoryValue = basePriceNum * multiplier;
+        const inventoryValue = window.RankSystem.calculateValuation(basePriceNum, upgradeLevel);
 
         const isLibraryPage = window.location.pathname.includes('biblioteca.html');
         const finalPriceClass = isLibraryPage ? 'game-price valuation' : priceClass;
@@ -308,7 +291,7 @@ window.renderToContainer = (games, container, clear = true) => {
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card ${auraClass}">
-                <div class="card-media">
+                <div class="${mediaClass}">
                     ${discountBadge}
                     <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
