@@ -138,7 +138,7 @@ window.openSpecialBox = async (tier) => {
     if (window.isActionInProgress) return;
     if (!selectedGameForSpecialBox) return window.showToast("Selecione um jogo para melhorar primeiro!", "error");
 
-    // SOM IMEDIATO (Mesmo da roleta original)
+    // Toca o som de abertura (usando a função global de roleta.js)
     if (typeof window.playSpinSound === 'function') window.playSpinSound();
 
     const boxCosts = {
@@ -152,16 +152,23 @@ window.openSpecialBox = async (tier) => {
     window.customConfirm(`Confirmar abertura da ${tier.toUpperCase()} Box por R$ ${cost.toFixed(2)} para ${selectedGameForSpecialBox.title}?`, async () => {
         try {
             window.isActionInProgress = true;
+            
+            // Toca o som de abertura
+            if (typeof window.playSpinSound === 'function') window.playSpinSound();
+
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
             await userRef.update({
                 balance: firebase.firestore.FieldValue.increment(-cost)
             });
 
-            // Mostrar modal de abertura (reutilizando estrutura da roleta)
+            // Mostrar modal de hacking
             const modal = document.getElementById('box-opening-modal');
+            const bar = document.getElementById('hacking-bar');
+            
             if (modal) {
                 modal.style.display = 'flex';
-                document.getElementById('modal-box-title').textContent = `CORROMPENDO ARQUIVOS...`;
+                document.getElementById('modal-box-title').textContent = `> INJETANDO_PAYLOAD_${tier.toUpperCase()}...`;
+                if (bar) bar.style.width = '0%';
             }
 
             const gameId = selectedGameForSpecialBox.id;
@@ -169,13 +176,24 @@ window.openSpecialBox = async (tier) => {
             let newLevel = currentLevel + 1;
             let success = true;
 
-            // Lógica de upgrade para as caixas especiais
+            // Animação da barra de progresso
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                if (bar) bar.style.width = `${progress}%`;
+                if (progress === 100) clearInterval(interval);
+            }, 200);
+
+            // Lógica de upgrade
             if (tier === 'glitch') {
-                if (currentLevel === 3 && Math.random() < 0.5) {
-                    newLevel = 4; // Dark Matter
-                } else if (currentLevel === 3) {
-                    newLevel = 3;
-                    success = false;
+                if (currentLevel >= 3) {
+                    if (Math.random() < 0.5) {
+                        newLevel = 4; // Dark Matter
+                    } else {
+                        newLevel = 3;
+                        success = false;
+                    }
                 }
             } else if (tier === 'void') {
                 if (currentLevel === 3 && Math.random() < 0.8) {
@@ -191,11 +209,15 @@ window.openSpecialBox = async (tier) => {
             // Simular atraso de "hacking"
             setTimeout(async () => {
                 await userRef.update({ [`upgrades.${gameId}`]: newLevel });
+                
                 if (modal) modal.style.display = 'none';
                 
-                if (success) window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel === 4 ? '!!!!' : newLevel}!`, "success");
-                else window.showToast("FALHA NA INTEGRIDADE: O rank não mudou.", "info");
-                
+                if (success) {
+                    window.showToast(`BYPASS COMPLETO! ${selectedGameForSpecialBox.title} agora é Rank ${newLevel}!`, "success");
+                } else {
+                    window.showToast("FALHA NA INTEGRIDADE: O rank não mudou.", "info");
+                }
+
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;

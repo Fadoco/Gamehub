@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>SISTEMA CORROMPIDO - MERCADO NEGRO</title>
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../Roleta/roleta.css">
     <link rel="stylesheet" href="../css/mercado-negro.css">
 </head>
 <body>
@@ -68,12 +69,38 @@
         <button class="btn-hack" style="margin-top: 30px; width: 100%;" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
     </div>
 
+    <!-- Elemento de Áudio corrigido -->
+    <audio id="spin-sound-effect" src="../Roleta/assets/csgo-case-open.mp3" preload="auto"></audio>
+
+    <!-- Modal de Abertura (Visual de Hacking para Caixas) -->
+    <div id="box-opening-modal" class="modal" style="display: none;">
+        <div class="modal-content black-market-container" style="max-width: 500px; border-color: #0f0;">
+            <h2 id="modal-box-title" style="color: #0f0; text-shadow: 0 0 10px #0f0;">> ACESSANDO_KERNEL...</h2>
+            <div id="hacking-progress-container" style="width: 100%; height: 20px; border: 1px solid #0f0; margin: 20px 0; position: relative;">
+                <div id="hacking-bar" style="width: 0%; height: 100%; background: #0f0; box-shadow: 0 0 15px #0f0;"></div>
+            </div>
+            <p id="modal-result-info" style="font-family: monospace; color: #0f0;"></p>
+        </div>
+    </div>
+
+    <!-- Modal de Revelação -->
+    <div id="result-reveal-modal" class="modal" style="display: none;">
+        <div class="modal-content reveal-card-content" style="border-color: #0f0; background: #000;">
+            <h2 id="reveal-result-title" style="color: #0f0; text-shadow: 0 0 10px #0f0;">BYPASS COMPLETO</h2>
+            <div id="reveal-card-target">
+                <!-- O card do jogo/upgrade aparecerá aqui -->
+            </div>
+            <button class="btn-hack" onclick="closeRevealModal()">FECHAR TERMINAL</button>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/global.js" defer></script>
+    <script src="../Roleta/roleta.js" defer></script>
     <script src="../java/mercado-negro.js" defer></script>
 </body>
 </html>
