@@ -79,16 +79,16 @@
 
 /* --- Auras de Upgrade para Cards de Jogo --- */
 .game-card.upgrade-aura-1, .bet-item.upgrade-aura-1 {
+    border: 1px solid rgba(0, 120, 242, 0.8) !important;
     box-shadow: 0 0 10px rgba(0, 120, 242, 0.6); /* Azul - Raro */
-    border-color: rgba(0, 120, 242, 0.8);
 }
 .game-card.upgrade-aura-2, .bet-item.upgrade-aura-2 {
+    border: 1px solid rgba(163, 53, 238, 0.9) !important;
     box-shadow: 0 0 15px rgba(163, 53, 238, 0.7); /* Roxo - Épico */
-    border-color: rgba(163, 53, 238, 0.9);
 }
 .game-card.upgrade-aura-3, .bet-item.upgrade-aura-3 {
+    border: 2px solid rgba(255, 180, 0, 1) !important;
     box-shadow: 0 0 20px rgba(255, 180, 0, 0.8); /* Dourado - Lendário */
-    border-color: rgba(255, 180, 0, 1);
     animation: gold-aura-pulse 2s infinite alternate;
 }
 

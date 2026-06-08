@@ -172,6 +172,14 @@ function generateRouletteRail(winnerType, winningGame, targetRailId = 'roulette-
         card.className = 'roulette-card';
         card.dataset.cardId = cardId; // Define o ID para o CSS colorir
 
+        // Se for o card vencedor de um UPGRADE, aplica a aura do próximo nível visualmente
+        if (isWinner && cardId === CARD_TYPES.WIN && winningGame) {
+            const currentLevel = window.userUpgrades[winningGame.id] || 0;
+            const targetLevel = currentLevel + 1;
+            const meta = window.RankSystem.getRankMetadata(targetLevel);
+            if (meta.aura) card.classList.add(meta.aura);
+        }
+
         let labelText = "";
         if (cardId === CARD_TYPES.WIN) {
             card.classList.add('win-card'); 
