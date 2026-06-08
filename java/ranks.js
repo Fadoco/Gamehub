@@ -16,10 +16,10 @@ window.RankSystem = {
     // Retorna os metadados de cada Rank
     getRankMetadata: (level) => {
         switch (level) {
-            case 4: return { label: 'Dark Matter', class: 'rank-dark-matter', aura: 'upgrade-aura-4', media: 'dark-matter-media' };
-            case 3: return { label: '+++', class: 'rank-legendary', aura: 'upgrade-aura-3', media: '' };
-            case 2: return { label: '++', class: 'rank-epic', aura: 'upgrade-aura-2', media: '' };
-            case 1: return { label: '+', class: 'rank-rare', aura: 'upgrade-aura-1', media: '' };
+            case 4: return { label: 'Dark Matter', class: 'rank-dark-matter', aura: 'upgrade-aura-4' };
+            case 3: return { label: '+++', class: 'rank-legendary', aura: 'upgrade-aura-3' };
+            case 2: return { label: '++', class: 'rank-epic', aura: 'upgrade-aura-2' };
+            case 1: return { label: '+', class: 'rank-rare', aura: 'upgrade-aura-1' };
             default: return { label: '', class: '', aura: '', media: '' };
         }
     },

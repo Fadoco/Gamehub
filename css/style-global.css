@@ -567,7 +567,7 @@ body {
         0 0 5px #ff0000,
         0 0 10px #ff0000,
         0 0 15px #ff0000; /* Aura Vermelha Pulsante no texto */
-    animation: dm-text-pulse 1.5s infinite alternate ease-in-out, text-jitter 0.1s infinite;
+    animation: dm-text-pulse 1.5s infinite alternate ease-in-out; /* Removido tremor */
     position: relative;
 }
 
@@ -584,17 +584,12 @@ body {
     animation: dark-matter-pulse 2s infinite ease-in-out;
 }
 
-.game-card.upgrade-aura-4:hover {
-    animation: dark-matter-pulse 0.5s infinite ease-in-out, dm-card-shake 0.1s infinite !important;
-    filter: contrast(1.3) brightness(0.8) !important;
-}
-
-/* Efeito de Corrupção na Imagem */
-.dark-matter-media img {
+/* Efeito de Corrupção Direto via Aura */
+.game-card.upgrade-aura-4 .card-media img {
     filter: grayscale(1) contrast(1.5) brightness(0.5) !important;
 }
 
-.dark-matter-media::after {
+.game-card.upgrade-aura-4 .card-media::after {
     content: "";
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -603,6 +598,12 @@ body {
     mix-blend-mode: multiply;
     animation: dm-media-flicker 0.3s infinite alternate;
     pointer-events: none;
+}
+
+@keyframes dark-matter-pulse {
+    0% { box-shadow: 0 0 15px #ff0000, inset 0 0 20px #000; border-color: #ff0000; }
+    50% { box-shadow: 0 0 45px #ff0000, inset 0 0 35px #000; border-color: #8b0000; }
+    100% { box-shadow: 0 0 15px #ff0000, inset 0 0 20px #000; border-color: #ff0000; }
 }
 
 @keyframes dm-media-flicker {
@@ -639,16 +640,6 @@ body {
     border-color: rgba(255, 180, 0, 1);
     animation: gold-aura-pulse 2s infinite alternate; /* Animação para o máximo */
 }
-.game-card.upgrade-aura-4, .bet-item.upgrade-aura-4 {
-    background: #000 !important; /* Fundo do card em preto */
-    box-shadow: 0 0 25px #ff0000, inset 0 0 40px #000;
-    border: 2px solid #ff0000;
-    animation: dark-matter-pulse 2s infinite ease-in-out;
-    filter: contrast(1.2);
-    z-index: 10;
-    position: relative;
-}
-
 @keyframes text-jitter {
     0% { transform: translate(0); }
     50% { transform: translate(1px, -1px); opacity: 0.8; }
@@ -672,32 +663,6 @@ body {
     from { box-shadow: 0 0 15px rgba(255, 180, 0, 0.6), 0 0 0 rgba(255, 180, 0, 0); }
     to { box-shadow: 0 0 30px rgba(255, 180, 0, 1), 0 0 5px rgba(255, 180, 0, 0.3); }
 }
-
-@keyframes dark-matter-pulse {
-    0% { box-shadow: 0 0 20px #ff0000, inset 0 0 10px #000; transform: scale(1); }
-    50% { box-shadow: 0 0 50px #ff0000, inset 0 0 25px #000; transform: scale(1.02); filter: saturate(2); }
-    100% { box-shadow: 0 0 20px #ff0000, inset 0 0 10px #000; transform: scale(1); }
-}
-
-/* Efeito Dark Matter na Capa: Escuro + Rachaduras Pretas */
-.dark-matter-media {
-    filter: brightness(0.3) contrast(1.8) grayscale(0.6) hue-rotate(-15deg);
-    position: relative;
-}
-.dark-matter-media::after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(45deg, transparent 48%, #000 49%, #000 51%, transparent 52%),
-        linear-gradient(-30deg, transparent 48%, #000 49%, #000 51%, transparent 52%),
-        linear-gradient(110deg, transparent 48%, #000 49%, #000 51%, transparent 52%);
-    background-size: 100% 100%;
-    opacity: 0.8;
-    pointer-events: none;
-}
-
-
 /* --- Componentes Compartilhados de Cards de Jogo --- */
 h2.section-title {
     font-size: 14px;

@@ -273,7 +273,8 @@ window.renderToContainer = (games, container, clear = true) => {
         const rankMeta = window.RankSystem.getRankMetadata(upgradeLevel);
 
         const auraClass = rankMeta.aura;
-        const mediaClass = rankMeta.media ? `card-media ${rankMeta.media}` : 'card-media';
+        // Aplica a classe de rank (incluindo Dark Matter) ao título também
+        const titleClass = upgradeLevel === 4 ? `game-title ${rankMeta.class}` : 'game-title';
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
@@ -291,7 +292,7 @@ window.renderToContainer = (games, container, clear = true) => {
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card ${auraClass}">
-                <div class="${mediaClass}">
+                <div class="card-media">
                     ${discountBadge}
                     <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
@@ -300,7 +301,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 </div>
                 <div class="game-info">
                     <div class="game-details">
-                        <p class="game-title">${game.title}${upgradeHtml}</p>
+                        <p class="${titleClass}">${game.title}${upgradeHtml}</p>
                         <div class="game-platforms">${platformsHtml}</div>
                         <span class="game-tags">${game.tags.join(', ')}</span>
                     </div>

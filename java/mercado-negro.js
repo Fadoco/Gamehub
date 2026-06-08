@@ -124,12 +124,14 @@ window.selectGameForSpecialBox = (gameId) => {
     if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 250)" : "TENTAR UPGRADE (R$ 250)";
     
     window.showToast(`Jogo ${game.title} selecionado para corrupção.`, "info");
+};
 
-    // Habilita os botões das caixas especiais
-    document.getElementById('btn-open-glitch-box').disabled = false;
-    document.getElementById('btn-open-glitch-box').onclick = () => window.openSpecialBox('glitch');
-    document.getElementById('btn-open-void-box').disabled = false;
-    document.getElementById('btn-open-void-box').onclick = () => window.openSpecialBox('void');
+// Garante que os botões de caixa estejam prontos
+const initMarketButtons = () => {
+    const glitchBtn = document.getElementById('btn-open-glitch-box');
+    const voidBtn = document.getElementById('btn-open-void-box');
+    if (glitchBtn) glitchBtn.onclick = () => window.openSpecialBox('glitch');
+    if (voidBtn) voidBtn.onclick = () => window.openSpecialBox('void');
 };
 
 // Função para abrir as caixas especiais
@@ -141,6 +143,7 @@ window.openSpecialBox = async (tier) => {
         'void': 500
     };
     const cost = boxCosts[tier];
+    if (!cost) return;
 
     if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");    
 
@@ -369,6 +372,7 @@ window.renderMercadoNegro = () => {
     renderCheaperGames();
     renderSpecialBoxInventory();
     initSpecialRoulette();
+    initMarketButtons();
 };
 
 // Inicialização
