@@ -161,23 +161,12 @@ window.openSpecialBox = async (tier) => {
 
             // Mostrar modal de hacking
             const modal = document.getElementById('box-opening-modal');
-            const bar = document.getElementById('hacking-bar');
+            const rail = document.getElementById('modal-market-rail');
             
             if (modal) {
                 modal.style.display = 'flex';
                 document.getElementById('modal-box-title').textContent = `> INJETANDO_PAYLOAD_${tier.toUpperCase()}...`;
-                if (bar) bar.style.width = '0%';
             }
-
-            // Animação visual de "Hacking"
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress > 100) progress = 100;
-                if (bar) bar.style.width = `${progress}%`;
-                if (progress === 100) clearInterval(interval);
-            }, 200);
-
             // Lógica de Seleção de Jogo (Loot)
             const allGames = window.allGamesData.filter(g => window.utils.parsePrice(g.currentPrice) > 0);
             let pool = [];
@@ -193,7 +182,36 @@ window.openSpecialBox = async (tier) => {
             if (pool.length === 0) pool = allGames; // Fallback
             const winningGame = pool[Math.floor(Math.random() * pool.length)];
 
-            // Simular atraso de "hacking"
+            // Configurar Trilho da Roleta Hacker (Sistema de Giro)
+            rail.style.transition = 'none';
+            rail.style.transform = 'translateX(0px)';
+            rail.innerHTML = '';
+
+            // Preenche o trilho com interrogações (vibe hacker)
+            for (let i = 0; i < 60; i++) {
+                const card = document.createElement('div');
+                card.className = 'special-card';
+                if (i === 50) {
+                    card.innerHTML = `<img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover;">`;
+                    card.style.borderColor = '#0f0';
+                } else {
+                    card.innerHTML = '<span class="q-mark">?</span>';
+                }
+                rail.appendChild(card);
+            }
+
+            // Inicia o Giro (Animação de 5 segundos)
+            setTimeout(() => {
+                const winnerCard = rail.children[50];
+                const wrapperWidth = rail.parentElement.offsetWidth;
+                // Centraliza o card 50 no seletor
+                const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
+                
+                rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
+                rail.style.transform = `translateX(-${targetX}px)`;
+            }, 100);
+
+            // Finalização do Giro e Entrega do Prêmio
             setTimeout(async () => {
                 if (modal) modal.style.display = 'none';
                 
@@ -226,7 +244,7 @@ window.openSpecialBox = async (tier) => {
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;
-            }, 3000);
+            }, 6000); // 1s de delay + 5s de giro
 
         } catch (error) {
             console.error("Erro ao abrir caixa especial:", error);

@@ -76,9 +76,13 @@
     <div id="box-opening-modal" class="modal" style="display: none;">
         <div class="modal-content black-market-container" style="max-width: 500px; border-color: #0f0;">
             <h2 id="modal-box-title" style="color: #0f0; text-shadow: 0 0 10px #0f0;">> ACESSANDO_KERNEL...</h2>
-            <div id="hacking-progress-container" style="width: 100%; height: 20px; border: 1px solid #0f0; margin: 20px 0; position: relative;">
-                <div id="hacking-bar" style="width: 0%; height: 100%; background: #0f0; box-shadow: 0 0 15px #0f0;"></div>
+            
+            <!-- Substituído: De Barra de Progresso para Sistema de Roleta Hacker -->
+            <div class="special-roulette-wrapper" style="margin: 20px 0; height: 120px; border-color: #0f0;">
+                <div class="roulette-selector" style="background: #0f0; box-shadow: 0 0 10px #0f0;"></div>
+                <div id="modal-market-rail" class="special-rail"></div>
             </div>
+
             <p id="modal-result-info" style="font-family: monospace; color: #0f0;"></p>
         </div>
     </div>
