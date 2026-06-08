@@ -269,12 +269,12 @@ window.renderToContainer = (games, container, clear = true) => {
 
         // Lógica de Rank/Upgrade
         const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
-        const upgradeHtml = window.RankSystem.getUpgradeHtml(game.id);
-        const rankMeta = window.RankSystem.getRankMetadata(upgradeLevel);
+        const upgradeHtml = window.RankSystem ? window.RankSystem.getUpgradeHtml(game.id) : '';
+        const rankMeta = window.RankSystem ? window.RankSystem.getRankMetadata(upgradeLevel) : { aura: '', class: '' };
 
-        const auraClass = rankMeta.aura;
+        const auraClass = rankMeta?.aura || '';
         // Aplica a classe Dark Matter ao título para ele ficar preto com aura vermelha
-        const titleClass = upgradeLevel === 4 ? `game-title ${rankMeta.class}` : 'game-title';
+        const titleClass = upgradeLevel === 4 ? `game-title ${rankMeta?.class || ''}` : 'game-title';
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
