@@ -69,9 +69,8 @@ function renderRoulette() {
                 </span>
                 <span class="bet-item-price">${(() => {
                     const level = window.userUpgrades[game.id] || 0;
-                    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
-                    const val = window.utils.parsePrice(game.currentPrice) * multipliers[level];
-                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : game.currentPrice;
+                    const val = window.RankSystem.calculateValuation(window.utils.parsePrice(game.currentPrice), level);
+                    return val > 0 ? `Valor: R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : game.currentPrice;
                 })()}</span>
             </div>
         </div>

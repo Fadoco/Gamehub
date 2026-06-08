@@ -95,9 +95,34 @@
 }
 
 .box-card-special:hover::before { left: 100%; }
-
 .box-card-special.tier-glitch { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
 .box-card-special.tier-void { border-color: #a335ee; box-shadow: 0 0 15px rgba(163, 53, 238, 0.3); }
+
+/* --- SISTEMA DE CORRUPÇÃO --- */
+.site-frozen { filter: contrast(1.8) brightness(0.6) grayscale(0.6) hue-rotate(280deg); pointer-events: none; }
+.site-breaking-anim { animation: site-shake-intense 0.1s infinite; }
+
+@keyframes site-shake-intense {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(2px, -2px); }
+    100% { transform: translate(0,0); }
+}
+
+.glitch-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9); z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #0f0; font-family: monospace;
+}
+
+.corrupted-code-fragment {
+    position: fixed; color: #0f0; z-index: 10005; font-family: monospace;
+    animation: code-fade-out 0.8s forwards; pointer-events: none;
+}
+
+@keyframes code-fade-out {
+    to { opacity: 0; transform: scale(1.5) translate(20px, 20px); }
+}
 
 .box-card-special .btn-hack:disabled {
     background: #333 !important;
