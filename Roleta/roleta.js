@@ -55,10 +55,7 @@ function renderRoulette() {
 
     inventoryGrid.innerHTML = bettableGames.map(game => {
         const level = window.userUpgrades[game.id] || 0;
-        let auraClass = '';
-        if (level === 1) auraClass = 'upgrade-aura-1';
-        else if (level === 2) auraClass = 'upgrade-aura-2';
-        else if (level >= 3) auraClass = 'upgrade-aura-3';
+        const auraClass = level > 0 ? `upgrade-aura-${level}` : '';
         return `
         <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForBet(${game.id})">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
@@ -220,6 +217,17 @@ window.showRevealModal = (cardElement, titleText) => {
     const clone = cardElement.cloneNode(true);
     clone.style.margin = '0'; // Remove margens do rail
     target.appendChild(clone);
+
+    // Garante que exista um botão de fechar manual no modal
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent && !modal.querySelector('.close-reveal-btn')) {
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.className = 'close-reveal-btn';
+        closeBtn.style.cssText = "position:absolute; top:10px; right:20px; background:none; border:none; color:white; font-size:30px; cursor:pointer; line-height:1;";
+        closeBtn.onclick = window.closeRevealModal;
+        modalContent.appendChild(closeBtn);
+    }
     
     title.textContent = titleText;
     modal.style.display = 'flex';

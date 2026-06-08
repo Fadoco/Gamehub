@@ -83,7 +83,6 @@ async function renderProfile() {
     }
 
     // 3. Estatísticas e Patrimônio Total (Calcula valor dos upgrades)
-    const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0, 4: 9.0 };
     let totalInventoryValue = 0;
 
     (data.library || []).forEach(gameId => {
@@ -91,7 +90,7 @@ async function renderProfile() {
         if (game) {
             const level = (data.upgrades || {})[gameId] || 0;
             const basePrice = window.utils.parsePrice(game.currentPrice);
-            totalInventoryValue += basePrice * (multipliers[level] || 1);
+            totalInventoryValue += window.RankSystem.calculateValuation(basePrice, level);
         }
     });
 

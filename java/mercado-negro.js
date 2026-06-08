@@ -85,10 +85,7 @@ function renderSpecialBoxInventory() {
 
     inventoryGrid.innerHTML = eligibleGames.map(game => {
         const level = window.userUpgrades[game.id] || 0;
-        let auraClass = '';
-        if (level === 1) auraClass = 'upgrade-aura-1';
-        else if (level === 2) auraClass = 'upgrade-aura-2';
-        else if (level === 3) auraClass = 'upgrade-aura-3';
+        const auraClass = level > 0 ? `upgrade-aura-${level}` : '';
         return `
         <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForSpecialBox('${game.id}')">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
@@ -187,11 +184,11 @@ window.openSpecialBox = async (tier) => {
             rail.style.transform = 'translateX(0px)';
             rail.innerHTML = '';
 
-            // Preenche o trilho com interrogações (vibe hacker)
-            for (let i = 0; i < 60; i++) {
+            // Preenche o trilho com 80 itens (igual a roleta.js)
+            for (let i = 0; i < 80; i++) {
                 const card = document.createElement('div');
                 card.className = 'special-card';
-                if (i === 50) {
+                if (i === 65) {
                     card.innerHTML = `<img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover;">`;
                     card.style.borderColor = '#0f0';
                 } else {
@@ -200,16 +197,16 @@ window.openSpecialBox = async (tier) => {
                 rail.appendChild(card);
             }
 
-            // Inicia o Giro (Animação de 5 segundos)
+            // Inicia o Giro com atraso dramático de 1.2s (igual a roleta.js)
             setTimeout(() => {
-                const winnerCard = rail.children[50];
+                const winnerCard = rail.children[65];
                 const wrapperWidth = rail.parentElement.offsetWidth;
-                // Centraliza o card 50 no seletor
+                // Centraliza o card 65 no seletor
                 const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
                 
-                rail.style.transition = 'transform 5s cubic-bezier(0.15, 0, 0.05, 1)';
+                rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
                 rail.style.transform = `translateX(-${targetX}px)`;
-            }, 100);
+            }, 1200);
 
             // Finalização do Giro e Entrega do Prêmio
             setTimeout(async () => {
@@ -244,7 +241,7 @@ window.openSpecialBox = async (tier) => {
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;
-            }, 6000); // 1s de delay + 5s de giro
+            }, 7100); // 1.2s de delay + 5.7s de giro + margem
 
         } catch (error) {
             console.error("Erro ao abrir caixa especial:", error);
