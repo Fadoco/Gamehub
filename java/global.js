@@ -254,6 +254,9 @@ window.checkUserSession = (user) => {
 window.renderToContainer = (games, container, clear = true) => {
     if (!container) return;
 
+    // Verifica se estamos na página inicial para desativar o visual de ranks (auras/cores) na loja
+    const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
+
     const html = games.map(game => {
         // Gerar ícones de plataformas dinamicamente
         const platformsHtml = game.platforms.map(icon => `<i class="${icon}"></i>`).join('');
@@ -268,8 +271,8 @@ window.renderToContainer = (games, container, clear = true) => {
         const favIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
 
         // Lógica de Rank/Upgrade
-        const upgradeLevel = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
-        const upgradeHtml = window.RankSystem ? window.RankSystem.getUpgradeHtml(game.id) : '';
+        const upgradeLevel = isHomePage ? 0 : ((window.userUpgrades && window.userUpgrades[game.id]) || 0);
+        const upgradeHtml = isHomePage ? '' : (window.RankSystem ? window.RankSystem.getUpgradeHtml(game.id) : '');
         const rankMeta = window.RankSystem ? window.RankSystem.getRankMetadata(upgradeLevel) : { aura: '', class: '' };
 
         const auraClass = rankMeta?.aura || '';
