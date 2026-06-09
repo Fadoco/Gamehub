@@ -24,6 +24,11 @@
     display: flex;
 }
 
+/* Aumenta o tamanho dos cards na biblioteca para melhor visualização */
+#library-grid.game-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
 /* Estado de Biblioteca Vazia */
 #library-empty {
     text-align: center;

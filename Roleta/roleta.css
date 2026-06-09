@@ -222,28 +222,30 @@
 
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 110px);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Cards maiores */
     justify-content: center;
-    gap: 12px;
-    max-height: 400px;
+    gap: 25px; /* Mais espaço entre os cards */
+    min-height: 200px; /* Altura mínima para o grid */
+    max-height: 350px; /* Altura máxima para rolagem */
     overflow-y: auto;
-    padding: 20px;
+    overflow-x: visible; /* Permite que o brilho lateral apareça */
+    padding: 30px 15px; /* Mais espaço interno para as auras respirarem */
     background: rgba(0, 0, 0, 0.3);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .bet-item {
-    width: 110px;
+    aspect-ratio: 3/4; /* Mantém a proporção de capa de jogo */
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background: #1a1a1a;
+    transition: 0.2s;
+    background: #111; /* Fundo escuro */
     border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #333 !important; /* Borda padrão */
     display: flex;
     flex-direction: column;
     position: relative;
+    margin: 12px; /* Margem externa maior para auras de DM não colidirem */
 }
 
 .bet-item:hover {
@@ -255,19 +257,24 @@
 .bet-item.selected {
     border-color: var(--accent);
     box-shadow: 0 0 15px rgba(0, 120, 242, 0.5);
-    background: rgba(0, 120, 242, 0.1);
+    background: rgba(0, 120, 242, 0.1); /* Fundo suave ao selecionar */
+    transform: scale(1.05); /* Efeito de zoom ao selecionar */
+    z-index: 10; /* Garante que o item selecionado fique por cima */
 }
 
 .bet-item img {
-    width: 110px;
-    height: 110px;
-    aspect-ratio: 1/1;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    filter: brightness(0.9);
+    border-radius: 8px;
 }
 
 .bet-item-info {
-    padding: 8px;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 40%, transparent); /* Gradiente para legibilidade */
+    padding: 15px 10px; /* Mais padding para o texto */
+    font-size: 11px; /* Tamanho da fonte ajustado */
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -281,6 +288,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--text-main);
+    gap: 4px; /* Espaçamento entre o título e o ícone de upgrade */
 }
 .bet-item-price {
     font-size: 10px;

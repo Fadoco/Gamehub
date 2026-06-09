@@ -135,10 +135,10 @@
 /* Estilos para o inventário de seleção de jogo (reutiliza .inventory-grid do roleta.css) */
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 120px);
+    grid-template-columns: repeat(auto-fill, 160px);
     justify-content: center;
-    gap: 15px;
-    min-height: 150px;
+    gap: 25px;
+    min-height: 200px;
     max-height: 350px;
     overflow-y: auto; 
     overflow-x: visible; /* Permite que o brilho lateral apareça */
@@ -156,7 +156,7 @@
     cursor: pointer;
     transition: 0.2s;
     position: relative;
-    margin: 8px; /* Margem externa para o brilho não encostar no vizinho */
+    margin: 12px; /* Margem externa maior para auras de DM não colidirem */
 }
 
 .bet-item img {
@@ -178,11 +178,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.95));
-    padding: 10px 5px;
-    font-size: 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 40%, transparent);
+    padding: 15px 10px;
+    font-size: 11px;
     text-align: center;
     border-radius: 0 0 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 /* Estilos da Roleta Especial */
