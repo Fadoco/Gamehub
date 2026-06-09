@@ -16,23 +16,15 @@
 
 /* --- RANK DARK MATTER (SINGULARIDADE) --- */
 .rank-dark-matter { 
-    color: #000 !important;
+    color: #fff !important;
+    background: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
     font-weight: 900 !important;
     letter-spacing: 1px !important;
     text-transform: uppercase !important;
-    text-shadow: 
-        0 0 5px #ff0000,
-        0 0 10px #ff0000,
-        0 0 15px #ff0000 !important;
-    animation: dm-text-pulse 2s infinite alternate ease-in-out !important;
-    position: relative;
-    display: block;
-    margin-top: 4px;
-}
-
-@keyframes dm-text-pulse {
-    from { text-shadow: 0 0 5px #f00, 0 0 10px #f00; }
-    to { text-shadow: 0 0 15px #f00, 0 0 25px #ff0000, 0 0 35px #ff0000; }
+    text-shadow: 0 0 10px #f00, 0 0 20px #f00 !important;
+    animation: rank-pulse 1.5s infinite ease-in-out !important;
 }
 
 /* Aura do Card Dark Matter */
