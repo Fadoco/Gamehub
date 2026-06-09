@@ -273,7 +273,7 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.95) 40%, transparent); /* Gradiente para legibilidade */
-    padding: 15px 10px; /* Mais padding para o texto */
+    padding: 15px 12px; /* Espaço aumentado para não colar na borda */
     font-size: 11px; /* Tamanho da fonte ajustado */
     display: flex;
     flex-direction: column;
@@ -282,14 +282,21 @@
 }
 
 .bet-item-name {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     color: var(--text-main);
-    gap: 4px; /* Espaçamento entre o título e o ícone de upgrade */
+    gap: 6px;
+    display: flex !important; /* Mudado para flex para facilitar centralização do rank */
+    flex-direction: column; /* Título em cima, Rank embaixo (ou vice-versa dependendo do JS) */
+    align-items: center;
+    white-space: normal;
+    overflow: hidden;
+    line-height: 1.3;
+    text-align: center;
+    width: 100%;
+    padding: 2px 0;
 }
+
 .bet-item-price {
     font-size: 10px;
     color: var(--accent);

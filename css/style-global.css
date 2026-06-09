@@ -619,13 +619,15 @@ h2.section-title {
 }
 
 .game-info {
-    padding: 10px 0;
+    padding: 12px 15px; /* Adicionado espaço lateral entre a borda e o texto */
 }
 
 .game-details {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    text-align: center;   /* Garante que o texto fique centralizado */
 }
 
 .game-title {
@@ -639,7 +641,8 @@ h2.section-title {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     min-height: 2.8em; /* Aumentado para acomodar sombras e evitar cortes */
-    padding: 4px 0; /* Mais padding para o texto */
+    padding: 4px 0;
+    text-align: center; /* Centralização do título */
 }
 
 .game-platforms {
@@ -662,7 +665,8 @@ h2.section-title {
 
 .price-container {
     display: flex;
-    margin-top: 5px;
+    justify-content: center; /* Centraliza o preço */
+    margin-top: 8px;
 }
 
 .old-price {

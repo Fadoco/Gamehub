@@ -5,7 +5,8 @@
 
 .upgrade-rank {
     font-weight: 900;
-    margin-left: 5px;
+    margin: 4px 0; /* Margem vertical para quando estiver empilhado */
+    display: inline-block;
     text-shadow: 0 0 8px rgba(0,0,0,0.5);
     font-family: 'JetBrains Mono', monospace;
 }
@@ -17,9 +18,11 @@
 /* --- RANK DARK MATTER (SINGULARIDADE) --- */
 .rank-dark-matter { 
     color: #fff !important;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #000;
-    padding: 2px 6px;
+    padding: 1px 4px;
     border-radius: 4px;
     font-weight: 900 !important;
     letter-spacing: 1px !important;
