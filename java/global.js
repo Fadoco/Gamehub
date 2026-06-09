@@ -301,7 +301,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 </div>
                 <div class="game-info">
                     <div class="game-details">
-                        <div style="display: flex; flex-direction: column;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
                             <p class="${titleClass}">${game.title}</p>
                             ${upgradeHtml}
                         </div>

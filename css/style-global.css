@@ -628,6 +628,7 @@ h2.section-title {
     gap: 2px;
     align-items: center; /* Centraliza o conteúdo horizontalmente */
     text-align: center;   /* Garante que o texto fique centralizado */
+    width: 100%;
 }
 
 .game-title {
@@ -647,11 +648,14 @@ h2.section-title {
 
 .game-platforms {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-top: 4px;
     gap: 8px;
     font-size: 11px;
     color: #888;
     margin-bottom: 4px;
+    width: 100%;
 }
 
 .game-tags {
@@ -661,6 +665,8 @@ h2.section-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
 }
 
 .price-container {
