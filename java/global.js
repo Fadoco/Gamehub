@@ -292,7 +292,7 @@ window.renderToContainer = (games, container, clear = true) => {
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
                 <article class="game-card ${auraClass}">
-                <div class="card-media">
+                <div class="card-media ${auraClass}">
                     ${discountBadge}
                     <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">

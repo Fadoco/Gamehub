@@ -249,7 +249,7 @@
 }
 
 .bet-item:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px); /* Ajustado para um hover mais sutil */
     border-color: var(--accent);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }

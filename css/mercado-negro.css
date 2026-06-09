@@ -135,7 +135,7 @@
 /* Estilos para o inventário de seleção de jogo (reutiliza .inventory-grid do roleta.css) */
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 160px);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Garante responsividade */
     justify-content: center;
     gap: 25px;
     min-height: 200px;
@@ -155,7 +155,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
-    position: relative;
+    position: relative; /* Necessário para o posicionamento da aura */
     margin: 12px; /* Margem externa maior para auras de DM não colidirem */
 }
 
@@ -163,7 +163,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
 }
 
 .bet-item.selected {

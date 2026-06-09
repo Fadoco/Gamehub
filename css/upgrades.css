@@ -10,13 +10,14 @@
     font-family: 'JetBrains Mono', monospace;
 }
 
-.rank-rare { color: #0078f2; }      /* Azul - Raro (+) */
-.rank-epic { color: #a335ee; }      /* Roxo - Épico (++) */
-.rank-legendary { color: #ffb400; } /* Amarelo - Lendário (+++) */
+.rank-rare { color: #0078f2; text-shadow: 0 0 8px rgba(0, 120, 242, 0.4); }
+.rank-epic { color: #a335ee; text-shadow: 0 0 8px rgba(163, 53, 238, 0.4); }
+.rank-legendary { color: #ffb400; text-shadow: 0 0 12px rgba(255, 180, 0, 0.6); animation: rank-pulse 2s infinite ease-in-out; }
 
 /* --- RANK DARK MATTER (SINGULARIDADE) --- */
 .rank-dark-matter { 
     color: #fff !important;
+    display: inline-block;
     background: #000;
     padding: 2px 6px;
     border-radius: 4px;
@@ -28,15 +29,15 @@
 }
 
 /* Aura do Card Dark Matter */
-.game-card.upgrade-aura-4, .bet-item.upgrade-aura-4 {
+.game-card.upgrade-aura-4, .bet-item.upgrade-aura-4, .game-detail-container.upgrade-aura-4 {
     background: #000 !important;
     border: 2px solid #ff0000 !important;
-    box-shadow: 0 0 30px #ff0000, inset 0 0 50px #000 !important;
-    animation: dark-matter-pulse 2s infinite ease-in-out;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.7), inset 0 0 40px #000 !important;
+    animation: dark-matter-pulse 1.5s infinite alternate ease-in-out !important;
 }
 
-.game-card.upgrade-aura-4 .card-media img, .bet-item.upgrade-aura-4 img {
-    filter: grayscale(1) contrast(1.5) brightness(0.5) !important;
+.game-card.upgrade-aura-4 .card-media img, .bet-item.upgrade-aura-4 img, .game-detail-container.upgrade-aura-4 .detail-media img {
+    filter: grayscale(1) contrast(1.5) brightness(0.5) !important; /* Escurece e dá um tom de glitch na imagem */
 }
 
 .game-card.upgrade-aura-4 .card-media::after, .bet-item.upgrade-aura-4::after {
@@ -51,9 +52,13 @@
 }
 
 @keyframes dark-matter-pulse {
-    0% { box-shadow: 0 0 15px #ff0000, inset 0 0 20px #000; border-color: #ff0000; }
-    50% { box-shadow: 0 0 45px #ff0000, inset 0 0 35px #000; border-color: #8b0000; }
-    100% { box-shadow: 0 0 15px #ff0000, inset 0 0 20px #000; border-color: #ff0000; }
+    from { box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 20px #000; border-color: #f00; }
+    to { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 45px #000; border-color: #8b0000; }
+}
+
+@keyframes rank-pulse {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.8; filter: brightness(1.6); }
 }
 
 @keyframes dm-media-flicker {

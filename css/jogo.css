@@ -20,10 +20,13 @@
 .back-button:hover { opacity: 1; color: var(--accent); }
 
 .game-detail-container {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Fundo padrão */
+    padding: 30px;
+    border: 1px solid var(--border); /* Borda padrão */
     border-radius: 8px;
     margin-top: 20px;
+    overflow: visible; /* Garante que a aura pulse para fora */
+    transition: var(--transition); /* Adiciona transição para auras */
 }
 
 .detail-header {
@@ -31,16 +34,21 @@
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Linha divisória */
     padding-bottom: 15px;
     flex-wrap: wrap;
     gap: 20px;
 }
 
 .detail-header h1 {
-    margin: 0;
-    flex: 1; /* Garante que o título ocupe o espaço disponível antes dos ícones */
-    min-width: 300px;
+    margin: 0; /* Remove margem padrão */
+    flex: 1; /* Permite que o título ocupe o espaço disponível */
+    min-width: 300px; /* Garante que o título não fique muito pequeno */
+    font-size: 2.2rem; /* Tamanho maior para o título */
+    display: flex; /* Para alinhar o título com o ícone de upgrade */
+    align-items: center;
+    padding: 10px 0;
+    gap: 15px; /* Espaço entre o título e o ícone de upgrade */
 }
 
 .detail-content {
@@ -50,6 +58,12 @@
     gap: 30px;
 }
 
+.detail-media {
+    position: relative; /* Para posicionar o ::after do Dark Matter */
+    overflow: hidden; /* Garante que a imagem não vaze */
+    border-radius: 4px;
+}
+
 .detail-media img {
     width: 100%;
     /* Definimos uma proporção de banner (16:9) para a página de detalhes */
@@ -57,7 +71,6 @@
     /* O cover garante que a imagem preencha o banner sem achatar */
     object-fit: cover; 
     object-position: center;
-    border-radius: 4px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     background-color: #1a1a1a;
 }
