@@ -248,6 +248,25 @@ body {
 .user-admin-card .user-id { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
 .user-balance-tag { margin-top: 10px; background: var(--accent-soft); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; align-self: flex-start; }
 
+/* --- SISTEMA DE RANKS (ESTILIZAÇÃO DE TÍTULOS) --- */
+.rank-rare { color: #00f0ff; text-shadow: 0 0 5px rgba(0, 240, 255, 0.4); }
+.rank-epic { color: #a335ee; text-shadow: 0 0 5px rgba(163, 53, 238, 0.4); }
+.rank-legendary { 
+    color: #ff8000; 
+    text-shadow: 0 0 10px rgba(255, 128, 0, 0.5);
+    animation: rank-pulse 2s infinite ease-in-out;
+}
+.rank-dark-matter { 
+    color: #000 !important; 
+    text-shadow: 0 0 10px #f00, 0 0 5px #f00;
+    animation: rank-pulse 2s infinite ease-in-out;
+}
+
+@keyframes rank-pulse {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.7; filter: brightness(1.4); }
+}
+
 /* --- SISTEMA MERCADO NEGRO (Visual Hacker) --- */
 .black-market-container {
     background: #050505;

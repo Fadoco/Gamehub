@@ -84,14 +84,17 @@ function renderSpecialBoxInventory() {
     }
 
     inventoryGrid.innerHTML = eligibleGames.map(game => {
-        const level = window.userUpgrades[game.id] || 0;
-        const auraClass = level > 0 ? `upgrade-aura-${level}` : '';
+        const level = (window.userUpgrades && window.userUpgrades[game.id]) || 0;
+        const rankMeta = window.RankSystem.getRankMetadata(level);
+        const auraClass = rankMeta.aura || '';
+        const titleClass = rankMeta.class || '';
+
         return `
         <div class="bet-item ${auraClass}" data-id="${game.id}" onclick="selectGameForSpecialBox('${game.id}')">
             <img src="${game.coverUrl || game.image}" alt="${game.title}">
             <div class="bet-item-info">
                 <span class="bet-item-name" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
-                    <span>${game.title}</span>
+                    <span class="${titleClass}">${game.title}</span>
                     ${window.getUpgradeHtml(game.id)}
                 </span>
                 <span class="bet-item-price">${(() => {

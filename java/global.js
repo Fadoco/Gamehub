@@ -273,8 +273,8 @@ window.renderToContainer = (games, container, clear = true) => {
         const rankMeta = window.RankSystem ? window.RankSystem.getRankMetadata(upgradeLevel) : { aura: '', class: '' };
 
         const auraClass = rankMeta?.aura || '';
-        // Aplica a classe Dark Matter ao título para ele ficar preto com aura vermelha
-        const titleClass = upgradeLevel === 4 ? `game-title ${rankMeta?.class || ''}` : 'game-title';
+        // Aplica a classe de rank ao título para mudar a cor e adicionar efeitos (como o pulso) em todos os níveis
+        const titleClass = rankMeta?.class ? `game-title ${rankMeta.class}` : 'game-title';
 
         // Escolhe a Capa (Vertical) para a loja, ou cai de volta para o banner se não houver capa
         const displayImg = game.coverUrl || game.image;
