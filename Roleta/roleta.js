@@ -226,7 +226,13 @@ window.showRevealModal = (cardElement, titleText) => {
     
     target.innerHTML = '';
     const clone = cardElement.cloneNode(true);
-    clone.style.margin = '0'; // Remove margens do rail
+    clone.style.margin = '0'; 
+    
+    // Adiciona uma classe de brilho extra se for um upgrade ou raridade alta
+    if (clone.classList.contains('rarity-mythic') || clone.classList.contains('win-card')) {
+        clone.style.boxShadow = "0 0 40px currentColor";
+    }
+
     target.appendChild(clone);
 
     // Garante que exista um botão de fechar manual no modal
@@ -372,14 +378,21 @@ window.openBox = async (tier) => {
         // Limpa classes de raridade genéricas antes de aplicar a final
         winnerCard.className = 'roulette-card';
         winnerCard.classList.add(rarity.class);
+        
+        // Pre-carregamento suave da imagem
+        const imgUrl = winningGame.coverUrl || winningGame.image;
         winnerCard.innerHTML = `
-            <img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover; opacity: 1;">
+            <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover; opacity: 0; transition: opacity 0.5s;">
             <span class="card-label" style="background:rgba(0,0,0,0.8);">${winningGame.title}</span>
         `;
-
-        // Fecha modal da caixa e mostra o grande reveal
-        window.closeBoxModal();
-        window.showRevealModal(winnerCard, "VOCÊ GANHOU!");
+        
+        // Dispara a revelação após garantir a troca do conteúdo
+        setTimeout(() => {
+            const img = winnerCard.querySelector('img');
+            if(img) img.style.opacity = '1';
+            window.closeBoxModal();
+            window.showRevealModal(winnerCard, "VOCÊ GANHOU!");
+        }, 50);
 
         try {
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);

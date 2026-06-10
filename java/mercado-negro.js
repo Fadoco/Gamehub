@@ -220,10 +220,12 @@ window.openSpecialBox = async (tier) => {
                     // Criamos um elemento temporário para o modal de revelação usar
                     const tempCard = document.createElement('div');
                     tempCard.className = 'roulette-card rarity-mythic';
-                    tempCard.style.border = "2px solid #0f0";
+                    tempCard.style.borderColor = "#0f0";
+                    tempCard.style.boxShadow = "0 0 20px #0f0";
+                    
                     tempCard.innerHTML = `
                         <img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover;">
-                        <span class="card-label" style="background: #000; color: #0f0;">${winningGame.title}</span>
+                        <span class="card-label" style="background: rgba(0, 255, 0, 0.2); color: #0f0; border: 1px solid #0f0;">${winningGame.title}</span>
                     `;
                     window.showRevealModal(tempCard, "SISTEMA SEQUESTRADO!");
                 }

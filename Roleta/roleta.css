@@ -344,28 +344,32 @@
 
 /* Estilos do Modal de Revelação (Drama) */
 .reveal-card-content {
-    background: #0a0a0a !important;
-    border: 3px solid var(--accent) !important;
-    animation: drama-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: radial-gradient(circle, #1a1a1a 0%, #050505 100%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.1) !important;
+    animation: drama-pop 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.28);
     text-align: center;
-    box-shadow: 0 0 100px rgba(0, 120, 242, 0.4) !important;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(0, 120, 242, 0.2) !important;
+    overflow: visible !important; /* Permite que o card escalado brilhe para fora */
+    padding: 40px !important;
 }
 
 @keyframes drama-pop {
-    0% { transform: scale(0); opacity: 0; }
-    70% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; filter: brightness(2); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
 }
 
 #reveal-card-target {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 0;
+    padding: 120px 0; /* Aumentado significativamente para o card não bater no título/botão */
+    perspective: 1000px;
 }
 
 #reveal-card-target .roulette-card {
-    transform: scale(2.5); /* Card gigante para drama */
-    border-width: 2px !important;
+    transform: scale(2.8); /* Um pouco maior para mais impacto */
+    border-width: 3px !important;
     pointer-events: none;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 20px var(--accent);
+    transition: all 0.5s ease;
 }
