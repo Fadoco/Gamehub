@@ -26,9 +26,10 @@ window.playSpinSound = () => {
 // Helper para definir raridade baseada no preço
 function getRarityInfo(priceStr) {
     const price = window.utils.parsePrice(priceStr);
-    if (price <= 70) return { class: 'rarity-gray', label: 'Comum' };
-    if (price <= 150) return { class: 'rarity-purple', label: 'Raro' };
-    if (price <= 280) return { class: 'rarity-gold', label: 'Épico' };
+    if (price <= 60) return { class: 'rarity-gray', label: 'Comum' };
+    if (price <= 110) return { class: 'rarity-blue', label: 'Raro' };
+    if (price <= 200) return { class: 'rarity-purple', label: 'Épico' };
+    if (price <= 350) return { class: 'rarity-gold', label: 'Lendário' };
     return { class: 'rarity-mythic', label: 'Mítico' };
 }
 
