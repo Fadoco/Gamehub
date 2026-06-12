@@ -3,7 +3,7 @@
         "id": 1,
         "title": "Euro Truck Simulator 2",
         "Description": "Viaje por toda a Europa dirigindo caminhões licenciados, gerenciando rotas, combustível e manutenção. Expanda sua empresa de transporte, contrate motoristas e enfrente tráfego realista, clima variável e contratos de carga desafiadores.",
-        "image": "img/Euro Truck Simulator 2.webp",
+        "image": "https://images.steamusercontent.com/ugc/946212858972232068/8B1FBE900F3DF19689A782AA418C4E6B341DE267/?imw=1024&imh=576&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -25,7 +25,7 @@
         "id": 2,
         "title": "Subnaltica 2",
         "Description": "Explore oceanos alienígenas, construa bases submarinas é colecione recursos para sobreviver. Enfrente criaturas marinhas, personalize equipamentos e descubra mistérios de civilizações perdidas sob o mar.",
-        "image": "img/Subnaltica 2.jpg",
+        "image": "https://www.gamewallpapers.com/download.php?img=wallpaper_subnautica_2_01_1920x1080.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -48,8 +48,8 @@
         "id": 3,
         "title": "Forza Horizon 6",
         "Description": "Pilote carros de alta performance em um festival de corridas de mundo aberto com pistas variadas, desafios de drift, eventos off-road e personalização completa de veículos. Descubra novos lugares, participe de campeonatos e aperfeiçoe seu estilo de direção.",
-        "image": "img/Forza Horizon 6.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900_2x.jpg",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1401537.jpg",
+        "coverUrl": "https://store-images.s-microsoft.com/image/apps.29856.14202278764680089.8e4c786a-0a1c-4737-a244-0bdfa34aab7b.64883cac-25a8-4715-a0dc-0dd42b0e5435",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -70,7 +70,7 @@
         "id": 4,
         "title": "Hades II",
         "Description": "Enfrente inimigos míticos em um roguelike frenético, usando habilidades únicas e armas diversas. Progrida com melhorias permanentes, conheça personagens do panteão grego e experimente uma história que evolui a cada tentativa de fuga do submundo.",
-        "image": "img/Hades II.jfif",
+        "image": "https://images.ctfassets.net/5owu3y35gz1g/4sNV3vIhSGWlR8KB86POBX/882b275b8af289ff2f21ca393a5ad92b/H2_Olympic_NoLogo_4K.jpg?w=1920&q=80",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -93,8 +93,8 @@
         "id": 5,
         "title": "outbound",
         "Description": "Aventure-se em um planeta selvagem e desconhecido, recolhendo recursos, construindo abrigo e lutando pela sobrevivência. Enfrente biomas hostis, perigos naturais e criaturas alienígenas enquanto descobre o passado do mundo.",
-        "image": "img/outbound.avif",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2681060/library_600x900_2x.jpg",
+        "image": "https://www.thexboxhub.com/wp-content/uploads/2026/05/Outbound-review-1-scaled.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/c6cb1263d52c4212a11359ef4c8c29f0/outbound-1solh.png?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows"
         ],
@@ -115,7 +115,7 @@
         "id": 6,
         "title": "Apex Legends",
         "Description": "Participe de batalhas em equipes com heróis táticos, cada um com habilidades únicas. Sobreviva em um battle royale rápido, coordene o uso de gadgets e armas, e aproveite atualizações constantes com novos mapas e personagens.",
-        "image": "img/Apex Legends.webp",
+        "image": "https://cdn2.unrealengine.com/s24-launch-anniversary4man-v01-1920x1080-015dc79eafbb.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -139,7 +139,7 @@
         "id": 7,
         "title": "Dota 2",
         "Description": "Lidere seu time em batalhas 5v5 intensas, escolhendo entre mais de 120 heróis com habilidades únicas. Equilibre farm, visão e controle de objetivos para destruir a base inimiga em partidas estratégicas de alto nível.",
-        "image": "img/Dota 2.jpg",
+        "image": "https://wallpapers.com/images/hd/best-dota-2-background-vlilg7n32mcf198h.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -160,8 +160,8 @@
         "id": 8,
         "title": "Dying Light The Beast",
         "Description": "Explore uma cidade infestada por zumbis usando parkour, armas improvisadas e combate corpo a corpo. Melhore suas habilidades, complete missões e enfrente monstros perigosos em um mundo aberto sombrio.",
-        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2422030/library_hero.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2422030/library_600x900_2x.jpg",
+        "image": "https://i.ytimg.com/vi/SQRFxRMaIKo/maxresdefault.jpg",
+        "coverUrl": "https://sm.ign.com/ign_br/cover/d/dying-ligh/dying-light-the-beast_92cs.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -184,8 +184,8 @@
         "id": 9,
         "title": "Invincible VS",
         "Description": "Lute com heróis e vilões em batalhas estilo quadrinhos, combinando poderes únicos e combos explosivos. Enfrente chefes poderosos e personalize sua equipe para vencer duelos frenéticos.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1531201509_IGDB-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1531201509_IGDB-285x380.jpg",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1409162.png",
+        "coverUrl": "https://external-game-cover-image-cf.store.on.epicgames.com/348216?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows"
         ],
@@ -204,7 +204,7 @@
         "id": 10,
         "title": "League of Legends",
         "Description": "Participe de partidas competitivas em equipe, escolhendo campeões com habilidades únicas. Trabalhe em conjunto para controlar o mapa, destruir torres e conquistar objetivos estratégicos.",
-        "image": "img/League of Legends.jpg",
+        "image": "https://c4.wallpaperflare.com/wallpaper/50/914/446/spirit-blossom-ahri-league-of-legends-ahri-league-of-legends-riot-games-hd-wallpaper-preview.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/21779-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -225,8 +225,8 @@
         "id": 11,
         "title": "Marvel's Spider-Man 2",
         "Description": "Balance pelos céus de Nova York como Peter Parker e Miles Morales, enfrente vilões clássicos e use acrobacias de teia e combate dinâmico para proteger a cidade.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/518002_IGDB-1920x1080.jpg",
-        "coverUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg?t=17635698112",
+        "image": "https://cdn1.epicgames.com/offer/b2818b59c0bb420e9647983dfd254931/EGS_Octopus_InsomniacGamesNixxesSoftware_S2_1200x1600-5831c61378872a1fe233b295fbf3140f",
+        "coverUrl": "https://cdn1.epicgames.com/offer/b2818b59c0bb420e9647983dfd254931/EGS_Octopus_InsomniacGamesNixxesSoftware_S2_1200x1600-5831c61378872a1fe233b295fbf3140f",
         "platforms": [
             "fab fa-playstation"
         ],
@@ -245,7 +245,7 @@
         "id": 12,
         "title": "Overwatch 2",
         "Description": "Junte-se a uma equipe de heróis com habilidades distintas em um shooter objetivo. Coordene ataques, defesas e utilitários em partidas rápidas e competitivas com atualizações contínuas.",
-        "image": "img/Overwatch.jpg",
+        "image": "https://images7.alphacoders.com/124/1249649.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2357570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -267,7 +267,7 @@
         "id": 13,
         "title": "Red Dead Redemption 2",
         "Description": "Mergulhe no Velho Oeste com uma narrativa profunda, missões de história, caça, acampamentos e interações realistas. Siga Arthur Morgan enquanto escolhe entre honra ou sobrevivência em um mundo aberto imersivo.",
-        "image": "img/Red Dead Redemption 2.jpg",
+        "image": "https://i.redd.it/jvs9j0xke0f61.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -291,7 +291,7 @@
         "id": 14,
         "title": "Rocket League",
         "Description": "Conecte futebol e carros turbo em partidas de alta velocidade com saltos, boosts e dribles. Jogue solo ou em equipe em arenas competitivas e suba de ranking com habilidades de mecânica e coordenação.",
-        "image": "img/Rocket League.png",
+        "image": "https://images4.alphacoders.com/885/thumb-1920-885543.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252950/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -314,8 +314,8 @@
         "id": 15,
         "title": "Sinisistar 2",
         "Description": "Revisite o estilo arcade retrô em um shooter intenso, enfrentando ondas de inimigos, chefes desafiadores e coletando power-ups para sobreviver.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/551239845_IGDB-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/551239845_IGDB-285x380.jpg",
+        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4466620/9a733502a870305fd2ce8998910a8eb60664b546/ss_9a733502a870305fd2ce8998910a8eb60664b546.1920x1080.jpg?t=1779777015",
+        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZOg5JxloHHaOfdVILzZxujM1xmIIgkzFbEA&s",
         "platforms": [
             "fab fa-windows"
         ],
@@ -335,7 +335,7 @@
         "id": 16,
         "title": "Street Fighter 6",
         "Description": "Entre nas arenas de luta com gráficos modernos e um sistema de combate acessível. Treine combos, use movimentos especiais e desafie jogadores online em um evento global de luta.",
-        "image": "img/Street Fighter 6.jpg",
+        "image": "https://image.api.playstation.com/vulcan/ap/rnd/202211/1408/l3bg7nmfPpPzam5jOVlaUFww.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -358,7 +358,7 @@
         "id": 17,
         "title": "Teamfight Tactics",
         "Description": "Monte um time de campeões em um auto battler com sinergias e estratégias de posicionamento. Adapte sua composição conforme o jogo evolui e escolha itens inteligentes para dominar as batalhas automáticas.",
-        "image": "img/Teamfight Tactics.jpg",
+        "image": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/fc9a0cca66f8acd38c08dfd0f5aed45a1440f9d0-1280x720.jpg?accountingTag=TFT&auto=format&fit=fill&q=80&w=1082",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/513143-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -379,7 +379,7 @@
         "id": 18,
         "title": "Tom Clancy's Rainbow Six Siege",
         "Description": "Jogue um shooter tático onde destruição ambiental e operadores especializados definem o ritmo. Planeje ataques, use gadgets e coopere com seu time para controlar pontos e eliminar o inimigo.",
-        "image": "img/Tom Clancy's Rainbow Six Siege.jpg",
+        "image": "https://gamespace.com/wp-content/uploads/2022/12/Rainbow-Six-Siege-free-week-2022.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -402,7 +402,7 @@
         "id": 19,
         "title": "Valorant",
         "Description": "Combine mira precisa com habilidades de agentes em um shooter tático 5v5. Compre armas, use utilitários estratégicos e trabalhe com sua equipe para dominar cada rodada.",
-        "image": "img/Valorant.jpg",
+        "image": "https://assets.b9.com.br/wp-content/uploads/2021/06/vavab9.jpg",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/516575-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -424,7 +424,7 @@
         "id": 20,
         "title": "Age of Empires IV",
         "Description": "Comande civilizações em batalhas históricas, gerencie exércitos e recursos em um RTS profundo com campanhas realistas.",
-        "image": "img/Age of Empires IV.jpg",
+        "image": "https://jogandocasualmente.com.br/wp-content/uploads/2025/11/review-age-of-empires-iv-anniversary-edition-ps5-1-900x506.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1466860/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -445,8 +445,8 @@
         "id": 21,
         "title": "Ark Survival Ascended",
         "Description": "Sobreviva em um mundo pré-histórico com criaturas gigantes, construa bases e crie dinos para explorar e proteger seu território.",
-        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2378510/library_hero.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2378510/library_600x900_2x.jpg",
+        "image": "https://images3.alphacoders.com/135/1358734.png",
+        "coverUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/06/Ark_Survival_Ascended.jpg/250px-Ark_Survival_Ascended.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -467,8 +467,8 @@
         "id": 22,
         "title": "Arknights Endfield",
         "Description": "Gerencie uma equipe de operadores em um jogo tático de defesa, com história sombria e estratégias de posicionamento de unidades.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1638363765_IGDB-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1638363765_IGDB-285x380.jpg",
+        "image": "https://images2.alphacoders.com/140/1405038.jpg",
+        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDlsxh6SkWANcLUoUDa_4vxfPn39bjbvwWZg&s",
         "platforms": [
             "fab fa-windows"
         ],
@@ -489,7 +489,7 @@
         "id": 23,
         "title": "Baldur's Gate 3",
         "Description": "RPG de fantasia com decisões profundas, combate por turnos e uma aventura épica na tradição de clássicos de Dungeons & Dragons.",
-        "image": "img/Baldur's Gate 3.jpg",
+        "image": "https://s2-techtudo.glbimg.com/2D667S7pICHVyam9A302KIy_DoM=/0x0:1200x675/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2023/E/X/TaJmxtSoSOIZsGLuhe0w/baldurs-gate-3-lancmento-xbox-series-x-s-2023-multiplayer-tela-dividida.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -511,7 +511,7 @@
         "id": 24,
         "title": "Celeste",
         "Description": "Plataforma desafiadora com foco em precisão e narrativa emocional sobre superar medos enquanto escala a montanha Celeste.",
-        "image": "img/Celeste.jpg",
+        "image": "https://image.api.playstation.com/cdn/UP2120/CUSA11302_00/hgqlI1LTcsd6zuL7YWVLQ8d00jkBmtCg.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/504230/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -596,8 +596,8 @@
         "id": 28,
         "title": "Dead Cells",
         "Description": "Ação roguelike com combate fluido, armas variadas e fases geradas proceduralmente em busca da próxima tentativa de fuga.",
-        "image": "img/Dead Cells.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/588650/library_600x900_2x.jpg",
+        "image": "https://image.api.playstation.com/cdn/EP3862/CUSA10484_00/uqZcouxNAPwBkWgMbGGsunPHSEupucOb.png",
+        "coverUrl": "https://upload.wikimedia.org/wikipedia/en/1/1f/Dead_cells_cover_art.png",
         "platforms": [
             "fab fa-windows"
         ],
@@ -686,7 +686,7 @@
         "id": 32,
         "title": "Factorio",
         "Description": "Automatize fábricas complexas, otimize cadeias de produção e defenda suas linhas de suprimentos contra inimigos alienígenas.",
-        "image": "img/Factorio.jpg",
+        "image": "https://images5.alphacoders.com/778/thumb-1920-778421.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/427520/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -733,7 +733,7 @@
         "title": "Genshin Impact",
         "Description": "RPG de ação gratuito com exploração elemental, mundo aberto impressionante e uma variedade de personagens colecionáveis.",
         "image": "img/Genshin Impact.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/99dc46c68ea14324964a856d18dcac5b/genshin-impact-40jjf.jpg?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -865,7 +865,7 @@
         "title": "Honkai Star Rail",
         "Description": "RPG de exploração espacial com batalhas por turnos, personagens estilizados e um universo de fantasia sci-fi.",
         "image": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-285x380.jpg",
+        "coverUrl": "https://image.api.playstation.com/vulcan/ap/rnd/202308/1103/8c3ce3611a4bb187418bb5e24924a055ba33d3046a7aaacb.png",
         "platforms": [
             "fab fa-windows"
         ],
@@ -998,8 +998,8 @@
         "id": 46,
         "title": "Neverness to Everness",
         "Description": "Aventura de fantasia com exploração surreal, missões encantadoras e um mundo misterioso para descobrir.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/NevernessToEverness-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/NevernessToEverness-285x380.jpg",
+        "image": "https://pbs.twimg.com/media/HJJxDoFboAA9ZWu.jpg",
+        "coverUrl": "https://image.api.playstation.com/vulcan/ap/rnd/202508/1211/275015ea9ed8af0b36ad6f13d956f5e670566195ecdfc2cc.png",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1362,7 +1362,7 @@
         "title": "Untitled Goose Game",
         "Description": "Controle um ganso travesso e cause caos em uma vila, completando objetivos divertidos e engraçados.",
         "image": "img/Untitled Goose Game.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1100600/library_600x900_2x.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/f7e06ee3d0c1491094cc0215859f0120/offer/EGS_UntitledGooseGame_HouseHouse_S2-1200x1600-81cd84044b7cf9825c44841e0671d227.jpg?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1448,8 +1448,8 @@
         "id": 66,
         "title": "Wuthering Waves",
         "Description": "RPG de ação anime com exploração e batalhas estilizadas em um mundo cheio de fantasias e mistérios.",
-        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1178618799_IGDB-1920x1080.jpg",
-        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1178618799_IGDB-285x380.jpg",
+        "image": "https://cdn2.unrealengine.com/wuthering-waves-2-0-rinascita-whats-new-overview-3840x2160-ea104a7f5950.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/c1586295960b46f88bbfeec32c199e0e/wuthering-waves-1vbt1.jpg?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows"
         ],
