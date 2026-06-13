@@ -1,0 +1,130 @@
+{
+  "name": "GameHub - Sua Loja de Jogos Independente",
+  "short_name": "GameHub",
+  "description": "Descubra novos jogos, compre títulos independentes e conecte-se com amigos na plataforma GameHub.",
+  "version": "2.0.1",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1a1a2e",
+  "background_color": "#0f0f1e",
+  "categories": ["games", "entertainment"],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/images/screenshot-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Biblioteca",
+      "short_name": "Biblioteca",
+      "description": "Acesse sua biblioteca de jogos",
+      "url": "/html/biblioteca.html",
+      "icons": [
+        {
+          "src": "/images/shortcut-biblioteca.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Carrinho",
+      "short_name": "Carrinho",
+      "description": "Vá para o carrinho de compras",
+      "url": "/html/carrinho.html",
+      "icons": [
+        {
+          "src": "/images/shortcut-carrinho.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Ranking",
+      "short_name": "Ranking",
+      "description": "Veja o ranking de usuários",
+      "url": "/html/ranking.html",
+      "icons": [
+        {
+          "src": "/images/shortcut-ranking.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Biblioteca de Jogos",
+      "short_name": "Biblioteca",
+      "description": "Veja seus jogos comprados",
+      "url": "/html/biblioteca.html?utm_source=shortcut",
+      "icons": [
+        {
+          "src": "/images/shortcut-biblioteca-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Ranking",
+      "short_name": "Ranking",
+      "description": "Veja os jogadores mais ricos",
+      "url": "/html/ranking.html?utm_source=shortcut",
+      "icons": [
+        {
+          "src": "/images/shortcut-ranking-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

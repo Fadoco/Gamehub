@@ -2,9 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="description" content="GameHub - A sua loja independente preferida para descobrir novos jogos e aventuras.">
-    <meta name="theme-color" content="#00d4ff">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GameHub">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png">
     <title>GameHub - Sua Loja de Jogos</title>
     
     <!-- === CSS MODULARIZADO (Mobile-First) === -->
@@ -22,6 +28,9 @@
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/responsive.css">
     
+    <!-- === THEME SWITCHER === -->
+    <link rel="stylesheet" href="css/theme-switcher.css">
+    
     <!-- === CSS ESPECÍFICO DAS PÁGINAS === -->
     <link rel="stylesheet" href="css/header-footer.css">
     <link rel="stylesheet" href="css/home.css">
@@ -35,8 +44,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
+    <!-- === PERFORMANCE MODULES === -->
+    <script src="java/lazy-image-loader.js"></script>
+    <script src="java/pwa-manager.js"></script>
+    
     <!-- === SCRIPTS (Carregados com defer para não bloquear renderização) === -->
     <script src="java/firebase-config.js"></script>
+    <script src="java/firestore-cache.js"></script>
+    <script src="java/theme-switcher.js"></script>
     <script src="java/auth.js" defer></script>
     <script src="java/ranks.js" defer></script>
     <script src="java/global.js" defer></script>

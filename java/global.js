@@ -314,7 +314,7 @@ window.renderToContainer = (games, container, clear = true) => {
                 <article class="game-card ${auraClass}">
                 <div class="card-media ${auraClass}">
                     ${discountBadge}
-                    <img src="${displayImg}" alt="${game.title}" referrerpolicy="no-referrer">
+                    <img data-src="${displayImg}" alt="${game.title}" class="lazy-image" referrerpolicy="no-referrer">
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(event, ${game.id})">
                         <i class="${favIcon}"></i>
                     </button>
