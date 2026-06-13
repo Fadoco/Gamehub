@@ -163,7 +163,10 @@ window.checkUserSession = (user) => {
     }
 
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
-    const isAdmin = user && adminList.includes(user.email.toLowerCase());
+    const isAdmin = user && (
+        (typeof window.PermissionsModule?.isAdmin === 'function' && window.PermissionsModule.isAdmin(user)) ||
+        adminList.includes((user.email || '').toLowerCase())
+    );
 
     if (user) {
         if (btnLogin) btnLogin.style.display = 'none'; 
@@ -229,7 +232,21 @@ window.checkUserSession = (user) => {
             const logoutBtn = document.createElement('button');
             logoutBtn.className = 'nav-button'; 
             logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-            logoutBtn.onclick = () => window.auth.signOut().then(() => location.reload());
+            logoutBtn.onclick = async () => {
+                try {
+                    if (typeof window.SessionModule?.logout === 'function') {
+                        await window.SessionModule.logout();
+                    } else {
+                        await window.auth.signOut();
+                    }
+                    location.reload();
+                } catch (error) {
+                    console.error('Erro ao sair:', error);
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('Erro ao sair da conta.', 'error');
+                    }
+                }
+            };
             userMenu.appendChild(logoutBtn);
         }
  
@@ -395,6 +412,16 @@ async function fetchGamesData() {
         console.error("Erro ao carregar o catálogo de jogos:", error);
     }
 }
+
+/**
+ * Atualiza a UI da página atual sem recarregar.
+ * Chamado após mudanças de estado (favoritos, carrinho, compras, etc).
+ */
+window.refreshCurrentPageUI = function() {
+    if (window.routePageRendering) {
+        window.routePageRendering();
+    }
+};
 
 /**
  * Decide qual função de renderização chamar com base na página atual

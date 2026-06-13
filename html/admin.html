@@ -1,16 +1,31 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel de Administrador - Gerencie o GameHub.">
+    <meta name="theme-color" content="#00d4ff">
     <title>GameHub - Painel Admin</title>
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/header-footer.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="../css/upgrades.css">
+    
+    <!-- === ÍCONES === -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDKs -->
+    <!-- === FIREBASE === -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -22,7 +37,7 @@
 <body>
     <header class="topbar">
         <div class="topbar__left">
-            <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub Admin</div>
+            <div class="brand cursor-pointer" onclick="window.location.href='../index.html'">GameHub Admin</div>
             <nav class="topbar__menu">
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
@@ -31,19 +46,19 @@
             </nav>
         </div>
         <div class="topbar__actions">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='historico.html'">
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
             <!-- user-menu será preenchido dinamicamente por auth.js -->
-            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <div id="user-menu" class="flex items-center gap-3"></div>
             <!-- btn-login será exibido se o usuário não estiver logado -->
             <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
     </header>
 
-    <header class="main-header" style="margin-bottom: 20px;">
-        <div class="searchbar" style="max-width: 500px; margin: 0 auto;">
+    <header class="main-header mb-5">
+        <div class="searchbar mx-auto max-w-sm">
             <i class="fas fa-search searchbar__icon"></i>
             <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
         </div>
@@ -110,7 +125,7 @@
 
                     <div class="form-actions">
                         <button type="submit" class="buy-button">Salvar Jogo</button>
-                        <button type="button" id="btn-cancel-edit" class="btn-see-more" style="display:none">Cancelar</button>
+                        <button type="button" id="btn-cancel-edit" class="btn-see-more hidden">Cancelar</button>
                     </div>
                 </form>
             </section>
@@ -139,7 +154,7 @@
                 
                 <!-- Container para os cartões com sistema de scroll -->
                 <div class="user-list-container">
-                    <p style="padding: 20px;">Carregando usuários...</p>
+                    <p class="p-5">Carregando usuários...</p>
                 </div>
             </section>
 

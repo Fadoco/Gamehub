@@ -532,7 +532,7 @@
         "id": 25,
         "title": "Counter-Strike 2",
         "Description": "Competitivo shooter tático com economia, habilidades de equipe e partidas intensas entre terroristas e contra-terroristas.",
-        "image": "img/Counter-Strike 2.jpeg",
+        "image": "https://wallpapers.com/images/hd/counter-strike-global-offensive-desktop-5u8oo2n3tfwk3c8v.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -553,7 +553,7 @@
         "id": 26,
         "title": "Crusader Kings III",
         "Description": "Controle dinastias medievais em um grande simulador de estratégias políticas, alianças, casamentos e guerras.",
-        "image": "img/Crusader Kings III.jpg",
+        "image": "https://images.alphacoders.com/110/1104489.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1158310/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -574,7 +574,7 @@
         "id": 27,
         "title": "Cyberpunk 2077",
         "Description": "RPG futurista em Night City, com escolhas, personalização de implantes e missões eletrizantes em um mundo aberto neon.",
-        "image": "img/Cyberpunk 2077.jpg",
+        "image": "https://images5.alphacoders.com/927/thumb-1920-927025.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -618,7 +618,7 @@
         "id": 29,
         "title": "Deep Rock Galactic",
         "Description": "Jogo cooperativo de mineração espacial, onde anões enfrentam cavernas alienígenas enquanto coletam recursos e lutam por suas vidas.",
-        "image": "img/Deep Rock Galactic.jpg",
+        "image": "https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467575016-X4ACF9C4HUAB7PV7L3OX/DRG_Wallpaper_RadioactiveZone.jpg?format=1000w",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/548430/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -640,7 +640,7 @@
         "id": 30,
         "title": "Don't Starve Together",
         "Description": "Survival cooperativo em um mundo sombrio e cheio de perigos, onde você precisa craftar, gerenciar fome e derrotar criaturas bizarras.",
-        "image": "img/Don't Starve Together.jpg",
+        "image": "https://images6.alphacoders.com/130/1304590.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322330/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -662,7 +662,7 @@
         "id": 31,
         "title": "Elden Ring",
         "Description": "RPG de ação em mundo aberto criado por FromSoftware e George R.R. Martin, com combate desafiador e exploração mística.",
-        "image": "img/Elden Ring.jpg",
+        "image": "https://images.steamusercontent.com/ugc/2058741034012528498/BE0BDF559F8E3A847702D4AFA66C30FFCF44C62B/",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -708,7 +708,7 @@
         "id": 33,
         "title": "Fallout 4",
         "Description": "RPG pós-apocalíptico em Boston, com construção de assentamentos, armas customizáveis e uma trama cheia de facções.",
-        "image": "img/Fallout 4.jpg",
+        "image": "https://4kwallpapers.com/images/wallpapers/fallout-4-power-armor-5k-3840x2160-24486.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/377160/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -732,7 +732,7 @@
         "id": 34,
         "title": "Genshin Impact",
         "Description": "RPG de ação gratuito com exploração elemental, mundo aberto impressionante e uma variedade de personagens colecionáveis.",
-        "image": "img/Genshin Impact.jpg",
+        "image": "https://wallpapercat.com/w/full/2/5/d/1225-3840x2160-desktop-4k-genshin-impact-background-image.jpg",
         "coverUrl": "https://cdn1.epicgames.com/spt-assets/99dc46c68ea14324964a856d18dcac5b/genshin-impact-40jjf.jpg?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows",
@@ -755,7 +755,7 @@
         "id": 35,
         "title": "Grand Theft Auto V",
         "Description": "Mundo aberto criminoso em Los Santos, com missões de assalto, direção, multiplayer e muita ação urbana.",
-        "image": "img/Grand Theft Auto V.jpg",
+        "image": "https://wallpaperaccess.com/full/842447.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -778,7 +778,7 @@
         "id": 36,
         "title": "Hearts of Iron IV",
         "Description": "Grande estratégia da Segunda Guerra Mundial, controlando frentes, produção e diplomacia em escala global.",
-        "image": "img/Hearts of Iron IV.jpg",
+        "image": "https://images3.alphacoders.com/127/1273283.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/394360/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -799,7 +799,7 @@
         "id": 37,
         "title": "Helldivers 2",
         "Description": "Tiro cooperativo intenso em uma guerra intergaláctica, com queda de equipamentos, coordenação e inimigos implacáveis.",
-        "image": "img/Helldivers 2.jpg",
+        "image": "https://4kwallpapers.com/images/wallpapers/helldivers-2-2024-3840x2160-18365.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -821,7 +821,7 @@
         "id": 38,
         "title": "Hollow Knight",
         "Description": "Metroidvania sombrio com exploração profunda, combate preciso e um mundo submerso cheio de segredos.",
-        "image": "img/Hollow Knight.jpg",
+        "image": "https://c4.wallpaperflare.com/wallpaper/296/96/958/hollow-knight-quirrel-hollow-knight-hd-wallpaper-preview.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -843,7 +843,7 @@
         "id": 39,
         "title": "Honkai Impact",
         "Description": "RPG de ação anime com personagens colecionáveis, combate dinâmico e história futurista cheia de mistério.",
-        "image": "img/honkai impact.jpg",
+        "image": "https://upload-os-bbs.hoyolab.com/upload/2023/02/08/83878114/79c30dd177872935aff0e2970a2ae8be_5726277750652233117.jpg?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1671200/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -885,7 +885,7 @@
         "id": 41,
         "title": "It Takes Two",
         "Description": "Aventura cooperativa criativa com mecânicas únicas para cada personagem, onde você resolve puzzles e reconstrói um relacionamento.",
-        "image": "img/It Takes Two.jpg",
+        "image": "https://images7.alphacoders.com/130/thumb-1920-1301860.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -908,7 +908,7 @@
         "id": 42,
         "title": "Left 4 Dead 2",
         "Description": "Shooter cooperativo com zumbis, sobrevivência e hordas rápidas. Junte-se aos sobreviventes e lute até o próximo ponto seguro.",
-        "image": "img/Left 4 Dead 2.jpg",
+        "image": "https://wallpapers.com/images/hd/left-4-dead-2-survivors-8z3pb5bfrs2mk2pm.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/550/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -930,7 +930,7 @@
         "id": 43,
         "title": "Lethal Company",
         "Description": "Explore fábricas perigosas com seus amigos, colete recursos e evite criaturas enquanto trabalha sob pressão constante.",
-        "image": "img/Lethal Company.jpg",
+        "image": "https://images2.alphacoders.com/134/1344905.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1966720/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -952,7 +952,7 @@
         "id": 44,
         "title": "Minecraft",
         "Description": "Jogo emocionante com muitas aventuras e desafios.",
-        "image": "img/Minecraf.jpg",
+        "image": "https://i.redd.it/wallpaper-material-right-here-from-minecraft-live-v0-u8v4f3rckut71.jpg?width=1920&format=pjpg&auto=webp&s=85bfcb7bf3e8775202950df238d73c5e8ccb5b59",
         "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/27471_IGDB-285x380.jpg",
         "platforms": [
             "fab fa-windows"
@@ -974,7 +974,7 @@
         "id": 45,
         "title": "Monster Hunter World",
         "Description": "Cace monstros gigantes em ambientes vivos, equipe armas e armaduras e coopere com outros caçadores.",
-        "image": "img/Monster Hunter World.jpg",
+        "image": "https://preview.redd.it/monster-hunter-wallpaper-v0-cj97pz5etjy21.jpg?auto=webp&s=baa70fcc85f7d09f5cbf6019b07deb4a28685815",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1020,7 +1020,7 @@
         "id": 47,
         "title": "Outer Wilds",
         "Description": "Explore um sistema solar em constante mudança, resolva mistérios e use um ciclo temporal para desvendar segredos antigos.",
-        "image": "img/Outer Wilds.jpg",
+        "image": "https://wallpapercat.com/w/full/4/a/3/1989-3840x2160-desktop-4k-outer-wilds-background-photo.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753640/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1044,7 +1044,7 @@
         "id": 48,
         "title": "Overcooked 2",
         "Description": "Jogo de cozinha cooperativa com receitas malucas, tempo apertado e muita bagunça em cozinha junto com amigos.",
-        "image": "img/Overcooked 2.jpg",
+        "image": "https://images5.alphacoders.com/112/1127812.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/728880/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1068,7 +1068,7 @@
         "id": 49,
         "title": "Palworld",
         "Description": "Capture criaturas, construa bases e enfrente perigos em um mundo que mistura aventura e sobrevivência com monstros.",
-        "image": "img/Palworld.jpg",
+        "image": "https://images7.alphacoders.com/134/thumb-1920-1348510.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1090,7 +1090,7 @@
         "id": 50,
         "title": "Phasmophobia",
         "Description": "Caça fantasmas cooperativa em locais assombrados, com ferramentas paranormais e sustos em equipe.",
-        "image": "img/Phasmophobia.jpg",
+        "image": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/04/phasmophobia-character-customization-update-may-2026.jpg?&fit=crop&w=1600&h=900",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/739630/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1111,7 +1111,7 @@
         "id": 51,
         "title": "Project Zomboid",
         "Description": "Simulador de sobrevivência zumbi com crafting, controle de ferimentos e um mundo aberto implacável.",
-        "image": "img/Project Zomboid.jpg",
+        "image": "https://wallpapers.com/images/hd/project-zomboid-emergency-response-scene-zqqgusllczcntw55.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/108600/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1133,7 +1133,7 @@
         "id": 52,
         "title": "RimWorld",
         "Description": "Gerencie colonos, construções e eventos imprevisíveis em uma colônia espacial isolada.",
-        "image": "img/RimWorld.jpg",
+        "image": "https://images5.alphacoders.com/121/1212344.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1155,7 +1155,7 @@
         "id": 53,
         "title": "Rust",
         "Description": "Sobreviva em um mundo aberto hostil, construa bases, colete recursos e enfrente outros jogadores e criaturas.",
-        "image": "img/Rust.jpg",
+        "image": "https://images4.alphacoders.com/980/980708.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1177,7 +1177,7 @@
         "id": 54,
         "title": "Sea of Thieves",
         "Description": "Aventure-se como pirata em alto mar, busque tesouros, lute contra outros navios e explore ilhas misteriosas.",
-        "image": "img/Sea of Thieves.avif",
+        "image": "https://images.alphacoders.com/902/902096.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1200,7 +1200,7 @@
         "id": 55,
         "title": "Skyrim (The Elder Scrolls V)",
         "Description": "RPG de mundo aberto em Tamriel, com dragões, magia, guildas e liberdade total de exploração.",
-        "image": "img/Skyrim (The Elder Scrolls V).jpg",
+        "image": "https://wallpapers.com/images/hd/elder-scrolls-skyrim-landscape-gb1aq85ageapbs6d.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/489830/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1224,7 +1224,7 @@
         "id": 56,
         "title": "Slay the Spire",
         "Description": "Misture roguelike e deckbuilding para escalar uma torre cheia de inimigos com cartas e poderes únicos.",
-        "image": "img/Slay the Spire.jpg",
+        "image": "https://wallpaperaccess.com/full/7145040.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1246,7 +1246,7 @@
         "id": 57,
         "title": "Stardew Valley",
         "Description": "Gerencie sua fazenda, cultive plantações, crie animais e construa relacionamentos com moradores de uma vila charmosa.",
-        "image": "img/Stardew Valley.jpg",
+        "image": "https://images.wallpapersden.com/image/download/stardew-valley_a2lna2qUmZqaraWkpJRmbmdlrWZlbWU.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1270,7 +1270,7 @@
         "id": 58,
         "title": "Terraria",
         "Description": "Aventura em 2D com exploração, mineração, construção e chefes épicos em um mundo pixelado cheio de segredos.",
-        "image": "img/Terraria.jpg",
+        "image": "https://i.redd.it/gallery-of-all-my-more-or-less-game-realistic-terraria-v0-k6kznvhfu6d71.png?width=1920&format=png&auto=webp&s=e249a5812c72dbccc50dbaf4f1820cf0d4783b15",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1294,7 +1294,7 @@
         "id": 59,
         "title": "The Binding of Isaac Rebirth",
         "Description": "Roguelike macabro com salas geradas, poderes estranhos e uma grande variedade de itens para combinar.",
-        "image": "img/The Binding of Isaac Rebirth.jpg",
+        "image": "https://m.media-amazon.com/images/I/7177yw600iS._AC_SL1500_.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/250900/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1315,7 +1315,7 @@
         "id": 60,
         "title": "The Sims 4",
         "Description": "Crie personagens, construa casas e controle vidas em um simulador social que permite criar histórias próprias.",
-        "image": "img/The Sims 4.jpg",
+        "image": "https://wallpapers.com/images/hd/the-sims-4-1280-x-717-wallpaper-jp1osnlfj7z336th.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1337,7 +1337,7 @@
         "id": 61,
         "title": "The Witcher 3 Wild Hunt",
         "Description": "RPG narrativo com caçadas de monstros, decisões morais difíceis e um mundo aberto vibrante cheio de detalhes.",
-        "image": "img/The Witcher 3 Wild Hunt.jpg",
+        "image": "https://c4.wallpaperflare.com/wallpaper/620/343/647/the-witcher-the-witcher-3-wild-hunt-geralt-of-rivia-video-games-wallpaper-preview.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -1361,7 +1361,7 @@
         "id": 62,
         "title": "Untitled Goose Game",
         "Description": "Controle um ganso travesso e cause caos em uma vila, completando objetivos divertidos e engraçados.",
-        "image": "img/Untitled Goose Game.jpg",
+        "image": "https://s2.glbimg.com/ApdzZ4ftHFfaefF03xmkAo2Rh1o=/e.glbimg.com/og/ed/f/original/2017/10/09/goose_-_house_house.jpg",
         "coverUrl": "https://cdn1.epicgames.com/f7e06ee3d0c1491094cc0215859f0120/offer/EGS_UntitledGooseGame_HouseHouse_S2-1200x1600-81cd84044b7cf9825c44841e0671d227.jpg?resize=1&w=360&h=480&quality=medium",
         "platforms": [
             "fab fa-windows",
@@ -1384,7 +1384,7 @@
         "id": 63,
         "title": "Valheim",
         "Description": "Sobreviva em um mundo viking mitológico com construção, caça, exploração e batalhas contra criaturas lendárias.",
-        "image": "img/Valheim.jpg",
+        "image": "https://wallpapers.com/images/hd/valheim-wooden-house-scenery-2510pkd33oggdkac.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1406,7 +1406,7 @@
         "id": 64,
         "title": "Vampire Survivors",
         "Description": "Roguelike simples e viciante onde você sobrevive a ondas de inimigos enquanto melhora ataques automáticos e habilidades.",
-        "image": "img/Vampire Survivors.jpg",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1405711.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1794680/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -1427,7 +1427,7 @@
         "id": 65,
         "title": "Warhammer 40,000",
         "Description": "Jogo de estratégia sombria no universo Warhammer 40K, com combates táticos e temas de guerra futurista.",
-        "image": "img/Warhammer 40,000.jpg",
+        "image": "https://images.wallpapersden.com/image/download/warhammer-40k-darktide_bGdnamaUmZqaraWkpJRmbmdlrWZlbWU.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/55150/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"

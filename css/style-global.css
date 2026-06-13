@@ -1,27 +1,11 @@
 /**
  * PROJETO: GameHub - Loja Independente de Jogos
- * DESCRIÇÃO: Estilização global unificada (Variáveis, Layout, Componentes Compartilhados e Sistema de UI).
+ * DESCRIÇÃO: Estilização global unificada (Layout, Componentes Compartilhados e Sistema de UI).
  * AUTOR: Engenharia de Software
+ * 
+ * NOTE: Variáveis CSS são definidas em css/variables.css para evitar conflitos.
+ *       Este arquivo contém apenas estilos de layout e componentes.
  */
-
-/* --- Variáveis CSS (Custom Properties) --- */
-/* Define cores globais para facilitar mudanças futuras e consistência */
-:root {
-    --bg-dark: #0b0b0c;
-    --bg-header: #18181c;
-    --text-main: #ffffff;
-    --text-secondary: #cccccc;
-    --text-muted: #9ca3af;
-    --accent: #0074e4;
-    --accent-soft: rgba(0, 116, 228, 0.18);
-    --danger: #ff4d8d;
-    --glitch-red: #ff003c;
-    --glitch-blue: #00f0ff;
-    --border: rgba(255, 255, 255, 0.08);
-    --radius: 14px;
-    --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
-    --transition: all 0.3s ease;
-}
 
 /* --- Scrollbar Customizada --- */
 ::-webkit-scrollbar {
@@ -44,7 +28,7 @@ body {
     padding: 0; /* Remove padding padrão */
     background-color: var(--bg-dark); /* Aplica fundo escuro */
     background-image: none; /* Remove os gradientes azuis */
-    color: var(--text-main); /* Define cor do texto */
+    color: var(--text-main, var(--text-primary)); /* Define cor do texto */
     font-family: "Inter", "Brutal", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased; /* Melhora renderização da fonte em Webkit */
     line-height: 1.5;

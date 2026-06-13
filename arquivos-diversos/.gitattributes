@@ -1,5 +1,0 @@
-# Identifica arquivos de texto e lida com finais de linha automaticamente
-* text=auto
-*.js text eol=lf
-*.html text eol=lf
-*.css text eol=lf

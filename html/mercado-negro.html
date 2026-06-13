@@ -1,9 +1,23 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mercado Negro - Compre itens raros no GameHub.">
+    <meta name="theme-color" content="#00d4ff">
     <title>SISTEMA CORROMPIDO - MERCADO NEGRO</title>
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../Roleta/roleta.css">
     <link rel="stylesheet" href="../css/mercado-negro.css">
 </head>
@@ -19,7 +33,7 @@
                 <div class="roulette-selector"></div>
                 <div id="special-rail" class="special-rail"></div>
             </div>
-            <button class="btn-hack" style="width: 100%; margin-top: 10px;" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 250,00)</button>
+            <button class="btn-hack w-full mt-2.5" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 250,00)</button>
         </section>
         
         <!-- Seção: Caixas Especiais do Mercado Negro -->
@@ -30,16 +44,16 @@
 
         <section class="market-section boxes-selection">
              <h2 class="market-title">> CAIXAS ESPECIAIS</h2>
-            <p style="font-size: 10px; color: #888; margin-bottom: 10px;">
+            <p class="text-xs text-gray-600 mb-2.5">
                 Injete payloads para descriptografar e adquirir softwares de alto escalão.
             </p>
             <div class="boxes-grid-special">
                 <div class="box-card-special tier-glitch">
-                    <h3 style="color: #00ff00;">Caixa Glitch</h3>
-                    <p style="font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px;">
+                    <h3 class="text-lime-500">Caixa Glitch</h3>
+                    <p class="text-xs text-secondary my-2.5">
                         Contém softwares de valor elevado (Min. R$ 100).
                     </p>
-                    <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px #00ff0044)">
+                    <div class="text-5xl mb-5 glow-green">
                         <i class="fas fa-bug"></i>
                     </div>
                     <button class="btn-hack" id="btn-open-glitch-box" onclick="openSpecialBox('glitch')">
@@ -47,11 +61,11 @@
                     </button>
                 </div>
                 <div class="box-card-special tier-void">
-                    <h3 style="color: #a335ee;">Caixa do Vazio</h3>
-                    <p style="font-size: 11px; color: var(--text-secondary); margin: 10px 0 15px;">
+                    <h3 class="text-purple-600">Caixa do Vazio</h3>
+                    <p class="text-xs text-secondary my-2.5">
                         Contém softwares de elite e proibidos (Min. R$ 200).
                     </p>
-                    <div style="font-size: 40px; margin-bottom: 20px; filter: drop-shadow(0 0 10px #a335ee44)">
+                    <div class="text-5xl mb-5 glow-purple">
                         <i class="fas fa-infinity"></i>
                     </div>
                     <button class="btn-hack" id="btn-open-void-box" onclick="openSpecialBox('void')">
@@ -66,31 +80,31 @@
             <h2 class="market-title">> JOGOS DESVIADOS (DESCONTO DE 30%)</h2>
             <div id="cheaper-games-list" class="market-list"></div>
         </section>
-        <button class="btn-hack" style="margin-top: 30px; width: 100%;" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
+        <button class="btn-hack mt-8 w-full" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
     </div>
 
     <!-- Elemento de Áudio corrigido -->
     <audio id="spin-sound-effect" src="../Roleta/assets/csgo-case-open.mp3" preload="auto"></audio>
 
     <!-- Modal de Abertura (Visual de Hacking para Caixas) -->
-    <div id="box-opening-modal" class="modal" style="display: none;">
-        <div class="modal-content black-market-container" style="max-width: 500px; border-color: #0f0;">
-            <h2 id="modal-box-title" style="color: #0f0; text-shadow: 0 0 10px #0f0;">> ACESSANDO_KERNEL...</h2>
+    <div id="box-opening-modal" class="modal hidden">
+        <div class="modal-content black-market-container max-w-md border-lime-500">
+            <h2 id="modal-box-title" class="text-lime-500 glow-green">> ACESSANDO_KERNEL...</h2>
             
             <!-- Substituído: De Barra de Progresso para Sistema de Roleta Hacker -->
-            <div class="special-roulette-wrapper" style="margin: 20px 0; height: 120px; border-color: #0f0;">
-                <div class="roulette-selector" style="background: #0f0; box-shadow: 0 0 10px #0f0;"></div>
+            <div class="special-roulette-wrapper my-5 h-24 border-lime-500">
+                <div class="roulette-selector bg-lime-500 glow-green"></div>
                 <div id="modal-market-rail" class="special-rail"></div>
             </div>
 
-            <p id="modal-result-info" style="font-family: monospace; color: #0f0;"></p>
+            <p id="modal-result-info"></p>
         </div>
     </div>
 
     <!-- Modal de Revelação -->
-    <div id="result-reveal-modal" class="modal" style="display: none;">
-        <div class="modal-content reveal-card-content" style="border-color: #0f0; background: #000;">
-            <h2 id="reveal-result-title" style="color: #0f0; text-shadow: 0 0 10px #0f0;">BYPASS COMPLETO</h2>
+    <div id="result-reveal-modal" class="modal">
+        <div class="modal-content reveal-card-content">
+            <h2 id="reveal-result-title">BYPASS COMPLETO</h2>
             <div id="reveal-card-target">
                 <!-- O card do jogo/upgrade aparecerá aqui -->
             </div>

@@ -39,6 +39,45 @@ try {
 
 const db = window.db;
 
+function getModuleBasePath() {
+    const currentPath = window.location.pathname || '';
+    return currentPath.includes('/html/') || currentPath.includes('/Roleta/')
+        ? '../java/modules/'
+        : 'java/modules/';
+}
+
+function loadAuthModules() {
+    if (window.LoginModule && window.RegisterModule && window.SessionModule && window.PermissionsModule && window.UserMenuModule) {
+        return Promise.resolve();
+    }
+
+    const moduleFiles = ['login.js', 'register.js', 'session.js', 'permissions.js', 'user-menu.js'];
+    const basePath = getModuleBasePath();
+
+    return Promise.all(moduleFiles.map((file) => new Promise((resolve, reject) => {
+        const existing = document.querySelector(`script[src*="${file}"]`);
+        if (existing) {
+            if (existing.dataset.loaded === 'true') {
+                resolve();
+                return;
+            }
+            existing.addEventListener('load', () => resolve(), { once: true });
+            existing.addEventListener('error', () => reject(new Error(`Erro ao carregar ${file}`)), { once: true });
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = `${basePath}${file}`;
+        script.async = false;
+        script.onload = () => {
+            script.dataset.loaded = 'true';
+            resolve();
+        };
+        script.onerror = () => reject(new Error(`Erro ao carregar ${file}`));
+        document.head.appendChild(script);
+    })));
+}
+
 window.userFavorites = []; // Armazenamento global de favoritos
 window.userCart = [];      // Armazenamento global do carrinho
 window.userLibrary = [];   // Armazenamento global da biblioteca
@@ -133,7 +172,10 @@ auth.onAuthStateChanged((user) => {
     const isLoginPage = window.location.pathname.includes('login.html');
     const isAdminPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin-user-detail.html');
     const adminList = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
-    const isAdmin = user && adminList.includes(user.email.toLowerCase());
+    const isAdmin = user && (
+        (typeof window.PermissionsModule?.isAdmin === 'function' && window.PermissionsModule.isAdmin(user)) ||
+        adminList.includes((user.email || '').toLowerCase())
+    );
     const isSkipActive = localStorage.getItem('skipLogin') === 'true';
 
     if (!user) {
@@ -160,7 +202,9 @@ auth.onAuthStateChanged((user) => {
         }
     }
 
-    window.checkUserSession(user);
+    if (typeof window.checkUserSession === 'function') {
+        window.checkUserSession(user);
+    }
 
     // Se o modo de teste estiver ativo após as verificações básicas, encerramos aqui
     if ((DESATIVAR_LOGIN_PARA_TESTE || isSkipActive) && !user) return;
@@ -197,7 +241,18 @@ auth.onAuthStateChanged((user) => {
                 }, { merge: true });
             });
         }
-        if (db) loadUserData(user.uid);
+        // Carrega dados do usuário - verifica se db está disponível
+        if (db && user.uid) {
+            // Não aguarda para não bloquear a renderização, mas garante segurança
+            loadUserData(user.uid).catch(e => console.warn("Aviso ao carregar dados do usuário:", e));
+        } else {
+            // Se não conseguir carregar do Firestore, reinicializa com valores padrão
+            window.userFavorites = [];
+            window.userCart = [];
+            window.userLibrary = [];
+            if (window.routePageRendering) window.routePageRendering();
+            window.updateNavBadges();
+        }
     } else {
         window.userFavorites = [];
         window.userCart = [];
@@ -238,7 +293,9 @@ async function loadUserData(uid) {
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadAuthModules();
+
     const loginModal = document.getElementById('login-modal');
     const btnLogin = document.getElementById('btn-login');
     const btnLogout = document.getElementById('btn-logout');
@@ -281,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordInput.value;
 
             toggleLoader(true);
-            auth.signInWithEmailAndPassword(email, password)
+            LoginModule.login(email, password)
                 .then((userCredential) => {
                     toggleLoader(false);
                     const isNewUser = userCredential.additionalUserInfo?.isNewUser;
@@ -322,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
 
-            auth.createUserWithEmailAndPassword(email, password)
+            RegisterModule.signup(email, password, name)
                 .then((userCredential) => {
                     // Após criar o usuário, atualizamos o perfil com o nome digitado
                     return userCredential.user.updateProfile({
@@ -384,11 +441,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logout
     if (btnLogout) {
-        btnLogout.onclick = () => {
-            localStorage.removeItem('skipLogin'); // Remove o bypass ao deslogar
-            auth.signOut().then(() => {
+        btnLogout.onclick = async () => {
+            try {
+                await SessionModule.logout();
                 location.reload();
-            });
+            } catch (error) {
+                console.error('Erro ao sair:', error);
+                showToast('Erro ao sair da conta.', 'error');
+            }
         };
     }
 
@@ -540,7 +600,6 @@ window.purchaseLibrary = async () => {
             toggleLoader(false);
             showToast("Compra finalizada com sucesso!", "success");
             window.updateNavBadges();
-            window.triggerSecretEvent(); // Chance de ir para o mercado negro após gastar
             location.reload();
         } catch (error) {
             toggleLoader(false);

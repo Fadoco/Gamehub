@@ -72,7 +72,7 @@
     object-fit: cover; 
     object-position: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    background-color: #1a1a1a;
+    background-color: var(--bg-dark);
 }
 
 .detail-buy-box {
@@ -87,7 +87,7 @@
 .tags-row {
     margin-bottom: 20px;
     font-size: 0.9em;
-    color: #bdc3c7;
+    color: var(--text-secondary);
 }
 
 .price-section {

@@ -1,0 +1,654 @@
+/**
+ * GameHub - Responsive CSS
+ * Media queries centralizadas seguindo mobile-first approach
+ * Breakpoints: sm(640px), md(768px), lg(1024px), xl(1280px), 2xl(1536px)
+ */
+
+/* ========================================================================
+   MOBILE (320px - 639px) - Estilos base em reset.css, layout.css, etc
+   ======================================================================== */
+
+/* === SMALL DEVICES (640px) === */
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 var(--spacing-6);
+  }
+
+  /* Grid Responsivo */
+  .grid-2-sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3-sm {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4-sm {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Typography */
+  h1 {
+    font-size: var(--font-size-4xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-2xl);
+  }
+
+  /* Display Toggles */
+  .hidden-sm {
+    display: none;
+  }
+
+  .visible-sm {
+    display: block;
+  }
+
+  .flex-sm {
+    display: flex;
+  }
+
+  /* Spacing Responsive */
+  .p-sm-4 {
+    padding: var(--spacing-4);
+  }
+
+  .p-sm-6 {
+    padding: var(--spacing-6);
+  }
+
+  .m-sm-4 {
+    margin: var(--spacing-4);
+  }
+}
+
+/* === TABLETS (768px) === */
+
+@media (min-width: 768px) {
+  :root {
+    font-size: 16px;
+  }
+
+  .container {
+    max-width: 720px;
+    padding: 0 var(--spacing-6);
+  }
+
+  .container-sm {
+    max-width: 600px;
+  }
+
+  /* Grid Responsivo */
+  .grid-2-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3-md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4-md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-5-md {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .grid-6-md {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .grid-auto-md {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  /* Flexbox */
+  .flex-md {
+    display: flex;
+  }
+
+  .flex-row-md {
+    flex-direction: row;
+  }
+
+  .flex-col-md {
+    flex-direction: column;
+  }
+
+  /* Display */
+  .hidden-md {
+    display: none;
+  }
+
+  .visible-md {
+    display: block;
+  }
+
+  /* Typography Tablet */
+  h1 {
+    font-size: clamp(1.875rem, 5vw, 2.25rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 1.875rem);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+  }
+
+  /* Buttons Responsivos */
+  .btn,
+  button {
+    min-width: auto;
+    width: auto;
+  }
+
+  .btn-block-md {
+    width: 100%;
+  }
+
+  /* Spacing Tablet */
+  .p-md-6 {
+    padding: var(--spacing-6);
+  }
+
+  .p-md-8 {
+    padding: var(--spacing-8);
+  }
+
+  .m-md-4 {
+    margin: var(--spacing-4);
+  }
+
+  .m-md-6 {
+    margin: var(--spacing-6);
+  }
+
+  /* Cards */
+  .game-card {
+    min-height: 300px;
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 80%;
+    max-width: 500px;
+  }
+
+  /* Form */
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Header Responsivo */
+  .topbar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .topbar__left {
+    flex: 1;
+  }
+
+  .topbar__actions {
+    gap: var(--spacing-4);
+  }
+}
+
+/* === DESKTOPS (1024px) === */
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 960px;
+    padding: 0 var(--spacing-8);
+  }
+
+  .container-sm {
+    max-width: 720px;
+  }
+
+  .container-lg {
+    max-width: 1100px;
+  }
+
+  /* Grid Responsivo */
+  .grid-2-lg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3-lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4-lg {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-5-lg {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .grid-6-lg {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .grid-auto-lg {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  /* Flexbox */
+  .flex-lg {
+    display: flex;
+  }
+
+  .flex-row-lg {
+    flex-direction: row;
+  }
+
+  .flex-col-lg {
+    flex-direction: column;
+  }
+
+  /* Display */
+  .hidden-lg {
+    display: none;
+  }
+
+  .visible-lg {
+    display: block;
+  }
+
+  /* Typography Desktop */
+  h1 {
+    font-size: var(--font-size-5xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-4xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h4 {
+    font-size: var(--font-size-2xl);
+  }
+
+  /* Buttons Desktop */
+  .btn {
+    width: auto;
+    min-width: 120px;
+  }
+
+  .btn-lg {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-lg);
+  }
+
+  /* Spacing Desktop */
+  .p-lg-8 {
+    padding: var(--spacing-8);
+  }
+
+  .p-lg-10 {
+    padding: var(--spacing-10);
+  }
+
+  .m-lg-8 {
+    margin: var(--spacing-8);
+  }
+
+  /* Cards */
+  .game-card {
+    min-height: 350px;
+  }
+
+  .game-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 600px;
+    max-width: 90vw;
+  }
+
+  /* Form */
+  .form-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Sidebar Layout */
+  .sidebar-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: var(--spacing-6);
+  }
+
+  /* Hero Sections */
+  .hero-section {
+    min-height: 500px;
+  }
+
+  /* Navegação Desktop */
+  .topbar__menu {
+    display: flex;
+    gap: var(--spacing-4);
+  }
+
+  .topbar__menu a {
+    padding: var(--spacing-2) var(--spacing-4);
+  }
+}
+
+/* === LARGE DESKTOPS (1280px) === */
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1140px;
+    padding: 0 var(--spacing-10);
+  }
+
+  .container-lg {
+    max-width: 1240px;
+  }
+
+  /* Grid Responsivo */
+  .grid-2-xl {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3-xl {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4-xl {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-5-xl {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .grid-6-xl {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .grid-7-xl {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .grid-8-xl {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  /* Display */
+  .hidden-xl {
+    display: none;
+  }
+
+  .visible-xl {
+    display: block;
+  }
+
+  /* Spacing Large Desktop */
+  .p-xl-12 {
+    padding: var(--spacing-12);
+  }
+
+  .m-xl-12 {
+    margin: var(--spacing-12);
+  }
+
+  /* Two Column Layout */
+  .layout-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-8);
+  }
+
+  /* Hero Full Width */
+  .hero-section {
+    min-height: 600px;
+  }
+}
+
+/* === EXTRA LARGE (1536px+) === */
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1320px;
+  }
+
+  .container-lg {
+    max-width: 1400px;
+  }
+
+  /* Grid Extra Large */
+  .grid-10 {
+    grid-template-columns: repeat(10, 1fr);
+  }
+
+  .grid-12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  /* Display */
+  .hidden-2xl {
+    display: none;
+  }
+
+  .visible-2xl {
+    display: block;
+  }
+
+  /* Typography Extra Large */
+  h1 {
+    font-size: clamp(3rem, 8vw, 4rem);
+  }
+
+  /* Spacing Extra Large */
+  .p-2xl-16 {
+    padding: var(--spacing-16);
+  }
+
+  .m-2xl-20 {
+    margin: var(--spacing-20);
+  }
+}
+
+/* ========================================================================
+   PRINT MEDIA
+   ======================================================================== */
+
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .no-print,
+  .print-hidden,
+  .modal,
+  .topbar,
+  .main-footer,
+  .btn {
+    display: none !important;
+  }
+
+  .print-visible {
+    display: block !important;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  @page {
+    margin: 2cm;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  p, li {
+    page-break-inside: avoid;
+  }
+}
+
+/* ========================================================================
+   LANDSCAPE MODE
+   ======================================================================== */
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .topbar {
+    padding: var(--spacing-2);
+  }
+
+  .main-header {
+    padding: var(--spacing-2);
+  }
+
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .btn {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* ========================================================================
+   HIGH DPI / RETINA DISPLAYS
+   ======================================================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Reduz um pouco o tamanho de fonte para telas de alta densidade */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Sombras mais suaves */
+  .shadow-md {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-lg {
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ========================================================================
+   DARK MODE / LIGHT MODE DETECTION
+   ======================================================================== */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #1a1a2e;
+    --text-secondary: #666666;
+    --border-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f0f1e;
+    --bg-secondary: #1a1a2e;
+    --bg-tertiary: #16213e;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ========================================================================
+   REDUCED MOTION
+   ======================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================================================
+   HIGH CONTRAST MODE
+   ======================================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --border-color: rgba(255, 255, 255, 0.3);
+    --text-secondary: rgba(255, 255, 255, 0.8);
+  }
+
+  .btn,
+  .card {
+    border-width: 2px;
+  }
+}
+
+/* ========================================================================
+   FORCED COLORS / HIGH CONTRAST MODE (Windows)
+   ======================================================================== */
+
+@media (forced-colors: active) {
+  * {
+    border-color: CanvasText;
+  }
+
+  .card {
+    border: 1px solid;
+  }
+
+  .btn {
+    border: 2px solid;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+
+  .btn:hover {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+}

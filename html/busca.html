@@ -1,14 +1,31 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resultados de Busca - Procure por jogos no GameHub.">
+    <meta name="theme-color" content="#00d4ff">
     <title>GameHub - Resultados da Busca</title>
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/header-footer.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/upgrades.css">
+    
+    <!-- === ÍCONES === -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- === FIREBASE === -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -23,7 +40,7 @@
 <body>
     <header class="topbar">
         <div class="topbar__left">
-            <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
+            <div class="brand cursor-pointer" onclick="window.location.href='../index.html'">GameHub</div>
             <nav class="topbar__menu">
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
@@ -32,12 +49,12 @@
             </nav>
         </div>
         <div class="topbar__actions">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='historico.html'">
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
             <!-- user-menu será preenchido dinamicamente por auth.js -->
-            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <div id="user-menu" class="flex items-center gap-3"></div>
             <!-- btn-login será exibido se o usuário não estiver logado -->
             <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
@@ -57,13 +74,13 @@
 
     <main class="container">
         <div class="back-navigation">
-            <a href="../index.html" class="back-button" style="text-decoration:none; color:inherit; opacity:0.7"><i class="fas fa-arrow-left"></i> Voltar para a Loja</a>
+            <a href="../index.html" class="back-button no-underline text-inherit opacity-70"><i class="fas fa-arrow-left"></i> Voltar para a Loja</a>
         </div>
 
-        <section class="store-section" style="margin-top: 20px;">
+        <section class="store-section mt-5">
             <h2>Resultados para: "<span id="search-query-text"></span>"</h2>
             <div class="game-grid" id="grid-busca"></div>
-            <div id="footer-busca" style="text-align: center; margin-top: 20px;"></div>
+            <div id="footer-busca" class="text-center mt-5"></div>
         </section>
     </main>
 

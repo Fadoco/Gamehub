@@ -1,0 +1,55 @@
+# 🚫 Gitignore - GameHub
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.env
+.env.local
+
+# === LOGS & TEMP ===
+*.log
+*.tmp
+debug-logs/
+
+# === DEPENDENCIES & BUILD ===
+node_modules/
+dist/
+build/
+.cache/
+
+# === IDE ===
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.sublime-workspace
+
+# === TESTING ===
+coverage/
+.nyc_output/
+
+# === OS ===
+.DS_Store
+*.exe
+*.dll
+
+# === FIREBASE ===
+firebase-debug.log
+.firebase/
+
+# === DOCUMENTATION (Local/Temp) ===
+# ✅ MANTÉM: docs/ (documentação oficial)
+# ❌ IGNORA: arquivos temporários
+
+# === SCRIPTS (Utilidade) ===
+# ✅ MANTÉM: scripts/ (scripts auxiliares)
+# ❌ IGNORA: nada (todos são úteis)
+
+# Exceptions
+!README.md
+!.gitattributes
+!docs/**
+!scripts/**

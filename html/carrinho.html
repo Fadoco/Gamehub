@@ -1,13 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Carrinho de Compras - Compre seus jogos no GameHub.">
+    <meta name="theme-color" content="#00d4ff">
     <title>GameHub - Carrinho de Compras</title>
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/header-footer.css">
     <link rel="stylesheet" href="../css/carrinho.css">
     <link rel="stylesheet" href="../css/upgrades.css">
+    
+    <!-- === ÍCONES === -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -21,7 +36,7 @@
 <body>
     <header class="topbar">
         <div class="topbar__left">
-            <div class="brand" onclick="window.location.href='../index.html'" style="cursor:pointer">GameHub</div>
+            <div class="brand cursor-pointer" onclick="window.location.href='../index.html'">GameHub</div>
             <nav class="topbar__menu">
                 <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
@@ -31,12 +46,12 @@
             
         </div>
         <div class="topbar__actions">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='historico.html'">
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
             <!-- user-menu será preenchido dinamicamente por auth.js -->
-            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <div id="user-menu" class="flex items-center gap-3"></div>
             <!-- btn-login será exibido se o usuário não estiver logado -->
             <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
@@ -55,14 +70,14 @@
     </header>
 
     <main class="container">
-        <section class="store-section" style="margin-top: 40px;">
+        <section class="store-section mt-10">
             <h1>Seu Carrinho</h1>
             <div class="cart-container" id="cart-wrapper">
                 <div class="game-grid" id="cart-grid">
                     <!-- Itens do carrinho -->
                 </div>
                 
-                <div id="cart-summary" style="display: none;">
+                <div id="cart-summary" class="hidden">
                     <div class="wallet-info">
                         Seu saldo: <strong id="cart-wallet-balance">R$ 0,00</strong>
                     </div>
@@ -72,13 +87,13 @@
                     <button onclick="window.purchaseLibrary()" class="buy-button">Finalizar Compra</button>
                 </div>
                 
-                <p id="cart-empty" style="display: none;">Seu carrinho está vazio.</p>
+                <p id="cart-empty" class="hidden">Seu carrinho está vazio.</p>
             </div>
         </section>
     </main>
 
     <!-- Overlay de Carregamento Global -->
-    <div id="loading-overlay" style="display: none;">
+    <div id="loading-overlay" class="hidden">
         <div></div>
         <p>AGUARDE...</p>
     </div>

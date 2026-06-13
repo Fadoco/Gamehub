@@ -3,96 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GameHub - A sua loja independente preferida para descobrir novos jogos e aventuras.">
+    <meta name="theme-color" content="#00d4ff">
     <title>GameHub - Sua Loja de Jogos</title>
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <!-- Base: Variáveis e Reset -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style-global.css">
+    
+    <!-- Layout e Componentes -->
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Animações e Utilities -->
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO DAS PÁGINAS === -->
     <link rel="stylesheet" href="css/header-footer.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/upgrades.css">
-    <!-- Importação do Font Awesome para ícones (lupa, biblioteca, dados) -->
+    
+    <!-- === ÍCONES === -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Scripts de carregamento dinâmico -->
+    
+    <!-- === FIREBASE === -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- === SCRIPTS (Carregados com defer para não bloquear renderização) === -->
     <script src="java/firebase-config.js"></script>
-    <script src="java/home.js" defer></script>
+    <script src="java/auth.js" defer></script>
     <script src="java/ranks.js" defer></script>
     <script src="java/global.js" defer></script>
+    <script src="java/home.js" defer></script>
     <script src="java/search.js" defer></script>
-    <script src="java/auth.js" defer></script>
 </head>
-<body>
-    <header class="topbar">
+<body role="application" aria-label="GameHub - Loja de Jogos">
+    <header class="topbar" role="banner">
         <div class="topbar__left">
-            <div class="brand" onclick="window.location.href='index.html'" style="cursor:pointer">GameHub</div>
-            <nav class="topbar__menu">
+            <div class="brand" onclick="window.location.href='index.html'" role="button" tabindex="0" aria-label="Ir para página inicial">GameHub</div>
+            <nav class="topbar__menu" aria-label="Navegação Principal">
                 <a href="html/biblioteca.html">Biblioteca</a>
                 <a href="Roleta/roleta.html">Roleta</a>
                 <a href="html/ranking.html">Ranking</a>
                 <a href="html/carrinho.html">Carrinho</a>
             </nav>
         </div>
-        <div class="topbar__actions">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='html/historico.html'">
-                <i class="fas fa-coins"></i>
+        <div class="topbar__actions" role="region" aria-label="Ações do Usuário">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='html/historico.html'" role="button" tabindex="0" aria-label="Carteira - Clique para ver histórico">
+                <i class="fas fa-coins" aria-hidden="true"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
-            <!-- user-menu será preenchido dinamicamente por auth.js -->
-            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
-            <!-- btn-login será exibido se o usuário não estiver logado -->
-            <button id="btn-login" class="btn btn-primary">Entrar</button>
+            <div id="user-menu" class="flex items-center gap-3"></div>
+            <button id="btn-login" class="btn btn-primary" aria-label="Abrir modal de login">Entrar</button>
         </div>
     </header>
 
-    <header class="main-header">
+    <header class="main-header" role="region" aria-label="Barra de Pesquisa e Filtros">
         <div class="searchbar">
-            <i class="fas fa-search searchbar__icon"></i>
-            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+            <i class="fas fa-search searchbar__icon" aria-hidden="true"></i>
+            <input type="search" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar jogos">
         </div>
-        <nav class="section-nav">
-            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
-                <i class="fas fa-dice"></i> Jogo Aleatório
+        <nav class="section-nav" aria-label="Navegação Secundária">
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()" aria-label="Sugerir jogo aleatório">
+                <i class="fas fa-dice" aria-hidden="true"></i> Jogo Aleatório
             </button>
         </nav>
     </header>
 
     <main>
         <!-- Seção Hero: Destaques dinâmicos -->
-        <section class="hero-section">
+        <section class="hero-section" aria-label="Destaque Principal">
             <article class="hero-card" id="hero-main-card">
                 <div class="hero-card__overlay"></div>
-                <div class="hero-card__badge" id="hero-discount">-0%</div>
+                <span class="hero-card__badge" id="hero-discount" aria-label="Desconto">-0%</span>
                 <div class="hero-card__content">
                     <span class="eyebrow" id="hero-tag">Destaque</span>
                     <h1 id="hero-title">Carregando...</h1>
                     <p id="hero-description">...</p>
                     <div class="hero-card__price">
-                        <span class="old-price" id="hero-old-price"></span>
-                        <strong id="hero-current-price">R$ 0,00</strong>
+                        <span class="old-price" id="hero-old-price" aria-label="Preço anterior"></span>
+                        <strong id="hero-current-price" aria-label="Preço atual">R$ 0,00</strong>
                     </div>
-                    <div class="hero-card__actions">
-                        <button class="btn btn-large" id="hero-buy-btn">Comprar agora</button>
-                        <button class="icon-btn" id="hero-cart-btn"><i class="fas fa-shopping-cart"></i></button>
-                        <button class="icon-btn" id="hero-fav-btn"><i class="fas fa-heart"></i></button>
+                    <div class="hero-card__actions" role="group" aria-label="Ações de compra">
+                        <button class="btn btn-large" id="hero-buy-btn" aria-label="Comprar agora">Comprar agora</button>
+                        <button class="icon-btn" id="hero-cart-btn" aria-label="Adicionar ao carrinho"><i class="fas fa-shopping-cart" aria-hidden="true"></i></button>
+                        <button class="icon-btn" id="hero-fav-btn" aria-label="Adicionar aos favoritos"><i class="fas fa-heart" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </article>
 
-            <aside class="hero-list" id="hero-nav-list">
+            <aside class="hero-list" id="hero-nav-list" aria-label="Jogos em destaque">
                 <!-- Injetado via JS: Lista lateral do Hero -->
             </aside>
         </section>
 
-        <!-- Nova Seção: Categorias Populares -->
-        <section class="store-section">
+        <!-- Seção de Categorias -->
+        <section class="store-section" aria-label="Categorias de Jogos">
             <h2 class="section-title">Navegar por Gênero</h2>
             <div class="categories-container" id="categories-grid">
                 <!-- Injetado via JS -->
             </div>
         </section>
 
-        <!-- Nova Seção: Banners Horizontais (Mix de Layout) -->
-        <section class="store-section">
+        <!-- Seção de Banners Horizontais (Mix de Layout) -->
+        <section class="store-section" aria-label="Promoções em Destaque">
             <h2 class="section-title">Grandes Ofertas</h2>
             <div class="banners-grid" id="banners-grid">
                 <!-- Injetado via JS -->
@@ -100,7 +120,7 @@
         </section>
 
         <!-- Seção de Promoções -->
-        <section class="promo-section">
+        <section class="promo-section" aria-label="Ofertas Imperdíveis">
             <div class="promo-header">
                 <div>
                     <h2>Ofertas Imperdíveis</h2>
@@ -110,10 +130,10 @@
 
             <div class="promo-grid">
                 <article class="promo-feature">
-                    <div class="promo-feature__badge">Especial</div>
+                    <span class="promo-feature__badge">Especial</span>
                     <h3>Coleção de Ofertas</h3>
                     <p>Economize em títulos AAA e Indies selecionados pela nossa curadoria.</p>
-                    <button class="btn btn-secondary" onclick="window.location.href='html/busca.html?q=promo'">Ver todas</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='html/busca.html?q=promo'" aria-label="Ver todas as ofertas">Ver todas</button>
                 </article>
 
                 <div class="promo-cards" id="promo-cards-container">
@@ -123,7 +143,7 @@
         </section>
 
         <!-- Seção de Posters Grandes -->
-        <section class="store-section">
+        <section class="store-section" aria-label="Coleções em Destaque">
             <h2 class="section-title">Coleções em Destaque</h2>
             <div class="poster-grid" id="poster-section-grid">
                 <!-- Injetado via JS: Posters verticais -->
@@ -131,43 +151,43 @@
         </section>
 
         <!-- Seção de Rankings/Listas -->
-        <section class="charts-section">
+        <section class="charts-section" aria-label="Rankings de Jogos">
             <div class="charts-grid">
                 <article class="chart-card">
-                    <div class="chart-header"><h3>Mais Vendidos</h3></div>
-                    <ul id="chart-best-sellers"></ul>
+                    <h3 class="chart-header">Mais Vendidos</h3>
+                    <ul id="chart-best-sellers" role="list"></ul>
                 </article>
 
                 <article class="chart-card">
-                    <div class="chart-header"><h3>Gratuitos</h3></div>
-                    <ul id="chart-free-games"></ul>
+                    <h3 class="chart-header">Gratuitos</h3>
+                    <ul id="chart-free-games" role="list"></ul>
                 </article>
 
                 <article class="chart-card">
-                    <div class="chart-header"><h3>Lançamentos</h3></div>
-                    <ul id="chart-new-releases"></ul>
+                    <h3 class="chart-header">Lançamentos</h3>
+                    <ul id="chart-new-releases" role="list"></ul>
                 </article>
             </div>
         </section>
 
-        <!-- Nova Seção: Novidades -->
-        <section class="store-section">
+        <!-- Seção de Novidades -->
+        <section class="store-section" aria-label="Novidades">
             <h2 class="section-title">Novidades</h2>
             <div class="game-grid" id="new-arrivals-grid">
                 <!-- Injetado via JS: Jogos mais recentes -->
             </div>
         </section>
 
-        <!-- Nova Seção: Mais Populares -->
-        <section class="store-section">
+        <!-- Seção de Mais Populares -->
+        <section class="store-section" aria-label="Jogos Populares">
             <h2 class="section-title">Mais Populares</h2>
             <div class="game-grid" id="most-popular-grid">
-                <!-- Injetado via JS: Jogos mais populares (exemplo) -->
+                <!-- Injetado via JS: Jogos mais populares -->
             </div>
         </section>
     </main>
 
-    <footer class="main-footer">
+    <footer class="main-footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -176,7 +196,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Navegação</h3>
-                    <ul>
+                    <ul role="list">
                         <li><a href="index.html">Loja</a></li>
                         <li><a href="html/biblioteca.html">Biblioteca</a></li>
                         <li><a href="html/carrinho.html">Carrinho</a></li>
@@ -185,7 +205,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Suporte</h3>
-                    <ul>
+                    <ul role="list">
                         <li><a href="#">Ajuda</a></li>
                         <li><a href="#">Reembolsos</a></li>
                         <li><a href="#">Privacidade</a></li>
@@ -193,10 +213,10 @@
                 </div>
                 <div class="footer-section">
                     <h3>Siga-nos</h3>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-discord"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    <div class="social-icons" role="list">
+                        <a href="#" role="listitem" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+                        <a href="#" role="listitem" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" role="listitem" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
@@ -205,40 +225,51 @@
     </footer>
 
     <!-- Modal de Login -->
-    <div id="login-modal" class="modal" style="display: none;">
+    <div id="login-modal" class="modal" style="display: none;" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Entrar no GameHub</h2>
+            <button class="close-modal" aria-label="Fechar modal">&times;</button>
+            <h2 id="modal-title">Entrar no GameHub</h2>
             <form id="login-form">
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="E-mail" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" placeholder="Senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
-                <p class="toggle-form" onclick="window.toggleModalForms()">Ainda não tem conta? Cadastre-se</p>
+                <fieldset>
+                    <legend class="sr-only">Formulário de Login</legend>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="E-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" placeholder="Senha" required>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                <p class="toggle-form" onclick="window.toggleModalForms()" role="button" tabindex="0">Ainda não tem conta? Cadastre-se</p>
             </form>
 
             <form id="signup-form" style="display: none;">
-                <div class="form-group">
-                    <input type="text" id="signup-name" placeholder="Seu Nome" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="signup-email" placeholder="E-mail" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="signup-password" placeholder="Senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Criar Conta</button>
-                <p class="toggle-form" onclick="window.toggleModalForms()">Já tem conta? Entre</p>
+                <fieldset>
+                    <legend class="sr-only">Formulário de Cadastro</legend>
+                    <div class="form-group">
+                        <label for="signup-name">Nome</label>
+                        <input type="text" id="signup-name" name="signup-name" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">E-mail</label>
+                        <input type="email" id="signup-email" name="signup-email" placeholder="E-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Senha</label>
+                        <input type="password" id="signup-password" name="signup-password" placeholder="Senha" required>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-primary btn-block">Criar Conta</button>
+                <p class="toggle-form" onclick="window.toggleModalForms()" role="button" tabindex="0">Já tem conta? Entre</p>
             </form>
         </div>
     </div>
 
     <!-- Overlay de Carregamento Global -->
-    <div id="loading-overlay" style="display: none;">
-        <div class="spinner"></div>
+    <div id="loading-overlay" style="display: none;" role="status" aria-label="Carregando conteúdo">
+        <div class="spinner" aria-hidden="true"></div>
         <p>AGUARDE...</p>
     </div>
 </body>

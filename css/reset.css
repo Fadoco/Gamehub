@@ -1,0 +1,382 @@
+/**
+ * GameHub - Reset & Normalize CSS
+ * Normaliza comportamentos padrão do navegador para consistência
+ */
+
+/* === RESET GERAL === */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  overflow-x: hidden;
+}
+
+/* === TIPOGRAFIA === */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+h4 { font-size: var(--font-size-xl); }
+h5 { font-size: var(--font-size-lg); }
+h6 { font-size: var(--font-size-base); }
+
+p {
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+a:active {
+  color: var(--accent-dark);
+}
+
+strong, b {
+  font-weight: var(--font-weight-bold);
+}
+
+em, i {
+  font-style: italic;
+}
+
+small {
+  font-size: var(--font-size-sm);
+}
+
+/* === LISTAS === */
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* === TABELAS === */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th, td {
+  padding: var(--spacing-4);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-weight: var(--font-weight-bold);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* === FORMULÁRIOS === */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+button:disabled,
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: var(--spacing-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+textarea {
+  resize: vertical;
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+/* === IMAGENS === */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+img[alt] {
+  /* Estilos para imagens com alt text (acessibilidade) */
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* === IFRAMES === */
+
+iframe {
+  border: none;
+  max-width: 100%;
+}
+
+/* === CÓDIGO === */
+
+code,
+pre {
+  font-family: var(--font-family-mono);
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+}
+
+code {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+pre {
+  padding: var(--spacing-4);
+  overflow-x: auto;
+  margin-bottom: var(--spacing-4);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* === ELEMENTOS SEMÂNTICOS === */
+
+section {
+  margin: 0;
+  padding: 0;
+}
+
+article {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+}
+
+footer {
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  margin: 0;
+  padding: 0;
+}
+
+aside {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: block;
+}
+
+/* === HR === */
+
+hr {
+  height: 1px;
+  border: none;
+  background-color: var(--border-color);
+  margin: var(--spacing-4) 0;
+}
+
+/* === BLOQUEIO DE SELEÇÃO === */
+
+/* Evita seleção de elementos não-texto */
+img,
+button,
+input[type="button"],
+input[type="submit"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* === ACESSIBILIDADE === */
+
+/* Foco visível para navegação por teclado */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* Remove outline padrão do navegador (usamos focus-visible) */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Suporte para redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === SCROLLBAR === */
+
+/* Estilo customizado de scrollbar (Webkit browsers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+  background-clip: content-box;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: var(--accent) transparent;
+  scrollbar-width: thin;
+}
+
+/* === SELECTION === */
+
+::selection {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+}
+
+::-moz-selection {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* === PRINT === */
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  @page {
+    margin: 0.5cm;
+  }
+}

@@ -1,14 +1,29 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lista Completa de Jogos - Explore todo o catálogo do GameHub.">
+    <meta name="theme-color" content="#00d4ff">
     <title>GameHub - Todos os Jogos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/header-footer.css">
     <link rel="stylesheet" href="../css/upgrades.css">
     <link rel="stylesheet" href="../css/lista-jogos.css">
+    
+    <!-- === ÍCONES === -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Cabeçalho Principal (Topbar) -->
@@ -23,18 +38,18 @@
             </nav>
         </div>
         <div class="topbar__actions">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='historico.html'">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='historico.html'">
                 <i class="fas fa-coins"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>
-            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <div id="user-menu" class="flex items-center gap-3"></div>
             <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
     </header>
 
     <!-- Sub-header com Busca e Filtros -->
     <header class="main-header">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0;">
+        <div class="container flex justify-between items-center w-full p-0">
             <div class="searchbar">
                 <i class="fas fa-search searchbar__icon"></i>
                 <input type="text" id="main-search" placeholder="Pesquisar em todo o catálogo..." aria-label="Pesquisar jogos">
@@ -90,9 +105,9 @@
     <script src="../java/search.js" defer></script>
     <script src="../java/lista-jogos.js" defer></script>
 
-    <div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; color:white; flex-direction:column; gap:20px;">
+    <div id="loading-overlay" class="loading-overlay">
         <div class="loader"></div>
-        <p style="letter-spacing: 2px; font-weight: bold;">CARREGANDO CATÁLOGO...</p>
+        <p class="tracking-wider font-bold">CARREGANDO CATÁLOGO...</p>
     </div>
 </body>
 </html>

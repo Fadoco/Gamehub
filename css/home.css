@@ -117,14 +117,14 @@ main {
 .btn-large {
     flex: 1 1 220px;
     background: #fff;
-    color: #0b0b0c;
+    color: var(--bg-dark);
     border-radius: 999px;
     padding: 14px 22px;
     font-weight: 700;
 }
 
 .btn-large:hover {
-    background: #f2f2f2;
+    background: var(--bg-light);
 }
 
 .icon-btn {

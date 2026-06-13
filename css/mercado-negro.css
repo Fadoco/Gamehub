@@ -98,6 +98,29 @@
 .box-card-special.tier-glitch { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
 .box-card-special.tier-void { border-color: #a335ee; box-shadow: 0 0 15px rgba(163, 53, 238, 0.3); }
 
+/* Animações Glitch */
+@keyframes glitch-extreme {
+    0% { transform: translate(0); clip-path: inset(10% 0 20% 0); filter: hue-rotate(0deg); }
+    20% { transform: translate(-15px, 10px); clip-path: inset(40% 0 10% 0); filter: hue-rotate(90deg); }
+    40% { transform: translate(25px, -15px); clip-path: inset(70% 0 5% 0); filter: hue-rotate(180deg); }
+    60% { transform: translate(-10px, 20px); clip-path: inset(15% 0 60% 0); filter: hue-rotate(270deg); }
+    80% { transform: translate(15px, 10px); clip-path: inset(2% 0 80% 0); filter: hue-rotate(360deg); }
+    100% { transform: translate(0); }
+}
+
+@keyframes site-shake-intense {
+    0% { transform: translate(0,0) scale(1); }
+    25% { transform: translate(-2px, 2px) scale(1.01); }
+    50% { transform: translate(2px, -2px) rotate(0.1deg); }
+    75% { transform: translate(-2px, -2px) scale(0.99); }
+    100% { transform: translate(2px, 2px) scale(1); }
+}
+
+@keyframes noise-anim {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(1px); }
+}
+
 /* --- SISTEMA DE CORRUPÇÃO --- */
 .site-frozen { filter: contrast(1.8) brightness(0.6) grayscale(0.6) hue-rotate(280deg); pointer-events: none; }
 .site-breaking-anim { animation: site-shake-intense 0.1s infinite; }
