@@ -59,6 +59,7 @@
   
   /* Texto */
   --text-primary: #ffffff;     /* Texto principal (branco) */
+  --text-main: #ffffff;        /* Alias para text-primary (compatibilidade) */
   --text-secondary: #a0a0b8;   /* Texto secundário (cinza claro) */
   --text-muted: #6c757d;       /* Texto desabilitado (cinza escuro) */
   
