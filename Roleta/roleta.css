@@ -310,10 +310,68 @@
     text-align: center;
     background: #121212 !important;
     border: 2px solid var(--accent) !important;
+    padding: 30px !important;
 }
 
-.modal-roulette {
+.roulette-modal .modal-roulette {
+    width: 100%;
+    max-width: none !important;
     margin: 30px auto !important;
+    height: 160px !important;
+    background: var(--bg-header) !important;
+    border: 2px solid var(--border) !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.roulette-modal .modal-roulette .roulette-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: transform 5.7s cubic-bezier(0.15, 0, 0.05, 1);
+    will-change: transform;
+}
+
+.roulette-modal .modal-roulette .roulette-card {
+    width: 140px;
+    height: 140px;
+    margin: 0 8px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+}
+
+.roulette-modal .modal-roulette .roulette-selector {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    z-index: 10;
+    box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-soft);
+}
+
+.roulette-modal .modal-roulette::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    z-index: 9;
+    opacity: 0.5;
+    animation: selector-glow 1.5s infinite alternate;
+}
+
+@keyframes selector-glow {
+    from { box-shadow: 0 0 20px var(--accent); }
+    to { box-shadow: 0 0 40px var(--accent), 0 0 60px var(--accent-soft); }
 }
 
 /* Estilos do Modal de Revelação (Drama) */

@@ -19,6 +19,7 @@
     
     <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../Roleta/roleta.css">
+    <link rel="stylesheet" href="../css/upgrades.css">
     <link rel="stylesheet" href="../css/mercado-negro.css">
 </head>
 <body>
@@ -87,7 +88,7 @@
     <audio id="spin-sound-effect" src="../Roleta/assets/csgo-case-open.mp3" preload="auto"></audio>
 
     <!-- Modal de Abertura (Visual de Hacking para Caixas) -->
-    <div id="box-opening-modal" class="modal hidden">
+    <div id="box-opening-modal" class="modal" style="display: none;">
         <div class="modal-content black-market-container max-w-md border-lime-500">
             <h2 id="modal-box-title" class="text-lime-500 glow-green">> ACESSANDO_KERNEL...</h2>
             
@@ -102,7 +103,7 @@
     </div>
 
     <!-- Modal de Revelação -->
-    <div id="result-reveal-modal" class="modal">
+    <div id="result-reveal-modal" class="modal" style="display: none; z-index: 3000;">
         <div class="modal-content reveal-card-content">
             <h2 id="reveal-result-title">BYPASS COMPLETO</h2>
             <div id="reveal-card-target">
