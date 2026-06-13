@@ -74,6 +74,23 @@
             <p class="profile-bio" id="profile-bio">Carregando biografia...</p>
             <span class="profile-id cursor-pointer" id="profile-friendship-id" title="Clique para copiar">ID de Amizade: #XXXXXX</span>
 
+            <!-- Estatísticas do Perfil -->
+            <div class="profile-stats" style="display: flex; gap: 30px; margin: 20px 0; justify-content: center; flex-wrap: wrap;">
+                <div class="stat-item" style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: var(--accent);" id="stat-games">0</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Jogos</div>
+                </div>
+                <div class="stat-item" style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: var(--accent);" id="stat-friends">0</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Amigos</div>
+                </div>
+                <div class="stat-item" style="text-align: center;">
+                    <div style="font-size: 18px; font-weight: bold; color: var(--accent);" id="stat-balance">R$ 0,00</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Saldo</div>
+                </div>
+            </div>
+            <div style="text-align: center; font-size: 16px; font-weight: bold; color: var(--promo); margin: 10px 0;" id="profile-total-wealth">Patrimônio Total: R$ 0,00</div>
+
             <!-- Botão para adicionar amigo (visível apenas em perfis de outros usuários) -->
             <button class="buy-button hidden mt-5" id="btn-add-friend">
                 <i class="fas fa-user-plus"></i> Adicionar Amigo
@@ -98,7 +115,17 @@
                     <label for="edit-banner-url">URL do Banner:</label>
                     <input type="url" id="edit-banner-url" placeholder="URL da sua imagem/vídeo de banner">
                 </div>
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <div class="form-group">
+                    <label for="edit-banner-type">Tipo de Banner:</label>
+                    <select id="edit-banner-type" class="p-2 rounded-sm border border-card-border bg-dark text-white">
+                        <option value="image">Imagem</option>
+                        <option value="video">Vídeo</option>
+                    </select>
+                </div>
+                <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-edit-profile">Cancelar</button>
+                </div>
             </form>
 
             <div class="profile-section" id="friend-requests-section">
@@ -161,9 +188,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../java/firebase-config.js"></script>
-    <script src="../java/ranks.js" defer></script>
+    <script src="../java/validators.js"></script>
+    <script src="../java/security.js"></script>
+    <script src="../java/firebase-transactions.js"></script>
+    <script src="../java/rate-limiter.js"></script>
     <script src="../java/auth.js" defer></script>
-    <script src="../java/global.js" defer></script>
+    <script src="../java/ranks.js" defer></script>
     <script src="../java/perfil.js" defer></script>
+    <script src="../java/global.js" defer></script>
 </body>
 </html>
