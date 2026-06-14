@@ -202,18 +202,29 @@ window.openSpecialBox = async (tier) => {
 
             // Inicia o Giro com atraso dramático de 1.2s (igual a roleta.js)
             setTimeout(() => {
+                const wrapper = rail.parentElement;
                 const winnerCard = rail.children[65];
-                const wrapperWidth = rail.parentElement.offsetWidth;
+                const wrapperWidth = wrapper.offsetWidth;
                 // Centraliza o card 65 no seletor
                 const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
                 
-                rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
+                // Adiciona classe spinning para efeito de blur
+                rail.classList.add('spinning');
+                
+                // Adiciona efeito de vibração durante o giro
+                wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                
+                // Transição suave e natural (easing-out para frenar no final)
+                rail.style.transition = 'transform 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 rail.style.transform = `translateX(-${targetX}px)`;
             }, 1200);
 
             // Finalização do Giro e Entrega do Prêmio
             setTimeout(async () => {
                 if (modal) modal.style.display = 'none';
+                
+                // Remove efeito de spinning
+                rail.classList.remove('spinning');
                 
                 // Revelar no Modal de Resultado
                 if (window.showRevealModal) {
@@ -330,12 +341,20 @@ window.spinSpecialRoulette = async () => {
     setTimeout(() => {
         const cards = rail.children;
         const winnerCard = cards[40];
-        const wrapperWidth = rail.parentElement.offsetWidth;
+        const wrapper = rail.parentElement;
+        const wrapperWidth = wrapper.offsetWidth;
         
         // Cálculo dinâmico para centralizar o card vencedor independente da tela
         const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
 
-        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
+        // Adiciona classe spinning para efeito de blur
+        rail.classList.add('spinning');
+        
+        // Adiciona efeito de vibração durante o giro
+        wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        
+        // Transição suave e natural (easing-out para frenar no final)
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         rail.style.transform = `translateX(-${targetX}px)`;
     }, 1200); // 1.2s de atraso para drama, igual roleta.js
         
@@ -382,6 +401,8 @@ window.spinSpecialRoulette = async () => {
             renderSpecialBoxInventory();
             selectedGameForSpecialBox = null; // Limpa a seleção após a roleta
         } finally {
+            // Remove efeito de spinning
+            rail.classList.remove('spinning');
             window.isActionInProgress = false;
         }
     }, 7100); // 1.2s + 5.7s + margem de erro

@@ -297,6 +297,22 @@
     }
 }
 
+/* Vibration effect during roulette spin */
+@keyframes spinVibration {
+    0%, 100% {
+        transform: translateX(0) translateY(0);
+        filter: blur(0px);
+    }
+    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+        transform: translateX(1px) translateY(0.5px);
+        filter: blur(0.5px);
+    }
+    10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% {
+        transform: translateX(-1px) translateY(-0.5px);
+        filter: blur(0.5px);
+    }
+}
+
 /* ============================================================================
    HEADERS & TITLES - ENHANCED
    ============================================================================ */
@@ -737,6 +753,8 @@
     box-shadow: 
         inset 0 0 40px rgba(0, 255, 136, 0.15),
         0 0 40px rgba(0, 255, 136, 0.3);
+    /* Suporte para animação de vibração */
+    will-change: transform, filter;
 }
 
 .roulette-selector {
@@ -758,6 +776,12 @@
     width: 100%;
     height: 100%;
     transition: transform 0.05s linear;
+    will-change: transform;
+}
+
+/* Motion blur durante o giro */
+.special-rail.spinning {
+    filter: blur(0.8px);
 }
 
 /* ============================================================================
