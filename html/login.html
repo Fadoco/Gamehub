@@ -19,6 +19,35 @@
     
     <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/login.css">
+    
+    <style>
+        /* Toast notification styles */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast {
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            transition: opacity 0.3s ease;
+        }
+        .toast.success { background: #4caf50; }
+        .toast.error { background: #f44336; }
+        .toast.info { background: #2196f3; }
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -27,8 +56,10 @@
     <script src="../java/lazy-image-loader.js"></script>
     
     <script src="../java/firebase-config.js"></script>
-    <script src="../java/global.js" defer></script>
+    <script src="../java/global.js"></script>
     <script src="../java/auth.js" defer></script>
+    <script src="../java/modules/login.js" defer></script>
+    <script src="../java/modules/register.js" defer></script>
 </head>
 <body>
     <div class="login-page-container">
@@ -66,6 +97,29 @@
     </div>
 
     <script>
+        // Função de notificação Toast - deve estar disponível antes dos módulos
+        window.showToast = (message, type = 'info') => {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'check-circle' : (type === 'error' ? 'exclamation-circle' : 'info-circle');
+            toast.innerHTML = `<i class="fas fa-${icon}"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            console.log('Toast displayed:', message, type); // Debug log
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 8000); // Aumentado para 8 segundos
+        };
+
         function toggleForms() {
             const login = document.getElementById('login-section');
             const signup = document.getElementById('signup-section');
@@ -75,6 +129,67 @@
                 login.style.display = 'none'; signup.style.display = 'block';
             }
         }
+
+        // Controle para evitar duplicação
+        let formsBound = false;
+
+        // Função para vincular formulários
+        function bindForms() {
+            if (formsBound) return; // Previne duplicação
+            if (!window.LoginModule || !window.RegisterModule) return; // Aguarda módulos
+            
+            formsBound = true;
+
+            // Vincular formulário de login
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email')?.value || '';
+                    const password = document.getElementById('password')?.value || '';
+
+                    try {
+                        await window.LoginModule.login(email, password);
+                        // Sucesso - redirecionar para home
+                        window.location.href = '../index.html';
+                    } catch (error) {
+                        window.showToast(error.message || 'Erro ao fazer login.', 'error');
+                    }
+                });
+            }
+
+            // Vincular formulário de cadastro
+            const signupForm = document.getElementById('signup-form');
+            if (signupForm) {
+                signupForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('signup-name')?.value || '';
+                    const email = document.getElementById('signup-email')?.value || '';
+                    const password = document.getElementById('signup-password')?.value || '';
+
+                    try {
+                        await window.RegisterModule.signup(email, password, name);
+                        // Sucesso - redirecionar para welcome
+                        window.location.href = '../html/welcome.html';
+                    } catch (error) {
+                        window.showToast(error.message || 'Erro ao cadastrar.', 'error');
+                    }
+                });
+            }
+        }
+
+        // Tentar vincular assim que possível
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindForms);
+        } else {
+            bindForms();
+        }
+
+        // Também tentar quando os módulos forem carregados
+        const bindInterval = setInterval(() => {
+            bindForms();
+            if (formsBound) clearInterval(bindInterval);
+        }, 100);
     </script>
 </body>
 </html>

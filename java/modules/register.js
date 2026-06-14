@@ -9,22 +9,23 @@ const RegisterModule = (() => {
   function validateSignupInput(email, password, name) {
     const errors = [];
 
-    // Validar email
+    // Validar email - regex simples
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !email.trim()) {
       errors.push('Email é obrigatório');
-    } else if (!window.Validators.email(email)) {
+    } else if (!emailRegex.test(email)) {
       errors.push('Email inválido. Use o formato: exemplo@dominio.com');
     }
 
     // Validar senha (aceita 6+ caracteres para compatibilidade com existentes)
     if (!password || !password.trim()) {
       errors.push('Senha é obrigatória');
-    } else if (!window.Validators.passwordWeak(password)) {
+    } else if (password.length < 6) {
       errors.push('Senha deve ter no mínimo 6 caracteres');
     }
 
-    // Validar nome
-    if (name && !window.Validators.username(name)) {
+    // Validar nome - máximo 50 caracteres
+    if (name && name.length > 50) {
       errors.push('Nome de usuário inválido (máximo 50 caracteres)');
     }
 
@@ -32,6 +33,17 @@ const RegisterModule = (() => {
       valid: errors.length === 0,
       errors
     };
+  }
+
+  function sanitizeInput(input) {
+    // Remover HTML e caracteres especiais perigosos
+    return String(input)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
+      .trim();
   }
 
   function signup(email, password, name) {
@@ -48,7 +60,7 @@ const RegisterModule = (() => {
     }
 
     // Sanitiza entrada
-    const sanitizedName = name ? window.SecurityModule.sanitizeInput(name.trim(), 50) : '';
+    const sanitizedName = name ? sanitizeInput(name.trim().substring(0, 50)) : '';
     const sanitizedEmail = email.trim().toLowerCase();
 
     return auth.createUserWithEmailAndPassword(sanitizedEmail, password)
@@ -82,34 +94,15 @@ const RegisterModule = (() => {
       const password = form.querySelector('[name="password"], #signup-password')?.value || '';
 
       try {
-        // Aplica rate limiting para registro
-        const userId = `signup:${email}`;
-        await window.RateLimiter?.withRateLimit(userId, 'register', async () => {
-          await signup(email, password, name);
-        });
+        // Regista o usuário
+        await signup(email, password, name);
 
         if (typeof window.showToast === 'function') {
           window.showToast('Conta criada com sucesso!', 'success');
         }
       } catch (error) {
-        if (error.code === 'RATE_LIMIT_EXCEEDED') {
-          if (typeof window.showToast === 'function') {
-            window.showToast(
-              window.RateLimiter.getFriendlyMessage('register', error.resetIn),
-              'error'
-            );
-          }
-        } else if (typeof window.showToast === 'function') {
+        if (typeof window.showToast === 'function') {
           window.showToast(error.message || 'Erro ao cadastrar usuário.', 'error');
-        }
-
-        // Log de segurança
-        if (window.SecurityModule?.logger) {
-          window.SecurityModule.logger.security(
-            'Erro no registro',
-            'SIGNUP_FAILED',
-            { email: email.substring(0, 5) + '***' }
-          );
         }
       }
     });
