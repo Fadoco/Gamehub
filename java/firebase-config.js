@@ -22,12 +22,13 @@ if (typeof firebase === 'undefined') {
  * Get these values from Firebase Console: https://console.firebase.google.com/
  */
 const firebaseConfig = {
-  apiKey: 'AIzaSyDemoKey123456789',
-  authDomain: 'gamehub-demo.firebaseapp.com',
-  projectId: 'gamehub-demo',
-  storageBucket: 'gamehub-demo.appspot.com',
-  messagingSenderId: '123456789123',
-  appId: '1:123456789123:web:abcdef123456789abcdef1',
+  apiKey: 'AIzaSyA7UzLE9eO-Zas3n5fgEv8sQmHOuclwg3Q',
+  authDomain: 'gamehub-web-8c78c.firebaseapp.com',
+  projectId: 'gamehub-web-8c78c',
+  storageBucket: 'gamehub-web-8c78c.firebasestorage.app',
+  messagingSenderId: '72140954640',
+  appId: '1:72140954640:web:29c9662a447659cbf73e95',
+  measurementId: 'G-237ZJ8KN79',
 };
 
 /**
