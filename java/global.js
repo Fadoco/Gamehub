@@ -55,17 +55,21 @@ window.triggerSecretEvent = (force = false) => {
     if (force || chance <= 0.02) { 
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
-        // 1. Congela o site visualmente e funcionalmente
+        // 1. Congela o site visualmente com efeito mais intenso
         document.documentElement.classList.add('site-frozen');
         document.body.classList.add('site-breaking-anim');
 
-        // 2. Cria os elementos de bug
+        // 2. Cria os elementos de transição assustadora
         const overlay = document.createElement('div');
         overlay.className = 'glitch-overlay';
         overlay.innerHTML = `
-            <div class="glitch-icon">[ ! ]</div>
-            <div id="glitch-text-status" class="glitch-status">> INITIALIZING_KERNEL_BYPASS...</div>
-            <div class="glitch-meta">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+            <div class="breach-container">
+                <div class="breach-noise"></div>
+                <div class="glitch-icon" style="animation: glitch-scale 0.3s infinite;">[ ! ]</div>
+                <div id="glitch-text-status" class="glitch-status">> INITIALIZING_KERNEL_BYPASS...</div>
+                <div class="glitch-meta">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+                <div class="scanning-line"></div>
+            </div>
         `;
 
         const scanline = document.createElement('div');
@@ -74,12 +78,14 @@ window.triggerSecretEvent = (force = false) => {
         document.body.appendChild(overlay);
         document.body.appendChild(scanline);
 
-        // 3. Injeção de Código Corrompido pela tela
+        // 3. Injeção de Código Corrompido com mais intensidade
         const corruptedSnippets = [
             "0xDEADBEEF", "SYSTEM_FAILURE", "const _0x4f21 = [];", "eval(atob('...'))", 
             "Segmentation fault (core dumped)", "Bypassing Firewall...", "Accessing Kernel...", 
             "ERROR_0x8004210B", "while(true){ fork(); }", "injecting_payload...", 
-            "WIPING_LOGS", "sudo rm -rf /", "HIDDEN_MARKET_ACCESS"
+            "WIPING_LOGS", "sudo rm -rf /", "HIDDEN_MARKET_ACCESS",
+            "🔥 BURNING_PERMISSIONS", "💀 DEATH_PROCESS", "⚡ ELECTRICAL_SURGE",
+            "🔓 UNLOCK_FORBIDDEN", "⛓️ CHAIN_BROKEN"
         ];
 
         const spawnCode = setInterval(() => {
@@ -91,29 +97,40 @@ window.triggerSecretEvent = (force = false) => {
             span.style.top = Math.random() * 100 + 'vh';
             span.style.left = Math.random() * 100 + 'vw';
             
-            // Tamanho e rotação aleatória
-            span.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            span.style.transform = `rotate(${Math.random() * 360}deg)`;
+            // Tamanho, rotação e cor aleatória
+            span.style.fontSize = (Math.random() * 24 + 12) + 'px';
+            span.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 0.5 + 0.5})`;
+            span.style.color = ['#0f0', '#f00', '#00f', '#ff00ff'][Math.floor(Math.random() * 4)];
+            span.style.fontWeight = 'bold';
             
             document.body.appendChild(span);
             
-            // Remove o elemento após a animação
-            setTimeout(() => span.remove(), 800);
-        }, 60); // Cria um novo fragmento a cada 60ms
+            // Remove o elemento após a animação (mais rápido)
+            setTimeout(() => span.remove(), 600);
+        }, 40); // Mais frequente = mais intenso
 
-        // 4. Simula uma sequência de falhas no texto do status
+        // 4. Vibrações (usando transform para simular tremor)
+        const vibrateInterval = setInterval(() => {
+            const intensity = Math.random() * 8;
+            document.body.style.transform = `translate(${intensity - 4}px, ${Math.random() * 4}px)`;
+        }, 50);
+
+        // 5. Simula uma sequência de falhas com timing mais dramático
         const status = overlay.querySelector('#glitch-text-status');
-        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; }, 1000);
-        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; }, 2000);
-        setTimeout(() => { status.innerText = "> HIJACKING_DB_CONNECTION..."; }, 3000);
-        setTimeout(() => { status.innerText = "> BYPASSING_SECURITY_LAYER..."; }, 4000);
-        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; }, 4500);
+        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; status.style.color = '#f00'; }, 800);
+        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; status.style.color = '#0f0'; }, 1600);
+        setTimeout(() => { status.innerText = "> HIJACKING_DB_CONNECTION..."; status.style.color = '#f00'; }, 2400);
+        setTimeout(() => { status.innerText = "> BYPASSING_SECURITY_LAYER..."; status.style.color = '#0f0'; }, 3200);
+        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; status.style.color = '#ff00ff'; }, 3800);
+        setTimeout(() => { status.innerText = "> 🔓 WELCOME TO THE VOID 🔓"; status.style.color = '#ffff00'; }, 4400);
 
-        // 5. Redireciona após 5 segundos
+        // 6. Redireciona após 5 segundos com cleanup
         setTimeout(() => {
             clearInterval(spawnCode);
+            clearInterval(vibrateInterval);
+            document.body.style.transform = 'translate(0, 0)';
             window.location.href = window.utils.getHtmlPath('mercado-negro.html');
-        }, 5000);
+        }, 5200);
         return true;
     }
     return false;

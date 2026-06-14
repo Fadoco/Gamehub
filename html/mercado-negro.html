@@ -127,5 +127,27 @@
     <script src="../java/global.js" defer></script>
     <script src="../Roleta/roleta.js" defer></script>
     <script src="../java/mercado-negro.js" defer></script>
+    
+    <!-- Script de scroll automático para o topo e animação de entrada -->
+    <script>
+        window.addEventListener('load', () => {
+            // Scroll para o topo suavemente
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Adiciona classe de animação de entrada
+            document.body.classList.add('page-loading');
+            setTimeout(() => document.body.classList.remove('page-loading'), 800);
+        });
+        
+        // Scroll para o topo imediatamente quando navegar para a página
+        window.addEventListener('beforeunload', () => {
+            window.scrollTo(0, 0);
+        });
+        
+        // Se a página foi aberta via redirect, vai pro topo
+        if (window.location.hash === '') {
+            setTimeout(() => window.scrollTo(0, 0), 100);
+        }
+    </script>
 </body>
 </html>

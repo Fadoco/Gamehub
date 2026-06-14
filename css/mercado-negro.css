@@ -1,199 +1,434 @@
 /**
- * Estilos exclusivos para o Mercado Negro (Vibe Terminal/Hack)
+ * Mercado Negro - Visual Renovado & Animação Assustadora
+ * Tema: Terminal/Hacker sofisticado com design moderno
+ * Última atualização: Consolidado em um único arquivo
  */
-/* O body é estilizado globalmente em style-global.css, não deve ser sobrescrito aqui */
 
-.black-market-container { 
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --bm-primary: #0f0;
+    --bm-secondary: #00ff99;
+    --bm-accent: #ff00ff;
+    --bm-danger: #ff0055;
+    --bm-warning: #ffff00;
+    --bm-bg-dark: #0a0a0a;
+    --bm-bg-panel: #111111;
+    --bm-bg-hover: #1a1a1a;
+    --bm-border: rgba(0, 255, 0, 0.3);
+    --bm-glow: rgba(0, 255, 0, 0.5);
+}
+
+/* === BODY & LAYOUT === */
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0f1a 50%, #0f0a1a 100%);
+    color: var(--bm-primary);
+    font-family: 'Courier New', monospace;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* === CONTAINER PRINCIPAL === */
+.black-market-container {
     width: 100%;
-    max-width: 900px; 
-    border: 1px solid #0f0; 
-    padding: 20px; 
-    box-shadow: 0 0 20px #0f0, inset 0 0 10px #0f0; 
-    background: rgba(0, 20, 0, 0.9);
-    height: auto;
-    min-height: 90vh;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Efeito de fundo animado */
+.black-market-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: ambient-glow 8s ease-in-out infinite;
+}
+
+@keyframes ambient-glow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.black-market-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* === HEADER === */
+.warning {
+    font-size: 2.5rem;
+    color: var(--bm-danger);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 
+        0 0 10px var(--bm-danger),
+        0 0 20px rgba(255, 0, 85, 0.5),
+        0 0 30px rgba(255, 0, 85, 0.3);
+    animation: warning-pulse 2s ease-in-out infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes warning-pulse {
+    0%, 100% {
+        text-shadow: 0 0 10px var(--bm-danger), 0 0 20px rgba(255, 0, 85, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 20px var(--bm-danger), 0 0 40px rgba(255, 0, 85, 0.8);
+        transform: scale(1.02);
+    }
+}
+
+.black-market-container > p:first-of-type {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--bm-secondary);
+    margin-bottom: 40px;
+    opacity: 0.8;
+    animation: typing 3s steps(50);
+}
+
+@keyframes typing {
+    from { opacity: 0; }
+    to { opacity: 0.8; }
+
+/* === SEÇÕES === */
+.market-section {
+    background: linear-gradient(135deg, var(--bm-bg-panel) 0%, #1a1a1a 100%);
+    border: 1px solid var(--bm-border);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.1),
+        inset 0 0 20px rgba(0, 255, 0, 0.05);
+    transition: all 0.3s ease;
+    animation: section-fade-in 0.6s ease-out backwards;
+}
+
+@keyframes section-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.market-section:nth-child(1) { animation-delay: 0.1s; }
+.market-section:nth-child(2) { animation-delay: 0.2s; }
+.market-section:nth-child(3) { animation-delay: 0.3s; }
+.market-section:nth-child(4) { animation-delay: 0.4s; }
+
+.market-section:hover {
+    border-color: var(--bm-primary);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 0, 0.2),
+        inset 0 0 20px rgba(0, 255, 0, 0.1);
+}
+
+/* Efeito de brilho lateral */
+.market-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+    animation: scan-line 8s infinite;
+}
+
+@keyframes scan-line {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* === TITLES === */
+.market-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--bm-primary);
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding-left: 15px;
+    border-left: 4px solid var(--bm-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.market-title::before {
+    content: '▶';
+    color: var(--bm-accent);
+    animation: pulse 1s infinite;
+}
+
+/* === ITEMS SECRETOS (JOGOS COM DESCONTO) === */
+.market-list {
     display: flex;
     flex-direction: column;
-    gap: 40px; /* Mais espaço entre as seções */
+    gap: 15px;
+    border: none;
 }
 
-/* Garantir ordem das seções */
-.market-section:nth-of-type(1) { order: 1; } /* Seleção de Inventário */
-.market-section:nth-of-type(2) { order: 2; } /* Caixas */
-.market-section:nth-of-type(3) { order: 3; } /* Roleta */
-.market-section:nth-of-type(4) { order: 4; } /* Jogos Baratos */
-
-.market-list {
-    margin-top: 0; /* Removido para usar o gap do flexbox */
-    border: 1px solid #0f0;
-}
-
-.market-section {
-    margin-bottom: 0;
+.secret-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--bm-border);
+    border-radius: 8px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 0, 0.02) 50%, transparent 100%);
+    transition: all 0.3s ease;
     position: relative;
-    z-index: 5;
+    overflow: hidden;
 }
 
-.market-section p.restriction-phrase { display: none; } /* Remove frase restritiva se necessário */
-
-.market-title { font-size: 1.2rem; color: #0f0; margin-bottom: 15px; border-left: 5px solid #0f0; padding-left: 10px; }
-
-.secret-item { 
-    display: flex; 
-    justify-content: space-between; 
-    padding: 20px; 
-    border-bottom: 1px dashed #0f0; 
-    align-items: center; 
+.secret-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--bm-primary), transparent);
+    opacity: 0;
+    animation: highlight-in 0.5s ease-out forwards;
 }
 
-.secret-item:last-child { border-bottom: none; }
+.secret-item:hover {
+    border-color: var(--bm-primary);
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 0, 0.1) 50%, transparent 100%);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+    transform: translateX(5px);
+}
 
-.secret-item:hover { background: rgba(0, 255, 0, 0.1); }
+.secret-item:hover::before {
+    opacity: 1;
+}
 
-.warning { color: #f00; font-weight: bold; animation: blink 0.5s infinite; text-align: center; }
+.secret-item > div:first-child {
+    flex: 1;
+}
 
-@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } }
+.secret-item strong {
+    color: var(--bm-primary);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 5px;
+}
 
-.btn-hack { 
-    background: none; 
-    border: 1px solid #0f0; 
-    color: #0f0; 
-    padding: 8px 20px; 
-    cursor: pointer; 
-    text-transform: uppercase;
+.secret-item p {
+    font-size: 0.85rem;
+    color: var(--bm-warning);
+    margin: 0;
+    opacity: 0.9;
+}
+
+.secret-item span {
+    font-size: 1.3rem;
     font-weight: bold;
+    color: var(--bm-secondary);
+    margin: 0 20px;
 }
 
-.btn-hack:hover { background: #0f0; color: #000; }
+@keyframes highlight-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-/* Estilos para as Caixas Especiais */
+/* === BOXES ESPECIAIS === */
 .boxes-grid-special {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
     margin-top: 20px;
 }
 
 .box-card-special {
-    background: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
     padding: 30px 20px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: 0.3s;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
+/* Efeito de brilho interno */
 .box-card-special::before {
     content: '';
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-    transform: rotate(45deg);
-    transition: 0.5s;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+    animation: shimmer 3s infinite;
 }
 
-.box-card-special:hover::before { left: 100%; }
-.box-card-special.tier-glitch { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
-.box-card-special.tier-void { border-color: #a335ee; box-shadow: 0 0 15px rgba(163, 53, 238, 0.3); }
-
-/* Animações Glitch */
-@keyframes glitch-extreme {
-    0% { transform: translate(0); clip-path: inset(10% 0 20% 0); filter: hue-rotate(0deg); }
-    20% { transform: translate(-15px, 10px); clip-path: inset(40% 0 10% 0); filter: hue-rotate(90deg); }
-    40% { transform: translate(25px, -15px); clip-path: inset(70% 0 5% 0); filter: hue-rotate(180deg); }
-    60% { transform: translate(-10px, 20px); clip-path: inset(15% 0 60% 0); filter: hue-rotate(270deg); }
-    80% { transform: translate(15px, 10px); clip-path: inset(2% 0 80% 0); filter: hue-rotate(360deg); }
-    100% { transform: translate(0); }
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
-@keyframes site-shake-intense {
-    0% { transform: translate(0,0) scale(1); }
-    25% { transform: translate(-2px, 2px) scale(1.01); }
-    50% { transform: translate(2px, -2px) rotate(0.1deg); }
-    75% { transform: translate(-2px, -2px) scale(0.99); }
-    100% { transform: translate(2px, 2px) scale(1); }
+.box-card-special.tier-glitch {
+    border-color: var(--bm-primary);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.2),
+        inset 0 0 20px rgba(0, 255, 0, 0.05);
 }
 
-@keyframes noise-anim {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(1px); }
+.box-card-special.tier-glitch:hover {
+    border-color: var(--bm-secondary);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 0, 0.4),
+        inset 0 0 30px rgba(0, 255, 0, 0.1),
+        0 0 50px rgba(0, 255, 0, 0.2);
+    transform: translateY(-5px) scale(1.02);
 }
 
-/* --- SISTEMA DE CORRUPÇÃO --- */
-.site-frozen { filter: contrast(1.8) brightness(0.6) grayscale(0.6) hue-rotate(280deg); pointer-events: none; }
-.site-breaking-anim { animation: site-shake-intense 0.1s infinite; }
-
-@keyframes site-shake-intense {
-    0% { transform: translate(0,0); }
-    50% { transform: translate(2px, -2px); }
-    100% { transform: translate(0,0); }
+.box-card-special.tier-void {
+    border-color: var(--bm-accent);
+    box-shadow: 
+        0 0 20px rgba(255, 0, 255, 0.2),
+        inset 0 0 20px rgba(255, 0, 255, 0.05);
 }
 
-.glitch-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9); z-index: 10000;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #0f0; font-family: monospace;
+.box-card-special.tier-void:hover {
+    border-color: var(--bm-warning);
+    box-shadow: 
+        0 0 30px rgba(255, 0, 255, 0.4),
+        inset 0 0 30px rgba(255, 0, 255, 0.1),
+        0 0 50px rgba(255, 0, 255, 0.2);
+    transform: translateY(-5px) scale(1.02);
 }
 
-.corrupted-code-fragment {
-    position: fixed; color: #0f0; z-index: 10005; font-family: monospace;
-    animation: code-fade-out 0.8s forwards; pointer-events: none;
+.box-card-special h3 {
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    position: relative;
+    z-index: 2;
 }
 
-@keyframes code-fade-out {
-    to { opacity: 0; transform: scale(1.5) translate(20px, 20px); }
+.box-card-special p {
+    font-size: 0.9rem;
+    margin: 10px 0;
+    position: relative;
+    z-index: 2;
+    opacity: 0.8;
 }
 
-.box-card-special .btn-hack:disabled {
-    background: #333 !important;
-    color: #777 !important;
-    border-color: #555 !important;
-    box-shadow: none;
-    cursor: not-allowed;
+.box-card-special .text-5xl {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+    animation: icon-float 3s ease-in-out infinite;
 }
 
-/* Estilos para o inventário de seleção de jogo (reutiliza .inventory-grid do roleta.css) */
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* === INVENTÁRIO DE SELEÇÃO === */
+.inventory-selection {
+    background: linear-gradient(135deg, var(--bm-bg-panel) 0%, #0f1a1f 100%);
+}
+
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Garante responsividade */
-    justify-content: center;
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
     min-height: 200px;
-    max-height: 350px;
-    overflow-y: auto; 
-    overflow-x: visible; /* Permite que o brilho lateral apareça */
-    padding: 30px 15px; /* Mais espaço interno para as auras respirarem */
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 20px;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    border: 1px solid var(--bm-border);
+}
+
+/* Scrollbar customizada */
+.inventory-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.inventory-grid::-webkit-scrollbar-track {
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 4px;
+}
+
+.inventory-grid::-webkit-scrollbar-thumb {
+    background: var(--bm-primary);
+    border-radius: 4px;
+}
+
+.inventory-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--bm-secondary);
 }
 
 .bet-item {
     aspect-ratio: 3/4;
     background: #111;
-    border: 1px solid #333 !important;
+    border: 2px solid rgba(0, 255, 0, 0.3);
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
-    position: relative; /* Necessário para o posicionamento da aura */
-    margin: 12px; /* Margem externa maior para auras de DM não colidirem */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .bet-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
+    border-radius: 6px;
 }
 
 .bet-item.selected {
-    border-color: #fff !important;
-    box-shadow: 0 0 25px #fff;
+    border-color: var(--bm-primary);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.5),
+        inset 0 0 15px rgba(0, 255, 0, 0.2);
     transform: scale(1.05);
-    z-index: 10;
+}
+
+.bet-item:hover {
+    border-color: var(--bm-secondary);
+    transform: scale(1.02);
 }
 
 .bet-item-info {
@@ -201,33 +436,28 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 40%, transparent);
-    padding: 15px 12px; /* Espaço aumentado entre borda e informações */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
+    padding: 12px;
     font-size: 11px;
     text-align: center;
-    border-radius: 0 0 8px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    /* Garante que o conteúdo interno não vaze */
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
+    border-radius: 0 0 6px 6px;
 }
 
-/* Estilos da Roleta Especial */
+/* === ROLETA === */
 .special-roulette-wrapper {
-    height: 120px;
+    height: 140px;
     background: linear-gradient(to bottom, #050505, #000);
-    border: 2px solid #0f0;
-    border-radius: 8px;
+    border: 2px solid var(--bm-primary);
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     padding: 0 15px;
-    box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.1), 0 0 15px rgba(0, 255, 0, 0.2);
-    will-change: transform;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 255, 0, 0.1),
+        0 0 25px rgba(0, 255, 0, 0.2);
+    margin: 20px 0;
 }
 
 .special-roulette-wrapper::before {
@@ -238,148 +468,362 @@
     transform: translateX(-50%);
     width: 4px;
     height: 100%;
-    background: linear-gradient(to bottom, #0f0, #00ff00);
+    background: linear-gradient(to bottom, var(--bm-primary), var(--bm-secondary));
     z-index: 10;
-    box-shadow: 0 0 15px #0f0, 0 0 30px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 20px var(--bm-primary);
+}
+
+.special-roulette-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid var(--bm-primary);
+    z-index: 11;
 }
 
 .special-rail {
     display: flex;
     transition: transform 5.7s cubic-bezier(0.15, 0, 0.05, 1);
     align-items: center;
-    will-change: transform;
+    gap: 10px;
 }
 
 .special-card {
-    width: 110px;
-    height: 110px;
-    border: 2px solid #0f0;
-    margin: 0 8px;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--bm-primary);
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #000;
+    background: linear-gradient(135deg, #000, #0a0a0a);
     position: relative;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .special-card:hover {
-    box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.3), 0 0 20px rgba(0, 255, 0, 0.2);
+    box-shadow: 
+        inset 0 0 20px rgba(0, 255, 0, 0.3),
+        0 0 25px rgba(0, 255, 0, 0.2);
 }
 
 .special-card .q-mark {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
-    color: #0f0;
+    color: var(--bm-primary);
     text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
 
 .special-card .card-label {
     position: absolute;
-    bottom: 5px;
+    bottom: 8px;
     font-size: 9px;
-    color: #0f0;
+    color: var(--bm-primary);
     background: rgba(0, 0, 0, 0.8);
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 3px;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-/* Raridades para Special Cards */
-.special-card.rarity-gray {
-    border-color: #666 !important;
-    box-shadow: inset 0 0 10px rgba(102, 102, 102, 0.1);
-}
-
+/* Raridades */
 .special-card.rarity-blue {
-    border-color: #0078f2 !important;
+    border-color: #0078f2;
     box-shadow: inset 0 0 15px rgba(0, 120, 242, 0.2), 0 0 10px rgba(0, 120, 242, 0.2);
 }
 
 .special-card.rarity-purple {
-    border-color: #9b59b6 !important;
-    box-shadow: inset 0 0 15px rgba(155, 89, 182, 0.2), 0 0 10px rgba(155, 89, 182, 0.2);
+    border-color: var(--bm-accent);
+    box-shadow: inset 0 0 15px rgba(255, 0, 255, 0.2), 0 0 10px rgba(255, 0, 255, 0.2);
 }
 
 .special-card.rarity-gold {
-    border-color: #f1c40f !important;
-    box-shadow: inset 0 0 20px rgba(241, 196, 15, 0.2), 0 0 15px rgba(241, 196, 15, 0.2);
+    border-color: var(--bm-warning);
+    box-shadow: inset 0 0 20px rgba(255, 255, 0, 0.2), 0 0 15px rgba(255, 255, 0, 0.2);
 }
 
-.special-card.rarity-mythic {
-    border-color: #ff00ff !important;
-    box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.3), 0 0 20px rgba(255, 0, 255, 0.3);
-    animation: special-mythic-glow 1s infinite alternate;
+/* === BOTÕES === */
+.btn-hack {
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.1), rgba(0, 255, 0, 0.05));
+    border: 1px solid var(--bm-primary);
+    color: var(--bm-primary);
+    padding: 12px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
 }
 
-@keyframes special-mythic-glow {
-    from { border-color: #ff00ff; box-shadow: inset 0 0 20px rgba(255, 0, 255, 0.2), 0 0 15px rgba(255, 0, 255, 0.2); }
-    to { border-color: #ffff00; box-shadow: inset 0 0 25px rgba(255, 0, 255, 0.4), 0 0 25px rgba(255, 0, 255, 0.4); }
-}
-
-/* Garantir que o modal da roleta seja visível */
-#box-opening-modal {
-    display: none !important;
-    visibility: hidden;
-    z-index: 2999;
-}
-
-#box-opening-modal[style*="flex"] {
-    visibility: visible;
-    display: flex !important;
-    z-index: 2999;
-}
-
-/* Melhorar visibilidade do seletor */
-#box-opening-modal .roulette-selector {
-    box-shadow: 0 0 30px #0f0, 0 0 60px rgba(0, 255, 0, 0.5);
-    animation: selector-highlight 1s infinite alternate;
-}
-
-@keyframes selector-highlight {
-    from { box-shadow: 0 0 20px #0f0; }
-    to { box-shadow: 0 0 40px #0f0, 0 0 60px rgba(0, 255, 0, 0.5); }
-}
-
-/* Seletor de Roleta - Estilo Verde Terminal */
-.roulette-selector {
+.btn-hack::before {
+    content: '';
     position: absolute;
     top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--bm-primary);
+    z-index: -1;
+    transition: left 0.3s ease;
+}
+
+.btn-hack:hover {
+    background: var(--bm-primary);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-hack:hover::before {
+    left: 0;
+}
+
+.btn-hack:active {
+    transform: translateY(0);
+}
+
+.btn-hack:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* === ANIMAÇÕES === */
+@keyframes glitch-scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* === TRANSIÇÃO GLITCH MELHORADA === */
+.glitch-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 10, 0, 0.98) 100%);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--bm-primary);
+    font-family: 'Courier New', monospace;
+    backdrop-filter: blur(2px);
+}
+
+.breach-container {
+    position: relative;
+    text-align: center;
+    z-index: 10001;
+}
+
+.breach-noise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 255, 0, 0.03),
+            rgba(0, 255, 0, 0.03) 2px,
+            transparent 2px,
+            transparent 4px
+        );
+    pointer-events: none;
+    animation: noise-scan 0.1s infinite;
+}
+
+@keyframes noise-scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(10px); }
+}
+
+.glitch-icon {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: var(--bm-danger);
+    text-shadow: 
+        0 0 20px var(--bm-danger),
+        0 0 40px rgba(255, 0, 85, 0.5);
+    animation: glitch-pulse 0.4s infinite;
+}
+
+@keyframes glitch-pulse {
+    0%, 100% {
+        text-shadow: 0 0 20px var(--bm-danger), 0 0 40px rgba(255, 0, 85, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 40px var(--bm-danger), 0 0 80px rgba(255, 0, 85, 0.8);
+        transform: scale(1.1);
+    }
+}
+
+.glitch-status {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: var(--bm-primary);
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    letter-spacing: 2px;
+    animation: status-flicker 0.3s infinite;
+    min-height: 2rem;
+}
+
+@keyframes status-flicker {
+    0%, 100% { 
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    }
+    50% { 
+        opacity: 0.7;
+        text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+    }
+}
+
+.glitch-meta {
+    font-size: 0.9rem;
+    color: var(--bm-secondary);
+    opacity: 0.8;
+    letter-spacing: 1px;
+    animation: meta-fade 0.5s ease-in-out infinite;
+}
+
+@keyframes meta-fade {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+}
+
+.scanning-line {
+    position: absolute;
+    bottom: 20%;
     left: 50%;
     transform: translateX(-50%);
-    width: 4px;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--bm-primary), transparent);
+    animation: scanning 1.5s infinite;
+}
+
+@keyframes scanning {
+    0% { bottom: 20%; opacity: 1; }
+    100% { bottom: 80%; opacity: 0; }
+}
+
+.corrupted-code-fragment {
+    position: fixed;
+    color: var(--bm-primary);
+    z-index: 10005;
+    font-family: 'Courier New', monospace;
+    animation: code-fade-out 0.6s forwards;
+    pointer-events: none;
+    font-weight: bold;
+    text-shadow: 0 0 10px currentColor;
+}
+
+@keyframes code-fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.8) translate(40px, 40px);
+    }
+}
+
+.glitch-scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, #0f0, #00ff00);
-    z-index: 10;
-    box-shadow: 0 0 20px #0f0, 0 0 40px rgba(0, 255, 0, 0.3);
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.3) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanlines-move 0.1s linear infinite;
 }
 
-/* Modal da Roleta - Melhorias */
-.modal.roulette-modal .modal-content {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-    border: 2px solid #0f0;
-    box-shadow: 0 0 40px rgba(0, 255, 0, 0.3), inset 0 0 30px rgba(0, 255, 0, 0.05);
+@keyframes scanlines-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(2px); }
 }
 
-.modal.roulette-modal .modal-content h2 {
-    color: #0f0;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+/* === ANIMAÇÕES DE ENTRADA === */
+body.page-loading .black-market-container {
+    animation: container-appear 0.8s ease-out;
 }
 
-/* Modal da Roleta do Mercado Negro */
-.modal-roulette {
-    background: linear-gradient(to bottom, rgba(0, 40, 0, 0.5), rgba(0, 0, 0, 0.8));
-    border: 1px solid rgba(0, 255, 0, 0.3);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
+@keyframes container-appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 768px) {
+    .black-market-container {
+        padding: 40px 15px;
+    }
+
+    .market-section {
+        padding: 20px;
+    }
+
+    .warning {
+        font-size: 1.8rem;
+    }
+
+    .boxes-grid-special {
+        grid-template-columns: 1fr;
+    }
+
+    .secret-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .secret-item span {
+        margin: 10px 0;
+    }
+
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        max-height: 300px;
+    }
 }
