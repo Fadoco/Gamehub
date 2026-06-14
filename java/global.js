@@ -8,6 +8,60 @@ window.isActionInProgress = false; // Trava global para evitar operações dupli
 // Detecta uma única vez se estamos em uma subpasta
 window.IS_SUBFOLDER = window.location.pathname.includes('/html/') || window.location.pathname.includes('/Roleta/');
 
+// ============================================================================
+// ANIMATION ENHANCEMENT UTILITIES
+// ============================================================================
+
+/**
+ * Renderiza cards com skeleton loaders e animações suaves
+ * @param {Array} games - Array de jogos para renderizar
+ * @param {HTMLElement} container - Container para renderizar
+ * @param {number} skeletonCount - Número de skeletons a mostrar (default: 6)
+ * @param {boolean} clear - Se deve limpar container antes (default: true)
+ */
+window.renderWithAnimations = async (games, container, skeletonCount = 6, clear = true) => {
+    if (!container || !window.AnimationEnhancements) return;
+
+    // 1. Mostrar skeleton loaders enquanto renderiza
+    const hideSkeletons = window.AnimationEnhancements.showSkeletonLoader(container, skeletonCount);
+    
+    // 2. Aguardar um pouco para skeleton ser visível (UX melhor)
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // 3. Renderizar cards normalmente
+    window.renderToContainer(games, container, clear);
+    
+    // 4. Remover skeletons
+    hideSkeletons();
+    
+    // 5. Animar cards com stagger
+    await new Promise(resolve => setTimeout(resolve, 50));
+    const cards = container.querySelectorAll('.game-card');
+    if (cards.length > 0) {
+        window.AnimationEnhancements.animateCardsBatch(Array.from(cards), 50);
+    }
+};
+
+/**
+ * Wrapper para renderToContainer que adiciona skeleton loaders automaticamente
+ * Útil para ser chamado diretamente pelas páginas
+ */
+window.renderWithSkeletons = (games, container, clear = true) => {
+    if (!window.AnimationEnhancements) {
+        return window.renderToContainer(games, container, clear);
+    }
+    return window.renderWithAnimations(games, container, 6, clear);
+};
+
+/**
+ * Mostra loading bar durante fetch de dados
+ * @returns {Function} Função para remover loading bar
+ */
+window.showLoadingBar = () => {
+    if (!window.AnimationEnhancements) return () => {};
+    return window.AnimationEnhancements.createLoadingBar();
+};
+
 // Utilitários Globais
 window.utils = {
     // Converte preços como "R$ 99,90" ou "Grátis" para números (float)
@@ -50,70 +104,134 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
 };
 
 // Função para disparar o evento raro do Mercado Negro
+// Chance: 10% (era 2%)
 window.triggerSecretEvent = (force = false) => {
     const chance = Math.random();
-    if (force || chance <= 0.02) { 
+    if (force || chance <= 0.10) { 
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
-        // 1. Congela o site visualmente e funcionalmente
-        document.documentElement.classList.add('site-frozen');
-        document.body.classList.add('site-breaking-anim');
+        // 0. Criar som dramático de alerta (opcional)
+        const alertSound = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==');
+        try { alertSound.play().catch(() => {}); } catch (e) {}
 
-        // 2. Cria os elementos de bug
+        // 1. Criar overlay dramático com animação de entrada
         const overlay = document.createElement('div');
-        overlay.className = 'glitch-overlay';
+        overlay.className = 'glitch-overlay glitch-overlay-enhanced';
+        overlay.style.animation = 'fadeIn 0.3s ease-out forwards';
         overlay.innerHTML = `
-            <div class="glitch-icon">[ ! ]</div>
-            <div id="glitch-text-status" class="glitch-status">> INITIALIZING_KERNEL_BYPASS...</div>
-            <div class="glitch-meta">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+            <div class="glitch-container">
+                <div class="glitch-icon glitch-pulse">[ ⚠ ]</div>
+                <div id="glitch-text-status" class="glitch-status">> INITIALIZING_KERNEL_BYPASS...</div>
+                <div class="glitch-meta">UID: ${window.auth.currentUser?.uid || 'ANON'} | SESSION_HIJACKED</div>
+                <div class="glitch-progress">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
         `;
 
         const scanline = document.createElement('div');
-        scanline.className = 'glitch-scanline';
+        scanline.className = 'glitch-scanline glitch-scanline-enhanced';
         
         document.body.appendChild(overlay);
         document.body.appendChild(scanline);
 
-        // 3. Injeção de Código Corrompido pela tela
+        // 2. Injeção de Código Corrompido - MELHORADO
         const corruptedSnippets = [
             "0xDEADBEEF", "SYSTEM_FAILURE", "const _0x4f21 = [];", "eval(atob('...'))", 
             "Segmentation fault (core dumped)", "Bypassing Firewall...", "Accessing Kernel...", 
             "ERROR_0x8004210B", "while(true){ fork(); }", "injecting_payload...", 
-            "WIPING_LOGS", "sudo rm -rf /", "HIDDEN_MARKET_ACCESS"
+            "WIPING_LOGS", "sudo rm -rf /", "HIDDEN_MARKET_ACCESS", "ROOT_PRIVILEGE_ESCALATION",
+            "DECRYPTING_DATABASE", "STEALING_CREDENTIALS", "BACKDOOR_INSTALLED"
         ];
 
+        let fragmentCount = 0;
+        const maxFragments = 25;
         const spawnCode = setInterval(() => {
+            if (fragmentCount >= maxFragments) {
+                clearInterval(spawnCode);
+                return;
+            }
+
             const span = document.createElement('div');
-            span.className = 'corrupted-code-fragment';
+            span.className = 'corrupted-code-fragment glitch-code';
             span.innerText = corruptedSnippets[Math.floor(Math.random() * corruptedSnippets.length)];
             
-            // Posição aleatória na tela
+            // Posição aleatória mais dramatizada
             span.style.top = Math.random() * 100 + 'vh';
             span.style.left = Math.random() * 100 + 'vw';
             
             // Tamanho e rotação aleatória
-            span.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            span.style.transform = `rotate(${Math.random() * 360}deg)`;
+            span.style.fontSize = (Math.random() * 20 + 12) + 'px';
+            span.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 0.5 + 0.8})`;
+            span.style.opacity = Math.random() * 0.7 + 0.5;
+            span.style.animation = `glitchFly 0.8s ease-out forwards`;
             
             document.body.appendChild(span);
+            fragmentCount++;
             
             // Remove o elemento após a animação
             setTimeout(() => span.remove(), 800);
-        }, 60); // Cria um novo fragmento a cada 60ms
+        }, 40); // Cria um novo fragmento a cada 40ms (mais rápido)
 
-        // 4. Simula uma sequência de falhas no texto do status
+        // 3. Simulação de Hacking - Sequência Melhorada
         const status = overlay.querySelector('#glitch-text-status');
-        setTimeout(() => { status.innerText = "> CORRUPTING_FIRESTORE_RECORDS..."; }, 1000);
-        setTimeout(() => { status.innerText = "> WIPING_LOGS..."; }, 2000);
-        setTimeout(() => { status.innerText = "> HIJACKING_DB_CONNECTION..."; }, 3000);
-        setTimeout(() => { status.innerText = "> BYPASSING_SECURITY_LAYER..."; }, 4000);
-        setTimeout(() => { status.innerText = "> ACCESSING_BLACK_MARKET..."; }, 4500);
+        const progressBar = overlay.querySelector('.progress-bar');
 
-        // 5. Redireciona após 5 segundos
+        const sequence = [
+            { time: 400, text: "> SCANNING_NETWORK_TOPOLOGY...", progress: 15 },
+            { time: 900, text: "> IDENTIFYING_FIREWALL_VULNERABILITIES...", progress: 30 },
+            { time: 1400, text: "> EXPLOITING_SSL_HANDSHAKE...", progress: 45 },
+            { time: 1900, text: "> CORRUPTING_FIRESTORE_RECORDS...", progress: 60 },
+            { time: 2400, text: "> HIJACKING_DATABASE_SESSIONS...", progress: 75 },
+            { time: 2900, text: "> ACCESSING_BLACK_MARKET_PORTAL...", progress: 90 },
+            { time: 3400, text: "> SYSTEM_COMPROMISE_COMPLETE.", progress: 100 }
+        ];
+
+        sequence.forEach(step => {
+            setTimeout(() => { 
+                status.innerText = step.text;
+                status.style.animation = 'glitchFlicker 0.2s';
+                progressBar.style.width = step.progress + '%';
+            }, step.time);
+        });
+
+        // 4. Efeito de distorção visual progressiva
+        let distortLevel = 0;
+        const distortInterval = setInterval(() => {
+            distortLevel += 2;
+            overlay.style.filter = `hue-rotate(${distortLevel}deg) brightness(${0.8 + Math.random() * 0.2})`;
+            if (distortLevel > 50) clearInterval(distortInterval);
+        }, 30);
+
+        // 5. Flash de transição antes de redirecionar
+        setTimeout(() => {
+            overlay.style.animation = 'glitchFadeOut 0.4s ease-in forwards';
+            scanline.style.animation = 'glitchFadeOut 0.4s ease-in forwards';
+            
+            // Efeito de "break" antes da transição
+            const breakEffect = document.createElement('div');
+            breakEffect.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 100, 0.3) 50%, transparent 100%);
+                pointer-events: none;
+                z-index: 9999;
+                animation: glitchSweep 0.5s ease-out forwards;
+            `;
+            document.body.appendChild(breakEffect);
+            
+            setTimeout(() => breakEffect.remove(), 500);
+        }, 3900);
+
+        // 6. Redireciona após sequência completa
         setTimeout(() => {
             clearInterval(spawnCode);
             window.location.href = window.utils.getHtmlPath('mercado-negro.html');
-        }, 5000);
+        }, 4500);
+        
         return true;
     }
     return false;
@@ -265,10 +383,15 @@ window.checkUserSession = (user) => {
 }; 
 
 /**
- * Renderiza uma lista de jogos em um container HTML.
+ * Renderiza uma lista de jogos em um container HTML com suporte a animações.
  * Esta função é compartilhada entre home.js, library.js e busca.js.
+ * 
+ * @param {Array} games - Array de jogos
+ * @param {HTMLElement} container - Container para renderizar
+ * @param {boolean} clear - Se deve limpar o container (default: true)
+ * @param {boolean} animate - Se deve adicionar classe de animação aos cards (default: true)
  */
-window.renderToContainer = (games, container, clear = true) => {
+window.renderToContainer = (games, container, clear = true, animate = true) => {
     if (!container) return;
 
     // Verifica se estamos na página inicial para desativar o visual de ranks (auras/cores) na loja
@@ -309,9 +432,10 @@ window.renderToContainer = (games, container, clear = true) => {
             ? `Valor: R$ ${inventoryValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
             : game.currentPrice;
 
+        const animateClass = animate ? ' card-animate' : '';
         return `
             <a href="${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}" class="game-card-link" style="text-decoration: none; color: inherit;">
-                <article class="game-card ${auraClass}">
+                <article class="game-card ${auraClass}${animateClass}">
                 <div class="card-media ${auraClass}">
                     ${discountBadge}
                     <img data-src="${displayImg}" alt="${game.title}" class="lazy-image" referrerpolicy="no-referrer">
@@ -345,6 +469,9 @@ window.renderToContainer = (games, container, clear = true) => {
 
 async function fetchGamesData() {
     try {
+        // Mostrar loading bar
+        const removeLoadingBar = window.showLoadingBar();
+        
         const IS_SUBFOLDER = window.IS_SUBFOLDER;
         let data = [];
 
@@ -410,6 +537,53 @@ async function fetchGamesData() {
 
     } catch (error) {
         console.error("Erro ao carregar o catálogo de jogos:", error);
+    }
+}
+
+/**
+ * Renderiza com suporte a paginação e infinite scroll
+ * Útil para listas grandes de jogos
+ */
+window.renderGamesWithPagination = (games, container, pageSize = 12, pageNumber = 0) => {
+    if (!games || !container) return 0;
+
+    const startIdx = pageNumber * pageSize;
+    const endIdx = startIdx + pageSize;
+    const pageGames = games.slice(startIdx, endIdx);
+
+    window.renderWithAnimations(pageGames, container, pageSize, pageNumber === 0);
+    return Math.ceil(games.length / pageSize); // Retorna total de páginas
+};
+
+/**
+ * Inicializa o módulo de animações se disponível
+ */
+function initAnimationEnhancements() {
+    if (window.AnimationEnhancements) {
+        // Adicionar hover scale effect em todos os cards dinamicamente
+        const addHoverEffects = () => {
+            document.querySelectorAll('.game-card:not([data-hover-init])').forEach(card => {
+                card.setAttribute('data-hover-init', 'true');
+                window.AnimationEnhancements.addHoverScale(card, 1.05, 200);
+            });
+        };
+        
+        // Adicionar efeito ao carregar
+        addHoverEffects();
+        
+        // Observer para novos cards adicionados dinamicamente
+        const observer = new MutationObserver(() => {
+            addHoverEffects();
+        });
+        
+        observer.observe(document.body, { 
+            childList: true, 
+            subtree: true 
+        });
+        
+        if (window.AnimationEnhancements.config.debug) {
+            console.log('[Global] Animation Enhancements initialized with hover effects');
+        }
     }
 }
 
@@ -481,6 +655,7 @@ function initBackToTop() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    initAnimationEnhancements();
     fetchGamesData();
     initBackToTop();
 });

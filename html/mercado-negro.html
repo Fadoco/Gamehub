@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mercado Negro - Compre itens raros no GameHub.">
-    <meta name="theme-color" content="#00d4ff">
-    <title>SISTEMA CORROMPIDO - MERCADO NEGRO</title>
+    <meta name="description" content="Mercado Negro - A rede clandestina de GameHub.">
+    <meta name="theme-color" content="#00ff88">
+    <title>🔓 MERCADO NEGRO - SISTEMA COMPROMETIDO</title>
     
-    <!-- === CSS MODULARIZADO (Mobile-First) === -->
+    <!-- === CSS MODULARIZADO === -->
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/style-global.css">
@@ -20,112 +20,235 @@
     <!-- === THEME SWITCHER === -->
     <link rel="stylesheet" href="../css/theme-switcher.css">
     
-    <!-- === CSS ESPECÍFICO === -->
-    <link rel="stylesheet" href="../Roleta/roleta.css">
-    <link rel="stylesheet" href="../css/upgrades.css">
-    <link rel="stylesheet" href="../css/mercado-negro.css">
-</head>
-<body>
-    <div class="black-market-container">
-        <h1 class="warning">CUIDADO: VOCÊ ESTÁ NO MERCADO NEGRO</h1>
-        <p>> Conexão criptografada... Bypassing Firestore rules...</p>
-
-        <!-- Seção: Roleta Especial -->
-        <section class="market-section">
-            <h2 class="market-title">> ROLETA PROIBIDA</h2>
-            <div class="special-roulette-wrapper">
-                <div class="roulette-selector"></div>
-                <div id="special-rail" class="special-rail"></div>
-            </div>
-            <button class="btn-hack w-full mt-2.5" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 250,00)</button>
-        </section>
-        
-        <!-- Seção: Caixas Especiais do Mercado Negro -->
-        <section class="market-section inventory-selection">
-            <h3 class="market-title">> SELECIONE UM JOGO PARA CORROMPER</h3>
-            <div id="special-box-inventory-grid" class="inventory-grid"></div>
-        </section>
-
-        <section class="market-section boxes-selection">
-             <h2 class="market-title">> CAIXAS ESPECIAIS</h2>
-            <p class="text-xs text-gray-600 mb-2.5">
-                Injete payloads para descriptografar e adquirir softwares de alto escalão.
-            </p>
-            <div class="boxes-grid-special">
-                <div class="box-card-special tier-glitch">
-                    <h3 class="text-lime-500">Caixa Glitch</h3>
-                    <p class="text-xs text-secondary my-2.5">
-                        Contém softwares de valor elevado (Min. R$ 100).
-                    </p>
-                    <div class="text-5xl mb-5 glow-green">
-                        <i class="fas fa-bug"></i>
-                    </div>
-                    <button class="btn-hack" id="btn-open-glitch-box" onclick="openSpecialBox('glitch')">
-                        Abrir R$ 400,00
-                    </button>
-                </div>
-                <div class="box-card-special tier-void">
-                    <h3 class="text-purple-600">Caixa do Vazio</h3>
-                    <p class="text-xs text-secondary my-2.5">
-                        Contém softwares de elite e proibidos (Min. R$ 200).
-                    </p>
-                    <div class="text-5xl mb-5 glow-purple">
-                        <i class="fas fa-infinity"></i>
-                    </div>
-                    <button class="btn-hack" id="btn-open-void-box" onclick="openSpecialBox('void')">
-                        Abrir R$ 500,00
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção: Jogos com Desconto Obscuro -->
-        <section class="market-section">
-            <h2 class="market-title">> JOGOS DESVIADOS (DESCONTO DE 30%)</h2>
-            <div id="cheaper-games-list" class="market-list"></div>
-        </section>
-        <button class="btn-hack mt-8 w-full" onclick="window.location.href='../index.html'">DESCONECTAR E LIMPAR LOGS</button>
-    </div>
-
-    <!-- Elemento de Áudio corrigido -->
-    <audio id="spin-sound-effect" src="../Roleta/assets/csgo-case-open.mp3" preload="auto"></audio>
-
-    <!-- Modal de Abertura (Visual de Hacking para Caixas) -->
-    <div id="box-opening-modal" class="modal" style="display: none;">
-        <div class="modal-content black-market-container max-w-md border-lime-500">
-            <h2 id="modal-box-title" class="text-lime-500 glow-green">> ACESSANDO_KERNEL...</h2>
-            
-            <!-- Substituído: De Barra de Progresso para Sistema de Roleta Hacker -->
-            <div class="special-roulette-wrapper my-5 h-24 border-lime-500">
-                <div class="roulette-selector bg-lime-500 glow-green"></div>
-                <div id="modal-market-rail" class="special-rail"></div>
-            </div>
-
-            <p id="modal-result-info"></p>
-        </div>
-    </div>
-
-    <!-- Modal de Revelação -->
-    <div id="result-reveal-modal" class="modal" style="display: none; z-index: 3000;">
-        <div class="modal-content reveal-card-content">
-            <h2 id="reveal-result-title">BYPASS COMPLETO</h2>
-            <div id="reveal-card-target">
-                <!-- O card do jogo/upgrade aparecerá aqui -->
-            </div>
-            <button class="btn-hack" onclick="closeRevealModal()">FECHAR TERMINAL</button>
-        </div>
-    </div>
-
+    <!-- === ANIMATION ENHANCEMENTS === -->
+    <link rel="stylesheet" href="../css/animations-enhanced.css">
+    
+    <!-- === MERCADO NEGRO ENHANCED === -->
+    <link rel="stylesheet" href="../css/mercado-negro-enhanced.css">
+    
+    <!-- === ÍCONES === -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- === FIREBASE === -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- === PERFORMANCE MODULES === -->
+    <script src="../java/lazy-image-loader.js"></script>
+    <script src="../java/pwa-manager.js"></script>
+    
     <script src="../java/firebase-config.js"></script>
     <script src="../java/firestore-cache.js"></script>
     <script src="../java/theme-switcher.js"></script>
+    <script src="../java/animation-enhancements.js"></script>
     <script src="../java/auth.js" defer></script>
-    <script src="../java/ranks.js" defer></script>
     <script src="../java/global.js" defer></script>
+</head>
+<body>
+    <div class="black-market-container">
+        <!-- HEADER SECTION -->
+        <header style="text-align: center; margin-bottom: 3rem;">
+            <h1 class="warning">
+                <i class="fas fa-lock-open" style="color: #ff1744;"></i>
+                MERCADO NEGRO
+                <i class="fas fa-lock-open" style="color: #ff1744;"></i>
+            </h1>
+            <p style="color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); font-size: 1.1rem;">
+                >> Acesso ao Sistema Comprometido | Zona Sombria Ativada | Vigilância Desabilitada
+            </p>
+            <p style="color: #ff6f00; margin-top: 0.5rem; font-size: 0.9rem;">
+                ⚠️ Cada transação aqui é irreversível e não pode ser rastreada
+            </p>
+        </header>
+
+        <!-- SEÇÃO 1: ROLETA PROIBIDA -->
+        <section class="market-section">
+            <h2 class="market-title">
+                <i class="fas fa-dice" style="margin-right: 0.5rem;"></i>
+                ROLETA PROIBIDA
+            </h2>
+            <p style="color: #ff9100; margin-bottom: 1rem;">
+                A roleta não rastreável. Sorte é sua única moeda.
+            </p>
+            
+            <div class="special-roulette-wrapper">
+                <div class="roulette-selector"></div>
+                <div id="special-rail" class="special-rail">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-top: 1rem; align-items: center;">
+                <div>
+                    <p style="color: var(--market-accent); margin-bottom: 0.5rem;">
+                        Custo por Giro: <strong style="color: #ff1744;">R$ 250,00</strong>
+                    </p>
+                    <p style="color: #999; font-size: 0.9rem;">
+                        Seu saldo será deduzido independentemente do resultado.
+                    </p>
+                </div>
+                <button class="btn-hack" onclick="spinSpecialRoulette()" style="padding: 15px 30px; font-size: 1.1rem;">
+                    <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                    GIRAR
+                </button>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: CAIXAS ESPECIAIS -->
+        <section class="market-section">
+            <h2 class="market-title">
+                <i class="fas fa-box" style="margin-right: 0.5rem;"></i>
+                CAIXAS DE RISCO
+            </h2>
+            <p style="color: #ff9100; margin-bottom: 1.5rem;">
+                Abra caixas codificadas para desbloquear softwares raros e proibidos. Quanto maior o risco, maior a recompensa.
+            </p>
+            
+            <div class="boxes-grid-special">
+                <!-- Caixa Glitch -->
+                <div class="box-card-special tier-glitch">
+                    <div style="margin-bottom: 1rem;">
+                        <i class="fas fa-bug" style="font-size: 3rem; color: var(--market-accent);"></i>
+                    </div>
+                    <h3>📦 CAIXA GLITCH</h3>
+                    <p style="color: #bbb; margin-bottom: 1rem; font-size: 0.9rem;">
+                        Contém softwares valiosos com defeitos. Valores entre R$ 100 e R$ 400.
+                    </p>
+                    <p style="color: var(--market-accent); font-weight: bold; margin-bottom: 1rem;">
+                        Taxa de Abertura: R$ 400,00
+                    </p>
+                    <button class="btn-hack w-full" id="btn-open-glitch-box" onclick="openSpecialBox('glitch')">
+                        <i class="fas fa-unlock" style="margin-right: 0.5rem;"></i>
+                        ABRIR CAIXA
+                    </button>
+                </div>
+
+                <!-- Caixa do Vazio -->
+                <div class="box-card-special tier-void">
+                    <div style="margin-bottom: 1rem;">
+                        <i class="fas fa-infinity" style="font-size: 3rem; color: var(--market-purple);"></i>
+                    </div>
+                    <h3>📦 CAIXA DO VAZIO</h3>
+                    <p style="color: #bbb; margin-bottom: 1rem; font-size: 0.9rem;">
+                        Softwares de elite e proibidos. Valores entre R$ 200 e R$ 800.
+                    </p>
+                    <p style="color: var(--market-purple); font-weight: bold; margin-bottom: 1rem;">
+                        Taxa de Abertura: R$ 600,00
+                    </p>
+                    <button class="btn-hack w-full" id="btn-open-void-box" onclick="openSpecialBox('void')">
+                        <i class="fas fa-unlock" style="margin-right: 0.5rem;"></i>
+                        ABRIR CAIXA
+                    </button>
+                </div>
+
+                <!-- Caixa Mestre -->
+                <div class="box-card-special" style="border-color: #ff1744; background: linear-gradient(135deg, rgba(255, 23, 68, 0.1), rgba(139, 0, 0, 0.1));">
+                    <div style="margin-bottom: 1rem;">
+                        <i class="fas fa-crown" style="font-size: 3rem; color: #ff1744;"></i>
+                    </div>
+                    <h3 style="color: #ff1744;">👑 CAIXA MESTRE</h3>
+                    <p style="color: #bbb; margin-bottom: 1rem; font-size: 0.9rem;">
+                        A caixa final. Softwares lendários. Valores acima de R$ 500.
+                    </p>
+                    <p style="color: #ff1744; font-weight: bold; margin-bottom: 1rem;">
+                        Taxa de Abertura: R$ 1.000,00
+                    </p>
+                    <button class="btn-hack w-full" id="btn-open-master-box" onclick="openSpecialBox('master')" style="background: linear-gradient(135deg, #ff1744, #ff5722); box-shadow: 0 0 15px rgba(255, 23, 68, 0.4);">
+                        <i class="fas fa-unlock" style="margin-right: 0.5rem;"></i>
+                        ABRIR CAIXA
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: INVENTÁRIO DO USUÁRIO -->
+        <section class="market-section" id="inventory-section" style="display: none;">
+            <h2 class="market-title">
+                <i class="fas fa-gamepad" style="margin-right: 0.5rem;"></i>
+                CORROMPA UM JOGO
+            </h2>
+            <p style="color: #ff9100; margin-bottom: 1rem;">
+                Selecione um jogo de sua biblioteca para "corromper" e trocá-lo por algo novo.
+            </p>
+            <div id="special-box-inventory-grid" class="inventory-grid">
+                <!-- Preenchido dinamicamente -->
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4: JOGOS COM DESCONTO OBSCURO -->
+        <section class="market-section">
+            <h2 class="market-title">
+                <i class="fas fa-percent" style="margin-right: 0.5rem;"></i>
+                OFERTAS OBSCURAS - 30% DE DESCONTO
+            </h2>
+            <p style="color: #ff9100; margin-bottom: 1rem;">
+                Apenas neste local secreto. Softwares desviados do catálogo oficial.
+            </p>
+            <div id="cheaper-games-list" class="market-list">
+                <!-- Preenchido dinamicamente -->
+            </div>
+        </section>
+
+        <!-- RODAPÉ -->
+        <footer style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 2px solid rgba(0, 255, 136, 0.3);">
+            <p style="color: #ff1744; font-size: 0.9rem; margin-bottom: 1rem;">
+                ⚠️ Aviso: Transações no Mercado Negro não podem ser desfeitas e não são rastreáveis.
+            </p>
+            <button class="btn-hack" onclick="window.location.href='../index.html'">
+                <i class="fas fa-sign-out-alt" style="margin-right: 0.5rem;"></i>
+                DESCONECTAR E LIMPAR LOGS
+            </button>
+            <p style="color: #666; font-size: 0.85rem; margin-top: 2rem;">
+                Último acesso registrado: <span id="last-access">--:-- --</span><br>
+                IP Mascarado | VPN Ativo | Rastros Apagados
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal de Abertura de Caixa -->
+    <div id="box-opening-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="text-align: center;">
+            <h2 id="modal-box-title" class="market-title" style="border: none; text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-lock" style="margin-right: 0.5rem; animation: spin 1s linear infinite;"></i>
+                ABRINDO CAIXA...
+            </h2>
+            
+            <div style="margin: 2rem 0;">
+                <i class="fas fa-cube" style="font-size: 4rem; color: var(--market-accent); animation: pulse 1s ease-in-out infinite;"></i>
+            </div>
+            
+            <div id="modal-reward" style="display: none; margin: 2rem 0;">
+                <h3 id="reward-name" style="color: var(--market-accent); font-size: 1.5rem; margin-bottom: 1rem;"></h3>
+                <p id="reward-value" style="color: #ff1744; font-size: 1.3rem; font-weight: bold;"></p>
+            </div>
+            
+            <div id="modal-loading" style="margin: 2rem 0;">
+                <p style="color: var(--market-accent); animation: blink 1s infinite;">
+                    >> PROCESSANDO DESCRIPTOR...
+                </p>
+            </div>
+            
+            <button id="modal-close-btn" class="btn-hack" onclick="closeBoxModal()" style="display: none; width: 100%; margin-top: 2rem;">
+                <i class="fas fa-check" style="margin-right: 0.5rem;"></i>
+                CONFIRMAR RECEBIMENTO
+            </button>
+        </div>
+    </div>
+
+    <!-- Elemento de Áudio -->
+    <audio id="unlock-sound" preload="auto" style="display: none;"></audio>
+
+    <!-- Scripts -->
+    <script src="../java/lazy-image-loader.js" defer></script>
     <script src="../Roleta/roleta.js" defer></script>
     <script src="../java/mercado-negro.js" defer></script>
+    <script>
+        // Atualizar horário do último acesso
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('last-access').textContent = now.toLocaleTimeString('pt-BR');
+        });
+    </script>
 </body>
 </html>
