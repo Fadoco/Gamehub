@@ -445,7 +445,7 @@ html {
 
 /* === ROLETA === */
 .special-roulette-wrapper {
-    height: 140px;
+    height: 160px;
     background: linear-gradient(to bottom, #050505, #000);
     border: 2px solid var(--bm-primary);
     border-radius: 10px;
@@ -509,6 +509,13 @@ html {
     border-radius: 8px;
     box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
     transition: all 0.3s ease;
+}
+
+.special-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .special-card:hover {
