@@ -23,7 +23,7 @@
     <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../Roleta/roleta.css">
     <link rel="stylesheet" href="../css/upgrades.css">
-    <link rel="stylesheet" href="../css/mercado-negro.css">
+    <link rel="stylesheet" href="../css/mercado-negro-novo.css">
 </head>
 <body>
     <div class="black-market-container">
@@ -34,6 +34,7 @@
         <section class="market-section">
             <h2 class="market-title">> ROLETA PROIBIDA</h2>
             <div class="special-roulette-wrapper">
+                <div class="roulette-selector"></div>
                 <div id="special-rail" class="special-rail"></div>
             </div>
             <button class="btn-hack w-full mt-2.5" onclick="spinSpecialRoulette()">GIRAR ROLETA (R$ 250,00)</button>
@@ -91,11 +92,12 @@
 
     <!-- Modal de Abertura (Visual de Hacking para Caixas) -->
     <div id="box-opening-modal" class="modal" style="display: none;">
-        <div class="modal-content black-market-container max-w-2xl border-lime-500">
+        <div class="modal-content black-market-container max-w-md border-lime-500">
             <h2 id="modal-box-title" class="text-lime-500 glow-green">> ACESSANDO_KERNEL...</h2>
             
-            <!-- Removido h-24 que quebrava o layout e a div vazia do seletor -->
-            <div class="special-roulette-wrapper my-5 border-lime-500">
+            <!-- Substituído: De Barra de Progresso para Sistema de Roleta Hacker -->
+            <div class="special-roulette-wrapper my-5 h-24 border-lime-500">
+                <div class="roulette-selector bg-lime-500 glow-green"></div>
                 <div id="modal-market-rail" class="special-rail"></div>
             </div>
 
