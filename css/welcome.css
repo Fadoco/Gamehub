@@ -1,0 +1,533 @@
+/**
+ * GameHub - Welcome Page CSS
+ * Define estilos específicos para a página de boas-vindas/landing
+ * Landing page inicial com hero section e call-to-action
+ */
+
+/* ============================================
+   WELCOME PAGE CONTAINER
+   ============================================ */
+
+body.welcome-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  padding: var(--spacing-4);
+}
+
+[data-theme="dark"] body.welcome-page {
+  background: linear-gradient(135deg, var(--bg-primary-dark), var(--bg-secondary-dark));
+}
+
+/* ============================================
+   WELCOME CARD - HERO SECTION
+   ============================================ */
+
+.welcome-card {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.6s ease-out;
+}
+
+[data-theme="dark"] .welcome-card {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.welcome-card::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  margin: -var(--spacing-6) -var(--spacing-6) var(--spacing-4) -var(--spacing-6);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+/* ============================================
+   HERO CONTENT
+   ============================================ */
+
+.welcome-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.welcome-icon {
+  font-size: 4rem;
+  margin: 0 auto;
+  animation: bounce 1s infinite;
+  animation-delay: 0.2s;
+}
+
+.welcome-icon-alt {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto var(--spacing-3);
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+}
+
+/* ============================================
+   WELCOME TEXT
+   ============================================ */
+
+.welcome-card h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--accent);
+  margin: 0 0 var(--spacing-2) 0;
+  line-height: 1.2;
+  animation: slideDown 0.6s ease-out 0.1s backwards;
+}
+
+[data-theme="dark"] .welcome-card h1 {
+  color: var(--accent);
+}
+
+.welcome-card p {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  animation: slideDown 0.6s ease-out 0.2s backwards;
+}
+
+[data-theme="dark"] .welcome-card p {
+  color: var(--text-secondary-dark);
+}
+
+/* ============================================
+   WELCOME FEATURES
+   ============================================ */
+
+.welcome-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-3);
+  margin: var(--spacing-4) 0;
+  padding: var(--spacing-4);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-lg);
+}
+
+[data-theme="dark"] .welcome-features {
+  background-color: var(--bg-primary-dark);
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  animation: slideUp 0.6s ease-out;
+}
+
+.feature-item:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.feature-item:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.feature-item:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.feature-item:hover {
+  background-color: rgba(0, 212, 255, 0.1);
+  transform: translateY(-4px);
+  border-radius: var(--radius-lg);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.feature-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+[data-theme="dark"] .feature-name {
+  color: var(--text-primary-dark);
+}
+
+/* ============================================
+   CALL TO ACTION BUTTONS
+   ============================================ */
+
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
+
+.btn-continue {
+  display: inline-block;
+  padding: var(--spacing-4) var(--spacing-6);
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+  animation: slideUp 0.6s ease-out 0.3s backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-continue::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-continue:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+}
+
+.btn-continue:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-continue:active {
+  transform: translateY(-1px);
+}
+
+/* Secondary Button */
+.btn-learn-more {
+  display: inline-block;
+  padding: var(--spacing-3) var(--spacing-5);
+  background-color: transparent;
+  color: var(--accent);
+  text-decoration: none;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  animation: slideUp 0.6s ease-out 0.4s backwards;
+}
+
+.btn-learn-more:hover {
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+}
+
+.btn-learn-more:active {
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   WELCOME STATS
+   ============================================ */
+
+.welcome-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-3);
+  margin: var(--spacing-4) 0;
+  padding: var(--spacing-4);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 212, 255, 0.05));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .welcome-stats {
+  border-color: var(--border-color-dark);
+}
+
+.stat-box {
+  text-align: center;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-1);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+[data-theme="dark"] .stat-label {
+  color: var(--text-secondary-dark);
+}
+
+/* ============================================
+   TESTIMONIALS / REVIEWS
+   ============================================ */
+
+.welcome-testimonials {
+  margin: var(--spacing-4) 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-3);
+}
+
+.testimonial-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-3);
+  text-align: center;
+  transition: all var(--transition-normal);
+}
+
+[data-theme="dark"] .testimonial-card {
+  background-color: var(--bg-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.testimonial-card:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-light);
+  color: var(--bg-primary);
+  transform: translateY(-4px);
+}
+
+[data-theme="dark"] .testimonial-card:hover {
+  background-color: rgba(0, 212, 255, 0.15);
+}
+
+.testimonial-text {
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  margin-bottom: var(--spacing-2);
+  line-height: 1.6;
+}
+
+.testimonial-author {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+}
+
+.stars {
+  color: #ffd700;
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-1);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  body.welcome-page {
+    padding: var(--spacing-2);
+    min-height: auto;
+  }
+
+  .welcome-card {
+    padding: var(--spacing-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .welcome-card h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .welcome-card p {
+    font-size: var(--font-size-base);
+  }
+
+  .welcome-features {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-2);
+    padding: var(--spacing-3);
+  }
+
+  .feature-item {
+    padding: var(--spacing-2);
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+  }
+
+  .btn-continue {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-sm);
+  }
+
+  .welcome-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-card {
+    padding: var(--spacing-3);
+  }
+
+  .welcome-card h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .welcome-card p {
+    font-size: var(--font-size-sm);
+  }
+
+  .welcome-features {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-item {
+    padding: var(--spacing-2);
+  }
+
+  .welcome-actions {
+    gap: var(--spacing-2);
+  }
+
+  .btn-continue,
+  .btn-learn-more {
+    padding: var(--spacing-2) var(--spacing-3);
+    width: 100%;
+    text-align: center;
+  }
+
+  .welcome-stats {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-3);
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .welcome-icon {
+    font-size: 3rem;
+  }
+
+  .welcome-icon-alt {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.btn-continue:focus-visible,
+.btn-learn-more:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.welcome-card:focus-within {
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-card,
+  .welcome-icon,
+  .btn-continue,
+  .btn-learn-more,
+  .feature-item,
+  .welcome-icon-alt,
+  .welcome-card h1,
+  .welcome-card p {
+    animation: none;
+    transition: none;
+  }
+}
