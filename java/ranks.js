@@ -3,6 +3,8 @@
  * Centraliza multiplicadores, labels e classes visuais.
  */
 
+console.log('✅ ranks.js loaded');
+
 window.RankSystem = {
     // Multiplicadores de valor por Rank
     multipliers: { 
