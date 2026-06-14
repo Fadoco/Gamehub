@@ -450,6 +450,58 @@
 
 .flip-card {
   animation: flipCard var(--transition-slow) ease-in-out;
+}
+
+/* === LAZY IMAGE LOADING ANIMATIONS === */
+
+@keyframes imageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes blurToClean {
+  from {
+    filter: blur(20px) brightness(0.8);
+  }
+  to {
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* Placeholder style while loading */
+.image-loading {
+  filter: blur(20px) brightness(0.8);
+  animation: none;
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 0%,
+    var(--bg-tertiary) 50%,
+    var(--bg-secondary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Final state after image loads */
+.image-loaded {
+  animation: blurToClean 0.6s ease-out forwards;
+  filter: blur(0px) brightness(1);
+}
+
+/* Error state */
+.image-error {
+  filter: none;
+  opacity: 0.5;
+  background-color: var(--bg-secondary);
+}
+}
+
+.flip-card {
+  animation: flipCard var(--transition-slow) ease-in-out;
   transform-style: preserve-3d;
 }
 
