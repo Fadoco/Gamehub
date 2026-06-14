@@ -373,11 +373,21 @@
   object-position: center;
   display: block;
   border-radius: 8px;
+  min-height: auto;
 }
 
-img[data-src] {
-  /* Fallback for images that haven't loaded yet */
+/* Força o carregamento da imagem via data-src se src não existir */
+img[data-src]:not([src]) {
+  /* Fallback para imagens que ainda não foram observadas */
   background-color: var(--bg-secondary);
+  opacity: 0.3;
+}
+
+/* Remove opacity quando a imagem é observada ou carregou */
+img[data-src][src],
+img.image-loaded,
+img.image-loading {
+  opacity: 1;
 }
 
 /* Desktops Grandes (xl: 1280px) */

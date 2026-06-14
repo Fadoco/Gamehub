@@ -65,10 +65,20 @@
             // Start loading
             img.classList.add('image-loading');
 
+            // Fallback timeout - se não carregar em 8 segundos, carrega via src direto
+            const timeoutId = setTimeout(() => {
+                if (!this.loadedImages.has(img)) {
+                    console.warn(`[LazyLoader] Timeout loading ${src}, usando fallback direto`);
+                    img.src = src;
+                    if (srcset) img.srcset = srcset;
+                }
+            }, 8000);
+
             // Create a new image to preload
             const tempImg = new Image();
 
             tempImg.onload = () => {
+                clearTimeout(timeoutId);
                 img.src = src;
                 if (srcset) {
                     img.srcset = srcset;
@@ -84,6 +94,7 @@
             };
 
             tempImg.onerror = () => {
+                clearTimeout(timeoutId);
                 img.classList.remove('image-loading');
                 img.classList.add('image-error');
 
@@ -172,10 +183,18 @@
     // Auto-load images when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            window.LazyImageLoader.observe(document.querySelectorAll('[data-src]'));
+            const images = document.querySelectorAll('[data-src]');
+            if (images.length > 0) {
+                console.log(`[LazyImageLoader] DOMContentLoaded - Observando ${images.length} imagens`);
+                window.LazyImageLoader.observe(images);
+            }
         });
     } else {
-        window.LazyImageLoader.observe(document.querySelectorAll('[data-src]'));
+        const images = document.querySelectorAll('[data-src]');
+        if (images.length > 0) {
+            console.log(`[LazyImageLoader] Documento já pronto - Observando ${images.length} imagens`);
+            window.LazyImageLoader.observe(images);
+        }
     }
 
     // Re-observe when new images are added dynamically
@@ -187,11 +206,26 @@
         setTimeout(() => {
             const newImages = this.querySelectorAll('[data-src]:not(.image-loaded):not(.image-error)');
             if (newImages.length > 0) {
+                console.log(`[LazyImageLoader] insertAdjacentHTML override - Observando ${newImages.length} novas imagens`);
                 window.LazyImageLoader.observe(newImages);
             }
         }, 0);
         
         return result;
     };
+
+    // FALLBACK: Após 3 segundos, se ainda há imagens com data-src mas sem src, carrega tudo direto
+    setTimeout(() => {
+        const unloadedImages = document.querySelectorAll('img[data-src]:not([src])');
+        if (unloadedImages.length > 0) {
+            console.warn(`[LazyImageLoader] Fallback ativado - Carregando ${unloadedImages.length} imagens direto via src`);
+            unloadedImages.forEach(img => {
+                if (img.dataset.src && !img.src) {
+                    img.src = img.dataset.src;
+                    if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+                }
+            });
+        }
+    }, 3000);
 
 })();

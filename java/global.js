@@ -341,6 +341,16 @@ window.renderToContainer = (games, container, clear = true) => {
     } else {
         container.insertAdjacentHTML('beforeend', html);
     }
+
+    // Observa as imagens lazy-loaded após renderizar
+    if (window.LazyImageLoader) {
+        setTimeout(() => {
+            const lazyImages = container.querySelectorAll('[data-src]');
+            if (lazyImages.length > 0) {
+                window.LazyImageLoader.observe(lazyImages);
+            }
+        }, 0);
+    }
 };
 
 async function fetchGamesData() {
