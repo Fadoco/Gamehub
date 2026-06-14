@@ -1,28 +1,227 @@
 /**
- * Mercado Negro - Enhanced Dark Market Styling
- * @version 2.0
+ * Mercado Negro - Complete Dark Market Overhaul
+ * @version 3.0 - REDESIGNED
  * @date 2026-06-14
+ * Enhanced with horrifying entrance animation and cyberpunk noir aesthetic
  */
 
 :root {
     --market-dark: #0a0e27;
     --market-darker: #050810;
+    --market-black: #000000;
     --market-accent: #00ff88;
     --market-danger: #ff1744;
     --market-purple: #9c27b0;
     --market-cyan: #00bcd4;
     --market-warning: #ff6f00;
+    --market-red: #ff0000;
+    --market-neon-pink: #ff006e;
     --neon-glow: 0 0 10px rgba(0, 255, 136, 0.6), 0 0 20px rgba(0, 255, 136, 0.3);
-    --danger-glow: 0 0 10px rgba(255, 23, 68, 0.6), 0 0 20px rgba(255, 23, 68, 0.3);
+    --danger-glow: 0 0 10px rgba(255, 23, 68, 0.8), 0 0 20px rgba(255, 23, 68, 0.5);
+    --cyber-glow: 0 0 20px rgba(255, 0, 110, 0.8), 0 0 40px rgba(0, 255, 255, 0.4);
 }
 
 /* ============================================================================
-   LAYOUT & STRUCTURE
+   ENTRANCE ANIMATION - HORRIFYING & DRAMATIC
+   ============================================================================ */
+
+.market-entrance-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        #000000 0%,
+        #1a0033 25%,
+        #330022 50%,
+        #001a33 75%,
+        #000000 100%
+    );
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.entrance-glitch-container {
+    text-align: center;
+    position: relative;
+    z-index: 100000;
+}
+
+.entrance-glitch-text {
+    font-size: 4rem;
+    font-weight: 900;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 8px;
+    position: relative;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    margin-bottom: 2rem;
+}
+
+.entrance-glitch-text span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    animation: glitchEntrance 0.3s infinite;
+}
+
+.entrance-glitch-text span:nth-child(1) {
+    color: #ff0000;
+    text-shadow: -2px 0 #00ffff, 2px 0 #ffff00, 0 0 30px #ff0000;
+    animation-delay: 0s;
+}
+
+.entrance-glitch-text span:nth-child(2) {
+    color: #00ffff;
+    text-shadow: 2px 0 #ff0000, -2px 0 #ffff00, 0 0 30px #00ffff;
+    animation-delay: 0.1s;
+}
+
+.entrance-glitch-text span:nth-child(3) {
+    color: #00ff88;
+    text-shadow: -2px 0 #ff006e, 2px 0 #00ffff, 0 0 40px #00ff88;
+    animation-delay: 0.2s;
+}
+
+@keyframes glitchEntrance {
+    0%, 100% {
+        opacity: 0;
+        clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+    }
+    50% {
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+}
+
+.entrance-scanner {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    border: 3px solid #00ff88;
+    margin: 2rem auto;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 255, 136, 0.1) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    box-shadow: 
+        inset 0 0 30px rgba(0, 255, 136, 0.3),
+        0 0 30px rgba(0, 255, 136, 0.5),
+        0 0 60px rgba(255, 0, 110, 0.3);
+    border-radius: 4px;
+}
+
+.scanner-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00ff88 20%,
+        #ff006e 50%,
+        #00ff88 80%,
+        transparent
+    );
+    top: 50%;
+    animation: scannerSweep 3s ease-in-out infinite;
+    box-shadow: 
+        0 0 15px #00ff88,
+        0 0 30px #ff006e;
+}
+
+@keyframes scannerSweep {
+    0%, 100% {
+        top: 0;
+        opacity: 0.3;
+    }
+    50% {
+        top: 100%;
+        opacity: 1;
+    }
+}
+
+.entrance-code {
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    margin: 0.5rem 0;
+    text-shadow: 0 0 10px #00ff88;
+    animation: codeType 0.08s steps(1) forwards;
+    opacity: 0;
+}
+
+.entrance-code:nth-of-type(1) { animation-delay: 0.5s; }
+.entrance-code:nth-of-type(2) { animation-delay: 1s; }
+.entrance-code:nth-of-type(3) { animation-delay: 1.5s; }
+.entrance-code:nth-of-type(4) { animation-delay: 2s; }
+
+@keyframes codeType {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.entrance-final {
+    animation-delay: 2.2s;
+    color: #ff006e;
+    text-shadow: 0 0 20px #ff006e, 0 0 40px #ff0000;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.fade-out-entrance {
+    animation: fadeOutEntrance 0.8s ease-out forwards;
+}
+
+@keyframes fadeOutEntrance {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+        filter: contrast(200%) hue-rotate(45deg);
+    }
+    100% {
+        opacity: 0;
+        filter: contrast(300%) hue-rotate(180deg);
+    }
+}
+
+/* ============================================================================
+   LAYOUT & STRUCTURE - REDESIGNED
    ============================================================================ */
 
 .black-market-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--market-darker) 0%, var(--market-dark) 50%, #1a0033 100%);
+    background: 
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(153, 0, 50, 0.15) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 80% 50%,
+            rgba(0, 100, 150, 0.15) 0%,
+            transparent 50%
+        ),
+        linear-gradient(
+            135deg,
+            #000000 0%,
+            #0a0e27 30%,
+            #050810 60%,
+            #1a0033 100%
+        );
     color: var(--market-accent);
     font-family: 'Courier New', monospace;
     position: relative;
@@ -30,7 +229,7 @@
     padding: 2rem;
 }
 
-/* Animated background pattern */
+/* Advanced animated background pattern */
 .black-market-container::before {
     content: '';
     position: fixed;
@@ -43,19 +242,36 @@
             90deg,
             transparent,
             transparent 2px,
-            rgba(0, 255, 136, 0.03) 2px,
-            rgba(0, 255, 136, 0.03) 4px
+            rgba(0, 255, 136, 0.02) 2px,
+            rgba(0, 255, 136, 0.02) 4px
         ),
         repeating-linear-gradient(
             0deg,
             transparent,
-            transparent 2px,
-            rgba(0, 255, 136, 0.03) 2px,
-            rgba(0, 255, 136, 0.03) 4px
+            transparent 3px,
+            rgba(255, 0, 110, 0.01) 3px,
+            rgba(255, 0, 110, 0.01) 6px
         );
     pointer-events: none;
-    animation: scanlines 8s linear infinite;
+    animation: advancedScanlines 12s linear infinite;
     z-index: 1;
+}
+
+.black-market-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at 50% 0%,
+        rgba(255, 0, 110, 0.1) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    animation: pulseRadial 8s ease-in-out infinite;
+    z-index: 0;
 }
 
 .black-market-container > * {
@@ -63,111 +279,162 @@
     z-index: 2;
 }
 
-@keyframes scanlines {
+@keyframes advancedScanlines {
     0% {
         transform: translateY(0);
     }
     100% {
-        transform: translateY(10px);
+        transform: translateY(15px);
+    }
+}
+
+@keyframes pulseRadial {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
     }
 }
 
 /* ============================================================================
-   HEADERS & TITLES
+   HEADERS & TITLES - ENHANCED
    ============================================================================ */
 
 .warning {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: var(--market-danger);
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-shadow: 
-        0 0 10px var(--market-danger),
-        0 0 20px rgba(255, 23, 68, 0.5);
-    animation: textGlitch 3s infinite;
-    letter-spacing: 2px;
-    font-weight: bold;
+        0 0 15px var(--market-danger),
+        0 0 30px rgba(255, 0, 110, 0.8),
+        0 0 50px rgba(255, 0, 0, 0.4),
+        inset 0 0 20px rgba(255, 0, 0, 0.1);
+    animation: warningGlitch 4s infinite;
+    letter-spacing: 3px;
+    font-weight: 900;
+    text-transform: uppercase;
+    position: relative;
 }
 
-@keyframes textGlitch {
+.warning::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    animation: glitchWarning 0.15s infinite;
+    color: #00ffff;
+    z-index: -1;
+}
+
+@keyframes warningGlitch {
     0% {
         text-shadow: 
-            0 0 10px var(--market-danger),
-            0 0 20px rgba(255, 23, 68, 0.5);
+            0 0 15px var(--market-danger),
+            0 0 30px rgba(255, 0, 110, 0.8);
         transform: translate(0);
     }
     20% {
         text-shadow: 
-            3px 0 var(--market-purple),
-            -3px 0 var(--market-cyan),
-            0 0 20px rgba(255, 23, 68, 0.5);
+            3px 0 #00ffff,
+            -3px 0 #ffff00,
+            0 0 30px var(--market-danger);
         transform: translate(-2px, 0);
     }
     40% {
         text-shadow: 
-            -2px 0 var(--market-purple),
-            2px 0 var(--market-cyan),
-            0 0 15px rgba(0, 255, 136, 0.5);
-        transform: translate(2px, 0);
+            -2px 0 #ff006e,
+            2px 0 #00ffff,
+            0 0 40px var(--market-danger);
+        transform: translate(2px, 2px);
     }
     60% {
         text-shadow: 
-            0 0 10px var(--market-danger),
-            0 0 20px rgba(255, 23, 68, 0.5);
+            0 0 20px var(--market-danger),
+            0 0 40px rgba(0, 255, 255, 0.6);
         transform: translate(0, -2px);
     }
     80% {
         text-shadow: 
-            2px 0 var(--market-cyan),
-            -2px 0 var(--market-purple),
-            0 0 20px rgba(0, 255, 136, 0.5);
-        transform: translate(0, 2px);
+            2px 0 #00ffff,
+            -2px 0 #ff006e,
+            0 0 30px var(--market-danger);
+        transform: translate(-1px, 1px);
     }
     100% {
         text-shadow: 
-            0 0 10px var(--market-danger),
-            0 0 20px rgba(255, 23, 68, 0.5);
+            0 0 15px var(--market-danger),
+            0 0 30px rgba(255, 0, 110, 0.8);
         transform: translate(0);
     }
 }
 
-.market-title {
-    font-size: 1.8rem;
-    color: var(--market-accent);
-    margin: 2rem 0 1rem;
-    text-shadow: var(--neon-glow);
-    border-left: 4px solid var(--market-accent);
-    padding-left: 1rem;
-    animation: titleBlink 2s infinite;
-    letter-spacing: 1px;
-    font-weight: bold;
+@keyframes glitchWarning {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.8;
+    }
 }
 
-@keyframes titleBlink {
-    0%, 95% {
+.market-title {
+    font-size: 1.9rem;
+    color: var(--market-accent);
+    margin: 2.5rem 0 1.5rem;
+    text-shadow: 
+        var(--neon-glow),
+        0 0 20px rgba(255, 0, 110, 0.4);
+    border-left: 6px solid var(--market-accent);
+    border-bottom: 2px dotted rgba(0, 255, 136, 0.4);
+    padding-left: 1.5rem;
+    padding-bottom: 0.8rem;
+    animation: titleFlicker 2.5s infinite;
+    letter-spacing: 2px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+@keyframes titleFlicker {
+    0%, 95%, 100% {
         opacity: 1;
-        text-shadow: var(--neon-glow);
+        text-shadow: 
+            var(--neon-glow),
+            0 0 20px rgba(255, 0, 110, 0.4);
     }
-    100% {
+    97% {
         opacity: 0.7;
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        text-shadow: 
+            var(--neon-glow),
+            0 0 15px rgba(255, 0, 110, 0.2);
     }
 }
 
 /* ============================================================================
-   SECTIONS
+   SECTIONS - MODERN DESIGN
    ============================================================================ */
 
 .market-section {
-    background: linear-gradient(135deg, rgba(10, 14, 39, 0.8), rgba(26, 0, 51, 0.6));
+    background: linear-gradient(
+        135deg,
+        rgba(10, 14, 39, 0.95) 0%,
+        rgba(26, 0, 51, 0.8) 50%,
+        rgba(10, 14, 39, 0.9) 100%
+    );
     border: 2px solid var(--market-accent);
-    border-radius: 8px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    border-left: 8px solid var(--market-cyan);
+    border-radius: 2px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
     box-shadow: 
-        inset 0 0 20px rgba(0, 255, 136, 0.1),
-        0 0 30px rgba(0, 255, 136, 0.2);
-    animation: sectionSlideIn 0.6s ease-out;
+        inset 0 0 30px rgba(0, 255, 136, 0.08),
+        0 0 40px rgba(0, 255, 136, 0.2),
+        0 0 60px rgba(255, 0, 110, 0.1);
+    animation: sectionSlideInDynamic 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
 }
@@ -178,19 +445,620 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--market-accent), transparent);
-    animation: borderGlow 3s infinite;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--market-accent), var(--market-cyan), transparent);
+    animation: borderGlowAdvanced 4s infinite;
 }
 
-@keyframes borderGlow {
+.market-section::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--market-danger), transparent);
+    animation: borderGlowDanger 3s infinite;
+    opacity: 0.3;
+}
+
+@keyframes borderGlowAdvanced {
     0%, 100% {
-        opacity: 0.5;
+        opacity: 0.3;
         box-shadow: none;
     }
     50% {
         opacity: 1;
-        box-shadow: 0 0 20px var(--market-accent);
+        box-shadow: 0 0 20px var(--market-accent), 0 0 10px var(--market-cyan);
+    }
+}
+
+@keyframes borderGlowDanger {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 15px var(--market-danger);
+    }
+}
+
+@keyframes sectionSlideInDynamic {
+    from {
+        opacity: 0;
+        transform: translateX(-60px) rotateY(5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotateY(0);
+    }
+}
+
+.market-section:hover {
+    box-shadow: 
+        inset 0 0 40px rgba(0, 255, 136, 0.15),
+        0 0 50px rgba(0, 255, 136, 0.3),
+        0 0 80px rgba(255, 0, 110, 0.15);
+}
+
+/* ============================================================================
+   BUTTONS - CYBERPUNK
+   ============================================================================ */
+
+.btn-hack {
+    background: linear-gradient(135deg, var(--market-accent), var(--market-cyan));
+    color: var(--market-darker);
+    border: 2px solid rgba(0, 255, 136, 0.5);
+    padding: 14px 32px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    border-radius: 2px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.4),
+        inset 0 0 20px rgba(0, 255, 136, 0.1);
+    text-transform: uppercase;
+}
+
+.btn-hack::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+.btn-hack::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--market-danger);
+    transition: width 0.4s ease;
+    z-index: 0;
+}
+
+.btn-hack:hover::before {
+    left: 100%;
+}
+
+.btn-hack:hover::after {
+    width: 100%;
+}
+
+.btn-hack:hover {
+    transform: translateY(-4px) scaleX(1.05);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 136, 0.8),
+        0 15px 40px rgba(0, 255, 136, 0.4),
+        inset 0 0 30px rgba(0, 255, 136, 0.2);
+    background: linear-gradient(135deg, var(--market-cyan), var(--market-accent));
+    border-color: rgba(0, 255, 136, 0.8);
+}
+
+.btn-hack:active {
+    transform: translateY(-1px) scaleX(0.98);
+    box-shadow: 
+        0 0 15px rgba(0, 255, 136, 0.5),
+        inset 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+/* ============================================================================
+   BOXES & CARDS - PREMIUM DESIGN
+   ============================================================================ */
+
+.box-card-special {
+    background: linear-gradient(
+        145deg,
+        rgba(20, 30, 60, 0.95) 0%,
+        rgba(40, 10, 70, 0.85) 50%,
+        rgba(20, 30, 60, 0.9) 100%
+    );
+    border: 2px solid var(--market-accent);
+    border-radius: 4px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        inset 0 0 25px rgba(0, 255, 136, 0.1),
+        0 0 30px rgba(0, 255, 136, 0.3),
+        0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: cardFloatIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.box-card-special::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        transparent,
+        rgba(0, 255, 136, 0.15),
+        transparent
+    );
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+@keyframes cardFloatIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) rotateX(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.box-card-special:hover {
+    transform: translateY(-15px) rotateZ(-1deg);
+    box-shadow: 
+        inset 0 0 40px rgba(0, 255, 136, 0.2),
+        0 0 50px rgba(0, 255, 136, 0.5),
+        0 20px 60px rgba(0, 255, 136, 0.3);
+    border-color: var(--market-cyan);
+    background: linear-gradient(
+        145deg,
+        rgba(20, 30, 60, 1) 0%,
+        rgba(40, 10, 70, 0.95) 50%,
+        rgba(20, 30, 60, 1) 100%
+    );
+}
+
+.box-card-special h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 
+        0 0 15px currentColor,
+        0 0 30px rgba(255, 0, 110, 0.3);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tier-glitch {
+    border-color: #00ff88;
+    border-left: 6px solid #00ff88;
+}
+
+.tier-glitch:hover {
+    background: linear-gradient(
+        145deg,
+        rgba(0, 255, 136, 0.08) 0%,
+        rgba(0, 255, 136, 0.04) 100%
+    );
+}
+
+.tier-void {
+    border-color: var(--market-purple);
+    border-left: 6px solid var(--market-purple);
+}
+
+.tier-void:hover {
+    background: linear-gradient(
+        145deg,
+        rgba(156, 39, 176, 0.08) 0%,
+        rgba(156, 39, 176, 0.04) 100%
+    );
+}
+
+/* ============================================================================
+   GRIDS & LISTS
+   ============================================================================ */
+
+.inventory-grid,
+.boxes-grid-special,
+.market-list {
+    display: grid;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.inventory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.boxes-grid-special {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.market-list {
+    grid-template-columns: 1fr;
+}
+
+/* ============================================================================
+   SPECIAL ROULETTE
+   ============================================================================ */
+
+.special-roulette-wrapper {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(10, 14, 39, 0.6) 100%
+    );
+    border: 3px solid var(--market-accent);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+    box-shadow: 
+        inset 0 0 40px rgba(0, 255, 136, 0.15),
+        0 0 40px rgba(0, 255, 136, 0.3);
+}
+
+.roulette-selector {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(90deg, var(--market-danger), var(--market-neon-pink), var(--market-danger));
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 
+        0 0 20px var(--market-danger),
+        0 0 40px var(--market-neon-pink);
+}
+
+.special-rail {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.05s linear;
+}
+
+/* ============================================================================
+   TEXT ELEMENTS
+   ============================================================================ */
+
+.black-market-container > p {
+    color: rgba(0, 255, 136, 0.8);
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.3),
+        0 0 20px rgba(255, 0, 110, 0.1);
+    margin-bottom: 1.5rem;
+    animation: fadeInText 0.8s ease-out;
+    font-size: 1.05rem;
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glitch-status {
+    color: var(--market-accent);
+    font-size: 1.2rem;
+    font-weight: bold;
+    animation: statusFlicker 0.4s infinite;
+}
+
+@keyframes statusFlicker {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.6;
+    }
+    75% {
+        opacity: 0.3;
+    }
+}
+
+/* ============================================================================
+   MODAL STYLING - ENHANCED
+   ============================================================================ */
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(
+        135deg,
+        rgba(10, 14, 39, 0.98) 0%,
+        rgba(26, 0, 51, 0.95) 100%
+    );
+    border: 3px solid var(--market-accent);
+    border-radius: 4px;
+    padding: 2.5rem;
+    z-index: 9000;
+    box-shadow: 
+        0 0 50px rgba(0, 255, 136, 0.4),
+        inset 0 0 30px rgba(0, 255, 136, 0.15),
+        0 0 80px rgba(255, 0, 110, 0.2);
+    animation: modalAppearDynamic 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalAppearDynamic {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7) rotateX(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotateX(0);
+    }
+}
+
+.modal-content {
+    color: var(--market-accent);
+}
+
+/* ============================================================================
+   GLOW EFFECTS
+   ============================================================================ */
+
+.glow-green {
+    color: var(--market-accent);
+    text-shadow: 
+        var(--neon-glow),
+        0 0 30px rgba(0, 255, 136, 0.5);
+    animation: glowPulseAdvanced 1.8s ease-in-out infinite;
+    font-weight: bold;
+}
+
+.glow-purple {
+    color: var(--market-purple);
+    text-shadow: 
+        0 0 15px var(--market-purple),
+        0 0 30px rgba(156, 39, 176, 0.6),
+        0 0 50px rgba(156, 39, 176, 0.2);
+    animation: glowPulseAdvanced 1.8s ease-in-out infinite;
+    font-weight: bold;
+}
+
+@keyframes glowPulseAdvanced {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.7;
+        filter: brightness(1.3);
+    }
+}
+
+/* ============================================================================
+   SECRET ITEM STYLING
+   ============================================================================ */
+
+.secret-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(
+        90deg,
+        rgba(10, 14, 39, 0.9) 0%,
+        rgba(26, 0, 51, 0.7) 100%
+    );
+    border: 2px solid rgba(0, 255, 136, 0.5);
+    border-left: 6px solid var(--market-danger);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.secret-item:hover {
+    border-color: var(--market-accent);
+    border-left-color: var(--market-danger);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 136, 0.3),
+        inset 0 0 20px rgba(0, 255, 136, 0.05);
+    transform: translateX(5px);
+}
+
+.secret-item strong {
+    color: var(--market-accent);
+    font-size: 1.1rem;
+}
+
+.secret-item span {
+    color: var(--market-warning);
+    font-weight: bold;
+    min-width: 120px;
+    text-align: right;
+}
+
+/* ============================================================================
+   RESPONSIVE - MOBILE FIRST
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .black-market-container {
+        padding: 1rem;
+    }
+
+    .warning {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .market-title {
+        font-size: 1.4rem;
+        margin: 1.5rem 0 1rem;
+    }
+
+    .market-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .boxes-grid-special {
+        grid-template-columns: 1fr;
+    }
+
+    .special-roulette-wrapper {
+        height: 250px;
+    }
+
+    .modal {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .entrance-glitch-text {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+    }
+
+    .entrance-scanner {
+        width: 250px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .black-market-container {
+        padding: 0.75rem;
+    }
+
+    .warning {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+
+    .market-title {
+        font-size: 1.2rem;
+        padding-left: 1rem;
+    }
+
+    .market-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .btn-hack {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .entrance-glitch-text {
+        font-size: 1.8rem;
+        height: 80px;
+    }
+
+    .entrance-code {
+        font-size: 0.8rem;
+    }
+}
+
+/* ============================================================================
+   DARK MODE SUPPORT
+   ============================================================================ */
+
+[data-theme="dark"] .black-market-container {
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(153, 0, 50, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(0, 100, 150, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, #000000 0%, #0a0e27 30%, #050810 60%, #1a0033 100%);
+}
+
+[data-theme="light"] .black-market-container {
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(153, 0, 50, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(0, 100, 150, 0.25) 0%, transparent 50%),
+        linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #2d1b42 100%);
+    color: #00ff88;
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .black-market-container::before,
+    .black-market-container::after,
+    .market-title,
+    .warning,
+    .market-section,
+    .market-section::before,
+    .box-card-special,
+    .entrance-overlay,
+    .entrance-glitch-text,
+    .scanner-line {
+        animation: none !important;
+    }
+
+    .btn-hack::before,
+    .btn-hack::after {
+        animation: none !important;
+    }
+
+    .btn-hack:hover {
+        transform: none;
+    }
+
+    .entrance-glitch-container {
+        opacity: 0.5;
     }
 }
 

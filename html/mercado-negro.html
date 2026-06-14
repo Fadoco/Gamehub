@@ -23,9 +23,27 @@
     <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../Roleta/roleta.css">
     <link rel="stylesheet" href="../css/upgrades.css">
-    <link rel="stylesheet" href="../css/mercado-negro-novo.css">
+    <link rel="stylesheet" href="../css/mercado-negro.css">
 </head>
 <body>
+    <!-- Overlay de Entrada Assustadora -->
+    <div class="market-entrance-overlay" id="entrance-overlay">
+        <div class="entrance-glitch-container">
+            <div class="entrance-glitch-text">
+                <span>ACESSO</span>
+                <span>NEGADO</span>
+                <span>CONFIRMADO</span>
+            </div>
+            <div class="entrance-scanner">
+                <div class="scanner-line"></div>
+            </div>
+            <p class="entrance-code">>>> AUTENTICANDO CREDENCIAIS ROUBADAS...</p>
+            <p class="entrance-code">>>> BYPASSING FIRESTORE SECURITY LAYER...</p>
+            <p class="entrance-code">>>> INJETANDO PAYLOAD MALICIOSO...</p>
+            <p class="entrance-code entrance-final">>>> BEM-VINDO AO CAOS</p>
+        </div>
+    </div>
+
     <div class="black-market-container">
         <h1 class="warning">CUIDADO: VOCÊ ESTÁ NO MERCADO NEGRO</h1>
         <p>> Conexão criptografada... Bypassing Firestore rules...</p>
@@ -130,18 +148,24 @@
     
     <!-- Script de scroll automático para o topo e animação de entrada -->
     <script>
+        // Animação de entrada assustadora
         window.addEventListener('load', () => {
-            // Scroll para o topo suavemente
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const overlay = document.getElementById('entrance-overlay');
             
-            // Adiciona classe de animação de entrada
-            document.body.classList.add('page-loading');
-            setTimeout(() => document.body.classList.remove('page-loading'), 800);
-        });
-        
-        // Scroll para o topo imediatamente quando navegar para a página
-        window.addEventListener('beforeunload', () => {
-            window.scrollTo(0, 0);
+            // Mantém o overlay por 2.5 segundos para criar o efeito dramático
+            setTimeout(() => {
+                overlay.classList.add('fade-out-entrance');
+                
+                // Remove o overlay após a animação
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 800);
+            }, 2500);
+            
+            // Scroll para o topo suavemente (após a animação)
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
         });
         
         // Se a página foi aberta via redirect, vai pro topo
