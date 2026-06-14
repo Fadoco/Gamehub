@@ -22,12 +22,12 @@ if (typeof firebase === 'undefined') {
  * Get these values from Firebase Console: https://console.firebase.google.com/
  */
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'AIzaSyDemoKey123456789',
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'gamehub-demo.firebaseapp.com',
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || 'gamehub-demo',
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'gamehub-demo.appspot.com',
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '123456789123',
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:123456789123:web:abcdef123456789abcdef1',
+  apiKey: 'AIzaSyDemoKey123456789',
+  authDomain: 'gamehub-demo.firebaseapp.com',
+  projectId: 'gamehub-demo',
+  storageBucket: 'gamehub-demo.appspot.com',
+  messagingSenderId: '123456789123',
+  appId: '1:123456789123:web:abcdef123456789abcdef1',
 };
 
 /**
@@ -96,13 +96,8 @@ firebaseAuth.onAuthStateChanged((user) => {
 /**
  * Firestore Connection State Observer
  */
-firebaseDb.onSnapshot(() => {
-  // Firestore connection established
-  window.dispatchEvent(new CustomEvent('firebase-connected'));
-}, (error) => {
-  console.error('❌ Firestore connection error:', error);
-  window.dispatchEvent(new CustomEvent('firebase-connection-error', { detail: error }));
-});
+// Note: Firestore connection state is monitored via auth state changes
+// Direct onSnapshot listeners will be added per-collection as needed
 
 /**
  * Helper Functions for Firebase Operations
