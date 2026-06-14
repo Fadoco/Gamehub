@@ -299,6 +299,9 @@ async function loadUserData(uid) {
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
+// Exporta para escopo global para que outros scripts possam chamar
+window.loadUserData = loadUserData;
+
 document.addEventListener('DOMContentLoaded', async () => {
     await loadAuthModules();
 

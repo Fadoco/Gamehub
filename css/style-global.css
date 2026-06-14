@@ -586,6 +586,10 @@ h2.section-title {
 .card-media {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: #2a2a2a;
+    border-radius: 8px;
 }
 
 .discount-percent {

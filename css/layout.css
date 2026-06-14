@@ -372,6 +372,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  border-radius: 8px;
 }
 
 img[data-src] {
