@@ -1,8 +1,6 @@
 /**
  * Lógica de renderização da Home Premium
  */
-
-console.log('✅ home.js loaded');
  
 window.renderGames = function(games) {
     if (!games || games.length === 0) return;
@@ -57,14 +55,15 @@ window.renderGames = function(games) {
     }
 
     // 5. Novidades
-    const newArrivals = [...games].sort((a, b) => b.id - a.id).slice(0, 12);
+    const newArrivals = [...games].sort((a, b) => b.id - a.id).slice(0, 12); // Top 12 mais novos
     const newArrivalsGrid = document.getElementById('new-arrivals-grid');
     if (newArrivalsGrid) {
         window.renderToContainer(newArrivals, newArrivalsGrid);
     }
 
     // 6. Mais Populares
-    const mostPopular = [...games].sort(() => 0.5 - Math.random()).slice(0, 12);
+    // Em um sistema real, isso viria de dados de popularidade (vendas, visualizações, etc.)
+    const mostPopular = [...games].sort(() => 0.5 - Math.random()).slice(0, 12); // Exemplo: 12 jogos aleatórios
     const mostPopularGrid = document.getElementById('most-popular-grid');
     if (mostPopularGrid) {
         window.renderToContainer(mostPopular, mostPopularGrid);
@@ -75,16 +74,18 @@ function setupHero(featuredGames) {
     const navList = document.getElementById('hero-nav-list');
     if (!navList || featuredGames.length === 0) return;
 
+    // Renderiza lista lateral
     navList.innerHTML = featuredGames.map((game, index) => `
         <div class="hero-list__item ${index === 0 ? 'active' : ''}" data-index="${index}">
             <img src="${game.coverUrl || game.image}" class="thumb" style="width: 50px; height: 65px; object-fit: cover; border-radius: 8px;">
             <div>
                 <span>${game.title}</span>
-                <small>${game.tags ? game.tags[0] : 'Game'}</small>
+                <small>${game.tags[0]}</small>
             </div>
         </div>
     `).join('');
 
+    // Função para atualizar o card principal
     const updateMainCard = (game) => {
         const elements = {
             title: document.getElementById('hero-title'),
@@ -116,8 +117,10 @@ function setupHero(featuredGames) {
         if (elements.cartBtn) elements.cartBtn.onclick = () => window.toggleCart(game.id);
     };
 
+    // Inicializa primeiro jogo
     updateMainCard(featuredGames[0]);
 
+    // Evento de clique na navegação lateral
     document.querySelectorAll('.hero-list__item').forEach(item => {
         item.addEventListener('click', function() {
             document.querySelectorAll('.hero-list__item').forEach(i => i.classList.remove('active'));
@@ -183,6 +186,7 @@ function renderChartList(elementId, games, isFree = false) {
     `).join('');
 }
 
+// Garante que a loja renderize se os dados chegarem antes do script terminar de carregar
 if (window.allGamesData && window.allGamesData.length > 0) {
     window.renderGames(window.allGamesData);
 }

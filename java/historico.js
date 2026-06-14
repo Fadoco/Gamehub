@@ -1,9 +1,6 @@
 /**
  * Lógica para exibir o histórico de compras.
  */
-
-console.log('✅ historico.js loaded');
-
 function renderHistory() {
     const list = document.getElementById('history-list');
     if (!list) return;
@@ -25,13 +22,3 @@ function renderHistory() {
         </div>
     `).join('');
 }
-
-// Renderizar quando página estiver pronta
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderHistory);
-} else {
-    renderHistory();
-}
-
-// Escutar atualizações
-window.addEventListener('historyUpdated', renderHistory);

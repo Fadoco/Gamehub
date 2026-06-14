@@ -1,218 +1,138 @@
-/**
- * GameHub - Shopping Cart Page CSS
- * Define estilos específicos para a página de carrinho de compras
- */
-
-/* ============================================
-   CARRINHO CONTAINER
-   ============================================ */
-
-.carrinho-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--spacing-4);
+/* Estilização da Página de Carrinho */
+.cart-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    margin-top: 30px;
 }
 
-.carrinho-section {
-  display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: var(--spacing-4);
+#cart-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+ 
+/* Garante que o grid da home não interfira no carrinho */
+#cart-grid.game-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
 }
 
-/* ============================================
-   CARRINHO ITEMS
-   ============================================ */
-
-.carrinho-items {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-4);
+.cart-item {
+    background: rgba(12, 20, 38, 0.5);
+    border: 1px solid rgba(43, 144, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: var(--transition);
 }
 
-[data-theme="dark"] .carrinho-items {
-  background-color: var(--bg-secondary-dark);
-  border-color: var(--border-color-dark);
+.cart-item:hover {
+    border-color: var(--accent);
+    transform: none; /* Remove o pulo lateral do grid global */
+    background: rgba(12, 20, 38, 0.8);
 }
 
-.carrinho-item {
-  display: grid;
-  grid-template-columns: 100px 1fr 100px;
-  gap: var(--spacing-3);
-  padding: var(--spacing-3);
-  border-bottom: 1px solid var(--border-color);
-  align-items: center;
+.cart-item img {
+    width: 70px; /* Largura reduzida para estilo lista */
+    aspect-ratio: 3 / 4; /* Mantém a identidade visual da capa do jogo */
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 
-[data-theme="dark"] .carrinho-item {
-  border-bottom-color: var(--border-color-dark);
+.item-details { flex: 1; }
+.item-details h3 { margin: 0 0 5px 0; font-size: 1.1rem; color: var(--text-main); }
+.item-tags { font-size: 0.85rem; color: var(--secondary); margin: 0; }
+
+.item-price-actions {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.carrinho-item:last-child {
-  border-bottom: none;
-}
-
-.carrinho-item-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  background-color: var(--bg-primary);
-}
-
-.carrinho-item-details {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.carrinho-item-title {
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-}
-
-[data-theme="dark"] .carrinho-item-title {
-  color: var(--text-primary-dark);
-}
-
-.carrinho-item-price {
-  font-size: var(--font-size-lg);
-  color: var(--accent);
-  font-weight: var(--font-weight-bold);
-}
-
-.carrinho-item-actions {
-  display: flex;
-  gap: var(--spacing-2);
-  justify-content: flex-end;
+.item-price { 
+    font-weight: bold; 
+    color: var(--promo); 
+    font-size: 1.2rem;
+    min-width: 100px;
 }
 
 .btn-remove {
-  padding: var(--spacing-1) var(--spacing-2);
-  background-color: #ff4444;
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
+    background: none;
+    border: none;
+    color: #ff4757;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s;
+    padding: 10px;
 }
 
-.btn-remove:hover {
-  background-color: #cc0000;
-  transform: translateY(-2px);
+.btn-remove:hover { color: #ff6b81; transform: scale(1.2); }
+
+/* Resumo da Compra */
+#cart-summary {
+    background: var(--bg-header);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid var(--accent);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* ============================================
-   CARRINHO SUMMARY
-   ============================================ */
+#cart-summary h2 { margin-bottom: 20px; }
 
-.carrinho-summary {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-4);
-  height: fit-content;
-  position: sticky;
-  top: 100px;
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-[data-theme="dark"] .carrinho-summary {
-  background-color: var(--bg-secondary-dark);
-  border-color: var(--border-color-dark);
-}
-
-.summary-item {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-2) 0;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-secondary);
-}
-
-[data-theme="dark"] .summary-item {
-  border-bottom-color: var(--border-color-dark);
-  color: var(--text-secondary-dark);
-}
-
-.summary-total {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-3) 0;
-  margin-top: var(--spacing-3);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--accent);
-  border-top: 2px solid var(--accent-light);
+.wallet-info {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    text-align: right;
 }
 
 .btn-checkout {
-  width: 100%;
-  padding: var(--spacing-3);
-  margin-top: var(--spacing-3);
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-bold);
-  cursor: pointer;
-  transition: all var(--transition-fast);
+    width: 100%;
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 116, 228, 0.2);
 }
 
-.btn-checkout:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+.btn-checkout:hover { 
+    filter: brightness(1.1);
+    letter-spacing: 1px; 
+    box-shadow: 0 6px 20px rgba(0, 116, 228, 0.4);
 }
 
-/* ============================================
-   CARRINHO VAZIO
-   ============================================ */
-
-.carrinho-vazio {
-  text-align: center;
-  padding: var(--spacing-6);
-  color: var(--text-secondary);
+@media (max-width: 900px) {
+    .cart-container { grid-template-columns: 1fr; }
 }
 
-[data-theme="dark"] .carrinho-vazio {
-  color: var(--text-secondary-dark);
-}
-
-.carrinho-vazio-icon {
-  font-size: 3rem;
-  margin-bottom: var(--spacing-3);
-  opacity: 0.5;
-}
-
-.carrinho-vazio p {
-  margin: 0;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
-@media (max-width: 768px) {
-  .carrinho-section {
-    grid-template-columns: 1fr;
-  }
-
-  .carrinho-item {
-    grid-template-columns: 80px 1fr;
-    gap: var(--spacing-2);
-  }
-
-  .carrinho-item-image {
-    width: 80px;
-    height: 80px;
-    grid-column: 1;
-    grid-row: 1 / 3;
-  }
-
-  .carrinho-item-actions {
-    grid-column: 2;
-  }
-
-  .carrinho-summary {
-    position: static;
-  }
+/* Mensagem de carrinho vazio */
+#cart-empty {
+    color: #bdc3c7; text-align: center; margin-top: 50px;
 }

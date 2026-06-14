@@ -18,13 +18,9 @@ const auth = window.auth;
 if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     try {
         auth.useEmulator('http://localhost:9099');
-        if (window.SecurityModule?.DEBUG_MODE) {
-            console.log('Conectado ao emulador de autenticação Firebase em http://localhost:9099');
-        }
+        console.log('Conectado ao emulador de autenticação Firebase em http://localhost:9099');
     } catch (e) {
-        if (window.SecurityModule?.DEBUG_MODE) {
-            console.warn('Não foi possível conectar ao emulador de autenticação:', e);
-        }
+        console.warn('Não foi possível conectar ao emulador de autenticação:', e);
     }
 }
 
@@ -35,9 +31,7 @@ try {
     // Se o Auth usa emulador, o Firestore também deve usar para manter a consistência local
     if (USAR_EMULADOR_LOCAL && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
         window.db.useEmulator('localhost', 8080);
-        if (window.SecurityModule?.DEBUG_MODE) {
-            console.log('Conectado ao emulador do Firestore em localhost:8080');
-        }
+        console.log('Conectado ao emulador do Firestore em localhost:8080');
     }
 } catch (e) {
     console.warn("Firestore SDK não carregado. Funcionalidades de favoritos e admin desativadas.");
@@ -478,7 +472,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Função global para favoritar/desfavoritar
-// Com validação de segurança e rate limiting
 window.toggleFavorite = async (event, gameId) => {
     event.preventDefault();
     event.stopPropagation();
@@ -493,88 +486,54 @@ window.toggleFavorite = async (event, gameId) => {
         return;
     }
 
-    // Valida gameId
-    if (!window.Validators.gameId(gameId)) {
-        window.SecurityModule?.logger?.security('Tentativa de favoritar game inválido', 'INVALID_GAME_ID', { gameId });
-        showToast("Jogo inválido.", "error");
-        return;
+    if (window.userFavorites.includes(gameId)) {
+        window.userFavorites = window.userFavorites.filter(id => id !== gameId);
+    } else {
+        window.userFavorites.push(gameId);
     }
 
-    try {
-        // Local update primeiro
-        if (window.userFavorites.includes(gameId)) {
-            window.userFavorites = window.userFavorites.filter(id => id !== gameId);
-        } else {
-            window.userFavorites.push(gameId);
-        }
-
-        // Persiste no banco se autenticado
-        if (auth.currentUser && db) {
-            await window.FirebaseTransactions.updateUserArray(
-                auth.currentUser.uid,
-                'favorites',
-                window.userFavorites
-            );
-        }
-
-        refreshCurrentPageUI();
-    } catch (error) {
-        window.SecurityModule?.logger?.error('Erro ao favoritar:', error);
-        showToast("Erro ao favoritar. Tente novamente.", "error");
+    if (auth.currentUser && db) {
+        await db.collection('users').doc(auth.currentUser.uid).set({
+            favorites: window.userFavorites
+        }, { merge: true });
     }
+
+    refreshCurrentPageUI();
 }
 
 // Função para Adicionar/Remover do Carrinho
-// Com validação de segurança e transações
 window.toggleCart = async (gameId) => {
     if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
         window.location.href = window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
         return;
     }
 
-    // Valida gameId
-    if (!window.Validators.gameId(gameId)) {
-        window.SecurityModule?.logger?.security('Tentativa de carrinho com game inválido', 'INVALID_GAME_ID', { gameId });
-        showToast("Jogo inválido.", "error");
+    // Verifica se o jogo já está na biblioteca
+    if (window.userLibrary.includes(gameId)) {
+        showToast("Você já possui este jogo!", "info");
         return;
     }
 
-    try {
-        // Verifica se o jogo já está na biblioteca
-        if (window.userLibrary.includes(gameId)) {
-            showToast("Você já possui este jogo!", "info");
-            return;
-        }
-
-        // Atualização local
-        const index = window.userCart.indexOf(gameId);
-        if (index > -1) {
-            window.userCart.splice(index, 1);
-            showToast("Removido do carrinho.");
-        } else {
-            window.userCart.push(gameId);
-            showToast("Adicionado ao carrinho!", "success");
-        }
-
-        // Persiste no banco se autenticado
-        if (auth.currentUser && db) {
-            await window.FirebaseTransactions.updateUserArray(
-                auth.currentUser.uid,
-                'cart',
-                window.userCart
-            );
-        }
-        
-        refreshCurrentPageUI();
-        window.updateNavBadges();
-    } catch (error) {
-        window.SecurityModule?.logger?.error('Erro ao atualizar carrinho:', error);
-        showToast("Erro ao atualizar carrinho. Tente novamente.", "error");
+    const index = window.userCart.indexOf(gameId);
+    if (index > -1) {
+        window.userCart.splice(index, 1);
+        showToast("Removido do carrinho.");
+    } else {
+        window.userCart.push(gameId);
+        showToast("Adicionado ao carrinho!", "success");
     }
+
+    if (auth.currentUser && db) {
+        await db.collection('users').doc(auth.currentUser.uid).set({
+            cart: window.userCart
+        }, { merge: true });
+    }
+    
+    refreshCurrentPageUI();
+    window.updateNavBadges();
 };
 
 // Simulação de Compra (Move do Carrinho para Biblioteca)
-// Usa transações Firebase para garantir atomicidade e evitar race conditions
 window.purchaseLibrary = async () => {
     if (window.userCart.length === 0 || window.isActionInProgress) {
         showToast("Carrinho vazio!", "error");
@@ -599,24 +558,26 @@ window.purchaseLibrary = async () => {
         window.isActionInProgress = true;
         toggleLoader(true);
         
+        // Adiciona itens do carrinho à biblioteca (sem duplicar)
+        const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
+        const newBalance = window.userBalance - totalPurchase;
+        
+        // Cria o registro de histórico
+        const transaction = {
+            date: new Date().toISOString(),
+            items: cartGames.map(g => g.title),
+            total: totalPurchase
+        };
+        const newHistory = [transaction, ...window.userHistory];
+
         // Se não estiver logado (modo teste), apenas atualiza localmente
         if (!auth.currentUser) {
-            const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
-            const newBalance = window.userBalance - totalPurchase;
-            
-            const purchaseRecord = {
-                date: new Date().toISOString(),
-                items: cartGames.map(g => g.title),
-                total: totalPurchase
-            };
-            
             window.userLibrary = newLibrary;
             window.userCart = [];
             window.userBalance = newBalance;
-            window.userHistory = [purchaseRecord, ...window.userHistory];
-            
+            window.userHistory = newHistory;
             toggleLoader(false);
-            showToast("Compra realizada (Modo Teste)!", "success");
+            showToast("Compra realizada (Offline)!", "success");
             refreshCurrentPageUI();
             window.updateNavBadges();
             window.isActionInProgress = false;
@@ -624,46 +585,25 @@ window.purchaseLibrary = async () => {
         }
 
         try {
-            // Usa transação do FirebaseTransactions para garantir atomicidade
-            const result = await window.FirebaseTransactions.purchaseGameTransaction(
-                auth.currentUser.uid,
-                window.userCart,
-                totalPurchase
-            );
-
-            // Cria registro de histórico
-            const purchaseRecord = {
-                date: new Date().toISOString(),
-                items: cartGames.map(g => g.title),
-                total: totalPurchase
-            };
-
-            // Atualiza histórico (pode ser em transação separada)
             await db.collection('users').doc(auth.currentUser.uid).update({
-                history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
+                library: newLibrary,
+                cart: [], // Limpa o carrinho após a compra
+                balance: newBalance,
+                history: newHistory
             });
 
-            // Atualiza globais locais
-            window.userLibrary = result.library;
+            window.userLibrary = newLibrary;
             window.userCart = [];
-            window.userBalance = result.newBalance;
-            window.userHistory = [purchaseRecord, ...window.userHistory];
+            window.userBalance = newBalance;
+            window.userHistory = newHistory;
             
             toggleLoader(false);
-            showToast(`Compra finalizada com sucesso! ${result.gamesPurchased} jogo(s) adicionado(s).`, "success");
+            showToast("Compra finalizada com sucesso!", "success");
             window.updateNavBadges();
             location.reload();
         } catch (error) {
             toggleLoader(false);
-            
-            // Log de segurança
-            window.SecurityModule?.logger?.security(
-                `Erro na compra`,
-                'PURCHASE_FAILED',
-                { error: error.message }
-            );
-
-            showToast(error.message || "Erro ao processar compra.", "error");
+            showToast("Erro ao processar compra.", "error");
         } finally {
             window.isActionInProgress = false;
         }

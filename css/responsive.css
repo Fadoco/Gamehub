@@ -474,7 +474,7 @@
 @media print {
   * {
     background: white !important;
-    color: #333 !important;
+    color: black !important;
     box-shadow: none !important;
     text-shadow: none !important;
   }
@@ -498,7 +498,7 @@
   }
 
   a {
-    color: #0066cc;
+    color: black;
     text-decoration: underline;
   }
 
@@ -572,20 +572,17 @@
 }
 
 /* ========================================================================
-   DARK MODE - GameHub é sempre em modo escuro
+   DARK MODE / LIGHT MODE DETECTION
    ======================================================================== */
 
-/* Light mode é ignorado - GameHub sempre usa dark theme */
 @media (prefers-color-scheme: light) {
   :root {
-    /* Mantém o dark mode mesmo se o navegador preferir light */
-    --bg-primary: #0f0f1e;
-    --bg-secondary: #1a1a2e;
-    --bg-tertiary: #16213e;
-    --text-primary: #ffffff;
-    --text-main: #ffffff;
-    --text-secondary: #a0a0b8;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #1a1a2e;
+    --text-secondary: #666666;
+    --border-color: rgba(0, 0, 0, 0.1);
   }
 }
 

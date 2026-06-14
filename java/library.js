@@ -2,8 +2,6 @@
  * Lógica para exibir os jogos da biblioteca do usuário.
  */
 
-console.log('✅ library.js loaded');
-
 window.renderLibrary = function() {
     console.log("Iniciando renderização da biblioteca...");
     

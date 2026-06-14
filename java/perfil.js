@@ -217,7 +217,7 @@ async function renderFriendsList(friendsUids) {
 
 
 window.handleAddFriendById = async () => {
-    const idInput = document.getElementById('friend-id-input');
+    const idInput = document.getElementById('input-friend-id');
     const friendId = parseInt(idInput.value);
 
     if (!friendId) return showToast("Digite um ID válido.", "error");

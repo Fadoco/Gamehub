@@ -2,24 +2,22 @@
  * Lógica para exibir e gerenciar o carrinho de compras.
  */
 
-console.log('✅ cart.js loaded');
-
 function renderCart() {
     const grid = document.getElementById('cart-grid');
     const summary = document.getElementById('cart-summary');
     const emptyMsg = document.getElementById('cart-empty');
     
-    if (!grid || !window.allGamesData || window.allGamesData.length === 0) return;
+    if (!grid || !allGamesData || allGamesData.length === 0) return;
 
     // Filtra garantindo que a comparação de ID ignore se é string ou número
-    const cartGames = window.allGamesData.filter(game => window.userCart && window.userCart.some(cartId => String(cartId) === String(game.id)));
+    const cartGames = allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));
 
     if (cartGames.length === 0) {
         grid.innerHTML = '';
         summary.style.display = 'none';
-        if (emptyMsg) emptyMsg.style.display = 'block';
+        emptyMsg.style.display = 'block';
     } else {
-        if (emptyMsg) emptyMsg.style.display = 'none';
+        emptyMsg.style.display = 'none';
         summary.style.display = 'block';
         
         // Renderização customizada para o carrinho (Formato de Lista)
@@ -28,11 +26,11 @@ function renderCart() {
                 <img src="${game.image}" alt="${game.title}">
                 <div class="item-details">
                     <h3>${game.title}</h3>
-                    <p class="item-tags">${game.tags ? game.tags.join(' • ') : 'Game'}</p>
+                    <p class="item-tags">${game.tags.join(' • ')}</p>
                 </div>
                 <div class="item-price-actions">
                     <span class="item-price">${game.currentPrice}</span>
-                    <button class="btn-remove" onclick="window.toggleCart(${game.id})" title="Remover item">
+                    <button class="btn-remove" onclick="toggleCart(${game.id})" title="Remover item">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
@@ -48,7 +46,7 @@ function calculateTotal(cartGames) {
     if (!totalElement) return;
 
     const total = cartGames.reduce((acc, game) => {
-        const price = window.utils ? window.utils.parsePrice(game.currentPrice) : 0;
+        const price = utils.parsePrice(game.currentPrice);
         return acc + price;
     }, 0);
 
@@ -60,12 +58,3 @@ function calculateTotal(cartGames) {
         walletInSummary.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     }
 }
-
-// Renderizar quando dados estiverem disponíveis
-if (window.allGamesData && window.allGamesData.length > 0) {
-    renderCart();
-}
-
-// Escutar atualizações
-window.addEventListener('gamesDataLoaded', renderCart);
-window.addEventListener('cartUpdated', renderCart);

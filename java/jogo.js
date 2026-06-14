@@ -2,8 +2,6 @@
  * Lógica específica para a página de detalhes do jogo.
  */
 
-console.log('✅ jogo.js loaded');
-
 function renderGameDetails(games) {
     // Pega o ID da URL (ex: jogo.html?id=1)
     const params = new URLSearchParams(window.location.search);
@@ -17,7 +15,7 @@ function renderGameDetails(games) {
         document.title = `GameHub - ${game.title}`;
         document.getElementById('game-title-detail').textContent = game.title;
         document.getElementById('game-image-detail').src = game.image;
-        document.getElementById('game-tags-detail').textContent = game.tags ? game.tags.join(', ') : '';
+        document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
 
         // Preenche a descrição usando o campo já normalizado pelo global.js
         const descElement = document.getElementById('game-description-detail');
@@ -57,9 +55,7 @@ function renderGameDetails(games) {
         }
 
         const platformsContainer = document.getElementById('game-platforms-detail');
-        if (platformsContainer && game.platforms) {
-            platformsContainer.innerHTML = game.platforms.map(icon => `<i class="${icon}"></i>`).join(' ');
-        }
+        platformsContainer.innerHTML = game.platforms.map(icon => `<i class="${icon}"></i>`).join(' ');
     } else {
         // Se o jogo não for encontrado, exibe uma mensagem de erro
         const detailContainer = document.querySelector('.game-detail-container');
@@ -68,13 +64,3 @@ function renderGameDetails(games) {
         }
     }
 }
-
-// Renderizar quando dados estiverem disponíveis
-if (window.allGamesData && window.allGamesData.length > 0) {
-    renderGameDetails(window.allGamesData);
-}
-
-// Escutar atualizações
-window.addEventListener('gamesDataLoaded', () => {
-    if (window.allGamesData) renderGameDetails(window.allGamesData);
-});

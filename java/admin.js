@@ -1,9 +1,7 @@
 /**
  * SISTEMA DE GERENCIAMENTO DE USUÁRIOS - ADMIN
- * Gerencia e exibe usuários do Firestore com busca em tempo real
+ * Refatorado do zero para garantir performance e hierarquia visual.
  */
-
-console.log('✅ admin.js loaded');
 
 let globalUsersList = []; // Cache local para busca instantânea
 

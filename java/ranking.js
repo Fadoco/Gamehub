@@ -1,9 +1,6 @@
 /**
  * Lógica para o Ranking Global de Usuários (Saldos)
- * Usa onSnapshot() para atualizar dados em tempo real
  */
-
-console.log('✅ ranking.js loaded');
 
 function initRanking() {
     const listContainer = document.getElementById('ranking-list-body');

@@ -1,546 +1,117 @@
 /**
- * GameHub - Upgrades System CSS
- * Define estilos para o sistema de upgrades/melhorias do jogo
- * Includes upgrade cards, pricing, purchase animations
+ * GameHub - Sistema de Melhorias e Ranks
+ * Estilos para Raro (+), Épico (++), Lendário (+++) e Dark Matter (!!!!)
  */
 
-/* ============================================
-   UPGRADES CONTAINER
-   ============================================ */
-
-.upgrades-section {
-  padding: var(--spacing-4);
-  background-color: var(--bg-primary);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--spacing-4);
-}
-
-[data-theme="dark"] .upgrades-section {
-  background-color: var(--bg-primary-dark);
-}
-
-.upgrades-section h2 {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--accent);
-  margin-bottom: var(--spacing-3);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-.upgrades-section h2::before {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 24px;
-  background: linear-gradient(180deg, var(--accent), var(--accent-light));
-  border-radius: 2px;
-}
-
-/* ============================================
-   UPGRADES GRID
-   ============================================ */
-
-.upgrades-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-3);
-}
-
-/* ============================================
-   UPGRADE CARD
-   ============================================ */
-
-.upgrade-card {
-  background-color: var(--bg-secondary);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-4);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: cardFadeInScale 0.6s ease-out;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-[data-theme="dark"] .upgrade-card {
-  background-color: var(--bg-secondary-dark);
-  border-color: var(--border-color-dark);
-}
-
-.upgrade-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-}
-
-.upgrade-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
-  transform: translateY(-4px);
-}
-
-[data-theme="dark"] .upgrade-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
-}
-
-/* Premium Badge */
-.upgrade-badge {
-  position: absolute;
-  top: var(--spacing-2);
-  right: var(--spacing-2);
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-  color: #000;
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-}
-
-/* Icon Area */
-.upgrade-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-3);
-  font-size: 1.8rem;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
-}
-
-/* Upgrade Title */
-.upgrade-card h3 {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  margin: 0 0 var(--spacing-2) 0;
-  line-height: 1.3;
-}
-
-[data-theme="dark"] .upgrade-card h3 {
-  color: var(--text-primary-dark);
-}
-
-/* Upgrade Description */
-.upgrade-description {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: var(--spacing-3);
-  flex: 1;
-}
-
-[data-theme="dark"] .upgrade-description {
-  color: var(--text-secondary-dark);
-}
-
-/* Price Container */
-.upgrade-price {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-1);
-  margin-bottom: var(--spacing-3);
-  padding: var(--spacing-2) var(--spacing-3);
-  background-color: var(--bg-primary);
-  border-radius: var(--radius-md);
-}
-
-[data-theme="dark"] .upgrade-price {
-  background-color: var(--bg-primary-dark);
-}
-
-.price-currency {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  font-weight: var(--font-weight-medium);
-}
-
-.price-amount {
-  font-size: 1.8rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--accent);
-  line-height: 1;
-}
-
-.price-period {
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  margin-left: auto;
-}
-
-/* Old Price (Discount) */
-.price-old {
-  text-decoration: line-through;
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.discount-badge {
-  background-color: #ff4444;
-  color: white;
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  margin-left: var(--spacing-2);
-}
-
-/* Features List */
-.upgrade-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 var(--spacing-3) 0;
-}
-
-.upgrade-features li {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  padding: var(--spacing-1) 0;
-  font-size: var(--font-size-sm);
-  color: var(--text-primary);
-}
-
-[data-theme="dark"] .upgrade-features li {
-  color: var(--text-primary-dark);
-}
-
-.upgrade-features li::before {
-  content: '✓';
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  background-color: var(--accent-light);
-  color: white;
-  border-radius: 50%;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  flex-shrink: 0;
-}
-
-/* Upgrade Button */
-.btn-upgrade {
-  width: 100%;
-  padding: var(--spacing-3);
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-upgrade::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn-upgrade:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
-}
-
-.btn-upgrade:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.btn-upgrade:active {
-  transform: translateY(0);
-}
-
-.btn-upgrade:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Already Owned */
-.upgrade-card.owned {
-  opacity: 0.7;
-  border-style: dashed;
-}
-
-.upgrade-card.owned .btn-upgrade {
-  background: var(--text-secondary);
-  cursor: default;
-}
-
-.upgrade-card.owned .btn-upgrade:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-.owned-badge {
-  display: inline-block;
-  background-color: #4caf50;
-  color: white;
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-}
-
-/* ============================================
-   UPGRADE TIERS
-   ============================================ */
-
-.upgrade-tier-basic {
-  border-color: #999;
-}
-
-.upgrade-tier-basic .upgrade-icon {
-  background: linear-gradient(135deg, #999, #666);
-}
-
-.upgrade-tier-pro {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-}
-
-.upgrade-tier-pro .upgrade-icon {
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
-}
-
-.upgrade-tier-elite {
-  border: 2px solid;
-  border-image: linear-gradient(135deg, #ffd700, #ffed4e) 1;
-}
-
-.upgrade-tier-elite .upgrade-icon {
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-  color: #000;
-}
-
-/* ============================================
-   PURCHASE STATE ANIMATIONS
-   ============================================ */
-
-.upgrade-purchasing {
-  animation: pulse 1s infinite;
-}
-
-.upgrade-purchased {
-  animation: scaleUpPulse 0.6s ease-out;
-}
-
-@keyframes scaleUpPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-  }
-}
-
-/* Success Animation */
-.upgrade-success {
-  border-color: #4caf50;
-}
-
-.upgrade-success::before {
-  background: linear-gradient(90deg, #4caf50, #7fdd7f);
-}
-
-/* ============================================
-   LOADING STATE
-   ============================================ */
-
-.upgrade-card.loading {
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.upgrade-card.loading .btn-upgrade {
-  position: relative;
-}
-
-.upgrade-card.loading .btn-upgrade::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 50%;
-  left: 50%;
-  margin: -8px 0 0 -8px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.upgrade-rank {
+    font-weight: 900;
+    margin: 4px 0; /* Margem vertical para quando estiver empilhado */
+    display: inline-block;
+    text-shadow: 0 0 8px rgba(0,0,0,0.5);
+    font-family: 'JetBrains Mono', monospace;
 }
 
-/* ============================================
-   COMPARISON TABLE
-   ============================================ */
+.rank-rare { color: #0078f2; text-shadow: 0 0 8px rgba(0, 120, 242, 0.4); }
+.rank-epic { color: #a335ee; text-shadow: 0 0 8px rgba(163, 53, 238, 0.4); }
+.rank-legendary { color: #ffb400; text-shadow: 0 0 12px rgba(255, 180, 0, 0.6); animation: rank-pulse 2s infinite ease-in-out; }
 
-.upgrades-comparison {
-  width: 100%;
-  overflow-x: auto;
-  margin: var(--spacing-4) 0;
+/* --- RANK DARK MATTER (SINGULARIDADE) --- */
+.rank-dark-matter { 
+    color: #fff !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 10px #f00, 0 0 20px #f00 !important;
+    animation: rank-pulse 1.5s infinite ease-in-out !important;
 }
 
-.comparison-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: var(--bg-secondary);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+/* Aura do Card Dark Matter */
+.game-card.upgrade-aura-4, .bet-item.upgrade-aura-4, .game-detail-container.upgrade-aura-4 {
+    background: #000 !important;
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.7), inset 0 0 40px #000 !important;
+    animation: dark-matter-pulse 1.5s infinite alternate ease-in-out !important;
 }
 
-[data-theme="dark"] .comparison-table {
-  background-color: var(--bg-secondary-dark);
+.game-card.upgrade-aura-4 .card-media img, .bet-item.upgrade-aura-4 img, .game-detail-container.upgrade-aura-4 .detail-media img {
+    filter: grayscale(1) contrast(1.5) brightness(0.5) !important; /* Escurece e dá um tom de glitch na imagem */
 }
 
-.comparison-table thead {
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
-  color: white;
+.game-card.upgrade-aura-4 .card-media::after, .bet-item.upgrade-aura-4::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'), 
+                linear-gradient(rgba(255,0,0,0.2), transparent);
+    mix-blend-mode: multiply;
+    animation: dm-media-flicker 0.3s infinite alternate;
+    pointer-events: none;
 }
 
-.comparison-table th,
-.comparison-table td {
-  padding: var(--spacing-3);
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
+@keyframes dark-matter-pulse {
+    from { box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 20px #000; border-color: #f00; }
+    to { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 45px #000; border-color: #8b0000; }
 }
 
-[data-theme="dark"] .comparison-table td {
-  border-bottom-color: var(--border-color-dark);
+@keyframes rank-pulse {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.8; filter: brightness(1.6); }
 }
 
-.comparison-table tbody tr:hover {
-  background-color: var(--accent-light);
-  color: var(--bg-primary);
+@keyframes dm-media-flicker {
+    0% { opacity: 0.8; }
+    100% { opacity: 0.4; transform: scale(1.02); }
 }
 
-[data-theme="dark"] .comparison-table tbody tr:hover {
-  background-color: rgba(0, 212, 255, 0.1);
+.game-price.valuation {
+    color: #ff0000 !important; 
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-
-/* ============================================
-   RESPONSIVE ADJUSTMENTS
-   ============================================ */
 
-@media (max-width: 1024px) {
-  .upgrades-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
+/* --- Auras de Upgrade para Cards de Jogo --- */
+.game-card.upgrade-aura-1, .bet-item.upgrade-aura-1 {
+    border: 1px solid rgba(0, 120, 242, 0.8) !important;
+    box-shadow: 0 0 10px rgba(0, 120, 242, 0.6); /* Azul - Raro */
 }
-
-@media (max-width: 768px) {
-  .upgrades-section {
-    padding: var(--spacing-3);
-  }
-
-  .upgrades-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--spacing-2);
-  }
-
-  .upgrade-card {
-    padding: var(--spacing-3);
-  }
-
-  .upgrade-card h3 {
-    font-size: var(--font-size-base);
-  }
-
-  .price-amount {
-    font-size: 1.5rem;
-  }
-
-  .upgrade-description {
-    font-size: var(--font-size-xs);
-  }
+.game-card.upgrade-aura-2, .bet-item.upgrade-aura-2 {
+    border: 1px solid rgba(163, 53, 238, 0.9) !important;
+    box-shadow: 0 0 15px rgba(163, 53, 238, 0.7); /* Roxo - Épico */
 }
-
-@media (max-width: 480px) {
-  .upgrades-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .upgrade-card {
-    padding: var(--spacing-2);
-  }
-
-  .upgrade-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-
-  .comparison-table {
-    font-size: var(--font-size-sm);
-  }
-
-  .comparison-table th,
-  .comparison-table td {
-    padding: var(--spacing-2);
-  }
+.game-card.upgrade-aura-3, .bet-item.upgrade-aura-3 {
+    border: 2px solid rgba(255, 180, 0, 1) !important;
+    box-shadow: 0 0 20px rgba(255, 180, 0, 0.8); /* Dourado - Lendário */
+    animation: gold-aura-pulse 2s infinite alternate;
 }
-
-/* ============================================
-   ACCESSIBILITY
-   ============================================ */
 
-.btn-upgrade:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+@keyframes gold-aura-pulse {
+    from { box-shadow: 0 0 15px rgba(255, 180, 0, 0.6), 0 0 0 rgba(255, 180, 0, 0); }
+    to { box-shadow: 0 0 30px rgba(255, 180, 0, 1), 0 0 5px rgba(255, 180, 0, 0.3); }
 }
 
-.upgrade-card:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+@keyframes text-jitter {
+    0% { transform: translate(0); }
+    50% { transform: translate(1px, -1px); opacity: 0.8; }
+    100% { transform: translate(-1px, 1px); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .upgrade-card,
-  .btn-upgrade,
-  .upgrade-purchasing,
-  .upgrade-purchased,
-  .upgrade-success {
-    animation: none;
-    transition: none;
-  }
+@keyframes dm-glitch-color {
+    0%, 100% { color: #ff003c; filter: hue-rotate(0deg); }
+    50% { color: #000; filter: hue-rotate(0deg); }
+    95% { color: #00f0ff; }
+}
+
+@keyframes dm-border-flicker {
+    0%, 100% { border-color: #ff003c; }
+    50% { border-color: #000; }
+    51% { border-color: #fff; }
+    52% { border-color: #ff003c; }
 }
