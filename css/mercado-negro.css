@@ -740,7 +740,7 @@
 .special-roulette-wrapper {
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 420px;
     background: linear-gradient(
         135deg,
         rgba(0, 0, 0, 0.8) 0%,
@@ -981,7 +981,7 @@
     }
 
     .special-roulette-wrapper {
-        height: 250px;
+        height: 300px;
     }
 
     .modal {
@@ -1227,153 +1227,6 @@
 
 .market-list {
     grid-template-columns: 1fr;
-}
-
-/* ============================================================================
-   SPECIAL ROULETTE
-   ============================================================================ */
-
-.special-roulette-wrapper {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid var(--market-accent);
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 1rem 0;
-}
-
-.roulette-selector {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 4px;
-    height: 100%;
-    background: var(--market-danger);
-    transform: translateX(-50%);
-    z-index: 10;
-    box-shadow: 0 0 20px var(--market-danger);
-}
-
-.special-rail {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.05s linear;
-}
-
-/* ============================================================================
-   TEXT ELEMENTS
-   ============================================================================ */
-
-.black-market-container > p {
-    color: var(--market-accent);
-    text-shadow: var(--neon-glow);
-    margin-bottom: 1rem;
-    animation: fadeIn 0.6s ease-out;
-}
-
-.glitch-status {
-    color: var(--market-accent);
-    font-size: 1.1rem;
-    animation: statusBlink 0.5s infinite;
-}
-
-@keyframes statusBlink {
-    0%, 50%, 100% {
-        opacity: 1;
-    }
-    75% {
-        opacity: 0.5;
-    }
-}
-
-/* ============================================================================
-   MODAL STYLING
-   ============================================================================ */
-
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(135deg, var(--market-dark), var(--market-darker));
-    border: 2px solid var(--market-accent);
-    border-radius: 8px;
-    padding: 2rem;
-    z-index: 9000;
-    box-shadow: 
-        0 0 30px rgba(0, 255, 136, 0.3),
-        inset 0 0 20px rgba(0, 255, 136, 0.1);
-    animation: modalAppear 0.4s ease-out;
-}
-
-@keyframes modalAppear {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-.modal-content {
-    color: var(--market-accent);
-}
-
-/* ============================================================================
-   GLOW EFFECTS
-   ============================================================================ */
-
-.glow-green {
-    color: var(--market-accent);
-    text-shadow: var(--neon-glow);
-    animation: glowPulse 1.5s ease-in-out infinite;
-}
-
-.glow-purple {
-    color: var(--market-purple);
-    text-shadow: 0 0 10px var(--market-purple), 0 0 20px rgba(156, 39, 176, 0.5);
-    animation: glowPulse 1.5s ease-in-out infinite;
-}
-
-/* ============================================================================
-   RESPONSIVE
-   ============================================================================ */
-
-@media (max-width: 768px) {
-    .black-market-container {
-        padding: 1rem;
-    }
-
-    .warning {
-        font-size: 1.8rem;
-    }
-
-    .market-title {
-        font-size: 1.3rem;
-    }
-
-    .market-section {
-        padding: 1.5rem;
-    }
-
-    .inventory-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-
-    .boxes-grid-special {
-        grid-template-columns: 1fr;
-    }
-
-    .modal {
-        width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
 }
 
 /* ============================================================================

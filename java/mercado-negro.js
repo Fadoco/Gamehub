@@ -187,11 +187,11 @@ window.openSpecialBox = async (tier) => {
             rail.style.transform = 'translateX(0px)';
             rail.innerHTML = '';
 
-            // Preenche o trilho com 80 itens (igual a roleta.js)
-            for (let i = 0; i < 80; i++) {
+            // Preenche o trilho com 200 itens para parecer infinito
+            for (let i = 0; i < 200; i++) {
                 const card = document.createElement('div');
                 card.className = 'special-card';
-                if (i === 65) {
+                if (i === 130) {
                     card.innerHTML = `<img src="${winningGame.coverUrl || winningGame.image}" style="width:100%; height:100%; object-fit:cover;">`;
                     card.style.borderColor = '#0f0';
                 } else {
@@ -203,19 +203,19 @@ window.openSpecialBox = async (tier) => {
             // Inicia o Giro com atraso dramático de 1.2s (igual a roleta.js)
             setTimeout(() => {
                 const wrapper = rail.parentElement;
-                const winnerCard = rail.children[65];
+                const winnerCard = rail.children[130];
                 const wrapperWidth = wrapper.offsetWidth;
-                // Centraliza o card 65 no seletor
+                // Centraliza o card 130 no seletor
                 const targetX = winnerCard.offsetLeft - (wrapperWidth / 2) + (winnerCard.offsetWidth / 2);
                 
                 // Adiciona classe spinning para efeito de blur
                 rail.classList.add('spinning');
                 
                 // Adiciona efeito de vibração durante o giro
-                wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                wrapper.style.animation = 'spinVibration 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
                 
-                // Transição suave e natural (easing-out para frenar no final)
-                rail.style.transition = 'transform 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                // Transição rápida e dinâmica (easing agressivo)
+                rail.style.transition = 'transform 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
                 rail.style.transform = `translateX(-${targetX}px)`;
             }, 1200);
 
@@ -257,7 +257,7 @@ window.openSpecialBox = async (tier) => {
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;
-            }, 7100); // 1.2s de delay + 5.7s de giro + margem
+            }, 5100); // 1.2s de delay + 3.8s de giro + margem
 
         } catch (error) {
             console.error("Erro ao abrir caixa especial:", error);
@@ -313,9 +313,9 @@ window.spinSpecialRoulette = async () => {
     if (roll < winChance) resultType = 'win';
     else if (roll < 80) resultType = 'stay';
 
-    // Preencher rail com cards temáticos
+    // Preencher rail com cards temáticos (150 cards para parecer infinito)
     rail.innerHTML = '';
-    for(let i=0; i<50; i++) {
+    for(let i=0; i<150; i++) {
         const card = document.createElement('div');
         card.className = 'special-card';
         card.innerHTML = '<span class="q-mark">?</span>';
@@ -351,10 +351,10 @@ window.spinSpecialRoulette = async () => {
         rail.classList.add('spinning');
         
         // Adiciona efeito de vibração durante o giro
-        wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        wrapper.style.animation = 'spinVibration 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
         
-        // Transição suave e natural (easing-out para frenar no final)
-        rail.style.transition = 'transform 5.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        // Transição rápida e dinâmica (easing agressivo)
+        rail.style.transition = 'transform 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
         rail.style.transform = `translateX(-${targetX}px)`;
     }, 1200); // 1.2s de atraso para drama, igual roleta.js
         
@@ -405,7 +405,7 @@ window.spinSpecialRoulette = async () => {
             rail.classList.remove('spinning');
             window.isActionInProgress = false;
         }
-    }, 7100); // 1.2s + 5.7s + margem de erro
+    }, 5100); // 1.2s + 3.8s + margem de erro
 };
 
 // Função chamada pelo global.js quando os dados estão prontos
