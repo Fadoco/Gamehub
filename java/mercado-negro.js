@@ -257,7 +257,7 @@ window.openSpecialBox = async (tier) => {
                 await window.loadUserData(window.auth.currentUser.uid);
                 renderSpecialBoxInventory();
                 window.isActionInProgress = false;
-            }, 5100); // 1.2s de delay + 3.8s de giro + margem
+            }, 7100); // 1.2s de delay + 5.7s de giro + margem
 
         } catch (error) {
             console.error("Erro ao abrir caixa especial:", error);
