@@ -212,10 +212,10 @@ window.openSpecialBox = async (tier) => {
                 rail.classList.add('spinning');
                 
                 // Adiciona efeito de vibração durante o giro
-                wrapper.style.animation = 'spinVibration 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
+                wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
                 
-                // Transição rápida e dinâmica (easing agressivo)
-                rail.style.transition = 'transform 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
+                // Transição sincronizada com a roleta normal
+                rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
                 rail.style.transform = `translateX(-${targetX}px)`;
             }, 1200);
 
@@ -351,10 +351,10 @@ window.spinSpecialRoulette = async () => {
         rail.classList.add('spinning');
         
         // Adiciona efeito de vibração durante o giro
-        wrapper.style.animation = 'spinVibration 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
+        wrapper.style.animation = 'spinVibration 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
         
-        // Transição rápida e dinâmica (easing agressivo)
-        rail.style.transition = 'transform 3.8s cubic-bezier(0.17, 0.67, 0.12, 0.96)';
+        // Transição sincronizada com a roleta normal
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
         rail.style.transform = `translateX(-${targetX}px)`;
     }, 1200); // 1.2s de atraso para drama, igual roleta.js
         
@@ -405,7 +405,7 @@ window.spinSpecialRoulette = async () => {
             rail.classList.remove('spinning');
             window.isActionInProgress = false;
         }
-    }, 5100); // 1.2s + 3.8s + margem de erro
+    }, 7100); // 1.2s de delay + 5.7s de giro + margem
 };
 
 // Função chamada pelo global.js quando os dados estão prontos
