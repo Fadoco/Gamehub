@@ -572,11 +572,24 @@ window.toggleCart = async (gameId) => {
 
         // Persiste no banco se autenticado
         if (auth.currentUser && db) {
-            await window.FirebaseTransactions.updateUserArray(
-                auth.currentUser.uid,
-                'cart',
-                window.userCart
-            );
+            try {
+                // Tenta usar FirebaseTransactions se disponível, senão usa db direto
+                if (window.FirebaseTransactions && typeof window.FirebaseTransactions.updateUserArray === 'function') {
+                    await window.FirebaseTransactions.updateUserArray(
+                        auth.currentUser.uid,
+                        'cart',
+                        window.userCart
+                    );
+                } else {
+                    // Fallback: atualiza direto no Firestore
+                    await db.collection('users').doc(auth.currentUser.uid).update({
+                        cart: window.userCart
+                    });
+                }
+            } catch (firebaseError) {
+                console.error('Erro ao persistir carrinho:', firebaseError);
+                // Não falha a operação se o Firebase falhar - o carrinho funciona localmente
+            }
         }
         
         // Atualiza UI em tempo real
@@ -645,12 +658,32 @@ window.purchaseLibrary = async () => {
         }
 
         try {
-            // Usa transação do FirebaseTransactions para garantir atomicidade
-            const result = await window.FirebaseTransactions.purchaseGameTransaction(
-                auth.currentUser.uid,
-                window.userCart,
-                totalPurchase
-            );
+            let result = null;
+            
+            // Tenta usar FirebaseTransactions se disponível
+            if (window.FirebaseTransactions && typeof window.FirebaseTransactions.purchaseGameTransaction === 'function') {
+                result = await window.FirebaseTransactions.purchaseGameTransaction(
+                    auth.currentUser.uid,
+                    window.userCart,
+                    totalPurchase
+                );
+            } else {
+                // Fallback: atualiza manualmente no Firestore
+                const newLibrary = [...new Set([...window.userLibrary, ...window.userCart])];
+                const newBalance = window.userBalance - totalPurchase;
+                
+                await db.collection('users').doc(auth.currentUser.uid).update({
+                    library: newLibrary,
+                    cart: [],
+                    balance: newBalance
+                });
+                
+                result = {
+                    library: newLibrary,
+                    newBalance: newBalance,
+                    gamesPurchased: window.userCart.length
+                };
+            }
 
             // Cria registro de histórico
             const purchaseRecord = {
@@ -659,10 +692,14 @@ window.purchaseLibrary = async () => {
                 total: totalPurchase
             };
 
-            // Atualiza histórico (pode ser em transação separada)
-            await db.collection('users').doc(auth.currentUser.uid).update({
-                history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
-            });
+            // Atualiza histórico
+            try {
+                await db.collection('users').doc(auth.currentUser.uid).update({
+                    history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
+                });
+            } catch (historyError) {
+                console.error('Erro ao atualizar histórico:', historyError);
+            }
 
             // Atualiza globais locais
             window.userLibrary = result.library;
