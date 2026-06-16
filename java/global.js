@@ -267,9 +267,10 @@ window.checkUserSession = (user) => {
             userMenu.appendChild(logoutBtn);
         }
  
-        // Apenas mostra/esconde, o conteúdo é atualizado por updateNavBadges
+        // Mostra a carteira e remove a classe hidden
         const walletDisplay = document.getElementById('user-wallet');
         if (walletDisplay) {
+            walletDisplay.classList.remove('hidden');
             walletDisplay.style.display = 'flex'; 
         } 
     } else {
@@ -277,7 +278,10 @@ window.checkUserSession = (user) => {
         // Sem usuário, garante que o menu do usuário esteja oculto e o botão de login visível
         if (userMenu) userMenu.style.display = 'none';
         const walletDisplay = document.getElementById('user-wallet');
-        if (walletDisplay) walletDisplay.style.display = 'none';
+        if (walletDisplay) {
+            walletDisplay.classList.add('hidden');
+            walletDisplay.style.display = 'none';
+        }
     }
 }; 
 

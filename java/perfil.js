@@ -142,6 +142,26 @@ function setupMyProfileUI(data) {
     el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
     el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
     form.onsubmit = handleEditProfile;
+
+    // Manipulador para o botão de adicionar por ID
+    const toggleAddFriendBtn = document.getElementById('btn-toggle-add-friend');
+    if (toggleAddFriendBtn) {
+        toggleAddFriendBtn.onclick = () => {
+            const container = document.getElementById('add-by-id-container');
+            if (container) {
+                const isHidden = container.classList.contains('hidden');
+                if (isHidden) {
+                    container.classList.remove('hidden');
+                    toggleAddFriendBtn.textContent = 'Cancelar';
+                    toggleAddFriendBtn.style.background = 'var(--danger)';
+                } else {
+                    container.classList.add('hidden');
+                    toggleAddFriendBtn.textContent = 'Adicionar por ID';
+                    toggleAddFriendBtn.style.background = '';
+                }
+            }
+        };
+    }
 }
 
 function setupOtherProfileUI() {

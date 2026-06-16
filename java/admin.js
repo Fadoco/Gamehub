@@ -87,12 +87,81 @@ function displayUsers(list) {
     `).join('');
 }
 
+/**
+ * Manipulador do formulário para adicionar dinheiro ao saldo de um usuário
+ */
+async function handleAddBalance(event) {
+    event.preventDefault();
+    
+    const userIdInput = document.getElementById('user-id-balance');
+    const amountInput = document.getElementById('amount-to-add');
+    const uid = userIdInput.value.trim();
+    const amount = parseFloat(amountInput.value);
+
+    // Validação
+    if (!uid) {
+        window.showToast("Digite o ID do usuário (UID).", "error");
+        return;
+    }
+    if (isNaN(amount) || amount <= 0) {
+        window.showToast("Digite um valor válido (maior que 0).", "error");
+        return;
+    }
+
+    // Confirmação
+    window.customConfirm(
+        `Adicionar R$ ${amount.toFixed(2)} à carteira do usuário ${uid}?\n\nOperação irreversível!`,
+        async () => {
+            try {
+                window.toggleLoader(true);
+
+                // Busca o usuário para obter o saldo atual
+                const userDoc = await window.db.collection('users').doc(uid).get();
+                if (!userDoc.exists) {
+                    window.showToast("Usuário não encontrado com este UID.", "error");
+                    window.toggleLoader(false);
+                    return;
+                }
+
+                const currentBalance = userDoc.data().balance || 0;
+                const newBalance = currentBalance + amount;
+
+                // Atualiza o saldo
+                await window.db.collection('users').doc(uid).update({
+                    balance: newBalance
+                });
+
+                window.showToast(`✓ R$ ${amount.toFixed(2)} adicionado com sucesso! Novo saldo: R$ ${newBalance.toFixed(2)}`, "success");
+                
+                // Limpa os campos
+                userIdInput.value = "";
+                amountInput.value = "";
+
+                // Recarrega a lista de usuários se ela está visível
+                loadUsersSystem();
+
+                window.toggleLoader(false);
+            } catch (error) {
+                console.error("Erro ao adicionar saldo:", error);
+                window.showToast("Erro ao adicionar saldo: " + error.message, "error");
+                window.toggleLoader(false);
+            }
+        }
+    );
+}
+
 // Inicialização protegida: Só roda se o usuário logado for admin
 if (window.auth) {
     window.auth.onAuthStateChanged((user) => {
         const admins = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
         if (user && admins.includes(user.email?.toLowerCase())) {
             loadUsersSystem();
+            
+            // Vincula o manipulador do formulário de adicionar dinheiro
+            const balanceForm = document.getElementById('add-balance-form');
+            if (balanceForm) {
+                balanceForm.addEventListener('submit', handleAddBalance);
+            }
         }
     });
 } else {

@@ -47,10 +47,44 @@
     transition: var(--transition);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid transparent;
 }
 
-.topbar__menu a:hover, .topbar__menu a.active {
+.topbar__menu a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 127, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.topbar__menu a:hover {
     color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3), inset 0 0 15px rgba(0, 212, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.topbar__menu a:hover::before {
+    opacity: 1;
+}
+
+.topbar__menu a.active {
+    color: #fff;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 127, 0.1));
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
 .topbar__actions {

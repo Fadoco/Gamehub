@@ -58,3 +58,25 @@ function calculateTotal(cartGames) {
         walletInSummary.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     }
 }
+
+/**
+ * Inicializar o carrinho quando a página carrega
+ */
+function initCart() {
+    // Aguarda as dependências globais serem carregadas
+    if (!window.allGamesData || window.allGamesData.length === 0) {
+        setTimeout(initCart, 500);
+        return;
+    }
+    
+    // Renderiza o carrinho inicial
+    renderCart();
+}
+
+// Executa na inicialização da página
+document.addEventListener('DOMContentLoaded', initCart);
+
+// Também tenta renderizar quando allGamesData é carregado
+window.addEventListener('load', () => {
+    setTimeout(renderCart, 100);
+});
