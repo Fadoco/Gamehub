@@ -663,6 +663,9 @@ const EditProfileModal = {
 };
 
 // Inicializar quando a página carrega
+document.addEventListener('DOMContentLoaded', initProfilePage);
+
+// Inicializar o sistema de edição após o perfil estar pronto
 document.addEventListener('DOMContentLoaded', () => {
     // Aguarda um pouco para garantir que o perfil foi inicializado
     setTimeout(() => {
