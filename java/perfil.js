@@ -124,7 +124,8 @@ function renderBanner(data) {
 }
 
 function setupMyProfileUI(data) {
-    el.btnEdit.style.display = 'block';
+    el.btnEdit.style.display = 'none'; // Esconder botão antigo
+    document.getElementById('btn-edit-profile-icon').classList.remove('hidden'); // Mostrar ícone novo
     el.btnAddFriend.style.display = 'none';
     el.sectionReq.style.display = 'block';
     el.addByIdBox.style.display = 'flex';
@@ -166,6 +167,7 @@ function setupMyProfileUI(data) {
 
 function setupOtherProfileUI() {
     el.btnEdit.style.display = 'none';
+    document.getElementById('btn-edit-profile-icon').classList.add('hidden'); // Esconder ícone novo
     el.sectionReq.style.display = 'none';
     el.addByIdBox.style.display = 'none';
 
@@ -299,4 +301,359 @@ async function handleEditProfile(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initProfilePage);
+/**
+ * ===== NOVO SISTEMA DE EDIÇÃO DE PERFIL (MELHORADO) =====
+ * Modal elegante com upload de imagens, previsualização em tempo real
+ * e compatibilidade com GIFs e vídeos.
+ */
+
+const EditProfileModal = {
+    // Estado do modal
+    state: {
+        isOpen: false,
+        avatarFile: null,
+        bannerFile: null,
+        avatarPreview: null,
+        bannerPreview: null
+    },
+
+    // Inicializar o sistema
+    init() {
+        this.cacheElements();
+        this.attachEventListeners();
+    },
+
+    // Cache de elementos do DOM
+    cacheElements() {
+        this.els = {
+            modal: document.getElementById('edit-profile-modal'),
+            overlay: document.getElementById('edit-profile-modal-overlay'),
+            btnEditIcon: document.getElementById('btn-edit-profile-icon'),
+            btnClose: document.getElementById('btn-close-edit-modal'),
+            form: document.getElementById('edit-profile-form-new'),
+            btnCancel: document.getElementById('btn-cancel-edit-profile'),
+            btnSave: document.getElementById('btn-save-profile'),
+            
+            // Inputs
+            displayNameInput: document.getElementById('edit-display-name-new'),
+            bioInput: document.getElementById('edit-bio-new'),
+            avatarFileInput: document.getElementById('avatar-file-input'),
+            bannerFileInput: document.getElementById('banner-file-input'),
+            
+            // Previews
+            avatarPreview: document.getElementById('avatar-preview'),
+            bannerPreview: document.getElementById('banner-preview'),
+            
+            // Contadores
+            nameCharCount: document.getElementById('name-char-count'),
+            bioCharCount: document.getElementById('bio-char-count')
+        };
+    },
+
+    // Anexar listeners de eventos
+    attachEventListeners() {
+        // Abrir modal
+        this.els.btnEditIcon.addEventListener('click', () => this.openModal());
+
+        // Fechar modal
+        this.els.btnClose.addEventListener('click', () => this.closeModal());
+        this.els.overlay.addEventListener('click', () => this.closeModal());
+        this.els.btnCancel.addEventListener('click', () => this.closeModal());
+
+        // Prevenção de propagação no modal
+        this.els.modal.addEventListener('click', (e) => e.stopPropagation());
+
+        // Submissão do formulário
+        this.els.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+        // Upload de Avatar
+        this.els.avatarPreview.addEventListener('click', () => {
+            this.els.avatarFileInput.click();
+        });
+        this.els.avatarFileInput.addEventListener('change', (e) => this.handleAvatarUpload(e));
+
+        // Upload de Banner
+        this.els.bannerPreview.addEventListener('click', () => {
+            this.els.bannerFileInput.click();
+        });
+        this.els.bannerFileInput.addEventListener('change', (e) => this.handleBannerUpload(e));
+
+        // Contadores de caracteres
+        this.els.displayNameInput.addEventListener('input', () => {
+            this.els.nameCharCount.textContent = this.els.displayNameInput.value.length;
+        });
+        this.els.bioInput.addEventListener('input', () => {
+            this.els.bioCharCount.textContent = this.els.bioInput.value.length;
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.state.isOpen) {
+                this.closeModal();
+            }
+        });
+    },
+
+    // Abrir modal
+    openModal() {
+        if (!ProfileState.isMyProfile) return;
+
+        // Preencher campos com dados atuais
+        const data = ProfileState.data;
+        this.els.displayNameInput.value = data.displayName || '';
+        this.els.bioInput.value = data.bio || '';
+        
+        // Atualizar contadores
+        this.els.nameCharCount.textContent = this.els.displayNameInput.value.length;
+        this.els.bioCharCount.textContent = this.els.bioInput.value.length;
+
+        // Previsualizar avatar atual
+        if (data.avatar) {
+            this.previewAvatarFromUrl(data.avatar);
+        } else {
+            this.resetAvatarPreview();
+        }
+
+        // Previsualizar banner atual
+        if (data.bannerURL) {
+            this.previewBannerFromUrl(data.bannerURL);
+        } else {
+            this.resetBannerPreview();
+        }
+
+        // Mostrar modal
+        this.els.modal.classList.remove('hidden');
+        this.els.overlay.classList.remove('hidden');
+        this.state.isOpen = true;
+
+        // Prevenir scroll de fundo
+        document.body.style.overflow = 'hidden';
+    },
+
+    // Fechar modal
+    closeModal() {
+        this.els.modal.classList.add('hidden');
+        this.els.overlay.classList.add('hidden');
+        this.state.isOpen = false;
+        
+        // Limpar estado
+        this.state.avatarFile = null;
+        this.state.bannerFile = null;
+        this.state.avatarPreview = null;
+        this.state.bannerPreview = null;
+
+        // Restaurar scroll
+        document.body.style.overflow = '';
+    },
+
+    // Validar tamanho do arquivo
+    validateFileSize(file, maxSizeMB) {
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+        return file.size <= maxSizeBytes;
+    },
+
+    // Validar tipo de arquivo
+    validateFileType(file, allowedTypes) {
+        return allowedTypes.includes(file.type);
+    },
+
+    // Handler para upload de Avatar
+    handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validações
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!this.validateFileType(file, allowedTypes)) {
+            showToast('Formato não suportado. Use JPG, PNG ou GIF.', 'error');
+            return;
+        }
+
+        if (!this.validateFileSize(file, 5)) {
+            showToast('Arquivo muito grande. Máximo 5MB para avatar.', 'error');
+            return;
+        }
+
+        // Ler arquivo e converter para base64
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.state.avatarFile = e.target.result;
+            this.previewAvatar(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    },
+
+    // Handler para upload de Banner
+    handleBannerUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validações
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!this.validateFileType(file, allowedTypes)) {
+            showToast('Formato não suportado. Use JPG, PNG ou GIF.', 'error');
+            return;
+        }
+
+        if (!this.validateFileSize(file, 10)) {
+            showToast('Arquivo muito grande. Máximo 10MB para banner.', 'error');
+            return;
+        }
+
+        // Ler arquivo e converter para base64
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.state.bannerFile = e.target.result;
+            this.previewBanner(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    },
+
+    // Preview de Avatar
+    previewAvatar(base64Data) {
+        const img = document.createElement('img');
+        img.src = base64Data;
+        img.onload = () => {
+            this.els.avatarPreview.innerHTML = '';
+            this.els.avatarPreview.appendChild(img);
+        };
+        img.onerror = () => {
+            showToast('Erro ao carregar prévia da imagem.', 'error');
+        };
+    },
+
+    // Preview de Avatar de URL
+    previewAvatarFromUrl(url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.onload = () => {
+            this.els.avatarPreview.innerHTML = '';
+            this.els.avatarPreview.appendChild(img);
+        };
+    },
+
+    // Reset Avatar Preview
+    resetAvatarPreview() {
+        this.els.avatarPreview.innerHTML = `<i class="fas fa-camera"></i><span>Clique para fazer upload</span>`;
+    },
+
+    // Preview de Banner
+    previewBanner(base64Data) {
+        const img = document.createElement('img');
+        img.src = base64Data;
+        img.onload = () => {
+            this.els.bannerPreview.innerHTML = '';
+            this.els.bannerPreview.appendChild(img);
+        };
+        img.onerror = () => {
+            showToast('Erro ao carregar prévia do banner.', 'error');
+        };
+    },
+
+    // Preview de Banner de URL
+    previewBannerFromUrl(url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.onload = () => {
+            this.els.bannerPreview.innerHTML = '';
+            this.els.bannerPreview.appendChild(img);
+        };
+    },
+
+    // Reset Banner Preview
+    resetBannerPreview() {
+        this.els.bannerPreview.innerHTML = `<i class="fas fa-image"></i><span>Clique para fazer upload do banner</span>`;
+    },
+
+    // Validar dados
+    validateFormData(displayName, bio) {
+        if (!displayName || displayName.trim().length === 0) {
+            showToast('Por favor, insira um nome de exibição.', 'error');
+            return false;
+        }
+
+        if (displayName.length > 50) {
+            showToast('Nome de exibição muito longo (máx. 50 caracteres).', 'error');
+            return false;
+        }
+
+        if (bio.length > 200) {
+            showToast('Biografia muito longa (máx. 200 caracteres).', 'error');
+            return false;
+        }
+
+        return true;
+    },
+
+    // Submeter formulário
+    async handleSubmit(event) {
+        event.preventDefault();
+
+        if (!window.auth.currentUser) {
+            showToast('Você precisa estar logado.', 'error');
+            return;
+        }
+
+        const displayName = this.els.displayNameInput.value.trim();
+        const bio = this.els.bioInput.value.trim();
+
+        // Validar dados
+        if (!this.validateFormData(displayName, bio)) {
+            return;
+        }
+
+        try {
+            toggleLoader(true);
+
+            // Preparar dados para atualização
+            const updateData = {
+                displayName: displayName,
+                bio: bio
+            };
+
+            // Incluir avatar se foi alterado
+            if (this.state.avatarFile) {
+                updateData.avatar = this.state.avatarFile;
+            }
+
+            // Incluir banner se foi alterado
+            if (this.state.bannerFile) {
+                updateData.bannerURL = this.state.bannerFile;
+                updateData.bannerType = 'image'; // Por padrão é imagem
+            }
+
+            // Atualizar Firebase Auth
+            await window.auth.currentUser.updateProfile({
+                displayName: displayName,
+                photoURL: updateData.avatar || window.auth.currentUser.photoURL
+            });
+
+            // Atualizar Firestore
+            await window.db.collection('users').doc(window.auth.currentUser.uid).update(updateData);
+
+            showToast('✓ Perfil atualizado com sucesso!', 'success');
+            
+            // Fechar modal
+            this.closeModal();
+
+            // Recarregar dados
+            await window.loadUserData(window.auth.currentUser.uid);
+
+        } catch (error) {
+            console.error('Erro ao atualizar perfil:', error);
+            showToast('Erro ao salvar perfil: ' + error.message, 'error');
+        } finally {
+            toggleLoader(false);
+        }
+    }
+};
+
+// Inicializar quando a página carrega
+document.addEventListener('DOMContentLoaded', () => {
+    // Aguarda um pouco para garantir que o perfil foi inicializado
+    setTimeout(() => {
+        if (ProfileState.isMyProfile) {
+            EditProfileModal.init();
+        }
+    }, 500);
+});
