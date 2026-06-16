@@ -124,26 +124,30 @@ function renderBanner(data) {
 }
 
 function setupMyProfileUI(data) {
-    el.btnEdit.style.display = 'none'; // Esconder botão antigo
+    // Mostrar ícone de edição (novo sistema)
     const editIcon = document.getElementById('btn-edit-profile-icon');
     if (editIcon) editIcon.classList.remove('hidden'); // Mostrar ícone novo
-    el.btnAddFriend.style.display = 'none';
-    el.sectionReq.style.display = 'block';
-    el.addByIdBox.style.display = 'flex';
-
-    // Preencher formulário
-    const form = el.editForm;
-    if (form.style.display !== 'flex') form.style.display = 'none';
     
-    document.getElementById('edit-display-name').value = data.displayName || '';
-    document.getElementById('edit-bio').value = data.bio || '';
-    document.getElementById('edit-avatar-url').value = data.avatar || '';
-    document.getElementById('edit-banner-url').value = data.bannerURL || '';
-    document.getElementById('edit-banner-type').value = data.bannerType || 'image';
+    // Ocultar elementos antigos (se existirem)
+    if (el.btnEdit) el.btnEdit.style.display = 'none'; 
+    if (el.btnAddFriend) el.btnAddFriend.style.display = 'none';
+    if (el.sectionReq) el.sectionReq.style.display = 'block';
+    if (el.addByIdBox) el.addByIdBox.style.display = 'flex';
 
-    el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
-    el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
-    form.onsubmit = handleEditProfile;
+    // Preencher formulário antigo (se existir)
+    const form = el.editForm;
+    if (form && form.style.display !== 'flex') form.style.display = 'none';
+    
+    if (document.getElementById('edit-display-name')) document.getElementById('edit-display-name').value = data.displayName || '';
+    if (document.getElementById('edit-bio')) document.getElementById('edit-bio').value = data.bio || '';
+    if (document.getElementById('edit-avatar-url')) document.getElementById('edit-avatar-url').value = data.avatar || '';
+    if (document.getElementById('edit-banner-url')) document.getElementById('edit-banner-url').value = data.bannerURL || '';
+    if (document.getElementById('edit-banner-type')) document.getElementById('edit-banner-type').value = data.bannerType || 'image';
+
+    // Configurar handlers para botões antigos (se existirem)
+    if (el.btnEdit && form) el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
+    if (el.cancelEdit && form) el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
+    if (form) form.onsubmit = handleEditProfile;
 
     // Manipulador para o botão de adicionar por ID
     const toggleAddFriendBtn = document.getElementById('btn-toggle-add-friend');
