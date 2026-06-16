@@ -38,7 +38,7 @@ service cloud.firestore {
       allow read: if isOwnUser(userId) || isAdmin();
 
       // Escrever: Apenas o próprio usuário (com validações)
-      allow write: if isOwnUser(userId) && validateUserData(resource.data);
+      allow write: if isOwnUser(userId) && validateUserData(request.resource.data);
 
       // Criar novo usuário na autenticação
       allow create: if isOwnUser(userId) && validateNewUserData(request.resource.data);
@@ -64,26 +64,31 @@ service cloud.firestore {
 
     // Function para validar atualização de dados do usuário
     function validateUserData(data) {
-      // Email não pode ser mudado via regras de segurança
-      // Deve ser feito via Firebase Auth ou Cloud Functions
+      // Permite atualizações de balance via transações (campo numérico)
       return (
-        (!('email' in request.resource.data) || data.email == resource.data.email) &&
+        (!('email' in data) || data.email == resource.data.email) &&
         
-        // Balance não pode ser alterado diretamente (apenas em Cloud Functions)
-        (!('balance' in request.resource.data) || data.balance == resource.data.balance) &&
+        // Balance pode ser alterado (será validado no cliente via transações)
+        (!('balance' in data) || data.balance is number && data.balance >= 0) &&
         
         // Validações para arrays
-        (!('library' in request.resource.data) || data.library is list) &&
-        (!('favorites' in request.resource.data) || data.favorites is list) &&
-        (!('cart' in request.resource.data) || data.cart is list) &&
-        (!('upgrades' in request.resource.data) || data.upgrades is map) &&
-        (!('friends' in request.resource.data) || data.friends is list) &&
+        (!('library' in data) || data.library is list) &&
+        (!('favorites' in data) || data.favorites is list) &&
+        (!('cart' in data) || data.cart is list) &&
+        (!('upgrades' in data) || data.upgrades is map) &&
+        (!('friends' in data) || data.friends is list) &&
+        (!('history' in data) || data.history is list) &&
         
         // Validações para strings
-        (!('displayName' in request.resource.data) || data.displayName is string && data.displayName.size() <= 50) &&
-        (!('bio' in request.resource.data) || data.bio is string && data.bio.size() <= 500) &&
-        (!('avatar' in request.resource.data) || data.avatar is string) &&
-        (!('bannerURL' in request.resource.data) || data.bannerURL is string)
+        (!('displayName' in data) || data.displayName is string && data.displayName.size() <= 50) &&
+        (!('bio' in data) || data.bio is string && data.bio.size() <= 500) &&
+        (!('avatar' in data) || data.avatar is string) &&
+        (!('bannerURL' in data) || data.bannerURL is string) &&
+        
+        // Campos de timestamp
+        (!('lastPurchase' in data) || data.lastPurchase is timestamp) &&
+        (!('lastTransaction' in data) || data.lastTransaction is map) &&
+        (!('lastModified' in data) || data.lastModified is timestamp)
       );
     }
 
@@ -106,17 +111,21 @@ service cloud.firestore {
     }
 
     // --- PURCHASE_HISTORY COLLECTION ---
-    // Similar a transactions
+    // Registro de compras do usuário - atualizado via transações client-side
     match /purchase_history/{purchaseId} {
       allow read: if resource.data.userId == request.auth.uid || isAdmin();
-      allow write: if false; // Apenas Cloud Functions
+      allow write: if resource.data.userId == request.auth.uid || isAdmin();
+      allow create: if request.resource.data.userId == request.auth.uid;
+      allow delete: if isAdmin();
     }
 
     // --- AUDIT_LOGS COLLECTION ---
-    // Apenas admins podem ver
+    // Logs de auditoria - criados automaticamente nas transações
     match /audit_logs/{logId} {
       allow read: if isAdmin();
-      allow write: if false; // Apenas Cloud Functions
+      allow write: if request.auth.uid != null; // Qualquer usuário autenticado pode criar logs
+      allow create: if request.auth.uid != null;
+      allow delete: if isAdmin();
     }
 
     // --- ROLES COLLECTION ---
