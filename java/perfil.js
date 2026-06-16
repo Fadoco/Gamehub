@@ -113,6 +113,8 @@ async function renderProfile() {
 }
 
 function renderBanner(data) {
+    if (!el.banner) return; // Sair se elemento não existir
+    
     if (data.bannerURL) {
         el.banner.innerHTML = data.bannerType === 'video' 
             ? `<video class="profile-banner-media" src="${data.bannerURL}" autoplay loop muted></video>`
@@ -171,13 +173,18 @@ function setupMyProfileUI(data) {
 }
 
 function setupOtherProfileUI() {
-    el.btnEdit.style.display = 'none';
+    // Ocultar elementos antigos (se existirem)
+    if (el.btnEdit) el.btnEdit.style.display = 'none';
+    if (el.sectionReq) el.sectionReq.style.display = 'none';
+    if (el.addByIdBox) el.addByIdBox.style.display = 'none';
+    
+    // Esconder ícone de edição (não é o próprio perfil)
     const editIcon = document.getElementById('btn-edit-profile-icon');
-    if (editIcon) editIcon.classList.add('hidden'); // Esconder ícone novo (se existir)
-    el.sectionReq.style.display = 'none';
-    el.addByIdBox.style.display = 'none';
+    if (editIcon) editIcon.classList.add('hidden');
 
     const btn = el.btnAddFriend;
+    if (!btn) return; // Sair se botão não existir
+    
     btn.style.display = 'block';
     
     const uid = ProfileState.uid;
