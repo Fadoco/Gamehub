@@ -123,12 +123,29 @@ function renderBanner(data) {
         el.banner.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
         el.banner.innerHTML = '';
     }
+    
+    // Readicionar o botão de edição pois foi removido pelo innerHTML
+    if (!document.getElementById('btn-edit-profile-icon')) {
+        const newEditIcon = document.createElement('button');
+        newEditIcon.className = 'btn-edit-profile-icon hidden';
+        newEditIcon.id = 'btn-edit-profile-icon';
+        newEditIcon.title = 'Editar Perfil';
+        newEditIcon.type = 'button'; // Importante para não enviar forms
+        newEditIcon.innerHTML = '<i class="fas fa-pencil-alt"></i>';
+        el.banner.appendChild(newEditIcon);
+    }
 }
 
 function setupMyProfileUI(data) {
     // Mostrar ícone de edição (novo sistema)
     const editIcon = document.getElementById('btn-edit-profile-icon');
-    if (editIcon) editIcon.classList.remove('hidden'); // Mostrar ícone novo
+    console.log('setupMyProfileUI chamada, editIcon:', editIcon);
+    
+    if (editIcon) {
+        editIcon.classList.remove('hidden'); // Mostrar ícone novo
+        editIcon.style.display = 'flex'; // Força display flex
+        console.log('Botão de edição visível agora');
+    }
     
     // Inicializar o sistema de edição de perfil
     setTimeout(() => {
