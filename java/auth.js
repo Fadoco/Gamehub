@@ -530,24 +530,35 @@ window.toggleFavorite = async (event, gameId) => {
 // Função para Adicionar/Remover do Carrinho
 // Com validação de segurança e transações
 window.toggleCart = async (gameId) => {
-    if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
-        window.location.href = window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
-        return;
-    }
-
-    // Valida gameId
-    if (!window.Validators.gameId(gameId)) {
-        window.SecurityModule?.logger?.security('Tentativa de carrinho com game inválido', 'INVALID_GAME_ID', { gameId });
-        showToast("Jogo inválido.", "error");
-        return;
-    }
-
     try {
+        // Validação básica do gameId
+        if (!gameId || (typeof gameId !== 'number' && typeof gameId !== 'string')) {
+            showToast("Erro ao adicionar jogo ao carrinho.", "error");
+            return;
+        }
+
+        if (!auth.currentUser && !DESATIVAR_LOGIN_PARA_TESTE) {
+            window.location.href = window.location.pathname.includes('/html/') ? 'login.html' : 'html/login.html';
+            return;
+        }
+
+        // Verificação adicional com Validators se disponível
+        if (window.Validators && typeof window.Validators.gameId === 'function') {
+            if (!window.Validators.gameId(gameId)) {
+                window.SecurityModule?.logger?.security('Tentativa de carrinho com game inválido', 'INVALID_GAME_ID', { gameId });
+                showToast("Jogo inválido.", "error");
+                return;
+            }
+        }
+
         // Verifica se o jogo já está na biblioteca
-        if (window.userLibrary.includes(gameId)) {
+        if (window.userLibrary && window.userLibrary.includes(gameId)) {
             showToast("Você já possui este jogo!", "info");
             return;
         }
+
+        // Inicializa carrinho se não existir
+        if (!window.userCart) window.userCart = [];
 
         // Atualização local
         const index = window.userCart.indexOf(gameId);
@@ -577,7 +588,7 @@ window.toggleCart = async (gameId) => {
             setTimeout(() => window.renderCart(), 100);
         }
     } catch (error) {
-        console.error('[AUTH] Erro ao atualizar carrinho:', error);
+        console.error('Erro ao atualizar carrinho:', error);
         window.SecurityModule?.logger?.error('Erro ao atualizar carrinho:', error);
         showToast("Erro ao atualizar carrinho. Tente novamente.", "error");
     }
