@@ -438,6 +438,9 @@ async function fetchGamesData() {
         console.log("Conteúdo final de window.allGamesData (após normalização):", window.allGamesData); // Adicionado para depuração
 
         window.routePageRendering();
+        
+        // Dispara evento para notificar que os dados foram carregados
+        window.dispatchEvent(new CustomEvent('gamesDataLoaded', { detail: { games: window.allGamesData } }));
 
     } catch (error) {
         console.error("Erro ao carregar o catálogo de jogos:", error);
@@ -481,7 +484,11 @@ window.routePageRendering = function() {
     if (path.includes('lista-jogos.html') && typeof window.renderAllGamesList === 'function') return window.renderAllGamesList(window.allGamesData);
     
     // Renderizadores que não precisam de allGamesData ou o buscam internamente
-    if (path.includes('carrinho.html') && typeof window.renderCart === 'function') window.renderCart();
+    if (path.includes('carrinho.html')) {
+        if (typeof window.renderCart === 'function') {
+            window.renderCart();
+        }
+    }
     else if (path.includes('biblioteca.html') && typeof window.renderLibrary === 'function') window.renderLibrary();
     else if (path.includes('historico.html') && typeof window.renderHistory === 'function') window.renderHistory();
     else if (path.includes('perfil.html') && typeof window.renderProfile === 'function') window.renderProfile();

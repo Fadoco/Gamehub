@@ -7,10 +7,10 @@ function renderCart() {
     const summary = document.getElementById('cart-summary');
     const emptyMsg = document.getElementById('cart-empty');
     
-    if (!grid || !allGamesData || allGamesData.length === 0) return;
+    if (!grid || !window.allGamesData || window.allGamesData.length === 0) return;
 
     // Filtra garantindo que a comparação de ID ignore se é string ou número
-    const cartGames = allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));
+    const cartGames = window.allGamesData.filter(game => window.userCart.some(cartId => String(cartId) === String(game.id)));
 
     if (cartGames.length === 0) {
         grid.innerHTML = '';
@@ -46,7 +46,7 @@ function calculateTotal(cartGames) {
     if (!totalElement) return;
 
     const total = cartGames.reduce((acc, game) => {
-        const price = utils.parsePrice(game.currentPrice);
+        const price = window.utils.parsePrice(game.currentPrice);
         return acc + price;
     }, 0);
 
@@ -73,10 +73,18 @@ function initCart() {
     renderCart();
 }
 
+// Registra a função como renderizador da página
+window.addPageRenderer('carrinho.html', renderCart);
+
 // Executa na inicialização da página
 document.addEventListener('DOMContentLoaded', initCart);
 
-// Também tenta renderizar quando allGamesData é carregado
+// Também reage ao evento de dados carregados
+window.addEventListener('gamesDataLoaded', () => {
+    renderCart();
+});
+
+// Também tenta renderizar quando allGamesData é carregado (fallback)
 window.addEventListener('load', () => {
     setTimeout(renderCart, 100);
 });

@@ -87,11 +87,15 @@ window.updateUserBalance = async () => {
     const input = document.getElementById('new-balance-input');
     const value = parseFloat(input.value);
     
-    if (isNaN(value)) return showToast("Digite un valor válido", "error");
+    if (isNaN(value) || value < 0) return window.showToast("Digite um valor válido (número positivo).", "error");
 
-    await window.db.collection('users').doc(targetUid).update({ balance: value });
-    showToast("Saldo atualizado!", "success");
-    input.value = "";
+    try {
+        await window.db.collection('users').doc(targetUid).update({ balance: value });
+        window.showToast("Saldo atualizado com sucesso!", "success");
+        input.value = "";
+    } catch (error) {
+        window.showToast("Erro ao atualizar saldo: " + error.message, "error");
+    }
 };
 
 window.addGameToUser = async () => {
@@ -145,6 +149,12 @@ window.removeGameFromUser = async (gameId) => {
 
 // Iniciar sistema
 document.addEventListener('DOMContentLoaded', () => {
+    // Vincula o botão de atualizar saldo
+    const balanceBtn = document.querySelector('.admin-card button.admin-btn-primary');
+    if (balanceBtn) {
+        balanceBtn.onclick = window.updateUserBalance;
+    }
+    
     // Aguarda o auth carregar para validar se ainda é admin
     window.auth.onAuthStateChanged(user => {
         const admins = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
