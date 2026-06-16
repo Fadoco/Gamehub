@@ -125,7 +125,8 @@ function renderBanner(data) {
 
 function setupMyProfileUI(data) {
     el.btnEdit.style.display = 'none'; // Esconder botão antigo
-    document.getElementById('btn-edit-profile-icon').classList.remove('hidden'); // Mostrar ícone novo
+    const editIcon = document.getElementById('btn-edit-profile-icon');
+    if (editIcon) editIcon.classList.remove('hidden'); // Mostrar ícone novo
     el.btnAddFriend.style.display = 'none';
     el.sectionReq.style.display = 'block';
     el.addByIdBox.style.display = 'flex';
@@ -167,7 +168,8 @@ function setupMyProfileUI(data) {
 
 function setupOtherProfileUI() {
     el.btnEdit.style.display = 'none';
-    document.getElementById('btn-edit-profile-icon').classList.add('hidden'); // Esconder ícone novo
+    const editIcon = document.getElementById('btn-edit-profile-icon');
+    if (editIcon) editIcon.classList.add('hidden'); // Esconder ícone novo (se existir)
     el.sectionReq.style.display = 'none';
     el.addByIdBox.style.display = 'none';
 
@@ -319,16 +321,24 @@ const EditProfileModal = {
 
     // Inicializar o sistema
     init() {
-        this.cacheElements();
+        // Primeiro, tentar cachear os elementos
+        if (!this.cacheElements()) {
+            return; // Se falhar, não é o perfil do usuário
+        }
+        
         this.attachEventListeners();
     },
 
     // Cache de elementos do DOM
     cacheElements() {
+        // Verificar se os elementos existem antes de cachear
+        const btnEditIcon = document.getElementById('btn-edit-profile-icon');
+        if (!btnEditIcon) return false; // Modal não está disponível (não é o perfil do usuário)
+
         this.els = {
             modal: document.getElementById('edit-profile-modal'),
             overlay: document.getElementById('edit-profile-modal-overlay'),
-            btnEditIcon: document.getElementById('btn-edit-profile-icon'),
+            btnEditIcon: btnEditIcon,
             btnClose: document.getElementById('btn-close-edit-modal'),
             form: document.getElementById('edit-profile-form-new'),
             btnCancel: document.getElementById('btn-cancel-edit-profile'),
@@ -348,6 +358,8 @@ const EditProfileModal = {
             nameCharCount: document.getElementById('name-char-count'),
             bioCharCount: document.getElementById('bio-char-count')
         };
+        
+        return true; // Todos os elementos foram encontrados
     },
 
     // Anexar listeners de eventos
@@ -396,10 +408,12 @@ const EditProfileModal = {
 
     // Abrir modal
     openModal() {
-        if (!ProfileState.isMyProfile) return;
+        if (!ProfileState || !ProfileState.isMyProfile) return;
 
         // Preencher campos com dados atuais
         const data = ProfileState.data;
+        if (!data) return;
+        
         this.els.displayNameInput.value = data.displayName || '';
         this.els.bioInput.value = data.bio || '';
         
@@ -652,8 +666,9 @@ const EditProfileModal = {
 document.addEventListener('DOMContentLoaded', () => {
     // Aguarda um pouco para garantir que o perfil foi inicializado
     setTimeout(() => {
-        if (ProfileState.isMyProfile) {
+        // Verificar se ProfileState está pronto e se é o próprio perfil
+        if (ProfileState && ProfileState.isMyProfile && ProfileState.data) {
             EditProfileModal.init();
         }
-    }, 500);
+    }, 800); // Aumentado para 800ms para maior segurança
 });
