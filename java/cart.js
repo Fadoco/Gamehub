@@ -5,14 +5,7 @@
 function renderCart() {
     const wrapper = document.getElementById('cart-wrapper');
     
-    console.log('[CART] renderCart chamado', {
-        allGamesData: window.allGamesData?.length || 0,
-        userCart: window.userCart || [],
-        wrapper: !!wrapper
-    });
-    
     if (!wrapper || !window.allGamesData || window.allGamesData.length === 0) {
-        console.warn('[CART] Renderização abortada: dados não prontos');
         return;
     }
 
@@ -20,8 +13,6 @@ function renderCart() {
     const cartGames = window.allGamesData.filter(game => 
         window.userCart && window.userCart.some(cartId => String(cartId) === String(game.id))
     );
-
-    console.log('[CART] Jogos encontrados:', cartGames.length, cartGames.map(g => g.title));
 
     if (cartGames.length === 0) {
         wrapper.innerHTML = '<div style="text-align: center; padding: 60px 20px;"><i class="fas fa-shopping-cart" style="font-size: 48px; opacity: 0.3; margin-bottom: 20px; display: block;"></i><h2 style="opacity: 0.5;">Seu Carrinho esta vazio</h2><p style="opacity: 0.4; margin: 10px 0;">Comece a adicionar jogos</p></div>';
@@ -96,27 +87,19 @@ function renderCart() {
  * Inicializar o carrinho quando a página carrega
  */
 function initCart() {
-    console.log('[CART] initCart called');
-    
     if (!window.allGamesData || window.allGamesData.length === 0) {
-        console.log('[CART] Aguardando allGamesData...');
         setTimeout(initCart, 500);
         return;
     }
     
-    console.log('[CART] Renderizando carrinho');
     renderCart();
 }
 
 // Executa na inicializacao da pagina
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('[CART] DOMContentLoaded');
-    initCart();
-});
+document.addEventListener('DOMContentLoaded', initCart);
 
 // Tambem reage ao evento de dados carregados
 window.addEventListener('gamesDataLoaded', () => {
-    console.log('[CART] gamesDataLoaded');
     if (window.location.pathname.includes('carrinho')) {
         renderCart();
     }
@@ -125,7 +108,6 @@ window.addEventListener('gamesDataLoaded', () => {
 // Atualizacao quando auth muda
 if (window.auth) {
     window.auth.onAuthStateChanged(() => {
-        console.log('[CART] Auth changed');
         if (window.location.pathname.includes('carrinho')) {
             setTimeout(renderCart, 100);
         }
@@ -134,19 +116,5 @@ if (window.auth) {
 
 // Fallback no load
 window.addEventListener('load', () => {
-    console.log('[CART] Load event');
     setTimeout(renderCart, 300);
 });
-
-// Wrappear toggleCart para re-render quando muda
-if (window.toggleCart) {
-    const originalToggle = window.toggleCart;
-    window.toggleCart = async function(gameId) {
-        console.log('[CART] toggleCart called for', gameId);
-        const result = await originalToggle.call(this, gameId);
-        if (window.location.pathname.includes('carrinho')) {
-            setTimeout(renderCart, 100);
-        }
-        return result;
-    };
-}

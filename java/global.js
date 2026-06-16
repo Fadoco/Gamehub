@@ -463,8 +463,6 @@ window.refreshCurrentPageUI = function() {
 window.routePageRendering = function() {
     const path = window.location.pathname.toLowerCase();
     
-    console.log('[ROUTING] Renderizando para:', path);
-    
     // Encontra o renderizador para a página atual
     let activeRenderer = null;
     for (const file in window.pageRenderers) {
@@ -482,50 +480,39 @@ window.routePageRendering = function() {
 
     // Renderizadores padrão que sempre recebem allGamesData
     if (path.includes('jogo.html') && typeof window.renderGameDetails === 'function') {
-        console.log('[ROUTING] Chamando renderGameDetails');
         return window.renderGameDetails(window.allGamesData);
     }
     if (path.includes('busca.html') && typeof window.renderSearchResults === 'function') {
-        console.log('[ROUTING] Chamando renderSearchResults');
         return window.renderSearchResults(window.allGamesData);
     }
     if (path.includes('lista-jogos.html') && typeof window.renderAllGamesList === 'function') {
-        console.log('[ROUTING] Chamando renderAllGamesList');
         return window.renderAllGamesList(window.allGamesData);
     }
     
     // Renderizadores que não precisam de allGamesData ou o buscam internamente
     if (path.includes('carrinho.html')) {
-        console.log('[ROUTING] Carrinho detectado, renderizando');
         if (typeof window.renderCart === 'function') {
             window.renderCart();
         }
     }
     else if (path.includes('biblioteca.html') && typeof window.renderLibrary === 'function') {
-        console.log('[ROUTING] Biblioteca detectada');
         window.renderLibrary();
     }
     else if (path.includes('historico.html') && typeof window.renderHistory === 'function') {
-        console.log('[ROUTING] Historico detectado');
         window.renderHistory();
     }
     else if (path.includes('perfil.html') && typeof window.renderProfile === 'function') {
-        console.log('[ROUTING] Perfil detectado');
         window.renderProfile();
     }
     else if (path.includes('roleta.html') && typeof window.renderRoulette === 'function') {
-        console.log('[ROUTING] Roleta detectada');
         window.renderRoulette();
     }
     else if (path.includes('mercado-negro.html') && typeof window.renderMercadoNegro === 'function') {
-        console.log('[ROUTING] Mercado negro detectado');
         window.renderMercadoNegro();
     }
     else if (activeRenderer) {
-        console.log('[ROUTING] Chamando renderizador ativo');
         activeRenderer();
     } else if (typeof window.renderGames === 'function') {
-        console.log('[ROUTING] Chamando renderGames')
         window.renderGames(window.allGamesData);
     }
 };

@@ -559,13 +559,6 @@ window.toggleCart = async (gameId) => {
             showToast("Adicionado ao carrinho!", "success");
         }
 
-        console.log('[AUTH] Carrinho atualizado:', {
-            gameId,
-            action: index > -1 ? 'removed' : 'added',
-            cartSize: window.userCart.length,
-            cart: window.userCart
-        });
-
         // Persiste no banco se autenticado
         if (auth.currentUser && db) {
             await window.FirebaseTransactions.updateUserArray(
@@ -583,6 +576,10 @@ window.toggleCart = async (gameId) => {
         if (typeof window.renderCart === 'function' && window.location.pathname.includes('carrinho')) {
             setTimeout(() => window.renderCart(), 100);
         }
+    } catch (error) {
+        console.error('[AUTH] Erro ao atualizar carrinho:', error);
+        window.SecurityModule?.logger?.error('Erro ao atualizar carrinho:', error);
+        showToast("Erro ao atualizar carrinho. Tente novamente.", "error");
     }
 };
 

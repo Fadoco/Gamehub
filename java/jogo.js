@@ -35,12 +35,9 @@ function renderGameDetails(games) {
         // Configura o botão de compra/carrinho
         const buyBtn = document.querySelector('.buy-button');
         if (buyBtn) {
-            buyBtn.onclick = (e) => {
-                console.log('[JOGO] Botao clicado para gameId:', game.id);
-                if (window.toggleCart) {
+            buyBtn.onclick = () => {
+                if (typeof window.toggleCart === 'function') {
                     window.toggleCart(game.id);
-                } else {
-                    console.error('[JOGO] window.toggleCart nao disponivel');
                 }
             };
             
@@ -59,10 +56,6 @@ function renderGameDetails(games) {
                 buyBtn.style.background = "var(--accent)";
                 buyBtn.disabled = false;
             }
-            
-            console.log('[JOGO] Botao configurado:', { gameId: game.id, text: buyBtn.textContent });
-        } else {
-            console.warn('[JOGO] Botao .buy-button nao encontrado');
         }
 
         const platformsContainer = document.getElementById('game-platforms-detail');
