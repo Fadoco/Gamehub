@@ -130,6 +130,11 @@ function setupMyProfileUI(data) {
     const editIcon = document.getElementById('btn-edit-profile-icon');
     if (editIcon) editIcon.classList.remove('hidden'); // Mostrar ícone novo
     
+    // Inicializar o sistema de edição de perfil
+    setTimeout(() => {
+        EditProfileModal.init();
+    }, 100);
+    
     // Ocultar elementos antigos (se existirem)
     if (el.btnEdit) el.btnEdit.style.display = 'none'; 
     if (el.btnAddFriend) el.btnAddFriend.style.display = 'none';
@@ -676,13 +681,4 @@ const EditProfileModal = {
 // Inicializar quando a página carrega
 document.addEventListener('DOMContentLoaded', initProfilePage);
 
-// Inicializar o sistema de edição após o perfil estar pronto
-document.addEventListener('DOMContentLoaded', () => {
-    // Aguarda um pouco para garantir que o perfil foi inicializado
-    setTimeout(() => {
-        // Verificar se ProfileState está pronto e se é o próprio perfil
-        if (ProfileState && ProfileState.isMyProfile && ProfileState.data) {
-            EditProfileModal.init();
-        }
-    }, 800); // Aumentado para 800ms para maior segurança
-});
+// Nota: EditProfileModal.init() é chamado dentro de setupMyProfileUI() após remover a classe 'hidden' do botão
