@@ -35,12 +35,19 @@ function renderGameDetails(games) {
         // Configura o botão de compra/carrinho
         const buyBtn = document.querySelector('.buy-button');
         if (buyBtn) {
-            buyBtn.onclick = () => window.toggleCart(game.id);
+            buyBtn.onclick = (e) => {
+                console.log('[JOGO] Botao clicado para gameId:', game.id);
+                if (window.toggleCart) {
+                    window.toggleCart(game.id);
+                } else {
+                    console.error('[JOGO] window.toggleCart nao disponivel');
+                }
+            };
             
             // Muda o texto se já estiver no carrinho ou biblioteca
             if (window.userLibrary && window.userLibrary.includes(game.id)) {
                 buyBtn.textContent = "Na Biblioteca";
-                buyBtn.style.background = "#2a2a2a"; // Cinza escuro estilo Epic
+                buyBtn.style.background = "#2a2a2a";
                 buyBtn.style.cursor = "default";
                 buyBtn.disabled = true;
             } else if (window.userCart && window.userCart.includes(game.id)) {
@@ -52,6 +59,10 @@ function renderGameDetails(games) {
                 buyBtn.style.background = "var(--accent)";
                 buyBtn.disabled = false;
             }
+            
+            console.log('[JOGO] Botao configurado:', { gameId: game.id, text: buyBtn.textContent });
+        } else {
+            console.warn('[JOGO] Botao .buy-button nao encontrado');
         }
 
         const platformsContainer = document.getElementById('game-platforms-detail');

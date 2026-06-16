@@ -87,21 +87,10 @@
         <section class="store-section mt-10">
             <h1>Seu Carrinho</h1>
             <div class="cart-container" id="cart-wrapper">
-                <div class="game-grid" id="cart-grid">
-                    <!-- Itens do carrinho -->
+                <!-- Carrinho renderizado dinamicamente -->
+                <div style="text-align: center; padding: 40px 20px; opacity: 0.5;">
+                    <p>Carregando carrinho...</p>
                 </div>
-                
-                <div id="cart-summary" class="hidden">
-                    <div class="wallet-info">
-                        Seu saldo: <strong id="cart-wallet-balance">R$ 0,00</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>Total:</span> <span id="cart-total">R$ 0,00</span>
-                    </div>
-                    <button onclick="window.purchaseLibrary()" class="buy-button">Finalizar Compra</button>
-                </div>
-                
-                <p id="cart-empty" class="hidden">Seu carrinho está vazio.</p>
             </div>
         </section>
     </main>
