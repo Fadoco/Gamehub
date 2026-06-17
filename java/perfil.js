@@ -127,11 +127,11 @@ function renderBanner(data) {
     // Readicionar o botão de edição pois foi removido pelo innerHTML
     if (!document.getElementById('btn-edit-profile-icon')) {
         const newEditIcon = document.createElement('button');
-        newEditIcon.className = 'btn-edit-profile-icon hidden';
+        newEditIcon.className = 'btn-edit-profile-simple hidden';
         newEditIcon.id = 'btn-edit-profile-icon';
         newEditIcon.title = 'Editar Perfil';
-        newEditIcon.type = 'button'; // Importante para não enviar forms
-        newEditIcon.innerHTML = '<i class="fas fa-pencil-alt"></i>';
+        newEditIcon.type = 'button';
+        newEditIcon.textContent = 'Editar Perfil';
         el.banner.appendChild(newEditIcon);
     }
 }
@@ -139,12 +139,10 @@ function renderBanner(data) {
 function setupMyProfileUI(data) {
     // Mostrar ícone de edição (novo sistema)
     const editIcon = document.getElementById('btn-edit-profile-icon');
-    console.log('setupMyProfileUI chamada, editIcon:', editIcon);
     
     if (editIcon) {
-        editIcon.classList.remove('hidden'); // Mostrar ícone novo
-        editIcon.style.display = 'flex'; // Força display flex
-        console.log('Botão de edição visível agora');
+        editIcon.classList.remove('hidden'); // Mostrar botão novo
+        editIcon.style.display = 'block'; // Força display block
     }
     
     // Inicializar o sistema de edição de perfil

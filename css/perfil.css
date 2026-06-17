@@ -159,37 +159,36 @@
 
 /* ===== NOVO SISTEMA DE EDIÇÃO DE PERFIL ===== */
 
-/* Botão de Edição no Canto Superior Esquerdo */
-.btn-edit-profile-icon {
+/* Botão de Edição Simples (Texto) */
+.btn-edit-profile-simple {
     position: absolute;
     top: 20px;
     left: 20px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: rgba(43, 144, 255, 0.25);
+    padding: 10px 20px;
+    background: rgba(43, 144, 255, 0.3);
     border: 2px solid var(--accent);
-    color: var(--accent);
-    font-size: 18px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.3s ease;
     z-index: 25;
     box-shadow: 0 0 20px rgba(43, 144, 255, 0.2);
 }
 
-.btn-edit-profile-icon:hover {
+.btn-edit-profile-simple:hover {
     background: var(--accent);
     color: var(--bg-dark);
-    transform: scale(1.1) rotate(10deg);
+    transform: scale(1.05);
     box-shadow: 0 0 30px rgba(43, 144, 255, 0.4);
 }
 
-.btn-edit-profile-icon:active {
-    transform: scale(0.95);
+.btn-edit-profile-simple:active {
+    transform: scale(0.98);
 }
+
+/* Botão de Edição no Canto Superior Esquerdo (ANTIGO - remover depois) */
 
 /* Modal de Edição - Overlay */
 .edit-profile-modal-overlay {
