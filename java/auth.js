@@ -288,6 +288,11 @@ async function loadUserData(uid) {
             window.userFriends = data.friends || [];
             window.userFriendRequestsSent = data.friendRequestsSent || [];
             window.userFriendRequestsReceived = data.friendRequestsReceived || [];
+            
+            // Debug: Mostrar notificações carregadas
+            if (window.userFriendRequestsReceived && window.userFriendRequestsReceived.length > 0) {
+                console.log(`✅ ${window.userFriendRequestsReceived.length} notificações de amizade carregadas`);
+            }
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
             window.userUpgrades = {}; window.userBalance = 0.00; window.userHistory = [];
@@ -301,6 +306,34 @@ async function loadUserData(uid) {
 
 // Exporta para escopo global para que outros scripts possam chamar
 window.loadUserData = loadUserData;
+
+// Listener em tempo real para atualizações de amizade
+function setupFriendshipListener(uid) {
+    if (!uid || !window.db) return;
+    
+    window.db.collection('users').doc(uid).onSnapshot(
+        (doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                window.userFriendRequestsReceived = data.friendRequestsReceived || [];
+                window.userFriends = data.friends || [];
+                window.userFriendRequestsSent = data.friendRequestsSent || [];
+                
+                // Atualizar badge de notificações
+                if (window.updateNavBadges) window.updateNavBadges();
+                
+                if (window.userFriendRequestsReceived.length > 0) {
+                    console.log(`🔔 ${window.userFriendRequestsReceived.length} notificações recebidas`);
+                }
+            }
+        },
+        (error) => {
+            console.error("Erro ao ouvir amizades:", error);
+        }
+    );
+}
+
+window.setupFriendshipListener = setupFriendshipListener;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadAuthModules();
@@ -839,7 +872,16 @@ window.findUserByFriendshipId = async (friendId) => {
         .where('friendshipId', '==', parseInt(friendId))
         .limit(1)
         .get();
-    return snapshot.empty ? null : { uid: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+    
+    if (snapshot.empty) return null;
+    
+    const userData = snapshot.docs[0].data();
+    // Filtrar admins na busca por ID também
+    if (userData.role === 'admin' || userData.isAdmin === true) {
+        return null;
+    }
+    
+    return { uid: snapshot.docs[0].id, ...userData };
 };
 
 // Nova função: Buscar usuários pelo displayName (nick)
@@ -864,8 +906,8 @@ window.findUsersByDisplayName = async (searchTerm) => {
                 if (!user.displayName.toLowerCase().includes(term)) return false;
                 // Filtro 3: Não retornar o próprio usuário
                 if (user.uid === currentUid) return false;
-                // Filtro 4: Não retornar amigos já adicionados
-                if (window.userFriends && window.userFriends.includes(user.uid)) return false;
+                // Filtro 4: Não retornar admins
+                if (user.role === 'admin' || user.isAdmin === true) return false;
                 return true;
             })
             .slice(0, 10);
@@ -879,12 +921,20 @@ window.findUsersByDisplayName = async (searchTerm) => {
     }
 };
 
+// Cache para evitar rerenderings desnecessários
+let lastRenderNotifCount = -1;
+
 // Renderiza a lista de notificações (pedidos de amizade) no dropdown do sino
 window.renderNotifications = async () => {
     const list = document.getElementById('notif-list');
     if (!list) return;
 
     const uids = window.userFriendRequestsReceived || [];
+    
+    // Só rerender se a contagem mudar
+    if (lastRenderNotifCount === uids.length) return;
+    lastRenderNotifCount = uids.length;
+    
     if (uids.length === 0) {
         list.innerHTML = '<div class="empty-notif" style="padding: 15px; text-align: center; font-size: 13px; color: var(--text-secondary);">Nenhuma notificação nova.</div>';
         return;

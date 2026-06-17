@@ -203,7 +203,7 @@
 /* --- Sistema de Notificações --- */
 .notifications-wrapper { position: relative; display: flex; align-items: center; }
 .notification-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold; display: none; pointer-events: none; }
-.notifications-dropdown { position: absolute; top: calc(100% + 15px); right: 0; width: 300px; background: var(--bg-header); border: 1px solid var(--card-border); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; z-index: 1001; overflow: hidden; text-transform: none; animation: fadeIn 0.2s ease; }
+.notifications-dropdown { position: fixed; top: 70px; right: 20px; width: 300px; background: var(--bg-header); border: 1px solid var(--card-border); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; z-index: 2000; overflow: hidden; text-transform: none; animation: fadeIn 0.2s ease; }
 .notifications-header { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.02); }
 .notifications-list { max-height: 350px; overflow-y: auto; }
 .empty-notif { padding: 20px; text-align: center; color: #7f8c8d; font-size: 13px; }
