@@ -45,11 +45,16 @@ async function initProfilePage() {
     ProfileState.uid = params.get('uid') || window.auth.currentUser.uid;
     ProfileState.isMyProfile = ProfileState.uid === window.auth.currentUser.uid;
 
-    // Escuta mudanças em tempo real no perfil
+    // Escuta mudanças em tempo real no perfil (com debounce para evitar spam)
+    let renderTimeout;
     window.db.collection('users').doc(ProfileState.uid).onSnapshot(async (doc) => {
         if (doc.exists) {
             ProfileState.data = doc.data();
-            await renderProfile();
+            // Debounce para evitar rerenderings múltiplos muito rápido
+            clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(() => {
+                renderProfile();
+            }, 100);
         } else {
             document.querySelector('main.container').innerHTML = "<h2 style='text-align:center; margin-top: 50px;'>Perfil não encontrado.</h2>";
         }

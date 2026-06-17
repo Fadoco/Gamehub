@@ -733,20 +733,39 @@ window.sendFriendRequest = async (targetUid) => {
     if (!auth.currentUser) return showToast("Logue para adicionar amigos.", "info");
     const myUid = auth.currentUser.uid;
     if (myUid === targetUid) return showToast("Você não pode se adicionar.", "error");
-    if (window.userFriends.includes(targetUid)) return showToast("Já são amigos!", "info");
-    if (window.userFriendRequestsSent.includes(targetUid)) return showToast("Pedido já enviado.", "info");
+    if (window.userFriends && window.userFriends.includes(targetUid)) return showToast("Já são amigos!", "info");
+    if (window.userFriendRequestsSent && window.userFriendRequestsSent.includes(targetUid)) return showToast("Pedido já enviado.", "info");
 
     try {
-        await db.collection('users').doc(myUid).update({
-            friendRequestsSent: firebase.firestore.FieldValue.arrayUnion(targetUid)
+        // Usar transação para garantir consistência
+        await db.runTransaction(async (transaction) => {
+            const myDocRef = db.collection('users').doc(myUid);
+            const targetDocRef = db.collection('users').doc(targetUid);
+            
+            // Ler ambos os documentos primeiro
+            const myDoc = await transaction.get(myDocRef);
+            const targetDoc = await transaction.get(targetDocRef);
+            
+            if (!myDoc.exists || !targetDoc.exists) {
+                throw new Error("Um ou ambos os usuários não foram encontrados");
+            }
+            
+            // Atualizar ambos os documentos
+            transaction.update(myDocRef, {
+                friendRequestsSent: firebase.firestore.FieldValue.arrayUnion(targetUid)
+            });
+            transaction.update(targetDocRef, {
+                friendRequestsReceived: firebase.firestore.FieldValue.arrayUnion(myUid)
+            });
         });
-        await db.collection('users').doc(targetUid).update({
-            friendRequestsReceived: firebase.firestore.FieldValue.arrayUnion(myUid)
-        });
+        
         showToast("Pedido de amizade enviado!", "success");
+        window.userFriendRequestsSent = window.userFriendRequestsSent || [];
         window.userFriendRequestsSent.push(targetUid);
-        refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao enviar pedido.", "error"); }
+        console.log(`Pedido enviado de ${myUid} para ${targetUid}`);\n    } catch (error) { 
+        console.error('Erro ao enviar pedido:', error);
+        showToast("Erro ao enviar pedido: " + error.message, "error"); 
+    }
 };
 
 window.acceptFriendRequest = async (requesterUid) => {
@@ -827,21 +846,30 @@ window.findUsersByDisplayName = async (searchTerm) => {
     if (!searchTerm || searchTerm.trim().length === 0) return [];
     
     const term = searchTerm.toLowerCase().trim();
+    const currentUid = auth.currentUser?.uid;
     
     try {
-        // Busca direta: fetch todos os usuários e filtra localmente (mais confiável)
+        // Busca direta: fetch todos os usuários e filtra localmente
         const allUsersSnapshot = await db.collection('users').get();
         
         if (allUsersSnapshot.empty) return [];
         
         const results = allUsersSnapshot.docs
             .map(doc => ({ uid: doc.id, ...doc.data() }))
-            .filter(user => 
-                user.displayName && 
-                user.displayName.toLowerCase().includes(term)
-            )
+            .filter(user => {
+                // Filtro 1: Deve ter displayName
+                if (!user.displayName) return false;
+                // Filtro 2: Nome deve conter termo de busca
+                if (!user.displayName.toLowerCase().includes(term)) return false;
+                // Filtro 3: Não retornar o próprio usuário
+                if (user.uid === currentUid) return false;
+                // Filtro 4: Não retornar amigos já adicionados
+                if (window.userFriends && window.userFriends.includes(user.uid)) return false;
+                return true;
+            })
             .slice(0, 10);
         
+        console.log(`Busca por "${term}" retornou ${results.length} usuários`);
         return results;
     } catch (error) {
         console.error('Erro ao buscar usuários:', error);
