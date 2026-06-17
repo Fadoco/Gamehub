@@ -762,7 +762,8 @@ window.sendFriendRequest = async (targetUid) => {
         showToast("Pedido de amizade enviado!", "success");
         window.userFriendRequestsSent = window.userFriendRequestsSent || [];
         window.userFriendRequestsSent.push(targetUid);
-        console.log(`Pedido enviado de ${myUid} para ${targetUid}`);\n    } catch (error) { 
+        console.log(`Pedido enviado de ${myUid} para ${targetUid}`);
+    } catch (error) { 
         console.error('Erro ao enviar pedido:', error);
         showToast("Erro ao enviar pedido: " + error.message, "error"); 
     }
