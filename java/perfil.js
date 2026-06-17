@@ -686,3 +686,186 @@ const EditProfileModal = {
 document.addEventListener('DOMContentLoaded', initProfilePage);
 
 // Nota: EditProfileModal.init() é chamado dentro de setupMyProfileUI() após remover a classe 'hidden' do botão
+
+// ===== NOVO SISTEMA DE BUSCA DE AMIGOS =====
+
+// Estado da busca de amigos
+const FriendSearchState = {
+    currentMode: 'nick',
+    searchTimeout: null,
+    lastResults: []
+};
+
+// Alternar modo de busca (Nick ou ID)
+window.switchFriendSearchMode = (mode) => {
+    FriendSearchState.currentMode = mode;
+    
+    // Atualizar abas
+    document.getElementById('tab-search-nick').classList.toggle('active', mode === 'nick');
+    document.getElementById('tab-search-id').classList.toggle('active', mode === 'id');
+    
+    // Mostrar/Esconder modos
+    document.getElementById('mode-search-nick').classList.toggle('active', mode === 'nick');
+    document.getElementById('mode-search-id').classList.toggle('active', mode === 'id');
+    
+    // Limpar resultados anteriores
+    const resultsContainer = document.getElementById('friend-search-results');
+    if (resultsContainer) {
+        resultsContainer.classList.add('hidden');
+        resultsContainer.innerHTML = '';
+    }
+};
+
+// Debounce para evitar buscas excessivas
+function debounceSearch(func, delay = 300) {
+    return function(...args) {
+        clearTimeout(FriendSearchState.searchTimeout);
+        FriendSearchState.searchTimeout = setTimeout(() => func(...args), delay);
+    };
+}
+
+// Gerenciar input de busca por nick
+const handleFriendSearchInput = debounceSearch(async (event) => {
+    const searchTerm = event.target.value.trim();
+    const resultsContainer = document.getElementById('friend-search-results');
+    
+    if (!searchTerm || searchTerm.length < 2) {
+        resultsContainer.classList.add('hidden');
+        return;
+    }
+    
+    try {
+        resultsContainer.innerHTML = '<div class="friend-search-loading"><i class="fas fa-spinner fa-spin"></i> Procurando...</div>';
+        resultsContainer.classList.remove('hidden');
+        
+        // Buscar usuários pelo nome
+        const users = await window.findUsersByDisplayName(searchTerm);
+        
+        // Filtrar o usuário atual e amigos
+        const currentUid = window.auth.currentUser?.uid;
+        const filtered = users.filter(user => 
+            user.uid !== currentUid && 
+            !window.userFriends?.includes(user.uid)
+        );
+        
+        if (filtered.length === 0) {
+            resultsContainer.innerHTML = '<div class="friend-search-empty">Nenhum usuário encontrado</div>';
+            return;
+        }
+        
+        // Renderizar resultados
+        renderFriendSearchResults(filtered, resultsContainer);
+        FriendSearchState.lastResults = filtered;
+        
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+        resultsContainer.innerHTML = '<div class="friend-search-empty">Erro na busca. Tente novamente.</div>';
+    }
+});
+
+// Renderizar resultados de busca com cards visuais
+function renderFriendSearchResults(users, container) {
+    container.innerHTML = '';
+    
+    users.forEach(user => {
+        const card = document.createElement('div');
+        card.className = 'friend-search-result-card';
+        
+        // Gerar cor aleatória baseada no nick (consistente)
+        const bannerColor = generateColorFromString(user.displayName);
+        
+        // HTML do card
+        card.innerHTML = `
+            ${user.bannerURL ? `<img src="${user.bannerURL}" alt="Banner" class="friend-result-banner">` : `<div class="friend-result-banner-placeholder" style="background: linear-gradient(135deg, ${bannerColor}, ${adjustBrightness(bannerColor, -30)});"></div>`}
+            
+            <div class="friend-result-content">
+                <img 
+                    src="${user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName)}&background=2B90FF&color=fff`}" 
+                    alt="${user.displayName}" 
+                    class="friend-result-avatar"
+                >
+                
+                <div class="friend-result-info">
+                    <div class="friend-result-name">${user.displayName}</div>
+                    <div class="friend-result-id">#${user.friendshipId}</div>
+                </div>
+                
+                <button 
+                    class="friend-result-btn" 
+                    onclick="window.sendFriendRequestFromSearch('${user.uid}', this)"
+                >
+                    <i class="fas fa-user-plus"></i> Adicionar
+                </button>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+// Gerar cor consistente baseada em uma string
+function generateColorFromString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const hue = Math.abs(hash % 360);
+    const saturation = 70 + (Math.abs(hash) % 20);
+    const lightness = 50 + (Math.abs(hash) % 15);
+    
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+// Ajustar brilho de cor HSL
+function adjustBrightness(hsl, amount) {
+    const match = hsl.match(/\d+/g);
+    if (!match || match.length < 3) return hsl;
+    
+    const h = parseInt(match[0]);
+    const s = parseInt(match[1]);
+    let l = parseInt(match[2]);
+    l = Math.max(10, Math.min(90, l + amount));
+    
+    return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+// Enviar pedido de amizade a partir da busca
+window.sendFriendRequestFromSearch = async (targetUid, button) => {
+    try {
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        
+        await window.sendFriendRequest(targetUid);
+        
+        // Alterar botão para "Enviado"
+        button.innerHTML = '<i class="fas fa-check"></i> Enviado';
+        button.style.background = 'var(--text-secondary)';
+        
+    } catch (error) {
+        console.error('Erro ao enviar pedido:', error);
+        button.disabled = false;
+        button.innerHTML = '<i class="fas fa-exclamation"></i> Erro';
+        setTimeout(() => {
+            button.innerHTML = '<i class="fas fa-user-plus"></i> Adicionar';
+        }, 2000);
+    }
+};
+
+// Inicializar sistema de busca quando o perfil está pronto
+function setupFriendSearchSystem() {
+    const friendNickInput = document.getElementById('friend-nick-input');
+    
+    if (friendNickInput && ProfileState.isMyProfile) {
+        friendNickInput.addEventListener('input', handleFriendSearchInput);
+    }
+}
+
+// Chamar setup quando o perfil terminar de carregar
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (ProfileState && ProfileState.isMyProfile) {
+            setupFriendSearchSystem();
+        }
+    }, 600);
+});

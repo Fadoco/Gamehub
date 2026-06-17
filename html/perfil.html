@@ -258,12 +258,48 @@
 
             <div class="profile-section" id="friend-requests-section">
                 <h3>Solicitações de Amizade Pendentes</h3>
-                <button class="btn btn-secondary" id="btn-toggle-add-friend">Adicionar por ID</button>
-                <div id="add-by-id-container" class="hidden mb-5 gap-2.5 flex">
-                    <input type="text" id="friend-id-input" placeholder="ID do amigo" class="flex-1 p-2 rounded-sm border border-card-border bg-dark text-white">
-                    <button class="buy-button p-2.5" onclick="handleAddFriendById()">Adicionar</button>
+                
+                <!-- Sistema de Busca de Amigos -->
+                <div class="friend-search-container">
+                    <div class="friend-search-tabs">
+                        <button class="friend-search-tab active" id="tab-search-nick" onclick="window.switchFriendSearchMode('nick')">
+                            <i class="fas fa-user-circle"></i> Buscar por Nick
+                        </button>
+                        <button class="friend-search-tab" id="tab-search-id" onclick="window.switchFriendSearchMode('id')">
+                            <i class="fas fa-hashtag"></i> Buscar por ID
+                        </button>
+                    </div>
+
+                    <!-- Modo: Buscar por Nick -->
+                    <div id="mode-search-nick" class="friend-search-mode active">
+                        <div class="friend-search-input-wrapper">
+                            <i class="fas fa-search"></i>
+                            <input 
+                                type="text" 
+                                id="friend-nick-input" 
+                                placeholder="Digite o nick do usuário..." 
+                                class="friend-search-input"
+                            >
+                        </div>
+                        <div id="friend-search-results" class="friend-search-results hidden"></div>
+                    </div>
+
+                    <!-- Modo: Buscar por ID -->
+                    <div id="mode-search-id" class="friend-search-mode hidden">
+                        <div class="friend-search-input-wrapper">
+                            <i class="fas fa-hashtag"></i>
+                            <input 
+                                type="text" 
+                                id="friend-id-input" 
+                                placeholder="Digite o ID do amigo..." 
+                                class="friend-search-input"
+                            >
+                        </div>
+                        <button class="buy-button mt-3 w-full" onclick="handleAddFriendById()">Adicionar por ID</button>
+                    </div>
                 </div>
-                <div id="friend-requests-list" class="friend-requests-list"></div>
+
+                <div id="friend-requests-list" class="friend-requests-list" style="margin-top: 30px;"></div>
             </div>
         </div>
     </main>

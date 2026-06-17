@@ -822,6 +822,46 @@ window.findUserByFriendshipId = async (friendId) => {
     return snapshot.empty ? null : { uid: snapshot.docs[0].id, ...snapshot.docs[0].data() };
 };
 
+// Nova função: Buscar usuários pelo displayName (nick)
+window.findUsersByDisplayName = async (searchTerm) => {
+    if (!searchTerm || searchTerm.trim().length === 0) return [];
+    
+    const term = searchTerm.toLowerCase().trim();
+    
+    try {
+        // Busca usuários cujo displayName começa com o termo
+        const snapshot = await db.collection('users')
+            .orderBy('displayName')
+            .startAt(searchTerm)
+            .endAt(searchTerm + '\uf8ff')
+            .limit(10)
+            .get();
+        
+        if (snapshot.empty) return [];
+        
+        return snapshot.docs.map(doc => ({
+            uid: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+        // Fallback: buscar todos e filtrar localmente
+        try {
+            const allUsersSnapshot = await db.collection('users').limit(100).get();
+            return allUsersSnapshot.docs
+                .map(doc => ({ uid: doc.id, ...doc.data() }))
+                .filter(user => 
+                    user.displayName && 
+                    user.displayName.toLowerCase().includes(term)
+                )
+                .slice(0, 10);
+        } catch (err) {
+            console.error('Erro no fallback:', err);
+            return [];
+        }
+    }
+};
+
 // Renderiza a lista de notificações (pedidos de amizade) no dropdown do sino
 window.renderNotifications = async () => {
     const list = document.getElementById('notif-list');

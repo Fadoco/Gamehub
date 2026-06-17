@@ -498,6 +498,253 @@
     border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* ===== SISTEMA DE BUSCA DE AMIGOS ===== */
+
+.friend-search-container {
+    background: rgba(9, 17, 34, 0.4);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+/* Abas de Modo de Busca */
+.friend-search-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.friend-search-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+
+.friend-search-tab:hover {
+    color: var(--accent);
+}
+
+.friend-search-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* Modos de Busca */
+.friend-search-mode {
+    display: none;
+}
+
+.friend-search-mode.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Input de Busca */
+.friend-search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.friend-search-input-wrapper i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.friend-search-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.friend-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(43, 144, 255, 0.1);
+    box-shadow: 0 0 10px rgba(43, 144, 255, 0.2);
+}
+
+/* Resultados de Busca */
+.friend-search-results {
+    display: grid;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.friend-search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.friend-search-results::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.friend-search-results::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+.friend-search-results::-webkit-scrollbar-thumb:hover {
+    background: rgba(43, 144, 255, 0.8);
+}
+
+/* Card de Resultado da Busca */
+.friend-search-result-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--card-border);
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.friend-search-result-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(43, 144, 255, 0.2);
+}
+
+/* Background do Card (Banner) */
+.friend-result-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    filter: brightness(0.7);
+}
+
+.friend-result-banner-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Conteúdo do Card */
+.friend-result-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    width: 100%;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7));
+}
+
+/* Avatar do Resultado */
+.friend-result-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(43, 144, 255, 0.3);
+}
+
+/* Info do Resultado */
+.friend-result-info {
+    flex: 1;
+    text-align: left;
+    min-width: 0;
+}
+
+.friend-result-name {
+    font-weight: 700;
+    color: white;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.friend-result-id {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Botão de Adicionar no Card */
+.friend-result-btn {
+    padding: 6px 12px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: var(--bg-dark);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.friend-result-btn:hover {
+    background: #00bfff;
+    transform: scale(1.05);
+}
+
+.friend-result-btn:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Estados */
+.friend-search-results.hidden {
+    display: none;
+}
+
+.friend-search-empty {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.friend-search-loading {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .edit-profile-modal {
