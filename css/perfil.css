@@ -163,7 +163,7 @@
 .btn-edit-profile-simple {
     position: absolute;
     top: 20px;
-    left: 20px;
+    right: 20px;
     padding: 10px 20px;
     background: rgba(43, 144, 255, 0.3);
     border: 2px solid var(--accent);

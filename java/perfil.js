@@ -123,17 +123,6 @@ function renderBanner(data) {
         el.banner.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
         el.banner.innerHTML = '';
     }
-    
-    // Readicionar o botão de edição pois foi removido pelo innerHTML
-    if (!document.getElementById('btn-edit-profile-icon')) {
-        const newEditIcon = document.createElement('button');
-        newEditIcon.className = 'btn-edit-profile-simple hidden';
-        newEditIcon.id = 'btn-edit-profile-icon';
-        newEditIcon.title = 'Editar Perfil';
-        newEditIcon.type = 'button';
-        newEditIcon.textContent = 'Editar Perfil';
-        el.banner.appendChild(newEditIcon);
-    }
 }
 
 function setupMyProfileUI(data) {
