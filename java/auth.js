@@ -829,36 +829,24 @@ window.findUsersByDisplayName = async (searchTerm) => {
     const term = searchTerm.toLowerCase().trim();
     
     try {
-        // Busca usuários cujo displayName começa com o termo
-        const snapshot = await db.collection('users')
-            .orderBy('displayName')
-            .startAt(searchTerm)
-            .endAt(searchTerm + '\uf8ff')
-            .limit(10)
-            .get();
+        // Busca direta: fetch todos os usuários e filtra localmente (mais confiável)
+        const allUsersSnapshot = await db.collection('users').get();
         
-        if (snapshot.empty) return [];
+        if (allUsersSnapshot.empty) return [];
         
-        return snapshot.docs.map(doc => ({
-            uid: doc.id,
-            ...doc.data()
-        }));
+        const results = allUsersSnapshot.docs
+            .map(doc => ({ uid: doc.id, ...doc.data() }))
+            .filter(user => 
+                user.displayName && 
+                user.displayName.toLowerCase().includes(term)
+            )
+            .slice(0, 10);
+        
+        return results;
     } catch (error) {
         console.error('Erro ao buscar usuários:', error);
-        // Fallback: buscar todos e filtrar localmente
-        try {
-            const allUsersSnapshot = await db.collection('users').limit(100).get();
-            return allUsersSnapshot.docs
-                .map(doc => ({ uid: doc.id, ...doc.data() }))
-                .filter(user => 
-                    user.displayName && 
-                    user.displayName.toLowerCase().includes(term)
-                )
-                .slice(0, 10);
-        } catch (err) {
-            console.error('Erro no fallback:', err);
-            return [];
-        }
+        showToast('Erro ao buscar usuários. Tente novamente.', 'error');
+        return [];
     }
 };
 

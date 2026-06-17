@@ -138,6 +138,11 @@ function setupMyProfileUI(data) {
     setTimeout(() => {
         EditProfileModal.init();
     }, 100);
+
+    // Inicializar sistema de busca de amigos
+    setTimeout(() => {
+        setupFriendSearchSystem();
+    }, 150);
     
     // Ocultar elementos antigos (se existirem)
     if (el.btnEdit) el.btnEdit.style.display = 'none'; 
@@ -264,8 +269,13 @@ window.handleAddFriendById = async () => {
     const idInput = document.getElementById('friend-id-input');
     const friendId = parseInt(idInput.value);
 
-    if (!friendId) return showToast("Digite um ID válido.", "error");
-    if (friendId === ProfileState.data?.friendshipId) return showToast("Este é o seu próprio ID!", "info");
+    if (!friendId || isNaN(friendId)) {
+        return showToast("Digite um ID válido (apenas números).", "error");
+    }
+    
+    if (friendId === ProfileState.data?.friendshipId) {
+        return showToast("Este é o seu próprio ID!", "info");
+    }
 
     try {
         toggleLoader(true);
@@ -276,11 +286,12 @@ window.handleAddFriendById = async () => {
         } else {
             const targetUid = userFound.uid;
             await window.sendFriendRequest(targetUid);
-            idInput.value = ""; // Limpa o input após enviar o pedido
+            showToast("Pedido enviado com sucesso!", "success");
+            idInput.value = "";
         }
     } catch (error) {
         console.error("Erro ao buscar ID ou enviar pedido:", error);
-        showToast("Erro ao buscar ID ou enviar pedido.", "error");
+        showToast("Erro ao buscar. Tente novamente.", "error");
     } finally {
         toggleLoader(false);
     }
@@ -369,6 +380,8 @@ const EditProfileModal = {
             bioInput: document.getElementById('edit-bio-new'),
             avatarFileInput: document.getElementById('avatar-file-input'),
             bannerFileInput: document.getElementById('banner-file-input'),
+            avatarUrlInput: document.getElementById('avatar-url-input'),
+            bannerUrlInput: document.getElementById('banner-url-input'),
             
             // Previews
             avatarPreview: document.getElementById('avatar-preview'),
@@ -417,6 +430,16 @@ const EditProfileModal = {
         this.els.bioInput.addEventListener('input', () => {
             this.els.bioCharCount.textContent = this.els.bioInput.value.length;
         });
+
+        // Listeners para URLs
+        if (this.els.avatarUrlInput) {
+            this.els.avatarUrlInput.addEventListener('change', (e) => this.handleAvatarUrlInput(e));
+            this.els.avatarUrlInput.addEventListener('blur', (e) => this.handleAvatarUrlInput(e));
+        }
+        if (this.els.bannerUrlInput) {
+            this.els.bannerUrlInput.addEventListener('change', (e) => this.handleBannerUrlInput(e));
+            this.els.bannerUrlInput.addEventListener('blur', (e) => this.handleBannerUrlInput(e));
+        }
 
         // Fechar modal com ESC
         document.addEventListener('keydown', (e) => {
@@ -556,6 +579,53 @@ const EditProfileModal = {
         };
     },
 
+    // Handler para URL de Avatar
+    handleAvatarUrlInput(event) {
+        const url = event.target.value.trim();
+        if (url && this.isValidUrl(url)) {
+            const img = document.createElement('img');
+            img.src = url;
+            img.onload = () => {
+                this.els.avatarPreview.innerHTML = '';
+                this.els.avatarPreview.appendChild(img);
+                showToast('Avatar carregado com sucesso!', 'success');
+            };
+            img.onerror = () => {
+                showToast('Erro ao carregar a imagem. Verifique o link.', 'error');
+            };
+        }
+    },
+
+    // Handler para URL de Banner
+    handleBannerUrlInput(event) {
+        const url = event.target.value.trim();
+        if (url && this.isValidUrl(url)) {
+            const img = document.createElement('img');
+            img.src = url;
+            img.onload = () => {
+                this.els.bannerPreview.innerHTML = '';
+                this.els.bannerPreview.appendChild(img);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                showToast('Banner carregado com sucesso!', 'success');
+            };
+            img.onerror = () => {
+                showToast('Erro ao carregar o banner. Verifique o link.', 'error');
+            };
+        }
+    },
+
+    // Validar URL
+    isValidUrl(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    },
+
     // Preview de Avatar de URL
     previewAvatarFromUrl(url) {
         const img = document.createElement('img');
@@ -645,15 +715,20 @@ const EditProfileModal = {
                 bio: bio
             };
 
-            // Incluir avatar se foi alterado
+            // Incluir avatar: priorizar upload, depois URL
             if (this.state.avatarFile) {
                 updateData.avatar = this.state.avatarFile;
+            } else if (this.els.avatarUrlInput && this.els.avatarUrlInput.value.trim()) {
+                updateData.avatar = this.els.avatarUrlInput.value.trim();
             }
 
-            // Incluir banner se foi alterado
+            // Incluir banner: priorizar upload, depois URL
             if (this.state.bannerFile) {
                 updateData.bannerURL = this.state.bannerFile;
-                updateData.bannerType = 'image'; // Por padrão é imagem
+                updateData.bannerType = 'image';
+            } else if (this.els.bannerUrlInput && this.els.bannerUrlInput.value.trim()) {
+                updateData.bannerURL = this.els.bannerUrlInput.value.trim();
+                updateData.bannerType = 'image';
             }
 
             // Atualizar Firebase Auth
@@ -860,12 +935,3 @@ function setupFriendSearchSystem() {
         friendNickInput.addEventListener('input', handleFriendSearchInput);
     }
 }
-
-// Chamar setup quando o perfil terminar de carregar
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (ProfileState && ProfileState.isMyProfile) {
-            setupFriendSearchSystem();
-        }
-    }, 600);
-});
