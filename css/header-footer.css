@@ -15,7 +15,7 @@
     padding: 15px 30px;
     background: rgba(24, 24, 28, 0.95);
     border-bottom: 1px solid var(--border);
-    z-index: 99;
+    z-index: 999;
     backdrop-filter: blur(12px);
 }
 
