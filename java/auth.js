@@ -350,6 +350,11 @@ function setupFriendshipListener(uid) {
                     }
                 }
                 
+                // Renderizar pedidos recebidos na página de perfil (se existir função)
+                if (window.renderRequests && currentCount > previousCount) {
+                    setTimeout(() => window.renderRequests(), 100);
+                }
+                
                 if (window.userFriendRequestsReceived.length > 0) {
                     console.log(`🔔 ${window.userFriendRequestsReceived.length} notificações recebidas`);
                 }
@@ -904,11 +909,6 @@ window.findUserByFriendshipId = async (friendId) => {
     if (snapshot.empty) return null;
     
     const userData = snapshot.docs[0].data();
-    // Filtrar admins na busca por ID também
-    if (userData.role === 'admin' || userData.isAdmin === true) {
-        return null;
-    }
-    
     return { uid: snapshot.docs[0].id, ...userData };
 };
 
@@ -918,6 +918,7 @@ window.findUsersByDisplayName = async (searchTerm) => {
     
     const term = searchTerm.toLowerCase().trim();
     const currentUid = auth.currentUser?.uid;
+    const adminEmails = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     
     try {
         // Busca direta: fetch todos os usuários e filtra localmente
@@ -934,8 +935,6 @@ window.findUsersByDisplayName = async (searchTerm) => {
                 if (!user.displayName.toLowerCase().includes(term)) return false;
                 // Filtro 3: Não retornar o próprio usuário
                 if (user.uid === currentUid) return false;
-                // Filtro 4: Não retornar admins
-                if (user.role === 'admin' || user.isAdmin === true) return false;
                 return true;
             })
             .slice(0, 10);
