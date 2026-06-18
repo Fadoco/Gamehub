@@ -201,12 +201,102 @@
 .roulette { background: var(--accent); padding: 8px 16px; color: white !important; font-weight: bold; border-radius: 999px; border: 1px solid rgba(78, 123, 255, 0.4); }
 
 /* --- Sistema de Notificações --- */
-.notifications-wrapper { position: relative; display: flex; align-items: center; z-index: 999999; }
-.notification-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold; display: none; pointer-events: none; }
-.notifications-dropdown { position: fixed; top: 70px; right: 20px; width: 300px; background: var(--bg-header); border: 1px solid var(--card-border); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; z-index: 9999999; overflow: hidden; text-transform: none; animation: fadeIn 0.2s ease; }
-.notifications-header { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.02); }
-.notifications-list { max-height: 350px; overflow-y: auto; }
-.empty-notif { padding: 20px; text-align: center; color: #7f8c8d; font-size: 13px; }
+.notifications-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.notifications-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px 12px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.notifications-button:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 50%;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.notif-badge.hidden {
+    display: none;
+}
+
+.notif-dropdown {
+    position: absolute;
+    top: 50px;
+    right: -150px;
+    width: 320px;
+    background: rgba(20, 20, 25, 0.98);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 10000;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+    backdrop-filter: blur(12px);
+}
+
+.notif-dropdown.active {
+    display: block;
+}
+
+.notif-header {
+    padding: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.notif-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.notif-empty {
+    padding: 20px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 13px;
+}
+
+.notif-item {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.notif-item:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
 
 /* --- Rodapé (Footer) --- */
 .main-footer {

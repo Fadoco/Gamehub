@@ -149,16 +149,7 @@ window.updateNavBadges = () => {
         walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     }
  
-    // Atualiza o sino de notificações
-    const notifBadge = document.getElementById('notif-badge');
-    if (notifBadge) {
-        const count = (window.userFriendRequestsReceived || []).length;
-        notifBadge.textContent = count;
-        notifBadge.style.display = count > 0 ? 'block' : 'none';
-        
-        const dropdown = document.getElementById('notif-dropdown');
-        if (dropdown && dropdown.style.display === 'block') window.renderNotifications();
-    }
+    // Badge é gerenciado pelo notifications-manager.js
 };
 
 // Função para renderizar a UI do cabeçalho com base no estado de autenticação - Movida de auth.js
@@ -203,35 +194,7 @@ window.checkUserSession = (user) => {
                 userMenu.appendChild(adminBtn);
             }
 
-            // 2. Sininho (Notificações)
-            const notifWrapper = document.createElement('div');
-            notifWrapper.id = 'notif-wrapper';
-            notifWrapper.className = 'notifications-wrapper';
-            notifWrapper.innerHTML = `
-                <button id="btn-notifications" class="nav-button" style="font-size: 18px; color: #ffffff; background: none; border: none; cursor: pointer; position: relative;" title="Notificações">
-                    <i class="fas fa-bell"></i>
-                    <span id="notif-badge" class="notification-badge">0</span>
-                </button>
-                <div id="notif-dropdown" class="notifications-dropdown">
-                    <div class="notifications-header">Pedidos de Amizade</div>
-                    <div id="notif-list" class="notifications-list">
-                        <div class="empty-notif">Nenhuma notificação nova.</div>
-                    </div>
-                </div>
-            `;
-            userMenu.appendChild(notifWrapper);
-
-            const btnNotif = notifWrapper.querySelector('#btn-notifications');
-            const dropdown = notifWrapper.querySelector('#notif-dropdown');
-            btnNotif.onclick = (e) => {
-                e.stopPropagation(); 
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-                if (dropdown.style.display === 'block') window.renderNotifications();
-            };
-            document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
-            dropdown.onclick = (e) => e.stopPropagation();
-
-            // 3. Fotinha do Perfil (Avatar) com nome abaixo
+            // 2. Fotinha do Perfil (Avatar) com nome abaixo
             const userAvatarContainer = document.createElement('div');
             userAvatarContainer.className = 'user-profile-display';
             const displayName = window.utils.getUserFriendlyName(user);

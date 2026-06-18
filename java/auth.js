@@ -333,14 +333,18 @@ function setupFriendshipListener(uid) {
                 // Atualizar badge de notificações
                 const notifBadge = document.getElementById('notif-badge');
                 if (notifBadge) {
-                    notifBadge.textContent = currentCount;
-                    notifBadge.style.display = currentCount > 0 ? 'block' : 'none';
+                    if (currentCount > 0) {
+                        notifBadge.textContent = currentCount;
+                        notifBadge.classList.remove('hidden');
+                    } else {
+                        notifBadge.classList.add('hidden');
+                    }
                     
                     // Se chegou novo pedido, renderizar notificações se dropdown estiver aberto
                     if (currentCount > previousCount) {
                         const dropdown = document.getElementById('notif-dropdown');
-                        if (dropdown && dropdown.style.display === 'block') {
-                            window.renderNotifications();
+                        if (dropdown && dropdown.classList.contains('active')) {
+                            window.notificationsManager?.renderNotifications();
                         }
                         // Animar badge
                         notifBadge.style.animation = 'none';
