@@ -150,16 +150,22 @@ function setupMyProfileUI(data) {
         EditProfileModal.init();
     }, 100);
 
-    // Inicializar sistema de busca de amigos
-    setTimeout(() => {
-        setupFriendSearchSystem();
-    }, 150);
+    // Inicializar sistema de busca de amigos (APENAS NO MEU PERFIL)
+    if (ProfileState.isMyProfile) {
+        setTimeout(() => {
+            setupFriendSearchSystem();
+        }, 150);
+    }
     
     // Ocultar elementos antigos (se existirem)
     if (el.btnEdit) el.btnEdit.style.display = 'none'; 
     if (el.btnAddFriend) el.btnAddFriend.style.display = 'none';
     if (el.sectionReq) el.sectionReq.style.display = 'block';
     if (el.addByIdBox) el.addByIdBox.style.display = 'flex';
+    
+    // Mostrar o friend-search-container (sistema de busca de amigos)
+    const friendSearchContainer = document.querySelector('.friend-search-container');
+    if (friendSearchContainer) friendSearchContainer.style.display = 'block';
 
     // Preencher formulário antigo (se existir)
     const form = el.editForm;
@@ -202,6 +208,10 @@ function setupOtherProfileUI() {
     if (el.btnEdit) el.btnEdit.style.display = 'none';
     if (el.sectionReq) el.sectionReq.style.display = 'none';
     if (el.addByIdBox) el.addByIdBox.style.display = 'none';
+    
+    // Esconder sistema de busca de amigos (não é o próprio perfil)
+    const friendSearchContainer = document.querySelector('.friend-search-container');
+    if (friendSearchContainer) friendSearchContainer.style.display = 'none';
     
     // Esconder ícone de edição (não é o próprio perfil)
     const editIcon = document.getElementById('btn-edit-profile-icon');

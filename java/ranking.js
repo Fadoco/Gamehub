@@ -49,8 +49,6 @@ function initRanking() {
                             friendBtn = `<button class="nav-button" style="background: var(--secondary); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: default;" disabled>Pedido Enviado</button>`;
                         } else if (requestReceived) {
                             friendBtn = `<button class="buy-button" style="padding: 6px 12px; font-size: 12px;" onclick="event.stopPropagation(); window.acceptFriendRequest('${uid}')">Aceitar</button>`;
-                        } else {
-                            friendBtn = `<button class="buy-button" style="padding: 6px 12px; font-size: 12px;" onclick="event.stopPropagation(); window.sendFriendRequest('${uid}')">Adicionar</button>`;
                         }
                     }
 
