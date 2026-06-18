@@ -36,6 +36,7 @@
     <script src="../java/firebase-config.js"></script>
     <script src="../java/firestore-cache.js"></script>
     <script src="../java/theme-switcher.js"></script>
+    <script src="../java/notifications-manager.js" defer></script>
     <script src="../java/historico.js" defer></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/auth.js" defer></script>
@@ -51,6 +52,15 @@
                 <a href="carrinho.html">Carrinho</a>
             </nav>
         </div>
+        <div class="topbar__actions">
+            <!-- Botão de Notificações -->
+            <div class="notifications-container" id="notifications-container">
+                <button id="btn-notifications" class="notifications-button" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
     <header class="main-header">
@@ -64,6 +74,14 @@
             </button>
         </nav>
     </header>
+
+    <!-- Painel de Notificações (Overlay Fixo) -->
+    <div id="notif-dropdown" class="notif-dropdown">
+        <div class="notif-header">Pedidos de Amizade</div>
+        <div id="notif-list" class="notif-list">
+            <div class="notif-empty">Nenhuma notificação nova.</div>
+        </div>
+    </div>
 
     <main class="container">
         <h1>Meu Histórico de Compras</h1>
