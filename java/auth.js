@@ -376,8 +376,6 @@ function setupFriendshipListener(uid) {
 function setupPendingFriendRequestsListener(uid) {
     if (!uid || !window.db) return;
     
-    console.log(`[FriendRequests] Iniciando listener para pedidos pendentes de ${uid}`);
-    
     // Buscar pedidos pendentes onde este usuário é o receptor
     window.db.collection('friendRequests')
         .where('to', '==', uid)
@@ -393,8 +391,6 @@ function setupPendingFriendRequestsListener(uid) {
                 window.userFriendRequestsReceived = pendingRequests;
                 const currentCount = pendingRequests.length;
                 
-                console.log(`[FriendRequests] Pedidos pendentes: ${currentCount}`, pendingRequests);
-                
                 // Atualizar badge
                 const notifBadge = document.getElementById('notif-badge');
                 if (notifBadge) {
@@ -407,7 +403,6 @@ function setupPendingFriendRequestsListener(uid) {
                     
                     // Se chegou novo pedido, animar e renderizar
                     if (currentCount > previousCount) {
-                        console.log(`[FriendRequests] ✨ Novo pedido recebido!`);
                         
                         // Animar badge
                         notifBadge.style.animation = 'none';
@@ -440,8 +435,6 @@ window.setupPendingFriendRequestsListener = setupPendingFriendRequestsListener;
 function setupSentFriendRequestsListener(uid) {
     if (!uid || !window.db) return;
     
-    console.log(`[FriendRequests] Iniciando listener para pedidos ENVIADOS por ${uid}`);
-    
     // Buscar pedidos ENVIADOS por este usuário
     window.db.collection('friendRequests')
         .where('from', '==', uid)
@@ -454,7 +447,6 @@ function setupSentFriendRequestsListener(uid) {
                 });
                 
                 window.userFriendRequestsSent = sentRequests;
-                console.log(`[FriendRequests] Pedidos ENVIADOS: ${sentRequests.length}`, sentRequests);
             },
             (error) => {
                 console.error("[FriendRequests] Erro ao ouvir pedidos enviados:", error);
@@ -1033,17 +1025,11 @@ window.findUsersByDisplayName = async (searchTerm) => {
     const term = searchTerm.toLowerCase().trim();
     const currentUid = auth.currentUser?.uid;
     
-    console.log('[findUsersByDisplayName] Iniciando busca por:', term);
-    console.log('[findUsersByDisplayName] UID atual:', currentUid);
-    
     try {
         // Busca direta: fetch todos os usuários e filtra localmente
-        console.log('[findUsersByDisplayName] Buscando todos os usuários...');
         const allUsersSnapshot = await db.collection('users').get();
-        console.log('[findUsersByDisplayName] Total de usuários no Firestore:', allUsersSnapshot.size);
         
         if (allUsersSnapshot.empty) {
-            console.warn('[findUsersByDisplayName] Nenhum usuário encontrado no Firestore');
             return [];
         }
         
@@ -1057,18 +1043,15 @@ window.findUsersByDisplayName = async (searchTerm) => {
             .filter(user => {
                 // Deve ter algo para buscar (displayName OU email)
                 if (!user.searchName) {
-                    console.log('[findUsersByDisplayName] Usuário sem displayName/email ignorado:', user.uid);
                     return false;
                 }
                 
                 // Nome deve conter termo de busca
                 const matches = user.searchName.toLowerCase().includes(term);
-                console.log('[findUsersByDisplayName] Verificando', user.searchName, '- Match:', matches);
                 if (!matches) return false;
                 
                 // Não retornar o próprio usuário
                 if (user.uid === currentUid) {
-                    console.log('[findUsersByDisplayName] Ignorando próprio usuário');
                     return false;
                 }
                 
@@ -1076,7 +1059,6 @@ window.findUsersByDisplayName = async (searchTerm) => {
             })
             .slice(0, 10);
         
-        console.log('[findUsersByDisplayName] Resultados finais:', results.length, results);
         return results;
     } catch (error) {
         console.error('[findUsersByDisplayName] ERRO:', error);

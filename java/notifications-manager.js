@@ -128,25 +128,15 @@ class NotificationsManager {
             const avatar = user.avatar || `https://ui-avatars.com/api/?name=${displayName}&background=27ae60&color=fff`;
             
             return `
-                <div class="notif-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <img src="${avatar}" alt="${displayName}" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;">
-                    <div style="flex: 1; min-width: 0;">
-                        <div style="font-weight: 500; font-size: 13px;">${displayName}</div>
-                        <div style="font-size: 11px; color: #7f8c8d;">quer ser seu amigo</div>
+                <div class="notif-item">
+                    <img src="${avatar}" alt="${displayName}" class="notif-item-avatar">
+                    <div class="notif-item-content">
+                        <div class="notif-item-name">${displayName}</div>
+                        <div class="notif-item-text">quer ser seu amigo</div>
                     </div>
-                    <div style="display: flex; gap: 6px; flex-shrink: 0;">
-                        <button 
-                            class="btn btn-sm" 
-                            onclick="window.acceptFriendRequest('${uid}')" 
-                            style="padding: 4px 8px; font-size: 11px; background: #27ae60; border: none; color: white; border-radius: 4px; cursor: pointer;">
-                            ✓
-                        </button>
-                        <button 
-                            class="btn btn-ghost" 
-                            onclick="window.rejectFriendRequest('${uid}')" 
-                            style="padding: 4px 8px; font-size: 11px; background: #e74c3c; border: none; color: white; border-radius: 4px; cursor: pointer;">
-                            ✕
-                        </button>
+                    <div class="notif-item-actions">
+                        <button class="btn-accept" onclick="window.acceptFriendRequest('${uid}')">✓</button>
+                        <button class="btn-reject" onclick="window.rejectFriendRequest('${uid}')">✕</button>
                     </div>
                 </div>
             `;
