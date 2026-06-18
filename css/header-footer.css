@@ -243,7 +243,7 @@
 .notif-dropdown {
     position: absolute;
     top: 50px;
-    right: 0;
+    right: -150px;
     width: 320px;
     background: rgba(20, 20, 25, 0.98);
     border: 1px solid var(--border);
