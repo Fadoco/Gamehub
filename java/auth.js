@@ -307,6 +307,7 @@ async function loadUserData(uid) {
         }
         if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
+        window.setupFriendshipListener(uid); // Ativa listener em tempo real para novas notificações de amizade
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
@@ -321,12 +322,33 @@ function setupFriendshipListener(uid) {
         (doc) => {
             if (doc.exists) {
                 const data = doc.data();
+                const previousCount = (window.userFriendRequestsReceived || []).length;
+                
                 window.userFriendRequestsReceived = data.friendRequestsReceived || [];
                 window.userFriends = data.friends || [];
                 window.userFriendRequestsSent = data.friendRequestsSent || [];
                 
+                const currentCount = window.userFriendRequestsReceived.length;
+                
                 // Atualizar badge de notificações
-                if (window.updateNavBadges) window.updateNavBadges();
+                const notifBadge = document.getElementById('notif-badge');
+                if (notifBadge) {
+                    notifBadge.textContent = currentCount;
+                    notifBadge.style.display = currentCount > 0 ? 'block' : 'none';
+                    
+                    // Se chegou novo pedido, renderizar notificações se dropdown estiver aberto
+                    if (currentCount > previousCount) {
+                        const dropdown = document.getElementById('notif-dropdown');
+                        if (dropdown && dropdown.style.display === 'block') {
+                            window.renderNotifications();
+                        }
+                        // Animar badge
+                        notifBadge.style.animation = 'none';
+                        setTimeout(() => {
+                            notifBadge.style.animation = 'pulse 0.6s ease-in-out 2';
+                        }, 10);
+                    }
+                }
                 
                 if (window.userFriendRequestsReceived.length > 0) {
                     console.log(`🔔 ${window.userFriendRequestsReceived.length} notificações recebidas`);
