@@ -837,11 +837,10 @@ const handleFriendSearchInput = debounceSearch(async (event) => {
         // Buscar usuários pelo nome
         const users = await window.findUsersByDisplayName(searchTerm);
         
-        // Filtrar o usuário atual e amigos
+        // Filtrar apenas o usuário atual (não filtrar amigos)
         const currentUid = window.auth.currentUser?.uid;
         const filtered = users.filter(user => 
-            user.uid !== currentUid && 
-            !window.userFriends?.includes(user.uid)
+            user.uid !== currentUid
         );
         
         if (filtered.length === 0) {

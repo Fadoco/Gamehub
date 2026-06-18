@@ -934,7 +934,6 @@ window.findUsersByDisplayName = async (searchTerm) => {
     
     const term = searchTerm.toLowerCase().trim();
     const currentUid = auth.currentUser?.uid;
-    const adminEmails = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
     
     try {
         // Busca direta: fetch todos os usuários e filtra localmente
