@@ -85,28 +85,41 @@ const RegisterModule = (() => {
 
   function bindSignupForm(formSelector = '#signup-form') {
     const form = document.querySelector(formSelector);
-    if (!form) return null;
+    if (!form) {
+      console.warn('❌ Formulário de cadastro não encontrado:', formSelector);
+      return null;
+    }
+
+    console.log('✅ Formulário de cadastro encontrado e sendo vinculado:', formSelector);
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      console.log('📝 Formulário de cadastro submetido');
+      
       const name = form.querySelector('[name="name"], #signup-name')?.value || '';
       const email = form.querySelector('[name="email"], #signup-email')?.value || '';
       const password = form.querySelector('[name="password"], #signup-password')?.value || '';
 
+      console.log('Dados do formulário:', { name, email });
+
       try {
+        console.log('🔄 Criando usuário...');
         // Regista o usuário
         await signup(email, password, name);
 
+        console.log('✅ Usuário criado com sucesso!');
         if (typeof window.showToast === 'function') {
           window.showToast('Conta criada com sucesso! Redirecionando...', 'success');
         }
 
         // Redireciona após 1.5 segundos para a página de boas-vindas
         setTimeout(() => {
+          console.log('🔄 Redirecionando para welcome.html...');
           const welcomePath = window.utils?.getHtmlPath ? window.utils.getHtmlPath('welcome.html') : '../html/welcome.html';
           window.location.href = welcomePath;
         }, 1500);
       } catch (error) {
+        console.error('❌ Erro no cadastro:', error);
         if (typeof window.showToast === 'function') {
           window.showToast(error.message || 'Erro ao cadastrar usuário.', 'error');
         }
@@ -124,3 +137,4 @@ const RegisterModule = (() => {
 })();
 
 window.RegisterModule = RegisterModule;
+console.log('✅ RegisterModule carregado');

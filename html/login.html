@@ -123,11 +123,12 @@
         function toggleForms() {
             const login = document.getElementById('login-section');
             const signup = document.getElementById('signup-section');
-            if(login.style.display === 'none') {
-                login.style.display = 'block'; signup.style.display = 'none';
-            } else {
-                login.style.display = 'none'; signup.style.display = 'block';
-            }
+            
+            // Usar classList para gerenciar a classe hidden
+            login.classList.toggle('hidden');
+            signup.classList.toggle('hidden');
+            
+            console.log('Formulários alternados - Login hidden:', login.classList.contains('hidden'));
         }
 
         // Aguarda que os módulos sejam carregados e vincula os formulários
@@ -137,6 +138,8 @@
                 setTimeout(bindAuthForms, 100);
                 return;
             }
+
+            console.log('✅ Módulos encontrados, vinculando formulários...');
 
             // Vincular formulário de login usando o módulo
             window.LoginModule.bindLoginForm('#login-form');
