@@ -43,6 +43,7 @@
     <script src="../java/auth.js" defer></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/admin-user-detail.js" defer></script>
+    <script src="../java/notifications-manager.js" defer></script>
 </head>
 <body>
     <header class="topbar">
@@ -54,6 +55,19 @@
             </nav>
         </div>
         <div class="topbar__actions">
+            <!-- Botão de Notificações -->
+            <div class="notifications-container" id="notifications-container">
+                <button id="btn-notifications" class="notifications-button" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </button>
+                <div id="notif-dropdown" class="notif-dropdown">
+                    <div class="notif-header">Pedidos de Amizade</div>
+                    <div id="notif-list" class="notif-list">
+                        <div class="notif-empty">Nenhuma notificação nova.</div>
+                    </div>
+                </div>
+            </div>
             <div id="user-menu" class="flex items-center gap-3"></div>
         </div>
     </header>
