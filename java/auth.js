@@ -950,23 +950,30 @@ window.findUsersByDisplayName = async (searchTerm) => {
         }
         
         const results = allUsersSnapshot.docs
-            .map(doc => ({ uid: doc.id, ...doc.data() }))
+            .map(doc => {
+                const data = doc.data();
+                // Usar displayName ou email como fallback
+                const searchName = data.displayName || data.email || '';
+                return { uid: doc.id, searchName, ...data };
+            })
             .filter(user => {
-                // Filtro 1: Deve ter displayName
-                if (!user.displayName) {
-                    console.log('[findUsersByDisplayName] Usuário sem displayName ignorado:', user.uid);
+                // Deve ter algo para buscar (displayName OU email)
+                if (!user.searchName) {
+                    console.log('[findUsersByDisplayName] Usuário sem displayName/email ignorado:', user.uid);
                     return false;
                 }
-                // Filtro 2: Nome deve conter termo de busca
-                const matches = user.displayName.toLowerCase().includes(term);
-                console.log('[findUsersByDisplayName] Verificando', user.displayName, '- Match:', matches);
+                
+                // Nome deve conter termo de busca
+                const matches = user.searchName.toLowerCase().includes(term);
+                console.log('[findUsersByDisplayName] Verificando', user.searchName, '- Match:', matches);
                 if (!matches) return false;
                 
-                // Filtro 3: Não retornar o próprio usuário
+                // Não retornar o próprio usuário
                 if (user.uid === currentUid) {
                     console.log('[findUsersByDisplayName] Ignorando próprio usuário');
                     return false;
                 }
+                
                 return true;
             })
             .slice(0, 10);

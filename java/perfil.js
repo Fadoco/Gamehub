@@ -876,8 +876,11 @@ function renderFriendSearchResults(users, container) {
         const card = document.createElement('div');
         card.className = 'friend-search-result-card';
         
-        // Gerar cor aleatória baseada no nick (consistente)
-        const bannerColor = generateColorFromString(user.displayName);
+        // Usar displayName ou email como fallback
+        const displayName = user.displayName || user.email || user.uid;
+        
+        // Gerar cor aleatória baseada no nome (consistente)
+        const bannerColor = generateColorFromString(displayName);
         
         // HTML do card
         card.innerHTML = `
@@ -885,14 +888,14 @@ function renderFriendSearchResults(users, container) {
             
             <div class="friend-result-content">
                 <img 
-                    src="${user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName)}&background=2B90FF&color=fff`}" 
-                    alt="${user.displayName}" 
+                    src="${user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=2B90FF&color=fff`}" 
+                    alt="${displayName}" 
                     class="friend-result-avatar"
                 >
                 
                 <div class="friend-result-info">
-                    <div class="friend-result-name">${user.displayName}</div>
-                    <div class="friend-result-id">#${user.friendshipId}</div>
+                    <div class="friend-result-name">${displayName}</div>
+                    <div class="friend-result-id">#${user.friendshipId || 'N/A'}</div>
                 </div>
                 
                 <button 
