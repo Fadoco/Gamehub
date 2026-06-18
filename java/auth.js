@@ -308,6 +308,8 @@ async function loadUserData(uid) {
         if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
         window.setupFriendshipListener(uid); // Ativa listener em tempo real para novas notificações de amizade
+        window.setupPendingFriendRequestsListener(uid); // Ativa listener em tempo real para pedidos pendentes
+        window.setupSentFriendRequestsListener(uid); // Ativa listener em tempo real para pedidos enviados
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
 }
 
@@ -369,6 +371,98 @@ function setupFriendshipListener(uid) {
         }
     );
 }
+
+// Listener em tempo real para pedidos de amizade pendentes (coleção friendRequests)
+function setupPendingFriendRequestsListener(uid) {
+    if (!uid || !window.db) return;
+    
+    console.log(`[FriendRequests] Iniciando listener para pedidos pendentes de ${uid}`);
+    
+    // Buscar pedidos pendentes onde este usuário é o receptor
+    window.db.collection('friendRequests')
+        .where('to', '==', uid)
+        .where('status', '==', 'pending')
+        .onSnapshot(
+            (snapshot) => {
+                const pendingRequests = [];
+                snapshot.forEach((doc) => {
+                    pendingRequests.push(doc.data().from);
+                });
+                
+                const previousCount = (window.userFriendRequestsReceived || []).length;
+                window.userFriendRequestsReceived = pendingRequests;
+                const currentCount = pendingRequests.length;
+                
+                console.log(`[FriendRequests] Pedidos pendentes: ${currentCount}`, pendingRequests);
+                
+                // Atualizar badge
+                const notifBadge = document.getElementById('notif-badge');
+                if (notifBadge) {
+                    if (currentCount > 0) {
+                        notifBadge.textContent = currentCount;
+                        notifBadge.classList.remove('hidden');
+                    } else {
+                        notifBadge.classList.add('hidden');
+                    }
+                    
+                    // Se chegou novo pedido, animar e renderizar
+                    if (currentCount > previousCount) {
+                        console.log(`[FriendRequests] ✨ Novo pedido recebido!`);
+                        
+                        // Animar badge
+                        notifBadge.style.animation = 'none';
+                        setTimeout(() => {
+                            notifBadge.style.animation = 'pulse 0.6s ease-in-out 2';
+                        }, 10);
+                        
+                        // Renderizar notificações se dropdown estiver aberto
+                        const dropdown = document.getElementById('notif-dropdown');
+                        if (dropdown && dropdown.classList.contains('active')) {
+                            window.notificationsManager?.renderNotifications();
+                        }
+                    }
+                }
+                
+                // Renderizar pedidos na página de perfil
+                if (window.renderRequests && currentCount > previousCount) {
+                    setTimeout(() => window.renderRequests(), 100);
+                }
+            },
+            (error) => {
+                console.error("[FriendRequests] Erro ao ouvir pedidos pendentes:", error);
+            }
+        );
+}
+
+window.setupPendingFriendRequestsListener = setupPendingFriendRequestsListener;
+
+// Listener em tempo real para pedidos de amizade ENVIADOS
+function setupSentFriendRequestsListener(uid) {
+    if (!uid || !window.db) return;
+    
+    console.log(`[FriendRequests] Iniciando listener para pedidos ENVIADOS por ${uid}`);
+    
+    // Buscar pedidos ENVIADOS por este usuário
+    window.db.collection('friendRequests')
+        .where('from', '==', uid)
+        .where('status', '==', 'pending')
+        .onSnapshot(
+            (snapshot) => {
+                const sentRequests = [];
+                snapshot.forEach((doc) => {
+                    sentRequests.push(doc.data().to);
+                });
+                
+                window.userFriendRequestsSent = sentRequests;
+                console.log(`[FriendRequests] Pedidos ENVIADOS: ${sentRequests.length}`, sentRequests);
+            },
+            (error) => {
+                console.error("[FriendRequests] Erro ao ouvir pedidos enviados:", error);
+            }
+        );
+}
+
+window.setupSentFriendRequestsListener = setupSentFriendRequestsListener;
 
 window.setupFriendshipListener = setupFriendshipListener;
 
