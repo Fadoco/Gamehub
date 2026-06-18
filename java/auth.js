@@ -935,29 +935,46 @@ window.findUsersByDisplayName = async (searchTerm) => {
     const term = searchTerm.toLowerCase().trim();
     const currentUid = auth.currentUser?.uid;
     
+    console.log('[findUsersByDisplayName] Iniciando busca por:', term);
+    console.log('[findUsersByDisplayName] UID atual:', currentUid);
+    
     try {
         // Busca direta: fetch todos os usuários e filtra localmente
+        console.log('[findUsersByDisplayName] Buscando todos os usuários...');
         const allUsersSnapshot = await db.collection('users').get();
+        console.log('[findUsersByDisplayName] Total de usuários no Firestore:', allUsersSnapshot.size);
         
-        if (allUsersSnapshot.empty) return [];
+        if (allUsersSnapshot.empty) {
+            console.warn('[findUsersByDisplayName] Nenhum usuário encontrado no Firestore');
+            return [];
+        }
         
         const results = allUsersSnapshot.docs
             .map(doc => ({ uid: doc.id, ...doc.data() }))
             .filter(user => {
                 // Filtro 1: Deve ter displayName
-                if (!user.displayName) return false;
+                if (!user.displayName) {
+                    console.log('[findUsersByDisplayName] Usuário sem displayName ignorado:', user.uid);
+                    return false;
+                }
                 // Filtro 2: Nome deve conter termo de busca
-                if (!user.displayName.toLowerCase().includes(term)) return false;
+                const matches = user.displayName.toLowerCase().includes(term);
+                console.log('[findUsersByDisplayName] Verificando', user.displayName, '- Match:', matches);
+                if (!matches) return false;
+                
                 // Filtro 3: Não retornar o próprio usuário
-                if (user.uid === currentUid) return false;
+                if (user.uid === currentUid) {
+                    console.log('[findUsersByDisplayName] Ignorando próprio usuário');
+                    return false;
+                }
                 return true;
             })
             .slice(0, 10);
         
-        console.log(`Busca por "${term}" retornou ${results.length} usuários`);
+        console.log('[findUsersByDisplayName] Resultados finais:', results.length, results);
         return results;
     } catch (error) {
-        console.error('Erro ao buscar usuários:', error);
+        console.error('[findUsersByDisplayName] ERRO:', error);
         showToast('Erro ao buscar usuários. Tente novamente.', 'error');
         return [];
     }

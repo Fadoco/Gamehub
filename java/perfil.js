@@ -825,35 +825,45 @@ const handleFriendSearchInput = debounceSearch(async (event) => {
     const searchTerm = event.target.value.trim();
     const resultsContainer = document.getElementById('friend-search-results');
     
+    console.log(`[BUSCA] Termo digitado: "${searchTerm}"`);
+    
     if (!searchTerm || searchTerm.length < 2) {
+        console.log('[BUSCA] Termo muito curto, escondendo resultados');
         resultsContainer.classList.add('hidden');
         return;
     }
     
     try {
+        console.log('[BUSCA] Iniciando busca...');
         resultsContainer.innerHTML = '<div class="friend-search-loading"><i class="fas fa-spinner fa-spin"></i> Procurando...</div>';
         resultsContainer.classList.remove('hidden');
         
         // Buscar usuários pelo nome
+        console.log('[BUSCA] Chamando findUsersByDisplayName com termo:', searchTerm);
         const users = await window.findUsersByDisplayName(searchTerm);
+        console.log('[BUSCA] Usuários retornados:', users);
         
         // Filtrar apenas o usuário atual (não filtrar amigos)
         const currentUid = window.auth.currentUser?.uid;
+        console.log('[BUSCA] UID atual:', currentUid);
         const filtered = users.filter(user => 
             user.uid !== currentUid
         );
+        console.log('[BUSCA] Usuários após filtro:', filtered);
         
         if (filtered.length === 0) {
+            console.log('[BUSCA] Nenhum usuário encontrado');
             resultsContainer.innerHTML = '<div class="friend-search-empty">Nenhum usuário encontrado</div>';
             return;
         }
         
         // Renderizar resultados
+        console.log('[BUSCA] Renderizando', filtered.length, 'resultados');
         renderFriendSearchResults(filtered, resultsContainer);
         FriendSearchState.lastResults = filtered;
         
     } catch (error) {
-        console.error('Erro ao buscar usuários:', error);
+        console.error('[BUSCA] ERRO:', error);
         resultsContainer.innerHTML = '<div class="friend-search-empty">Erro na busca. Tente novamente.</div>';
     }
 });
