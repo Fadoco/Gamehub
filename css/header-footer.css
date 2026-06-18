@@ -119,7 +119,7 @@
     border: 1px solid var(--border);
     flex-wrap: wrap;
     position: relative;
-    z-index: 100;
+    z-index: 1;
 }
 
 .searchbar {
