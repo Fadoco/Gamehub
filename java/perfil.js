@@ -2,6 +2,12 @@
  * Lógica específica para a página de perfil do usuário.
  */
 
+// ===== PROTEÇÃO CONTRA CARREGAMENTO DUPLICADO =====
+if (typeof window.profileModuleLoaded !== 'undefined') {
+  console.warn('⚠️ perfil.js já foi carregado. Ignorando duplicata.');
+} else {
+  window.profileModuleLoaded = true;
+
 // Estado Global da Página
 const ProfileState = {
     uid: null,
@@ -940,3 +946,5 @@ function setupFriendSearchSystem() {
         friendNickInput.addEventListener('input', handleFriendSearchInput);
     }
 }
+
+} // Fim da proteção contra carregamento duplicado

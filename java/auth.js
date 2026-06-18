@@ -2,6 +2,12 @@
  * Lógica de autenticação e gerenciamento de sessão do usuário.
  */
 
+// ===== PROTEÇÃO CONTRA CARREGAMENTO DUPLICADO =====
+if (typeof window.authModuleLoaded !== 'undefined') {
+  console.warn('⚠️ auth.js já foi carregado. Ignorando duplicata.');
+} else {
+  window.authModuleLoaded = true;
+
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
 const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
 
@@ -920,6 +926,8 @@ window.findUsersByDisplayName = async (searchTerm) => {
         return [];
     }
 };
+
+} // Fim da proteção contra carregamento duplicado
 
 // Cache para evitar rerenderings desnecessários
 let lastRenderNotifCount = -1;

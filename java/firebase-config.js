@@ -11,6 +11,11 @@
 
 'use strict';
 
+// ===== PROTEÇÃO CONTRA CARREGAMENTO DUPLICADO =====
+if (typeof window.firebaseConfigLoaded !== 'undefined') {
+  console.warn('⚠️ firebase-config.js já foi carregado. Ignorando duplicata.');
+} else {
+  
 // Check if Firebase is available
 if (typeof firebase === 'undefined') {
   console.error('❌ Firebase SDK not loaded! Check if CDN scripts are included in HTML.');
@@ -21,6 +26,7 @@ if (typeof firebase === 'undefined') {
  * Replace with your actual Firebase project credentials
  * Get these values from Firebase Console: https://console.firebase.google.com/
  */
+window.firebaseConfigLoaded = true;
 const firebaseConfig = {
   apiKey: 'AIzaSyA7UzLE9eO-Zas3n5fgEv8sQmHOuclwg3Q',
   authDomain: 'gamehub-web-8c78c.firebaseapp.com',
@@ -292,3 +298,5 @@ window.onFirestoreCollectionChange = (collectionName, onSnapshot) => {
 };
 
 console.log('✅ Firebase Config loaded - All functions available');
+
+} // Fim da proteção contra carregamento duplicado
