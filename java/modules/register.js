@@ -98,8 +98,14 @@ const RegisterModule = (() => {
         await signup(email, password, name);
 
         if (typeof window.showToast === 'function') {
-          window.showToast('Conta criada com sucesso!', 'success');
+          window.showToast('Conta criada com sucesso! Redirecionando...', 'success');
         }
+
+        // Redireciona após 1.5 segundos para a página de boas-vindas
+        setTimeout(() => {
+          const welcomePath = window.utils?.getHtmlPath ? window.utils.getHtmlPath('welcome.html') : '../html/welcome.html';
+          window.location.href = welcomePath;
+        }, 1500);
       } catch (error) {
         if (typeof window.showToast === 'function') {
           window.showToast(error.message || 'Erro ao cadastrar usuário.', 'error');

@@ -130,66 +130,29 @@
             }
         }
 
-        // Controle para evitar duplicação
-        let formsBound = false;
-
-        // Função para vincular formulários
-        function bindForms() {
-            if (formsBound) return; // Previne duplicação
-            if (!window.LoginModule || !window.RegisterModule) return; // Aguarda módulos
-            
-            formsBound = true;
-
-            // Vincular formulário de login
-            const loginForm = document.getElementById('login-form');
-            if (loginForm) {
-                loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const email = document.getElementById('email')?.value || '';
-                    const password = document.getElementById('password')?.value || '';
-
-                    try {
-                        await window.LoginModule.login(email, password);
-                        // Sucesso - redirecionar para home
-                        window.location.href = '../index.html';
-                    } catch (error) {
-                        window.showToast(error.message || 'Erro ao fazer login.', 'error');
-                    }
-                });
+        // Aguarda que os módulos sejam carregados e vincula os formulários
+        function bindAuthForms() {
+            if (!window.LoginModule || !window.RegisterModule) {
+                // Se os módulos ainda não estão carregados, tenta novamente em 100ms
+                setTimeout(bindAuthForms, 100);
+                return;
             }
 
-            // Vincular formulário de cadastro
-            const signupForm = document.getElementById('signup-form');
-            if (signupForm) {
-                signupForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('signup-name')?.value || '';
-                    const email = document.getElementById('signup-email')?.value || '';
-                    const password = document.getElementById('signup-password')?.value || '';
+            // Vincular formulário de login usando o módulo
+            window.LoginModule.bindLoginForm('#login-form');
 
-                    try {
-                        await window.RegisterModule.signup(email, password, name);
-                        // Sucesso - redirecionar para welcome
-                        window.location.href = '../html/welcome.html';
-                    } catch (error) {
-                        window.showToast(error.message || 'Erro ao cadastrar.', 'error');
-                    }
-                });
-            }
+            // Vincular formulário de cadastro usando o módulo
+            window.RegisterModule.bindSignupForm('#signup-form');
+
+            console.log('✅ Formulários de autenticação vinculados com sucesso');
         }
 
-        // Tentar vincular assim que possível
+        // Inicia a vinculação assim que possível
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', bindForms);
+            document.addEventListener('DOMContentLoaded', bindAuthForms);
         } else {
-            bindForms();
+            bindAuthForms();
         }
-
-        // Também tentar quando os módulos forem carregados
-        const bindInterval = setInterval(() => {
-            bindForms();
-            if (formsBound) clearInterval(bindInterval);
-        }, 100);
     </script>
 </body>
 </html>

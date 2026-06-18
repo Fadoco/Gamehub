@@ -21,8 +21,14 @@ const LoginModule = (() => {
       try {
         await login(email, password);
         if (typeof window.showToast === 'function') {
-          window.showToast('Login realizado com sucesso!', 'success');
+          window.showToast('Login realizado com sucesso! Redirecionando...', 'success');
         }
+
+        // Redireciona após 1.5 segundos para a página inicial
+        setTimeout(() => {
+          const indexPath = window.utils?.getHtmlPath ? window.utils.getHtmlPath('index.html') : '../index.html';
+          window.location.href = indexPath;
+        }, 1500);
       } catch (error) {
         if (typeof window.showToast === 'function') {
           window.showToast(error.message || 'Erro ao fazer login.', 'error');
