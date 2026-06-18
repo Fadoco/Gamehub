@@ -11,22 +11,43 @@ class NotificationsManager {
         this.listContainer = document.getElementById('notif-list');
         this.userData = {}; // Cache de dados dos usuários
         
+        console.log('[NotificationsManager] Constructor - Elements found:', {
+            button: !!this.button,
+            dropdown: !!this.dropdown,
+            badge: !!this.badge,
+            listContainer: !!this.listContainer
+        });
+        
         this.init();
     }
 
     init() {
         if (!this.button || !this.dropdown) {
-            console.warn('Notification elements not found');
+            console.warn('[NotificationsManager] ERROR - Elements not found. Button:', !!this.button, 'Dropdown:', !!this.dropdown);
             return;
         }
 
+        console.log('[NotificationsManager] Init - Adding event listeners');
+
         // Event listeners
-        this.button.addEventListener('click', (e) => this.toggleDropdown(e));
-        this.dropdown.addEventListener('click', (e) => e.stopPropagation());
-        document.addEventListener('click', () => this.closeDropdown());
+        this.button.addEventListener('click', (e) => {
+            console.log('[NotificationsManager] Button clicked');
+            this.toggleDropdown(e);
+        });
+        
+        this.dropdown.addEventListener('click', (e) => {
+            console.log('[NotificationsManager] Dropdown clicked - stopping propagation');
+            e.stopPropagation();
+        });
+        
+        document.addEventListener('click', () => {
+            console.log('[NotificationsManager] Document clicked - closing dropdown');
+            this.closeDropdown();
+        });
 
         // Monitorar mudanças em userFriendRequestsReceived
         this.startWatching();
+        console.log('[NotificationsManager] Watching started');
     }
 
     startWatching() {
@@ -40,25 +61,33 @@ class NotificationsManager {
     }
 
     toggleDropdown(e) {
+        console.log('[NotificationsManager] toggleDropdown called', e);
         e.stopPropagation();
         if (this.dropdown.classList.contains('active')) {
+            console.log('[NotificationsManager] Closing dropdown');
             this.closeDropdown();
         } else {
+            console.log('[NotificationsManager] Opening dropdown');
             this.openDropdown();
         }
     }
 
     openDropdown() {
+        console.log('[NotificationsManager] openDropdown - adding active class');
         this.dropdown.classList.add('active');
+        console.log('[NotificationsManager] Dropdown classes:', this.dropdown.className);
         this.renderNotifications();
     }
 
     closeDropdown() {
+        console.log('[NotificationsManager] closeDropdown - removing active class');
         this.dropdown.classList.remove('active');
+        console.log('[NotificationsManager] Dropdown classes:', this.dropdown.className);
     }
 
     updateBadge() {
         const count = (window.userFriendRequestsReceived || []).length;
+        console.log('[NotificationsManager] updateBadge - count:', count);
         if (count > 0) {
             this.badge.textContent = count;
             this.badge.classList.remove('hidden');
@@ -69,8 +98,10 @@ class NotificationsManager {
 
     async renderNotifications() {
         const uids = window.userFriendRequestsReceived || [];
+        console.log('[NotificationsManager] renderNotifications - UIDs:', uids);
         
         if (uids.length === 0) {
+            console.log('[NotificationsManager] No notifications - showing empty message');
             this.listContainer.innerHTML = '<div class="notif-empty">Nenhuma notificação nova.</div>';
             return;
         }
@@ -126,15 +157,18 @@ class NotificationsManager {
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.notificationsManager = new NotificationsManager();
-});
+console.log('[NotificationsManager] Script loaded. Document readyState:', document.readyState);
 
-// Also try to initialize if document is already loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.notificationsManager = new NotificationsManager();
-    });
-} else {
+function initNotificationsManager() {
+    console.log('[NotificationsManager] Initializing...');
     window.notificationsManager = new NotificationsManager();
+    console.log('[NotificationsManager] Instance created:', !!window.notificationsManager);
+}
+
+if (document.readyState === 'loading') {
+    console.log('[NotificationsManager] Waiting for DOMContentLoaded');
+    document.addEventListener('DOMContentLoaded', initNotificationsManager);
+} else {
+    console.log('[NotificationsManager] DOM already loaded, initializing now');
+    initNotificationsManager();
 }
