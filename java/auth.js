@@ -803,26 +803,15 @@ window.sendFriendRequest = async (targetUid) => {
     if (window.userFriendRequestsSent && window.userFriendRequestsSent.includes(targetUid)) return showToast("Pedido já enviado.", "info");
 
     try {
-        // Usar transação para garantir consistência
-        await db.runTransaction(async (transaction) => {
-            const myDocRef = db.collection('users').doc(myUid);
-            const targetDocRef = db.collection('users').doc(targetUid);
-            
-            // Ler ambos os documentos primeiro
-            const myDoc = await transaction.get(myDocRef);
-            const targetDoc = await transaction.get(targetDocRef);
-            
-            if (!myDoc.exists || !targetDoc.exists) {
-                throw new Error("Um ou ambos os usuários não foram encontrados");
-            }
-            
-            // Atualizar ambos os documentos
-            transaction.update(myDocRef, {
-                friendRequestsSent: firebase.firestore.FieldValue.arrayUnion(targetUid)
-            });
-            transaction.update(targetDocRef, {
-                friendRequestsReceived: firebase.firestore.FieldValue.arrayUnion(myUid)
-            });
+        // Usar coleção centralizada para pedidos de amizade
+        const requestId = `${myUid}_${targetUid}`;
+        
+        await db.collection('friendRequests').doc(requestId).set({
+            from: myUid,
+            to: targetUid,
+            status: 'pending',
+            createdAt: firebase.firestore.Timestamp.now(),
+            updatedAt: firebase.firestore.Timestamp.now()
         });
         
         showToast("Pedido de amizade enviado!", "success");
@@ -840,25 +829,37 @@ window.acceptFriendRequest = async (requesterUid) => {
     try {
         toggleLoader(true);
         const myUid = auth.currentUser.uid;
-        const myRef = db.collection('users').doc(myUid);
-        const requesterRef = db.collection('users').doc(requesterUid);
+        const requestId = `${requesterUid}_${myUid}`;
 
-        await db.runTransaction(async (transaction) => {
-            transaction.update(myRef, {
-                friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid),
-                friends: firebase.firestore.FieldValue.arrayUnion(requesterUid)
-            });
-            transaction.update(requesterRef, {
-                friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid),
+        // Atualizar apenas a coleção friendRequests
+        await db.collection('friendRequests').doc(requestId).update({
+            status: 'accepted',
+            updatedAt: firebase.firestore.Timestamp.now()
+        });
+
+        // Atualizar documentos de usuário (apenas o próprio)
+        await db.collection('users').doc(myUid).update({
+            friends: firebase.firestore.FieldValue.arrayUnion(requesterUid)
+        });
+        
+        // Tentar atualizar requester se possível (pode falhar por permissões)
+        try {
+            await db.collection('users').doc(requesterUid).update({
                 friends: firebase.firestore.FieldValue.arrayUnion(myUid)
             });
-        });
+        } catch (e) {
+            console.warn('Não foi possível atualizar friends do solicitante:', e);
+        }
 
         showToast("Pedido aceito!", "success");
         window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        window.userFriends = window.userFriends || [];
         window.userFriends.push(requesterUid);
         refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao aceitar pedido.", "error"); }
+    } catch (error) { 
+        console.error('Erro ao aceitar pedido:', error);
+        showToast("Erro ao aceitar pedido.", "error"); 
+    }
     finally { toggleLoader(false); }
 };
 
@@ -866,16 +867,21 @@ window.rejectFriendRequest = async (requesterUid) => {
     if (!auth.currentUser) return;
     try {
         const myUid = auth.currentUser.uid;
-        await db.collection('users').doc(myUid).update({
-            friendRequestsReceived: firebase.firestore.FieldValue.arrayRemove(requesterUid)
+        const requestId = `${requesterUid}_${myUid}`;
+        
+        // Atualizar o documento de pedido para rejeitado
+        await db.collection('friendRequests').doc(requestId).update({
+            status: 'rejected',
+            updatedAt: firebase.firestore.Timestamp.now()
         });
-        await db.collection('users').doc(requesterUid).update({
-            friendRequestsSent: firebase.firestore.FieldValue.arrayRemove(myUid)
-        });
+        
         showToast("Pedido rejeitado.", "info");
         window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
         refreshCurrentPageUI();
-    } catch (error) { showToast("Erro ao rejeitar.", "error"); }
+    } catch (error) { 
+        console.error('Erro ao rejeitar:', error);
+        showToast("Erro ao rejeitar.", "error"); 
+    }
 };
 
 window.removeFriend = async (friendUid) => {
@@ -888,13 +894,23 @@ window.removeFriend = async (friendUid) => {
             await db.collection('users').doc(myUid).update({
                 friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
             });
-            await db.collection('users').doc(friendUid).update({
-                friends: firebase.firestore.FieldValue.arrayRemove(myUid)
-            });
+            
+            // Tentar atualizar amigo também (pode falhar por permissões)
+            try {
+                await db.collection('users').doc(friendUid).update({
+                    friends: firebase.firestore.FieldValue.arrayRemove(myUid)
+                });
+            } catch (e) {
+                console.warn('Não foi possível atualizar friends do outro usuário:', e);
+            }
+            
             showToast("Amigo removido.");
             window.userFriends = window.userFriends.filter(id => id !== friendUid);
             refreshCurrentPageUI();
-        } catch (error) { showToast("Erro ao remover.", "error"); }
+        } catch (error) { 
+            console.error('Erro ao remover amigo:', error);
+            showToast("Erro ao remover.", "error"); 
+        }
         finally { toggleLoader(false); }
     });
 };

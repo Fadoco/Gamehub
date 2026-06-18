@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email.lower() in ["fadoco12311@gmail.com", "gabrielmomo6759@gmail.com"];
+    }
+
+    function isOwnUser(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isValidEmail(email) {
+      return email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    function isValidBalance(balance) {
+      return balance is number && balance >= 0;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwnUser(userId) || isAdmin();
+      allow write: if isOwnUser(userId) && validateUserData(request.resource.data);
+      allow create: if isOwnUser(userId) && validateNewUserData(request.resource.data);
+      allow delete: if isOwnUser(userId) || isAdmin();
+    }
+
+    function validateNewUserData(data) {
+      return data.keys().hasAll(['email', 'balance']) &&
+             isValidEmail(data.email) &&
+             isValidBalance(data.balance) &&
+             data.balance == 0 &&
+             data.email is string &&
+             data.library is list &&
+             data.favorites is list &&
+             data.history is list;
+    }
+
+    function validateUserData(data) {
+      return (
+        (!('email' in data) || data.email == resource.data.email) &&
+        (!('balance' in data) || data.balance is number && data.balance >= 0) &&
+        (!('library' in data) || data.library is list) &&
+        (!('favorites' in data) || data.favorites is list) &&
+        (!('cart' in data) || data.cart is list) &&
+        (!('upgrades' in data) || data.upgrades is map) &&
+        (!('friends' in data) || data.friends is list) &&
+        (!('history' in data) || data.history is list) &&
+        (!('displayName' in data) || data.displayName is string && data.displayName.size() <= 50) &&
+        (!('bio' in data) || data.bio is string && data.bio.size() <= 500) &&
+        (!('avatar' in data) || data.avatar is string) &&
+        (!('bannerURL' in data) || data.bannerURL is string) &&
+        (!('lastPurchase' in data) || data.lastPurchase is timestamp) &&
+        (!('lastTransaction' in data) || data.lastTransaction is map) &&
+        (!('lastModified' in data) || data.lastModified is timestamp)
+      );
+    }
+
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if resource.data.userId == request.auth.uid || isAdmin();
+      allow write: if false;
+      allow create: if false;
+      allow delete: if false;
+    }
+
+    match /purchase_history/{purchaseId} {
+      allow read: if resource.data.userId == request.auth.uid || isAdmin();
+      allow write: if resource.data.userId == request.auth.uid || isAdmin();
+      allow create: if request.resource.data.userId == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow write: if request.auth.uid != null;
+      allow create: if request.auth.uid != null;
+      allow delete: if isAdmin();
+    }
+
+    match /roles/{userId} {
+      allow read: if isOwnUser(userId) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /friendRequests/{document=**} {
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.from || 
+        request.auth.uid == resource.data.to
+      ) || isAdmin();
+      
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.from;
+      
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.to;
+      
+      allow delete: if request.auth != null && (
+        request.auth.uid == resource.data.from || 
+        request.auth.uid == resource.data.to
+      ) || isAdmin();
+    }
+
+    match /friendships/{friendshipId} {
+      allow read: if resource.data.user1 == request.auth.uid || 
+                     resource.data.user2 == request.auth.uid ||
+                     isAdmin();
+      allow write: if false;
+    }
+
+    match /admins/{userId} {
+      allow read: if request.auth.uid == userId || isAdmin();
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
