@@ -1019,6 +1019,15 @@ function setupFriendSearchSystem() {
     }
 }
 
+// Função para exibir biblioteca desde o perfil (sem parâmetros)
+window.showUserLibraryFromProfile = async () => {
+    if (!ProfileState || !ProfileState.uid || !ProfileState.data) {
+        showToast("Erro ao carregar biblioteca.", "error");
+        return;
+    }
+    await window.showUserLibrary(ProfileState.uid, ProfileState.data);
+};
+
 // Função para exibir biblioteca/jogos de um usuário
 window.showUserLibrary = async (uid, userData) => {
     if (!uid || !userData) {

@@ -309,7 +309,9 @@ async function loadUserData(uid) {
         }
         if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
-        window.setupFriendshipListener(uid); // Ativa listener em tempo real para novas notificações de amizade
+        // ⚠️ DESABILITADO setupFriendshipListener - conflita com setupFriendshipsCollectionListener
+        // Mantém apenas listeners de PEDIDOS, não de amigos (amigos vêm de friendships)
+        // window.setupFriendshipListener(uid);
         window.setupPendingFriendRequestsListener(uid); // Ativa listener em tempo real para pedidos pendentes
         window.setupSentFriendRequestsListener(uid); // Ativa listener em tempo real para pedidos enviados
     } catch (e) { console.error("Erro ao carregar favoritos:", e); }
@@ -467,46 +469,41 @@ window.setupFriendshipListener = setupFriendshipListener;
 
 // Listener para mudanças em amizades através da coleção centralizada
 // IMPORTANTE: Este listener sincroniza amizades de FORMA BIDIRECIONAL
-// Se A aceita amizade com B, ambos veem um ao outro via documento em 'friendships'
 function setupFriendshipsCollectionListener(uid) {
     if (!uid || !window.db) return;
     
-    // Buscar amizades onde este usuário é user1
-    window.db.collection('friendships')
-        .where('user1', '==', uid)
-        .where('status', '==', 'active')
-        .onSnapshot((snapshot) => {
-            const friendsFromUser1 = snapshot.docs.map(doc => doc.data().user2);
-            // Mesclar com amigos já existentes (não sobrescrever)
-            const currentFriends = new Set(window.userFriends || []);
-            friendsFromUser1.forEach(f => currentFriends.add(f));
-            window.userFriends = Array.from(currentFriends);
-            
-            // Renderizar se função existir
-            if (typeof window.renderFriends === 'function') {
-                setTimeout(() => window.renderFriends(), 100);
-            }
-        }, (error) => {
-            console.warn('[Friendships] Erro ao ouvir amizades (user1):', error.message);
-        });
+    console.log('[Friendships] Iniciando listener de amizades para UID:', uid);
     
-    // Buscar amizades onde este usuário é user2
+    // Buscar amizades onde este usuário é user1 OU user2
     window.db.collection('friendships')
-        .where('user2', '==', uid)
         .where('status', '==', 'active')
         .onSnapshot((snapshot) => {
-            const friendsFromUser2 = snapshot.docs.map(doc => doc.data().user1);
-            // Mesclar com amigos já existentes (não sobrescrever)
-            const currentFriends = new Set(window.userFriends || []);
-            friendsFromUser2.forEach(f => currentFriends.add(f));
-            window.userFriends = Array.from(currentFriends);
+            const friendsSet = new Set();
+            
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                // Se este usuário é user1, adicionar user2
+                if (data.user1 === uid) {
+                    friendsSet.add(data.user2);
+                    console.log('[Friendships] Encontrado amigo como user1:', data.user2);
+                }
+                // Se este usuário é user2, adicionar user1
+                if (data.user2 === uid) {
+                    friendsSet.add(data.user1);
+                    console.log('[Friendships] Encontrado amigo como user2:', data.user1);
+                }
+            });
+            
+            // Atualizar lista global de amigos
+            window.userFriends = Array.from(friendsSet);
+            console.log('[Friendships] Lista final de amigos:', window.userFriends);
             
             // Renderizar se função existir
             if (typeof window.renderFriends === 'function') {
                 setTimeout(() => window.renderFriends(), 100);
             }
         }, (error) => {
-            console.warn('[Friendships] Erro ao ouvir amizades (user2):', error.message);
+            console.error('[Friendships] ERRO ao ouvir amizades:', error);
         });
 }
 
@@ -1060,28 +1057,28 @@ window.removeFriend = async (friendUid) => {
             // Criar ID simétrico da amizade
             const friendshipId = [myUid, friendUid].sort().join('_');
             
+            console.log('[Remove] Removendo amizade:', friendshipId);
+            
             // Remover da coleção centralizada de amizades
             try {
                 await db.collection('friendships').doc(friendshipId).delete();
+                console.log('[Remove] Amizade removida de friendships');
             } catch (e) {
-                console.warn('Aviso ao remover documento de amizade:', e.message);
-                // Não falha se não conseguir remover de friendships
+                console.warn('[Remove] Aviso ao remover documento de amizade:', e.message);
             }
             
-            // Atualizar próprio documento com valor local garantido
-            await db.collection('users').doc(myUid).update({
-                friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
-            });
-            
-            // Tentar atualizar documento do outro usuário também
+            // Atualizar próprio documento removendo do array de amigos
             try {
-                await db.collection('users').doc(friendUid).update({
-                    friends: firebase.firestore.FieldValue.arrayRemove(myUid)
+                await db.collection('users').doc(myUid).update({
+                    friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
                 });
+                console.log('[Remove] Removido de meu documento');
             } catch (e) {
-                console.warn('Aviso ao remover amizade do outro usuário:', e.message);
-                // Não é crítico se falhar - o usuário removeu por sua parte
+                console.warn('[Remove] Erro ao remover do meu documento:', e.message);
             }
+            
+            // Não tenta remover do outro usuário por segurança
+            // O listener sincronizará automaticamente quando a amizade for deletada
             
             showToast("Amigo removido com sucesso.", "success");
             window.userFriends = window.userFriends.filter(id => id !== friendUid);
