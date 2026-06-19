@@ -1021,8 +1021,37 @@ function setupFriendSearchSystem() {
 
 // Função para exibir biblioteca/jogos de um usuário
 window.showUserLibrary = async (uid, userData) => {
-    if (!uid || !userData || !userData.library || userData.library.length === 0) {
-        showToast("Este usuário não possui jogos em sua biblioteca.", "info");
+    if (!uid || !userData) {
+        showToast("Erro ao carregar biblioteca.", "error");
+        return;
+    }
+    
+    // Mostrar modal mesmo que esteja vazia
+    if (!userData.library || userData.library.length === 0) {
+        // Criar modal vazio com mensagem
+        let modal = document.getElementById('user-library-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'user-library-modal';
+            modal.className = 'modal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+            document.body.appendChild(modal);
+        }
+        
+        const userName = window.utils.getUserFriendlyName(userData);
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 500px; width: 90%; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 40px; text-align: center;">
+                <button onclick="document.getElementById('user-library-modal').style.display = 'none';" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">✕</button>
+                <h2 style="margin: 0 0 20px 0; font-size: 24px; color: var(--text-primary);">Biblioteca de ${userName}</h2>
+                <p style="color: var(--text-secondary); font-size: 16px; margin: 0;">Este usuário ainda não possui nenhum jogo em sua biblioteca.</p>
+            </div>
+        `;
+        modal.style.display = 'flex';
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
         return;
     }
 
