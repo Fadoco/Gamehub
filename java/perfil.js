@@ -32,6 +32,7 @@ function cacheElements() {
         statFriends: document.getElementById('stat-friends'),
         statBalance: document.getElementById('stat-balance'),
         sectionReq: document.getElementById('friend-requests-section'),
+        sectionFriends: document.getElementById('friends-section'),
         listReq: document.getElementById('friend-requests-list'),
         listFriends: document.getElementById('friends-list'),
         addByIdBox: document.getElementById('add-by-id-container'),
@@ -105,8 +106,11 @@ async function renderProfile() {
         }
     });
 
-    el.statGames.textContent = (data.library || []).length;
-    el.statFriends.textContent = (data.friends || []).length;
+    const libraryCount = (data.library || []).length;
+    const friendsCount = (data.friends || []).length;
+    
+    el.statGames.textContent = libraryCount;
+    el.statFriends.textContent = friendsCount;
     el.statBalance.textContent = `R$ ${(data.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
     // Atualiza o valor total da conta (Saldo + Inventário)
@@ -117,10 +121,21 @@ async function renderProfile() {
     }
 
     // Renderizar Pedidos de Amizade Recebidos (apenas para o próprio perfil)
-    if (ProfileState.isMyProfile) await renderRequests();
+    if (ProfileState.isMyProfile) {
+        await renderRequests();
+    }
+    
+    // Renderizar lista de amigos do outro usuário (se não for o próprio perfil)
+    if (!ProfileState.isMyProfile) {
+        window.renderFriends();
+    }
 
     // 4. Lista de Amigos
-    renderFriendsList(data.friends || []);
+    if (ProfileState.isMyProfile) {
+        renderFriendsList(window.userFriends || data.friends || []);
+    } else {
+        renderFriendsList(data.friends || []);
+    }
 }
 
 function renderBanner(data) {
@@ -157,10 +172,11 @@ function setupMyProfileUI(data) {
         }, 150);
     }
     
-    // Ocultar elementos antigos (se existirem)
+    // Configurar visibilidade dos elementos
     if (el.btnEdit) el.btnEdit.style.display = 'none'; 
     if (el.btnAddFriend) el.btnAddFriend.style.display = 'none';
     if (el.sectionReq) el.sectionReq.style.display = 'block';
+    if (el.sectionFriends) el.sectionFriends.style.display = 'block';
     if (el.addByIdBox) el.addByIdBox.style.display = 'flex';
     
     // Mostrar o friend-search-container (sistema de busca de amigos)
@@ -204,10 +220,15 @@ function setupMyProfileUI(data) {
 }
 
 function setupOtherProfileUI() {
-    // Ocultar elementos antigos (se existirem)
+    // Ocultar elementos de edição do próprio perfil
     if (el.btnEdit) el.btnEdit.style.display = 'none';
-    if (el.sectionReq) el.sectionReq.style.display = 'none';
     if (el.addByIdBox) el.addByIdBox.style.display = 'none';
+    
+    // Ocultar seção de pedidos de amizade recebidos (não é o próprio perfil)
+    if (el.sectionReq) el.sectionReq.style.display = 'none';
+    
+    // Mostrar seção de amigos do outro usuário
+    if (el.sectionFriends) el.sectionFriends.style.display = 'block';
     
     // Esconder sistema de busca de amigos (não é o próprio perfil)
     const friendSearchContainer = document.querySelector('.friend-search-container');
@@ -264,27 +285,56 @@ async function renderRequests() {
 }
 
 async function renderFriendsList(friendsUids) {
+    if (!el.listFriends) return;
+    
     if (friendsUids.length === 0) {
-        el.listFriends.innerHTML = "<p>Nenhum amigo para exibir.</p>";
+        el.listFriends.innerHTML = ProfileState.isMyProfile ? "<p>Nenhum amigo para exibir.</p>" : "<p>Este usuário não tem amigos.</p>";
         return;
     }
 
     const html = await Promise.all(friendsUids.map(async (uid) => {
-        const userDoc = await window.db.collection('users').doc(uid).get();
-        if (!userDoc.exists) return '';
-        const userData = userDoc.data();
-        const name = window.utils.getUserFriendlyName(userData);
-        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
-        return `
-            <div class="friend-card" onclick="window.location.href='perfil.html?uid=${uid}'">
-                <img src="${avatar}" alt="Avatar" class="rank-avatar">
-                <span class="friend-name">${name}</span>
-                ${ProfileState.isMyProfile ? `<button class="nav-button remove-friend-btn" onclick="event.stopPropagation(); window.removeFriend('${uid}')"><i class="fas fa-user-minus"></i></button>` : ''}
-            </div>`;
+        try {
+            const userDoc = await window.db.collection('users').doc(uid).get();
+            if (!userDoc.exists) return '';
+            const userData = userDoc.data();
+            const name = window.utils.getUserFriendlyName(userData);
+            const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
+            const libraryCount = (userData.library || []).length;
+            
+            return `
+                <div class="friend-card" onclick="window.location.href='perfil.html?uid=${uid}'">
+                    <img src="${avatar}" alt="Avatar" class="rank-avatar">
+                    <span class="friend-name">${name}</span>
+                    <span class="friend-games-count" style="font-size: 11px; color: #7f8c8d; margin-top: 4px;">${libraryCount} jogo${libraryCount !== 1 ? 's' : ''}</span>
+                    ${ProfileState.isMyProfile ? `<button class="nav-button remove-friend-btn" onclick="event.stopPropagation(); window.removeFriend('${uid}')"><i class="fas fa-user-minus"></i></button>` : ''}
+                </div>`;
+        } catch (error) {
+            console.error('Erro ao renderizar amigo:', error);
+            return '';
+        }
     }));
     el.listFriends.innerHTML = html.join('');
 }
 
+// Alias global para renderizar amigos (chamado pelo listener de amizades)
+window.renderFriends = async () => {
+    // Se estamos no próprio perfil e há amigos, renderizar
+    if (ProfileState.isMyProfile && window.userFriends && window.userFriends.length > 0) {
+        await renderFriendsList(window.userFriends);
+    } else if (ProfileState.isMyProfile && el && el.listFriends) {
+        el.listFriends.innerHTML = "<p>Nenhum amigo para exibir.</p>";
+    }
+    
+    // Se estamos visitando outro perfil, renderizar amigos daquele usuário
+    if (!ProfileState.isMyProfile && ProfileState.data) {
+        const otherUserFriends = ProfileState.data.friends || [];
+        if (otherUserFriends.length > 0) {
+            await renderFriendsList(otherUserFriends);
+        } else if (el && el.listFriends) {
+            el.listFriends.innerHTML = "<p>Este usuário não tem amigos.</p>";
+        }
+    }
+};
 
 window.handleAddFriendById = async () => {
     const idInput = document.getElementById('friend-id-input');
@@ -968,5 +1018,73 @@ function setupFriendSearchSystem() {
         friendNickInput.addEventListener('input', handleFriendSearchInput);
     }
 }
+
+// Função para exibir biblioteca/jogos de um usuário
+window.showUserLibrary = async (uid, userData) => {
+    if (!uid || !userData || !userData.library || userData.library.length === 0) {
+        showToast("Este usuário não possui jogos em sua biblioteca.", "info");
+        return;
+    }
+
+    // Criar modal para exibir jogos
+    let modal = document.getElementById('user-library-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'user-library-modal';
+        modal.className = 'modal';
+        modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+        document.body.appendChild(modal);
+    }
+
+    const userName = window.utils.getUserFriendlyName(userData);
+    const gameCount = userData.library.length;
+    
+    // Buscar informações dos jogos
+    const gamesInfo = userData.library.map(gameId => {
+        return window.allGamesData.find(g => String(g.id) === String(gameId));
+    }).filter(game => game); // Remover undefined
+
+    let html = `
+        <div class="modal-content" style="max-width: 900px; width: 90%; max-height: 80vh; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px;">Biblioteca de ${userName}</h2>
+                <button onclick="document.getElementById('user-library-modal').style.display = 'none';" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">✕</button>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">${gameCount} jogo${gameCount !== 1 ? 's' : ''} na biblioteca</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">
+    `;
+
+    gamesInfo.forEach(game => {
+        if (game) {
+            const level = (userData.upgrades || {})[game.id] || 0;
+            const levelBadge = level > 0 ? `<div style="position: absolute; top: 8px; right: 8px; background: var(--promo); color: #000; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">LVL ${level}</div>` : '';
+            
+            html += `
+                <div style="position: relative; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.3s; background: #17171d;" onclick="window.location.href='jogo.html?id=${game.id}'">
+                    <img src="${game.image || game.cover}" alt="${game.title}" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                    <div style="padding: 10px; background: #0a0a0d; min-height: 50px; display: flex; align-items: center;">
+                        <span style="font-size: 12px; font-weight: 600; color: #fff; white-space: normal; line-height: 1.3;">${game.title}</span>
+                    </div>
+                    ${levelBadge}
+                </div>
+            `;
+        }
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    modal.innerHTML = html;
+    modal.style.display = 'flex';
+
+    // Fechar ao clicar fora do modal
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+};
 
 } // Fim da proteção contra carregamento duplicado

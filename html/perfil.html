@@ -235,7 +235,7 @@
 
             <!-- Estatísticas do Perfil -->
             <div class="profile-stats" style="display: flex; gap: 30px; margin: 20px 0; justify-content: center; flex-wrap: wrap;">
-                <div class="stat-item" style="text-align: center;">
+                <div class="stat-item" style="text-align: center; cursor: pointer;" onclick="window.showUserLibrary(ProfileState.uid, ProfileState.data)">
                     <div style="font-size: 24px; font-weight: bold; color: var(--accent);" id="stat-games">0</div>
                     <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Jogos</div>
                 </div>
@@ -287,7 +287,7 @@
                 </div>
             </form>
 
-            <div class="profile-section" id="friend-requests-section">
+            <div class="profile-section" id="friends-section">
                 <h3>Amigos</h3>
                 <div id="friends-list" class="friends-list"></div>
             </div>

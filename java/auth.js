@@ -257,6 +257,8 @@ auth.onAuthStateChanged((user) => {
         if (db && user.uid) {
             // Não aguarda para não bloquear a renderização, mas garante segurança
             loadUserData(user.uid).catch(e => console.warn("Aviso ao carregar dados do usuário:", e));
+            // Inicia listener da coleção de amizades
+            setupFriendshipsCollectionListener(user.uid);
         } else {
             // Se não conseguir carregar do Firestore, reinicializa com valores padrão
             window.userFavorites = [];
@@ -364,6 +366,11 @@ function setupFriendshipListener(uid) {
                 if (window.userFriendRequestsReceived.length > 0) {
                     console.log(`🔔 ${window.userFriendRequestsReceived.length} notificações recebidas`);
                 }
+                
+                // Renderizar lista de amigos se função existir
+                if (window.renderFriends && window.userFriends.length > 0) {
+                    setTimeout(() => window.renderFriends(), 100);
+                }
             }
         },
         (error) => {
@@ -457,6 +464,39 @@ function setupSentFriendRequestsListener(uid) {
 window.setupSentFriendRequestsListener = setupSentFriendRequestsListener;
 
 window.setupFriendshipListener = setupFriendshipListener;
+
+// Listener para mudanças em amizades através da coleção centralizada
+function setupFriendshipsCollectionListener(uid) {
+    if (!uid || !window.db) return;
+    
+    window.db.collection('friendships')
+        .where('user1', '==', uid)
+        .onSnapshot((snapshot) => {
+            const friendsFromUser1 = snapshot.docs.map(doc => doc.data().user2);
+            // Mesclar com amigos já existentes
+            const currentFriends = new Set(window.userFriends || []);
+            friendsFromUser1.forEach(f => currentFriends.add(f));
+            window.userFriends = Array.from(currentFriends);
+            if (typeof window.renderFriends === 'function') {
+                setTimeout(() => window.renderFriends(), 100);
+            }
+        });
+    
+    window.db.collection('friendships')
+        .where('user2', '==', uid)
+        .onSnapshot((snapshot) => {
+            const friendsFromUser2 = snapshot.docs.map(doc => doc.data().user1);
+            // Mesclar com amigos já existentes
+            const currentFriends = new Set(window.userFriends || []);
+            friendsFromUser2.forEach(f => currentFriends.add(f));
+            window.userFriends = Array.from(currentFriends);
+            if (typeof window.renderFriends === 'function') {
+                setTimeout(() => window.renderFriends(), 100);
+            }
+        });
+}
+
+window.setupFriendshipsCollectionListener = setupFriendshipsCollectionListener;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadAuthModules();
@@ -920,25 +960,37 @@ window.acceptFriendRequest = async (requesterUid) => {
         toggleLoader(true);
         const myUid = auth.currentUser.uid;
         const requestId = `${requesterUid}_${myUid}`;
+        
+        // Criar um ID único e simétrico para a amizade
+        const friendshipId = [requesterUid, myUid].sort().join('_');
 
-        // Atualizar apenas a coleção friendRequests
+        // Atualizar pedido de amizade para 'accepted'
         await db.collection('friendRequests').doc(requestId).update({
             status: 'accepted',
             updatedAt: firebase.firestore.Timestamp.now()
         });
 
-        // Atualizar documentos de usuário (apenas o próprio)
+        // Criar documento de amizade na coleção centralizada
+        await db.collection('friendships').doc(friendshipId).set({
+            user1: requesterUid,
+            user2: myUid,
+            createdAt: firebase.firestore.Timestamp.now(),
+            status: 'active'
+        }, { merge: true });
+
+        // Atualizar próprio documento de usuário
         await db.collection('users').doc(myUid).update({
             friends: firebase.firestore.FieldValue.arrayUnion(requesterUid)
         });
         
-        // Tentar atualizar requester se possível (pode falhar por permissões)
+        // Tentar atualizar documento do solicitante também
         try {
             await db.collection('users').doc(requesterUid).update({
                 friends: firebase.firestore.FieldValue.arrayUnion(myUid)
             });
         } catch (e) {
-            console.warn('Não foi possível atualizar friends do solicitante:', e);
+            // Se falhar por permissões, a listener de amizades vai sincronizar
+            console.warn('Amizade criada, mas documento do outro usuário não foi atualizado:', e);
         }
 
         showToast("Pedido aceito!", "success");
@@ -981,17 +1033,25 @@ window.removeFriend = async (friendUid) => {
     window.customConfirm("Remover este amigo?", async () => {
         try {
             toggleLoader(true);
+            
+            // Criar ID simétrico da amizade
+            const friendshipId = [myUid, friendUid].sort().join('_');
+            
+            // Remover da coleção centralizada de amizades
+            await db.collection('friendships').doc(friendshipId).delete();
+            
+            // Atualizar próprio documento
             await db.collection('users').doc(myUid).update({
                 friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
             });
             
-            // Tentar atualizar amigo também (pode falhar por permissões)
+            // Tentar atualizar documento do outro usuário também
             try {
                 await db.collection('users').doc(friendUid).update({
                     friends: firebase.firestore.FieldValue.arrayRemove(myUid)
                 });
             } catch (e) {
-                console.warn('Não foi possível atualizar friends do outro usuário:', e);
+                console.warn('Documento do outro usuário não foi atualizado:', e);
             }
             
             showToast("Amigo removido.");
