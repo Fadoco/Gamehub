@@ -257,8 +257,7 @@ auth.onAuthStateChanged((user) => {
         if (db && user.uid) {
             // Não aguarda para não bloquear a renderização, mas garante segurança
             loadUserData(user.uid).catch(e => console.warn("Aviso ao carregar dados do usuário:", e));
-            // Inicia listener da coleção de amizades
-            setupFriendshipsCollectionListener(user.uid);
+            // O listener de amizades é iniciado dentro de loadUserData
         } else {
             // Se não conseguir carregar do Firestore, reinicializa com valores padrão
             window.userFavorites = [];
@@ -465,7 +464,9 @@ window.setupSentFriendRequestsListener = setupSentFriendRequestsListener;
 
 window.setupFriendshipListener = setupFriendshipListener;
 
-// Listener para mudanças em amizades através da coleção centralizada
+// ❌ DESABILITADO: Listener redundante - usar setupFriendshipListener() em vez disso
+// Esta função foi substituída por setupFriendshipListener que lê diretamente do documento do usuário
+/*
 function setupFriendshipsCollectionListener(uid) {
     if (!uid || !window.db) return;
     
@@ -497,6 +498,7 @@ function setupFriendshipsCollectionListener(uid) {
 }
 
 window.setupFriendshipsCollectionListener = setupFriendshipsCollectionListener;
+*/
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadAuthModules();
@@ -989,18 +991,30 @@ window.acceptFriendRequest = async (requesterUid) => {
                 friends: firebase.firestore.FieldValue.arrayUnion(myUid)
             });
         } catch (e) {
-            // Se falhar por permissões, a listener de amizades vai sincronizar
-            console.warn('Amizade criada, mas documento do outro usuário não foi atualizado:', e);
+            // Se falhar por permissões, não é crítico - o listener vai sincronizar
+            console.warn('Aviso ao atualizar documento do outro usuário:', e.message);
         }
 
         showToast("Pedido aceito!", "success");
         window.userFriendRequestsReceived = window.userFriendRequestsReceived.filter(id => id !== requesterUid);
+        
+        // Atualizar lista local de amigos
         window.userFriends = window.userFriends || [];
-        window.userFriends.push(requesterUid);
+        if (!window.userFriends.includes(requesterUid)) {
+            window.userFriends.push(requesterUid);
+        }
+        
+        // Forçar reload dos amigos após 500ms para garantir sincronização
+        setTimeout(() => {
+            if (typeof window.renderFriends === 'function') {
+                window.renderFriends();
+            }
+        }, 500);
+        
         refreshCurrentPageUI();
     } catch (error) { 
         console.error('Erro ao aceitar pedido:', error);
-        showToast("Erro ao aceitar pedido.", "error"); 
+        showToast("Erro ao aceitar pedido: " + error.message, "error"); 
     }
     finally { toggleLoader(false); }
 };
@@ -1038,9 +1052,14 @@ window.removeFriend = async (friendUid) => {
             const friendshipId = [myUid, friendUid].sort().join('_');
             
             // Remover da coleção centralizada de amizades
-            await db.collection('friendships').doc(friendshipId).delete();
+            try {
+                await db.collection('friendships').doc(friendshipId).delete();
+            } catch (e) {
+                console.warn('Aviso ao remover documento de amizade:', e.message);
+                // Não falha se não conseguir remover de friendships
+            }
             
-            // Atualizar próprio documento
+            // Atualizar próprio documento com valor local garantido
             await db.collection('users').doc(myUid).update({
                 friends: firebase.firestore.FieldValue.arrayRemove(friendUid)
             });
@@ -1051,15 +1070,24 @@ window.removeFriend = async (friendUid) => {
                     friends: firebase.firestore.FieldValue.arrayRemove(myUid)
                 });
             } catch (e) {
-                console.warn('Documento do outro usuário não foi atualizado:', e);
+                console.warn('Aviso ao remover amizade do outro usuário:', e.message);
+                // Não é crítico se falhar - o usuário removeu por sua parte
             }
             
-            showToast("Amigo removido.");
+            showToast("Amigo removido com sucesso.", "success");
             window.userFriends = window.userFriends.filter(id => id !== friendUid);
-            refreshCurrentPageUI();
+            
+            // Forçar atualização da UI
+            setTimeout(() => {
+                if (typeof window.renderFriends === 'function') {
+                    window.renderFriends();
+                }
+                refreshCurrentPageUI();
+            }, 300);
+            
         } catch (error) { 
             console.error('Erro ao remover amigo:', error);
-            showToast("Erro ao remover.", "error"); 
+            showToast("Erro ao remover amigo: " + error.message, "error"); 
         }
         finally { toggleLoader(false); }
     });

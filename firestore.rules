@@ -115,7 +115,11 @@ service cloud.firestore {
     match /friendships/{friendshipId} {
       // Permitir qualquer usuário autenticado ler amizades
       allow read: if request.auth != null;
-      allow write: if false;
+      // Permitir criar e deletar amizades (ambos os usuários podem participar)
+      allow create: if request.auth != null;
+      allow delete: if request.auth != null;
+      // Bloquear updates para evitar alterações não autorizadas
+      allow update: if false;
     }
 
     match /admins/{userId} {
