@@ -75,7 +75,14 @@ async function renderProfile() {
     // 1. Informações Básicas
     el.displayName.textContent = window.utils.getUserFriendlyName(data);
     el.bio.textContent = data.bio || "Nenhuma biografia definida.";
-    el.avatar.src = data.avatar || `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(data)}&background=27ae60&color=fff`;
+    
+    // Adicionar cache busting para forçar reload do avatar
+    if (data.avatar) {
+        el.avatar.src = `${data.avatar}?cb=${Date.now()}`;
+    } else {
+        el.avatar.src = `https://ui-avatars.com/api/?name=${window.utils.getUserFriendlyName(data)}&background=27ae60&color=fff`;
+    }
+    
     el.friendId.textContent = `ID de Amizade: #${data.friendshipId || 'N/A'}`;
     
     el.friendId.onclick = () => {
@@ -142,9 +149,12 @@ function renderBanner(data) {
     if (!el.banner) return; // Sair se elemento não existir
     
     if (data.bannerURL) {
+        // Adicionar cache busting para forçar reload da imagem
+        const urlWithCacheBust = `${data.bannerURL}?cb=${Date.now()}`;
+        
         el.banner.innerHTML = data.bannerType === 'video' 
-            ? `<video class="profile-banner-media" src="${data.bannerURL}" autoplay loop muted></video>`
-            : `<img class="profile-banner-media" src="${data.bannerURL}" alt="Banner">`;
+            ? `<video class="profile-banner-media" src="${urlWithCacheBust}" autoplay loop muted></video>`
+            : `<img class="profile-banner-media" src="${urlWithCacheBust}" alt="Banner">`;
     } else {
         el.banner.style.background = 'linear-gradient(135deg, var(--accent), var(--bg-dark))';
         el.banner.innerHTML = '';
@@ -836,17 +846,18 @@ const EditProfileModal = {
             await window.db.collection('users').doc(userId).update(updateData);
 
             showToast('✓ Perfil atualizado com sucesso!', 'success');
-            showToast('⏳ Atualizando visualização (2-3 segundos)...', 'info');
+            showToast('⏳ Processando imagens (2-3 segundos)...', 'info');
             
-            // Aguardar um pouco para GitHub processar a imagem
-            // Depois recarrega a página para mostrar a imagem atualizada
+            // Aguardar o GitHub processar as imagens completamente
+            // Depois recarrega a página com força (sem cache)
             setTimeout(() => {
                 // Fechar modal
                 this.closeModal();
                 
-                // Recarregar a página para mostrar as imagens atualizadas do GitHub
-                window.location.reload();
-            }, 2500);
+                // Fazer reload sem cache para garantir que pega as imagens novas
+                // Ctrl+F5 force refresh
+                window.location.href = window.location.href.split('?')[0] + '?v=' + Date.now();
+            }, 3000);
 
         } catch (error) {
             console.error('Erro ao atualizar perfil:', error);

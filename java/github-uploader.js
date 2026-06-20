@@ -72,6 +72,9 @@ const GitHubUploader = {
                 throw new Error(error.message || 'Erro ao fazer upload no GitHub');
             }
 
+            // Aguardar um pouco para o GitHub processar completamente
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             // Terceiro: retornar URL raw da imagem
             const imageUrl = GitHubConfig.getImageUrl(userId, filename);
             // Adicionar cache busting com timestamp para garantir que sempre pega a versão mais nova
