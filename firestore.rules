@@ -128,6 +128,13 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /site-config/{document=**} {
+      // Qualquer usuário autenticado pode ler configuração
+      allow read: if request.auth != null;
+      // Apenas admin pode escrever/criar/deletar
+      allow write, create, delete: if isAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
