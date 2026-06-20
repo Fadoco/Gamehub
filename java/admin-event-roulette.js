@@ -1,39 +1,47 @@
 /**
- * Painel de Roleta de Eventos - Admin
+ * Painel de Roleta de Eventos - Admin (Automático e Aleatório)
  * Sistema para apresentações ao vivo
  */
 
-let selectedEvent = null;
 let allUsers = [];
-let applyMode = 'all';
-let eventInProgress = false;
+let isSpinning = false;
 
-// Mapeamento de eventos
+// Eventos disponíveis
 const EVENTS = {
     money_win: {
         name: '💰 Ganhar Dinheiro',
         icon: 'fas fa-coins',
-        color: '#f39c12'
+        color: '#f39c12',
+        minValue: 50,
+        maxValue: 500
     },
     money_lose: {
         name: '📉 Perder Dinheiro',
         icon: 'fas fa-money-bill-wave',
-        color: '#e74c3c'
+        color: '#e74c3c',
+        minValue: 50,
+        maxValue: 300
     },
     game_win: {
         name: '🎁 Ganhar Jogo',
         icon: 'fas fa-gift',
-        color: '#2ecc71'
+        color: '#2ecc71',
+        minValue: 0,
+        maxValue: 0
     },
     game_lose: {
         name: '🗑️ Perder Jogo',
         icon: 'fas fa-trash',
-        color: '#9b59b6'
+        color: '#9b59b6',
+        minValue: 0,
+        maxValue: 0
     },
     upgrade_random: {
-        name: '⭐ Jogo Aleatório Melhorado',
+        name: '⭐ Jogo Melhorado',
         icon: 'fas fa-star',
-        color: '#3498db'
+        color: '#3498db',
+        minValue: 0,
+        maxValue: 0
     }
 };
 
@@ -43,7 +51,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     let retries = 0;
     while (!window.db || !window.auth.currentUser) {
         if (retries++ > 30) {
-            window.showToast('Erro ao carregar dados. Faça login novamente.', 'error');
+            document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: red;"><h1>❌ Erro ao Carregar</h1><p>Faça login novamente.</p></div>';
             return;
         }
         await new Promise(r => setTimeout(r, 100));
@@ -59,8 +67,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await loadUsers();
-    await loadGames();
-    updateAffectedUsers();
+    initializeRoulette();
 
     console.log('✅ Painel de Roleta de Eventos carregado');
 });
@@ -78,220 +85,224 @@ async function loadUsers() {
                 uid: doc.id,
                 email: doc.data().email,
                 displayName: doc.data().displayName || 'Usuário Anônimo',
-                isAdmin: doc.data().email === 'fadoco12311@gmail.com' || doc.data().email === 'gabrielmomo6759@gmail.com'
+                isAdmin: doc.data().email === 'fadoco12311@gmail.com' || doc.data().email === 'gabrielmomo6759@gmail.com',
+                library: doc.data().library || []
             });
         });
 
-        // Filtrar apenas usuários não-admin
         const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
-
         document.getElementById('total-users').textContent = allUsers.length;
         document.getElementById('non-admin-users').textContent = nonAdminUsers.length;
 
         console.log(`✅ ${nonAdminUsers.length} usuários carregados`);
     } catch (error) {
         console.error('❌ Erro ao carregar usuários:', error);
-        window.showToast('Erro ao carregar usuários', 'error');
     }
 }
 
 /**
- * Carregar lista de jogos
+ * Inicializar roleta vazia
  */
-async function loadGames() {
-    try {
-        if (!window.allGamesData || window.allGamesData.length === 0) {
-            return;
-        }
+function initializeRoulette() {
+    const rail = document.getElementById('roulette-rail');
+    rail.innerHTML = '';
+    rail.style.transition = 'none';
+    rail.style.transform = 'translateX(0px)';
 
-        const gameSelect = document.getElementById('game-select');
-        gameSelect.innerHTML = '<option value="">Aleatório</option>';
+    // Criar cards da roleta
+    for (let i = 0; i < 50; i++) {
+        const eventKey = Object.keys(EVENTS)[Math.floor(Math.random() * Object.keys(EVENTS).length)];
+        const event = EVENTS[eventKey];
         
-        window.allGamesData.forEach(game => {
-            const option = document.createElement('option');
-            option.value = game.id;
-            option.textContent = game.title;
-            gameSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('❌ Erro ao carregar jogos:', error);
+        const card = document.createElement('div');
+        card.className = 'roulette-card';
+        card.innerHTML = `<i class="${event.icon}"></i><div>${event.name}</div>`;
+        card.style.color = event.color;
+        rail.appendChild(card);
     }
 }
 
 /**
- * Selecionar evento
+ * Iniciar spin da roleta
  */
-window.selectEvent = (eventKey) => {
-    selectedEvent = eventKey;
+window.startRoulette = async () => {
+    if (isSpinning) return;
     
-    // Atualizar visual
-    document.querySelectorAll('.event-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.event === eventKey);
-    });
+    isSpinning = true;
+    document.getElementById('btn-spin').disabled = true;
+    document.getElementById('result-section').style.display = 'none';
 
-    // Atualizar nome do evento
-    const eventInfo = EVENTS[eventKey];
-    document.getElementById('selected-event-name').textContent = eventInfo.name;
+    // Gerar evento aleatório
+    const eventKeys = Object.keys(EVENTS);
+    const selectedEventKey = eventKeys[Math.floor(Math.random() * eventKeys.length)];
+    const selectedEvent = EVENTS[selectedEventKey];
 
-    // Mostrar/esconder campo de jogo conforme necessário
-    const gameSelect = document.getElementById('game-select');
-    if (eventKey === 'game_win') {
-        gameSelect.style.display = 'block';
-        gameSelect.previousElementSibling.style.display = 'block';
-    } else {
-        gameSelect.style.display = 'none';
-        gameSelect.previousElementSibling.style.display = 'none';
+    // Gerar valor aleatório
+    let eventValue = 0;
+    if (selectedEvent.minValue < selectedEvent.maxValue) {
+        eventValue = Math.floor(Math.random() * (selectedEvent.maxValue - selectedEvent.minValue + 1)) + selectedEvent.minValue;
     }
 
-    console.log(`✅ Evento selecionado: ${eventKey}`);
-};
-
-/**
- * Atualizar modo de aplicação
- */
-window.updateApplyMode = () => {
-    applyMode = document.getElementById('apply-mode').value;
-    const countLabel = document.getElementById('specific-count-label');
-    const countInput = document.getElementById('specific-count');
-
-    if (applyMode === 'specific') {
-        countLabel.style.display = 'block';
-        countInput.style.display = 'block';
-    } else {
-        countLabel.style.display = 'none';
-        countInput.style.display = 'none';
-    }
-
-    document.getElementById('apply-mode-name').textContent = 
-        applyMode === 'all' ? 'Todos' : `Específico (${document.getElementById('specific-count').value})`;
-
-    updateAffectedUsers();
-};
-
-/**
- * Atualizar número de usuários afetados
- */
-window.updateAffectedUsers = () => {
+    // Gerar quantidade de usuários aleatória (50% a 100% do total)
     const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
-    let affectedCount = nonAdminUsers.length;
+    const minAffected = Math.ceil(nonAdminUsers.length * 0.5);
+    const maxAffected = nonAdminUsers.length;
+    const affectedCount = Math.floor(Math.random() * (maxAffected - minAffected + 1)) + minAffected;
 
-    if (applyMode === 'specific') {
-        affectedCount = Math.min(parseInt(document.getElementById('specific-count').value) || 1, nonAdminUsers.length);
-        document.getElementById('apply-mode-name').textContent = `Específico (${affectedCount})`;
-    } else {
-        document.getElementById('apply-mode-name').textContent = 'Todos';
-    }
+    // Animar roleta
+    const rail = document.getElementById('roulette-rail');
+    const wrapper = rail.parentElement;
+    const winnerCard = rail.children[25]; // Card do meio
 
-    document.getElementById('affected-users').textContent = affectedCount;
+    const randomInnerOffset = Math.floor(Math.random() * (winnerCard.offsetWidth * 0.6)) - (winnerCard.offsetWidth * 0.3);
+    const targetPos = (winnerCard.offsetLeft + winnerCard.offsetWidth / 2) - (wrapper.offsetWidth / 2) + randomInnerOffset;
+
+    // Delay antes de girar (como a roleta original)
+    setTimeout(() => {
+        rail.style.transition = 'transform 5.7s cubic-bezier(0.15, 0, 0.05, 1)';
+        rail.style.transform = `translateX(-${targetPos}px)`;
+    }, 1200);
+
+    // Revelar resultado (7.1s = 1.2s delay + 5.7s animação + 0.2s margem)
+    setTimeout(async () => {
+        // Animar card vencedor
+        winnerCard.classList.add('winning');
+        
+        // Aplicar evento
+        await applyEventToUsers(selectedEventKey, eventValue, affectedCount);
+
+        // Mostrar resultado
+        showResult(selectedEvent, eventValue, affectedCount, selectedEventKey);
+
+        // Reinicializar roleta
+        setTimeout(() => {
+            initializeRoulette();
+            document.getElementById('btn-spin').disabled = false;
+            isSpinning = false;
+        }, 3000);
+
+    }, 7100);
 };
 
 /**
  * Aplicar evento aos usuários
  */
-window.applyEvent = async () => {
-    if (!selectedEvent) {
-        window.showToast('Selecione um evento primeiro!', 'warning');
-        return;
-    }
-
-    if (eventInProgress) {
-        window.showToast('Um evento já está sendo processado...', 'info');
-        return;
-    }
-
-    eventInProgress = true;
+async function applyEventToUsers(eventKey, value, count) {
+    const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
+    const targetUsers = nonAdminUsers.slice(0, count);
 
     try {
-        const eventInfo = EVENTS[selectedEvent];
-        const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
-        
-        let targetUsers = nonAdminUsers;
-        if (applyMode === 'specific') {
-            const count = parseInt(document.getElementById('specific-count').value);
-            targetUsers = nonAdminUsers.slice(0, count);
-        }
-
-        window.showToast(`🎲 Aplicando evento a ${targetUsers.length} usuário(s)...`, 'info');
-
-        let processedCount = 0;
-
-        // Aplicar evento a cada usuário
         for (const user of targetUsers) {
-            try {
-                const userRef = window.db.collection('users').doc(user.uid);
+            const userRef = window.db.collection('users').doc(user.uid);
 
-                switch (selectedEvent) {
-                    case 'money_win':
-                        const moneyWin = parseInt(document.getElementById('money-amount').value) || 100;
+            switch (eventKey) {
+                case 'money_win':
+                    await userRef.update({
+                        balance: firebase.firestore.FieldValue.increment(value)
+                    });
+                    break;
+
+                case 'money_lose':
+                    await userRef.update({
+                        balance: firebase.firestore.FieldValue.increment(-value)
+                    });
+                    break;
+
+                case 'game_win':
+                    if (window.allGamesData && window.allGamesData.length > 0) {
+                        const randomGame = window.allGamesData[Math.floor(Math.random() * window.allGamesData.length)];
                         await userRef.update({
-                            balance: firebase.firestore.FieldValue.increment(moneyWin)
+                            library: firebase.firestore.FieldValue.arrayUnion(randomGame.id)
                         });
-                        break;
+                    }
+                    break;
 
-                    case 'money_lose':
-                        const moneyLose = parseInt(document.getElementById('money-amount').value) || 100;
-                        await userRef.update({
-                            balance: firebase.firestore.FieldValue.increment(-moneyLose)
-                        });
-                        break;
+                case 'game_lose':
+                    const userDoc = await userRef.get();
+                    const library = userDoc.data().library || [];
+                    if (library.length > 0) {
+                        const randomGameId = library[Math.floor(Math.random() * library.length)];
+                        const newLibrary = library.filter(id => id !== randomGameId);
+                        await userRef.update({ library: newLibrary });
+                    }
+                    break;
 
-                    case 'game_win':
-                        const gameId = parseInt(document.getElementById('game-select').value);
-                        if (gameId) {
-                            await userRef.update({
-                                library: firebase.firestore.FieldValue.arrayUnion(gameId)
-                            });
-                        }
-                        break;
-
-                    case 'game_lose':
-                        const gameIdToRemove = parseInt(document.getElementById('game-select').value);
-                        if (gameIdToRemove) {
-                            const userDoc = await userRef.get();
-                            const library = userDoc.data().library || [];
-                            const newLibrary = library.filter(id => id !== gameIdToRemove);
-                            await userRef.update({ library: newLibrary });
-                        }
-                        break;
-
-                    case 'upgrade_random':
-                        const userDoc = await userRef.get();
-                        const userLibrary = userDoc.data().library || [];
+                case 'upgrade_random':
+                    const userDoc2 = await userRef.get();
+                    const userLibrary = userDoc2.data().library || [];
+                    if (userLibrary.length > 0) {
+                        const randomGameId = userLibrary[Math.floor(Math.random() * userLibrary.length)];
+                        const currentLevel = (userDoc2.data().upgrades || {})[randomGameId] || 0;
                         
-                        if (userLibrary.length > 0) {
-                            const randomGameId = userLibrary[Math.floor(Math.random() * userLibrary.length)];
-                            const currentLevel = (userDoc.data().upgrades || {})[randomGameId] || 0;
-                            
-                            if (currentLevel < 3) {
-                                const upgradesObj = userDoc.data().upgrades || {};
-                                upgradesObj[randomGameId] = currentLevel + 1;
-                                await userRef.update({ upgrades: upgradesObj });
-                            }
+                        if (currentLevel < 3) {
+                            const upgradesObj = userDoc2.data().upgrades || {};
+                            upgradesObj[randomGameId] = currentLevel + 1;
+                            await userRef.update({ upgrades: upgradesObj });
                         }
-                        break;
-                }
-
-                processedCount++;
-            } catch (error) {
-                console.error(`Erro ao processar usuário ${user.displayName}:`, error);
+                    }
+                    break;
             }
         }
-
-        // Atualizar status
-        const timeStr = new Date().toLocaleTimeString('pt-BR');
-        document.getElementById('last-event-status').textContent = 
-            `${eventInfo.name} | ${processedCount} usuários | ${timeStr}`;
-
-        window.showToast(`✅ Evento aplicado a ${processedCount} usuário(s)!`, 'success');
-        console.log(`✅ Evento "${selectedEvent}" aplicado com sucesso`);
-
+        console.log(`✅ Evento "${eventKey}" aplicado a ${targetUsers.length} usuários`);
     } catch (error) {
         console.error('❌ Erro ao aplicar evento:', error);
-        window.showToast('Erro ao aplicar evento', 'error');
-    } finally {
-        eventInProgress = false;
     }
-};
+}
+
+/**
+ * Mostrar resultado
+ */
+function showResult(event, value, affectedCount, eventKey) {
+    const resultSection = document.getElementById('result-section');
+    const resultTitle = document.getElementById('result-title');
+    const resultDescription = document.getElementById('result-description');
+    const resultValue = document.getElementById('result-value');
+    const resultCount = document.getElementById('result-count');
+
+    // Montar descrição
+    let description = '';
+    let valueText = '';
+
+    switch (eventKey) {
+        case 'money_win':
+            description = `Todos ganharam R$ ${value.toFixed(2)}!`;
+            valueText = `+R$ ${value.toFixed(2)}`;
+            resultValue.className = 'result-value';
+            break;
+        case 'money_lose':
+            description = `Todos perderam R$ ${value.toFixed(2)}!`;
+            valueText = `-R$ ${value.toFixed(2)}`;
+            resultValue.className = 'result-value negative';
+            break;
+        case 'game_win':
+            description = `Todos ganharam um jogo aleatório!`;
+            valueText = `🎁 Novo Jogo`;
+            resultValue.className = 'result-value';
+            break;
+        case 'game_lose':
+            description = `Todos perderam um jogo da biblioteca!`;
+            valueText = `🗑️ Jogo Removido`;
+            resultValue.className = 'result-value negative';
+            break;
+        case 'upgrade_random':
+            description = `Um jogo aleatório foi melhorado!`;
+            valueText = `⭐ Upgrade +1`;
+            resultValue.className = 'result-value';
+            break;
+    }
+
+    resultTitle.textContent = '🎉 RESULTADO!';
+    resultDescription.textContent = description;
+    resultValue.textContent = valueText;
+    resultCount.textContent = `Afetou ${affectedCount} usuário(s)`;
+
+    // Atualizar last event status
+    const timeStr = new Date().toLocaleTimeString('pt-BR');
+    document.getElementById('last-event-status').textContent = 
+        `${event.name} | ${timeStr}`;
+
+    resultSection.style.display = 'block';
+}
 
 /**
  * Reset de carteira - Todos usuários (menos admins) para R$ 5.000
@@ -304,15 +315,13 @@ window.resetAllWallets = async () => {
 
     if (!confirmed) return;
 
-    if (eventInProgress) {
-        window.showToast('Um evento já está sendo processado...', 'info');
+    if (isSpinning) {
+        window.showToast('A roleta está girando. Aguarde...', 'info');
         return;
     }
 
-    eventInProgress = true;
-
     try {
-        window.showToast(`💰 Resetando carteiras de ${nonAdminUsers.length} usuários...`, 'info');
+        window.showToast(`💰 Resetando carteiras...`, 'info');
 
         let processedCount = 0;
 
@@ -327,10 +336,9 @@ window.resetAllWallets = async () => {
             }
         }
 
-        // Atualizar status
         const timeStr = new Date().toLocaleTimeString('pt-BR');
         document.getElementById('last-event-status').textContent = 
-            `💰 Reset R$ 5.000 | ${processedCount} usuários | ${timeStr}`;
+            `💰 Reset R$ 5.000 | ${timeStr}`;
 
         window.showToast(`✅ Carteiras resetadas! ${processedCount} usuários com R$ 5.000`, 'success');
         console.log(`✅ Reset de carteira concluído`);
@@ -338,7 +346,5 @@ window.resetAllWallets = async () => {
     } catch (error) {
         console.error('❌ Erro ao resetar carteiras:', error);
         window.showToast('Erro ao resetar carteiras', 'error');
-    } finally {
-        eventInProgress = false;
     }
 };
