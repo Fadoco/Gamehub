@@ -3,25 +3,13 @@
  * CONFIGURAÇÃO DO UPLOAD NO GITHUB
  * ======================================
  * 
- * Para usar este sistema, você precisa:
+ * O token é salvo no Firestore para ser
+ * acessível em qualquer dispositivo.
  * 
- * 1. Criar um Token de Acesso Pessoal no GitHub:
- *    - Vá para: github.com/settings/tokens
- *    - Clique em "Generate new token (classic)"
- *    - Selecione a permissão: ✓ repo (Full control of private repositories)
- *    - Copie o token gerado (você não verá novamente!)
- * 
- * 2. Criar um Repositório no GitHub:
- *    - Pode ser privado ou público
- *    - Exemplo: "meu-site-images" ou "projeto-mega-images"
- *    - Não precisa de README, .gitignore, etc
- * 
- * 3. IMPORTANTE - SEGURANÇA:
- *    ⚠️  NÃO COMMIT este arquivo com token real no Git!
- *    ⚠️  Use variáveis de ambiente em produção!
- * 
- * OPÇÃO 1: Colocar Token Aqui (SOMENTE em desenvolvimento local)
- * OPÇÃO 2: Usar Variáveis de Ambiente (RECOMENDADO)
+ * Segurança: 
+ * - Token não fica no código (Git)
+ * - Apenas o proprietário pode modificar
+ * - Usuarios podem ler e usar
  */
 
 // ============================================
@@ -29,19 +17,8 @@
 // ============================================
 
 // SEU TOKEN DO GITHUB
-// IMPORTANTE: Configure o token como variável de ambiente ou localStorage
-// NÃO deixe o token hardcoded no código!
-// 
-// Opção 1 - Variável de Ambiente (RECOMENDADO):
-//   const GITHUB_TOKEN = process.env.GITHUB_TOKEN || localStorage.getItem('github_token');
-//
-// Opção 2 - Pedir ao usuário (em tempo de execução):
-//   const GITHUB_TOKEN = prompt('Cole seu token do GitHub:');
-//   localStorage.setItem('github_token', GITHUB_TOKEN);
-//
-// Para agora, deixamos vazio e você configura na primeira utilização
-
-let GITHUB_TOKEN = localStorage.getItem('github_token') || '';
+// Será carregado do Firestore em tempo de execução
+let GITHUB_TOKEN = '';
 
 // SEU USUÁRIO DO GITHUB
 const GITHUB_USER = 'Fadoco'; // Seu usuário GitHub
@@ -61,18 +38,44 @@ const GITHUB_FOLDER = 'assets/user-avatars'; // Será criada automaticamente
 
 function validateGitHubConfig() {
     const isConfigured = 
-        GITHUB_TOKEN !== 'SEU_TOKEN_AQUI' &&
         GITHUB_USER !== 'SEU_USUARIO_AQUI' &&
-        GITHUB_REPO !== 'SEU_REPOSITORIO_AQUI' &&
-        GITHUB_TOKEN.length > 20; // Token real tem mais de 20 chars
+        GITHUB_REPO !== 'SEU_REPOSITORIO_AQUI';
 
     if (!isConfigured) {
-        console.warn('⚠️  GitHub upload não está configurado!');
+        console.warn('⚠️  GitHub não está configurado!');
         console.warn('Preencha os dados em: java/github-upload-config.js');
         return false;
     }
 
     return true;
+}
+
+// ============================================
+// CARREGAR TOKEN DO FIRESTORE
+// ============================================
+
+async function loadGitHubTokenFromFirestore() {
+    if (!window.db) {
+        console.error('❌ Firestore não está inicializado');
+        return false;
+    }
+
+    try {
+        const configDoc = await window.db.collection('site-config').doc('github-token').get();
+        
+        if (configDoc.exists) {
+            const data = configDoc.data();
+            GITHUB_TOKEN = data.token;
+            console.log('✓ Token do GitHub carregado do Firestore');
+            return true;
+        } else {
+            console.warn('⚠️  Token não encontrado no Firestore');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Erro ao carregar token do Firestore:', error);
+        return false;
+    }
 }
 
 // ============================================
@@ -95,5 +98,16 @@ const GitHubConfig = {
     // Caminho dentro do repositório
     getFilePath(userId, filename) {
         return `${this.folder}/${userId}/${filename}`;
+    },
+
+    // Atualizar token em memória
+    setToken(newToken) {
+        GITHUB_TOKEN = newToken;
+        this.token = newToken;
+    },
+
+    // Obter token
+    getToken() {
+        return GITHUB_TOKEN;
     }
 };

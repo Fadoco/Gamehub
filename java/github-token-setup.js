@@ -1,17 +1,29 @@
 /**
  * ======================================
- * SETUP DO TOKEN DO GITHUB (LOCAL)
+ * SETUP DO TOKEN DO GITHUB (FIRESTORE)
  * ======================================
  * 
  * Execute este arquivo no console do navegador (F12)
- * ou cole o código abaixo para configurar seu token
+ * para configurar seu token do GitHub
  * 
- * O token será salvo no localStorage (local do seu navegador)
- * e NÃO será enviado para o GitHub
+ * O token será salvo no Firestore e acessível
+ * de qualquer dispositivo/navegador
  */
 
-// Função para configurar o token
-function setupGitHubToken() {
+// Função para configurar o token no Firestore
+async function setupGitHubToken() {
+    // Verificar se Firestore está disponível
+    if (!window.db) {
+        alert('❌ Firestore não está inicializado!');
+        return;
+    }
+
+    // Verificar se usuário está autenticado (admin/proprietário)
+    if (!window.auth.currentUser) {
+        alert('❌ Você precisa estar logado!');
+        return;
+    }
+
     const token = prompt('Cole seu token do GitHub (github_pat_...):');
     
     if (!token) {
@@ -24,36 +36,48 @@ function setupGitHubToken() {
         return;
     }
     
-    // Salvar no localStorage
-    localStorage.setItem('github_token', token);
-    
-    // Atualizar na memória
-    GITHUB_TOKEN = token;
-    
-    alert('✅ Token configurado com sucesso!\n\nVocê pode usar o site normalmente agora.');
-    console.log('✓ Token salvo no localStorage');
-}
-
-// Verificar e alertar se token não está configurado
-function checkGitHubToken() {
-    const token = localStorage.getItem('github_token');
-    
-    if (!token) {
-        console.warn('⚠️ Token do GitHub não configurado!');
-        console.log('Execute: setupGitHubToken()');
-        return false;
+    try {
+        // Salvar no Firestore
+        await window.db.collection('site-config').doc('github-token').set({
+            token: token,
+            updatedAt: new Date(),
+            updatedBy: window.auth.currentUser.uid,
+            email: window.auth.currentUser.email
+        }, { merge: true });
+        
+        // Atualizar na memória
+        GitHubConfig.setToken(token);
+        
+        alert('✅ Token configurado com sucesso!\n\nAgora qualquer usuário pode fazer upload em qualquer dispositivo.');
+        console.log('✓ Token salvo no Firestore');
+        
+    } catch (error) {
+        console.error('Erro ao salvar token:', error);
+        alert('❌ Erro ao salvar token: ' + error.message);
     }
-    
-    console.log('✓ Token do GitHub está configurado');
-    return true;
 }
 
-// Auto-executar na primeira vez
+// Função para carregar o token ao iniciar
+async function initGitHubToken() {
+    try {
+        const success = await loadGitHubTokenFromFirestore();
+        if (success) {
+            console.log('✓ Sistema de upload pronto!');
+        } else {
+            console.warn('⚠️ Token do GitHub não está configurado');
+            console.log('Proprietário: Execute setupGitHubToken() no console');
+        }
+    } catch (error) {
+        console.error('Erro ao iniciar token:', error);
+    }
+}
+
+// Auto-executar quando Firestore estiver pronto
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
-        if (!localStorage.getItem('github_token')) {
-            console.warn('⚠️ Primeira vez? Configure seu token!');
-            console.log('Execute no console: setupGitHubToken()');
-        }
+        // Aguardar um pouco para Firestore inicializar
+        setTimeout(() => {
+            initGitHubToken();
+        }, 1000);
     });
 }

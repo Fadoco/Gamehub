@@ -87,7 +87,6 @@ class NotificationsManager {
 
     updateBadge() {
         const count = (window.userFriendRequestsReceived || []).length;
-        console.log('[NotificationsManager] updateBadge - count:', count);
         if (count > 0) {
             this.badge.textContent = count;
             this.badge.classList.remove('hidden');

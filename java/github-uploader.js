@@ -21,10 +21,11 @@ const GitHubUploader = {
             throw new Error('GitHub não está configurado. Verifique java/github-upload-config.js');
         }
 
-        // Verificar se token está configurado
-        let token = localStorage.getItem('github_token');
+        // Obter token do Firestore (carregado na memória)
+        let token = GitHubConfig.getToken();
+        
         if (!token || token === '') {
-            throw new Error('Token do GitHub não está configurado. Abra o console (F12) e execute: setupGitHubToken()');
+            throw new Error('Token do GitHub não está configurado. Proprietário: Execute setupGitHubToken() no console (F12)');
         }
 
         // Remover prefixo data:image/... do Base64 se existir
