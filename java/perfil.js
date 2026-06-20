@@ -771,6 +771,7 @@ const EditProfileModal = {
 
         const displayName = this.els.displayNameInput.value.trim();
         const bio = this.els.bioInput.value.trim();
+        const userId = window.auth.currentUser.uid;
 
         // Validar dados
         if (!this.validateFormData(displayName, bio)) {
@@ -786,18 +787,41 @@ const EditProfileModal = {
                 bio: bio
             };
 
-            // Incluir avatar: priorizar upload, depois URL
+            // ===== UPLOAD NO GITHUB =====
+            // Se houver arquivo de avatar para enviar
             if (this.state.avatarFile) {
-                updateData.avatar = this.state.avatarFile;
+                try {
+                    showToast('📤 Enviando avatar para GitHub...', 'info');
+                    const avatarUrl = await GitHubUploader.uploadAvatar(userId, this.state.avatarFile);
+                    updateData.avatar = avatarUrl;
+                    showToast('✓ Avatar enviado!', 'success');
+                } catch (error) {
+                    console.error('Erro ao enviar avatar:', error);
+                    showToast('Erro ao enviar avatar: ' + error.message, 'error');
+                    toggleLoader(false);
+                    return;
+                }
             } else if (this.els.avatarUrlInput && this.els.avatarUrlInput.value.trim()) {
+                // Se houver URL manual, usar ela
                 updateData.avatar = this.els.avatarUrlInput.value.trim();
             }
 
-            // Incluir banner: priorizar upload, depois URL
+            // Se houver arquivo de banner para enviar
             if (this.state.bannerFile) {
-                updateData.bannerURL = this.state.bannerFile;
-                updateData.bannerType = 'image';
+                try {
+                    showToast('📤 Enviando banner para GitHub...', 'info');
+                    const bannerUrl = await GitHubUploader.uploadBanner(userId, this.state.bannerFile);
+                    updateData.bannerURL = bannerUrl;
+                    updateData.bannerType = 'image';
+                    showToast('✓ Banner enviado!', 'success');
+                } catch (error) {
+                    console.error('Erro ao enviar banner:', error);
+                    showToast('Erro ao enviar banner: ' + error.message, 'error');
+                    toggleLoader(false);
+                    return;
+                }
             } else if (this.els.bannerUrlInput && this.els.bannerUrlInput.value.trim()) {
+                // Se houver URL manual, usar ela
                 updateData.bannerURL = this.els.bannerUrlInput.value.trim();
                 updateData.bannerType = 'image';
             }
@@ -808,8 +832,8 @@ const EditProfileModal = {
                 photoURL: updateData.avatar || window.auth.currentUser.photoURL
             });
 
-            // Atualizar Firestore
-            await window.db.collection('users').doc(window.auth.currentUser.uid).update(updateData);
+            // Atualizar Firestore (agora com URLs do GitHub ao invés de Base64)
+            await window.db.collection('users').doc(userId).update(updateData);
 
             showToast('✓ Perfil atualizado com sucesso!', 'success');
             
@@ -817,7 +841,7 @@ const EditProfileModal = {
             this.closeModal();
 
             // Recarregar dados
-            await window.loadUserData(window.auth.currentUser.uid);
+            await window.loadUserData(userId);
 
         } catch (error) {
             console.error('Erro ao atualizar perfil:', error);

@@ -48,6 +48,12 @@ firebase-debug.log
 # ✅ MANTÉM: scripts/ (scripts auxiliares)
 # ❌ IGNORA: nada (todos são úteis)
 
+# === GITHUB UPLOAD CONFIG ===
+# ⚠️ NÃO COMMITAMOS CONFIGURAÇÕES COM TOKENS
+java/github-upload-config.local.js
+java/.env
+.env.upload
+
 # Exceptions
 !README.md
 !.gitattributes
