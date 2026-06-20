@@ -74,8 +74,10 @@ const GitHubUploader = {
 
             // Terceiro: retornar URL raw da imagem
             const imageUrl = GitHubConfig.getImageUrl(userId, filename);
-            console.log('✓ Upload realizado:', imageUrl);
-            return imageUrl;
+            // Adicionar cache busting com timestamp para garantir que sempre pega a versão mais nova
+            const urlWithCacheBust = `${imageUrl}?t=${Date.now()}`;
+            console.log('✓ Upload realizado:', urlWithCacheBust);
+            return urlWithCacheBust;
 
         } catch (error) {
             console.error('❌ Erro no upload do GitHub:', error);

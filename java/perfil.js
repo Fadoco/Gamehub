@@ -836,12 +836,17 @@ const EditProfileModal = {
             await window.db.collection('users').doc(userId).update(updateData);
 
             showToast('✓ Perfil atualizado com sucesso!', 'success');
+            showToast('⏳ Atualizando visualização (2-3 segundos)...', 'info');
             
-            // Fechar modal
-            this.closeModal();
-
-            // Recarregar dados
-            await window.loadUserData(userId);
+            // Aguardar um pouco para GitHub processar a imagem
+            // Depois recarrega a página para mostrar a imagem atualizada
+            setTimeout(() => {
+                // Fechar modal
+                this.closeModal();
+                
+                // Recarregar a página para mostrar as imagens atualizadas do GitHub
+                window.location.reload();
+            }, 2500);
 
         } catch (error) {
             console.error('Erro ao atualizar perfil:', error);
