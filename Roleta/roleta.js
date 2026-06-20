@@ -268,9 +268,6 @@ window.closeBoxModal = () => {
 window.openBox = async (tier) => {
     if (isActionInProgress) return;
 
-    // SOM IMEDIATO NO CLIQUE
-    playSpinSound();
-
     if (!window.auth.currentUser) return window.showToast("Faça login para abrir caixas!", "info");
     
     const boxCosts = { 
@@ -282,6 +279,9 @@ window.openBox = async (tier) => {
     const cost = boxCosts[tier];
 
     if (window.userBalance < cost) return window.showToast("Saldo insuficiente!", "error");
+
+    // SOM IMEDIATO NO CLIQUE (DEPOIS da verificação de saldo)
+    playSpinSound();
 
     isActionInProgress = true;
 
