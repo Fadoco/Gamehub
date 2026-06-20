@@ -49,7 +49,8 @@ async function setupGitHubToken() {
         GitHubConfig.setToken(token);
         
         alert('✅ Token configurado com sucesso!\n\nAgora qualquer usuário pode fazer upload em qualquer dispositivo.');
-        console.log('✓ Token salvo no Firestore');
+        console.log('✓ Token salvo no Firestore e carregado em memória');
+        console.log('✓ Usuários podem fazer upload normalmente agora!');
         
     } catch (error) {
         console.error('Erro ao salvar token:', error);
@@ -59,6 +60,13 @@ async function setupGitHubToken() {
 
 // Função para carregar o token ao iniciar
 async function initGitHubToken() {
+    // Verificar se Firestore está realmente pronto
+    if (!window.db) {
+        console.warn('⚠️ Firestore não inicializado ainda, tentando novamente...');
+        setTimeout(initGitHubToken, 1000);
+        return;
+    }
+
     try {
         const success = await loadGitHubTokenFromFirestore();
         if (success) {
@@ -75,9 +83,9 @@ async function initGitHubToken() {
 // Auto-executar quando Firestore estiver pronto
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
-        // Aguardar um pouco para Firestore inicializar
+        // Aguardar Firebase inicializar corretamente
         setTimeout(() => {
             initGitHubToken();
-        }, 1000);
+        }, 2500); // Aumentado para dar tempo do Firebase iniciar
     });
 }

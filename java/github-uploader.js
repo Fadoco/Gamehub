@@ -16,11 +16,6 @@ const GitHubUploader = {
      * @returns {Promise<string>} URL da imagem no GitHub
      */
     async uploadImage(userId, imageBase64, filename) {
-        // Validar configuração
-        if (!GitHubConfig.isValid) {
-            throw new Error('GitHub não está configurado. Verifique java/github-upload-config.js');
-        }
-
         // Obter token do Firestore (carregado na memória)
         let token = GitHubConfig.getToken();
         
