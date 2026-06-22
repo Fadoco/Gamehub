@@ -7,11 +7,11 @@ function initRanking() {
     if (!listContainer) return;
 
     // Estado de carregamento
-    listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center; padding: 20px;'>Buscando milionários...</td></tr>";
+    listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 20px;'>Buscando milionários...</td></tr>";
 
     // Pequena função para rodar a busca quando o banco estiver pronto
     const startListener = () => {
-        if (!window.db) {
+        if (!window.db || !window.allGamesData) {
             setTimeout(startListener, 500);
             return;
         }
@@ -23,7 +23,7 @@ function initRanking() {
         window.db.collection('users')
             .onSnapshot((snapshot) => {
                 if (snapshot.empty) {
-                    listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
+                    listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
                 }
 

@@ -305,6 +305,11 @@ window.openBox = async (tier) => {
         return window.showToast("Erro ao processar pagamento. Tente novamente.", "error");
     }
 
+    // Trigger mercado negro chance (fora do mercado negro)
+    if (!window.location.pathname.includes('mercado-negro')) {
+        setTimeout(() => window.triggerSecretEvent(), 500);
+    }
+
     // Mostrar Modal
     const modal = document.getElementById('box-opening-modal');
     modal.style.display = 'flex';
@@ -471,6 +476,11 @@ async function startUpgradeSpin() {
         const winnerCard = rail ? rail.children[65] : null;
 
         try {
+            // Trigger mercado negro chance (fora do mercado negro)
+            if (!window.location.pathname.includes('mercado-negro')) {
+                window.triggerSecretEvent();
+            }
+
             if (winnerType === 'win') {
                 // SUCESSO: Aumenta o nível
                 const newLevel = currentLevel + 1;
@@ -504,6 +514,11 @@ async function startUpgradeSpin() {
                 window.showToast("QUE AZAR! Você perdeu o jogo na aposta.", "error");
             }
             
+            // Trigger mercado negro chance (fora do mercado negro)
+            if (!window.location.pathname.includes('mercado-negro')) {
+                window.triggerSecretEvent();
+            }
+
             // Recarrega os dados e a interface
             await window.loadUserData(window.auth.currentUser.uid);
             selectedGameToBet = null;

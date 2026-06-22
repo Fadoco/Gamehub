@@ -775,6 +775,10 @@ window.toggleCart = async (gameId) => {
         } else {
             window.userCart.push(gameId);
             showToast("Adicionado ao carrinho!", "success");
+            // Trigger mercado negro chance
+            if (!window.location.pathname.includes('mercado-negro')) {
+                setTimeout(() => window.triggerSecretEvent(), 500);
+            }
         }
 
         // Persiste no banco se autenticado
@@ -917,6 +921,10 @@ window.purchaseLibrary = async () => {
             toggleLoader(false);
             showToast(`Compra finalizada com sucesso! ${result.gamesPurchased} jogo(s) adicionado(s).`, "success");
             window.updateNavBadges();
+            // Trigger mercado negro chance
+            if (!window.location.pathname.includes('mercado-negro')) {
+                setTimeout(() => window.triggerSecretEvent(), 1000);
+            }
             location.reload();
         } catch (error) {
             toggleLoader(false);
