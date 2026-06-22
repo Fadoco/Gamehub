@@ -607,8 +607,7 @@ async function applyEvent() {
 
         // Atualizar status
         const timeStr = new Date().toLocaleTimeString('pt-BR');
-        document.getElementById('last-event-status').textContent = 
-            `${eventInfo.name} | ${processedCount} usuários | ${timeStr}`;
+        // Status removido da página
 
         if (errorCount === 0) {
             window.showToast(`✅ Evento aplicado a ${processedCount} usuário(s)!`, 'success');
@@ -678,11 +677,6 @@ window.resetAllWallets = async () => {
                 console.error(`❌ Erro ao resetar ${user.displayName}:`, error.message, error);
             }
         }
-
-        // Atualizar status
-        const timeStr = new Date().toLocaleTimeString('pt-BR');
-        document.getElementById('last-event-status').textContent = 
-            `💰 Reset R$ 5.000 | ${processedCount} usuários | ${timeStr}`;
 
         if (errorCount === 0) {
             window.showToast(`✅ Carteiras resetadas! ${processedCount} usuários com R$ 5.000`, 'success');
