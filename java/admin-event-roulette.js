@@ -389,7 +389,7 @@ function showResultModal() {
     let targetUsers = nonAdminUsers;
     
     if (selectedPeople === 'specific') {
-        targetUsers = nonAdminUsers.slice(0, peopleCount);
+        targetUsers = shuffleArray(nonAdminUsers).slice(0, peopleCount);
     }
     
     // Armazenar usuários afetados
@@ -473,6 +473,18 @@ window.confirmAndApplyEvent = async () => {
 };
 
 /**
+ * Embaralhar array (Fisher-Yates shuffle)
+ */
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+/**
  * Aplicar evento aos usuários
  */
 async function applyEvent() {
@@ -494,7 +506,7 @@ async function applyEvent() {
         
         let targetUsers = nonAdminUsers;
         if (selectedPeople === 'specific') {
-            targetUsers = nonAdminUsers.slice(0, peopleCount);
+            targetUsers = shuffleArray(nonAdminUsers).slice(0, peopleCount);
         }
 
         console.log(`🎲 Aplicando evento: ${selectedEvent}`);
