@@ -10,6 +10,7 @@ let allUsers = [];
 let eventInProgress = false;
 let rouletteInProgress = false;
 let peopleCount = 0;
+let affectedUsers = [];
 
 // Mapeamento de eventos
 const EVENTS = {
@@ -390,6 +391,9 @@ function showResultModal() {
     if (selectedPeople === 'specific') {
         targetUsers = nonAdminUsers.slice(0, peopleCount);
     }
+    
+    // Armazenar usuários afetados
+    affectedUsers = targetUsers;
 
     // Determinar tipo de quantidade
     let quantityText = '';
@@ -410,6 +414,16 @@ function showResultModal() {
     document.getElementById('result-action').textContent = eventInfo.action;
     document.getElementById('result-quantity').textContent = quantityText;
     document.getElementById('result-affected-users').textContent = `${targetUsers.length} usuário${targetUsers.length > 1 ? 's' : ''}`;
+    
+    // Gerar lista de usuários afetados
+    const userListHTML = targetUsers.length > 0 
+        ? targetUsers.map(u => `<li>👤 ${u.displayName}</li>`).join('')
+        : '<li style="opacity: 0.6;">Nenhum usuário</li>';
+    
+    const userListElement = document.getElementById('result-affected-list');
+    if (userListElement) {
+        userListElement.innerHTML = userListHTML;
+    }
 
     // Mostrar modal
     document.getElementById('result-modal').classList.add('active');
@@ -615,6 +629,13 @@ async function applyEvent() {
         eventInProgress = false;
     }
 }
+
+/**
+ * Iniciar apresentação - Reset de carteira de todos usuários
+ */
+window.initializePresentation = async () => {
+    await window.resetAllWallets();
+};
 
 /**
  * Reset de carteira - Todos usuários (menos admins) para R$ 5.000

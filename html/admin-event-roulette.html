@@ -306,6 +306,28 @@
             font-size: 1.1rem;
         }
 
+        #result-affected-list {
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+        }
+
+        #result-affected-list li {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 4px 0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            border-left: 3px solid var(--accent);
+            transition: all 0.2s ease;
+        }
+
+        #result-affected-list li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
+
         .result-actions {
             display: flex;
             gap: 15px;
@@ -774,6 +796,12 @@
                     <div class="result-detail-row">
                         <span class="result-label">Usuários Afetados:</span>
                         <span class="result-value" id="result-affected-users">-</span>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 8px;">
+                        <div style="font-weight: 600; margin-bottom: 8px; color: #2c3e50;">👥 Usuários:</div>
+                        <ul id="result-affected-list" style="list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto;">
+                            <li style="opacity: 0.6;">Carregando...</li>
+                        </ul>
                     </div>
                 </div>
 
