@@ -11,7 +11,7 @@ function initRanking() {
 
     // Pequena função para rodar a busca quando o banco estiver pronto
     const startListener = () => {
-        if (!window.db || !window.allGamesData) {
+        if (!window.db || !window.allGamesData || window.allGamesData.length === 0) {
             setTimeout(startListener, 500);
             return;
         }
@@ -54,6 +54,9 @@ function initRanking() {
                         }
 
                         const totalValue = balance + gamesValue;
+                        
+                        // DEBUG
+                        console.log(`[RANKING] ${user.displayName || 'Unknown'}: balance=${balance}, gamesValue=${gamesValue}, total=${totalValue}`);
 
                         return {
                             uid,

@@ -63,10 +63,22 @@ async function loadResellerGames() {
         // Renderizar cards de revenda
         container.innerHTML = userGames.map(game => {
             const originalPrice = window.utils.parsePrice(game.currentPrice);
-            const resalePrice = originalPrice * RESALE_CUT;
-            const taxAmount = originalPrice * TAX_PERCENTAGE;
             const gameId = String(game.id);
+            const upgradeLevel = (window.userUpgrades && window.userUpgrades[gameId]) || 0;
+            
+            // Calcular o valor considerando upgrades
+            const salePrice = window.RankSystem ? 
+                window.RankSystem.calculateValuation(originalPrice, upgradeLevel) : 
+                originalPrice;
+            
+            const resalePrice = salePrice * RESALE_CUT;
+            const taxAmount = salePrice * TAX_PERCENTAGE;
             const isSelected = resaleSelection.has(gameId);
+            
+            // Se houver upgrade, mostrar o multiplicador
+            const upgradeLabel = upgradeLevel > 0 ? 
+                `<span style="font-size: 11px; color: #f39c12; margin-top: 4px;">⭐ ${window.RankSystem.getRankMetadata(upgradeLevel).label}</span>` : 
+                '';
 
             return `
                 <div class="reseller-card ${isSelected ? 'selected' : ''}" data-game-id="${gameId}">
@@ -76,11 +88,12 @@ async function loadResellerGames() {
                     <img src="${game.coverUrl || game.image}" alt="${game.title}" class="reseller-card__image">
                     <div class="reseller-card__content">
                         <h3 class="reseller-card__title">${game.title}</h3>
+                        ${upgradeLabel}
                         
                         <div class="reseller-card__prices">
                             <div class="price-row">
-                                <span class="price-label">Valor Original</span>
-                                <span class="price-value original">R$ ${originalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                <span class="price-label">${upgradeLevel > 0 ? 'Valor Melhorado' : 'Valor Original'}</span>
+                                <span class="price-value original">R$ ${salePrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label">Taxa (-30%)</span>
@@ -163,17 +176,24 @@ function updateResellingSummary() {
     let totalResale = 0;
     let totalTax = 0;
 
-    // Calcular totais para todos os jogos do usuário
+    // Calcular totais para todos os jogos do usuário (considerando upgrades)
     if (window.userLibrary && window.allGamesData) {
         window.userLibrary.forEach(gameId => {
             const game = window.allGamesData.find(g => 
                 String(g.id) === String(gameId) || Number(g.id) === Number(gameId)
             );
             if (game) {
-                const price = window.utils.parsePrice(game.currentPrice);
-                totalOriginal += price;
-                totalResale += price * RESALE_CUT;
-                totalTax += price * TAX_PERCENTAGE;
+                const basePrice = window.utils.parsePrice(game.currentPrice);
+                const upgradeLevel = (window.userUpgrades && window.userUpgrades[String(gameId)]) || 0;
+                
+                // Calcular valor considerando upgrade
+                const salePrice = window.RankSystem ? 
+                    window.RankSystem.calculateValuation(basePrice, upgradeLevel) : 
+                    basePrice;
+                
+                totalOriginal += salePrice;
+                totalResale += salePrice * RESALE_CUT;
+                totalTax += salePrice * TAX_PERCENTAGE;
             }
         });
     }
@@ -196,10 +216,17 @@ function updateResellingSummary() {
     resaleSelection.forEach(gameId => {
         const game = window.allGamesData.find(g => String(g.id) === String(gameId));
         if (game) {
-            const price = window.utils.parsePrice(game.currentPrice);
-            selectedOriginal += price;
-            selectedResale += price * RESALE_CUT;
-            selectedTax += price * TAX_PERCENTAGE;
+            const basePrice = window.utils.parsePrice(game.currentPrice);
+            const upgradeLevel = (window.userUpgrades && window.userUpgrades[String(gameId)]) || 0;
+            
+            // Calcular valor considerando upgrade
+            const salePrice = window.RankSystem ? 
+                window.RankSystem.calculateValuation(basePrice, upgradeLevel) : 
+                basePrice;
+            
+            selectedOriginal += salePrice;
+            selectedResale += salePrice * RESALE_CUT;
+            selectedTax += salePrice * TAX_PERCENTAGE;
         }
     });
 
@@ -250,8 +277,15 @@ window.confirmResale = async () => {
         resaleSelection.forEach(gameId => {
             const game = window.allGamesData.find(g => String(g.id) === String(gameId));
             if (game) {
-                const originalPrice = window.utils.parsePrice(game.currentPrice);
-                const resalePrice = originalPrice * RESALE_CUT;
+                const basePrice = window.utils.parsePrice(game.currentPrice);
+                const upgradeLevel = (window.userUpgrades && window.userUpgrades[String(gameId)]) || 0;
+                
+                // Calcular valor considerando upgrade
+                const salePrice = window.RankSystem ? 
+                    window.RankSystem.calculateValuation(basePrice, upgradeLevel) : 
+                    basePrice;
+                
+                const resalePrice = salePrice * RESALE_CUT;
                 totalResaleValue += resalePrice;
                 gamesToRemove.push(Number(gameId));
             }
