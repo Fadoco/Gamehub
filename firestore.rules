@@ -25,8 +25,10 @@ service cloud.firestore {
       // - Usuário autenticado (para buscas de amigos, campos públicos são suficientes)
       allow read: if isOwnUser(userId) || isAdmin() || request.auth != null;
       
-      // Escrita: Apenas o próprio usuário com validação de dados
-      allow write: if isOwnUser(userId) && validateUserData(request.resource.data);
+      // Escrita: 
+      // - Próprio usuário com validação
+      // - Admin sem restrições (para apresentações e administração)
+      allow write: if isAdmin() || (isOwnUser(userId) && validateUserData(request.resource.data));
       
       // Criação: Apenas o próprio usuário (quando cria sua conta)
       allow create: if isOwnUser(userId) && validateNewUserData(request.resource.data);

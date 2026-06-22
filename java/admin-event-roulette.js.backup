@@ -1,14 +1,14 @@
 /**
  * Painel de Roleta de Eventos - Admin
- * Sistema com roletas giratórias e resultado automático
+ * Sistema para apresentações ao vivo com 3 roletas sequenciais
  */
 
 let selectedEvent = null;
 let selectedPeople = null;
 let selectedAmount = null;
 let allUsers = [];
+let applyMode = 'all';
 let eventInProgress = false;
-let rouletteInProgress = false;
 let peopleCount = 0;
 
 // Mapeamento de eventos
@@ -16,32 +16,27 @@ const EVENTS = {
     money_win: {
         name: '💰 Ganhar Dinheiro',
         icon: 'fas fa-coins',
-        color: '#f39c12',
-        action: 'Ganhar'
+        color: '#f39c12'
     },
     money_lose: {
         name: '📉 Perder Dinheiro',
         icon: 'fas fa-money-bill-wave',
-        color: '#e74c3c',
-        action: 'Perder'
+        color: '#e74c3c'
     },
     game_win: {
         name: '🎁 Ganhar Jogo',
         icon: 'fas fa-gift',
-        color: '#2ecc71',
-        action: 'Ganhar'
+        color: '#2ecc71'
     },
     game_lose: {
         name: '🗑️ Perder Jogo',
         icon: 'fas fa-trash',
-        color: '#9b59b6',
-        action: 'Perder'
+        color: '#9b59b6'
     },
     upgrade_random: {
         name: '⭐ Jogo Aleatório Melhorado',
         icon: 'fas fa-star',
-        color: '#3498db',
-        action: 'Ganhar'
+        color: '#3498db'
     }
 };
 
@@ -188,139 +183,165 @@ async function loadGames() {
 }
 
 /**
- * SISTEMA DE ROLETA ALEATÓRIA
+ * Inicializar apresentação (reset de carteiras)
  */
-
-/**
- * Iniciar a roleta giratória
- */
-window.startRoulette = async () => {
-    if (rouletteInProgress) {
-        window.showToast('A roleta já está girando!', 'info');
+window.initializePresentation = async () => {
+    console.log('🔍 Verificando inicialização...');
+    console.log('Firebase DB disponível:', !!window.db);
+    console.log('Total de usuários carregados:', allUsers.length);
+    
+    const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
+    console.log('Usuários não-admin:', nonAdminUsers.length);
+    
+    if (nonAdminUsers.length === 0) {
+        window.showToast('❌ Nenhum usuário não-admin para resetar', 'warning');
         return;
     }
 
-    console.log('🎲 Iniciando roleta...');
-    rouletteInProgress = true;
-    
-    // Desabilitar botão
-    document.getElementById('spin-button').disabled = true;
-    document.getElementById('spin-button').innerHTML = '<i class="fas fa-spinner"></i> GIRANDO...';
+    const confirmed = confirm(
+        `⚠️ Isso vai resetar a carteira de ${nonAdminUsers.length} usuários para R$ 5.000\n\nDeseja continuar?`
+    );
+
+    if (!confirmed) return;
+
+    if (eventInProgress) {
+        window.showToast('Um evento já está sendo processado...', 'info');
+        return;
+    }
+
+    eventInProgress = true;
 
     try {
-        // PASSO 1: Girar e selecionar evento
-        console.log('🎲 PASSO 1: Selecionando evento aleatório...');
-        await spinRoulette('event-wheel', () => selectRandomEvent());
-        await new Promise(r => setTimeout(r, 1000)); // Pausa de 1s
+        window.showToast(`💰 Inicializando apresentação (${nonAdminUsers.length} usuários)...`, 'info');
 
-        // PASSO 2: Girar e selecionar quantidade de pessoas
-        console.log('👥 PASSO 2: Selecionando quantidade de pessoas...');
-        document.getElementById('roulette-people').classList.remove('hidden');
-        await spinRoulette('people-wheel', () => selectRandomPeople());
-        await new Promise(r => setTimeout(r, 1000)); // Pausa de 1s
+        let processedCount = 0;
+        let errorCount = 0;
 
-        // PASSO 3: Girar e selecionar quantidade
-        console.log('💰 PASSO 3: Selecionando quantidade...');
-        document.getElementById('roulette-amount').classList.remove('hidden');
-        updateAmountWheel();
-        await spinRoulette('amount-wheel', () => selectRandomAmount());
-        await new Promise(r => setTimeout(r, 500)); // Pausa de 0.5s
+        for (const user of nonAdminUsers) {
+            try {
+                console.log(`📝 Atualizando ${user.displayName} (${user.uid})...`);
+                
+                const userRef = window.db.collection('users').doc(user.uid);
+                
+                // Usar set com merge para garantir que funciona mesmo se balance não existir
+                await userRef.set({
+                    balance: 5000
+                }, { merge: true });
+                
+                console.log(`✅ ${user.displayName} atualizado com sucesso para R$ 5.000`);
+                processedCount++;
+            } catch (error) {
+                errorCount++;
+                console.error(`❌ Erro ao resetar ${user.displayName}:`, error.message, error);
+            }
+        }
 
-        // MOSTRAR RESULTADO
-        showResultModal();
+        // Atualizar status
+        const timeStr = new Date().toLocaleTimeString('pt-BR');
+        document.getElementById('last-event-status').textContent = 
+            `💰 Apresentação Inicializada | ${processedCount} usuários | ${timeStr}`;
+
+        if (errorCount === 0) {
+            window.showToast(`✅ Apresentação inicializada! ${processedCount} usuários com R$ 5.000`, 'success');
+            console.log(`✅ Apresentação inicializada com sucesso - ${processedCount} usuários atualizados`);
+        } else {
+            window.showToast(`⚠️ Apresentação parcial: ${processedCount} OK, ${errorCount} erro(s)`, 'warning');
+            console.log(`⚠️ Apresentação com erros: ${processedCount} OK, ${errorCount} falhas`);
+        }
 
     } catch (error) {
-        console.error('❌ Erro na roleta:', error);
-        window.showToast('Erro ao girar a roleta', 'error');
+        console.error('❌ Erro crítico ao inicializar apresentação:', error.message, error);
+        window.showToast('Erro ao inicializar apresentação: ' + error.message, 'error');
     } finally {
-        rouletteInProgress = false;
-        document.getElementById('spin-button').disabled = false;
-        document.getElementById('spin-button').innerHTML = '<i class="fas fa-spinner"></i> GIRAR ROLETA';
+        eventInProgress = false;
     }
 };
 
 /**
- * Animar roleta girando
+ * ROLETA 1: Selecionar evento
  */
-function spinRoulette(wheelId, selectFunction) {
-    return new Promise(resolve => {
-        const wheel = document.getElementById(wheelId);
-        const cards = wheel.querySelectorAll('.event-card');
-        
-        // Remover seleção anterior
-        cards.forEach(card => card.classList.remove('selected'));
-        
-        // Adicionar classe de spinning
-        wheel.classList.add('spinning');
-        
-        // Girar por 600ms
-        setTimeout(() => {
-            wheel.classList.remove('spinning');
-            
-            // Executar função de seleção
-            selectFunction();
-            
-            // Resolver promise
-            resolve();
-        }, 600);
-    });
-}
-
-/**
- * Selecionar evento aleatório
- */
-function selectRandomEvent() {
-    const eventKeys = Object.keys(EVENTS);
-    const randomKey = eventKeys[Math.floor(Math.random() * eventKeys.length)];
+window.selectEvent = (eventKey) => {
+    selectedEvent = eventKey;
+    selectedPeople = null;
+    selectedAmount = null;
     
-    selectedEvent = randomKey;
-    const eventInfo = EVENTS[randomKey];
-    
-    console.log(`✅ Evento selecionado: ${randomKey} - ${eventInfo.name}`);
-    
-    document.getElementById('selected-event-name').textContent = eventInfo.name;
-    
-    // Marcar card selecionado
-    document.querySelectorAll('#event-wheel .event-card').forEach(card => {
-        card.classList.remove('selected');
-        if (card.dataset.event === randomKey) {
-            card.classList.add('selected');
-        }
-    });
-}
-
-/**
- * Selecionar quantidade de pessoas aleatória
- */
-function selectRandomPeople() {
-    const modes = ['all', 'specific'];
-    const randomMode = modes[Math.floor(Math.random() * modes.length)];
-    
-    selectedPeople = randomMode;
-    const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
-    
-    if (randomMode === 'all') {
-        peopleCount = nonAdminUsers.length;
-        document.getElementById('selected-people-name').textContent = 'TODOS os usuários';
-        console.log(`✅ Seleção: TODOS - ${peopleCount} usuários`);
-    } else {
-        // Número aleatório entre 1 e 50% dos usuários
-        const maxSpecific = Math.ceil(nonAdminUsers.length / 2);
-        peopleCount = Math.floor(Math.random() * (maxSpecific - 1)) + 1;
-        document.getElementById('selected-people-name').textContent = `${peopleCount} usuário(s)`;
-        console.log(`✅ Seleção: ESPECÍFICO - ${peopleCount} usuários`);
-    }
-    
-    document.getElementById('affected-people-count').textContent = peopleCount;
-    
-    // Marcar card selecionado
+    // Resetar seleções das próximas roletas
     document.querySelectorAll('#people-wheel .event-card').forEach(card => {
         card.classList.remove('selected');
-        if (card.dataset.people === randomMode) {
-            card.classList.add('selected');
-        }
     });
-}
+    document.querySelectorAll('#amount-wheel .event-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Atualizar visual da roleta 1
+    document.querySelectorAll('.event-card').forEach(card => {
+        card.classList.toggle('selected', card.dataset.event === eventKey);
+    });
+
+    // Atualizar nome do evento
+    const eventInfo = EVENTS[eventKey];
+    document.getElementById('selected-event-name').textContent = eventInfo.name;
+
+    // Mostrar roleta 2 (pessoas)
+    document.getElementById('roulette-people').classList.remove('hidden');
+    document.getElementById('roulette-amount').classList.add('hidden');
+    
+    // Resetar seleção de pessoas
+    document.getElementById('selected-people-name').textContent = '-';
+    document.getElementById('affected-people-count').textContent = '-';
+    document.getElementById('specific-people-input').style.display = 'none';
+
+    console.log(`✅ Evento selecionado: ${eventKey}`);
+};
+
+/**
+ * ROLETA 2: Selecionar quantidade de pessoas
+ */
+window.selectPeople = (peopleMode) => {
+    selectedPeople = peopleMode;
+    selectedAmount = null;
+    
+    // Atualizar visual
+    document.querySelectorAll('#people-wheel .event-card').forEach(card => {
+        card.classList.toggle('selected', card.dataset.people === peopleMode);
+    });
+
+    // Resetar quantidade
+    document.getElementById('selected-amount-name').textContent = '-';
+
+    if (peopleMode === 'all') {
+        const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
+        peopleCount = nonAdminUsers.length;
+        document.getElementById('selected-people-name').textContent = 'TODOS os usuários';
+        document.getElementById('affected-people-count').textContent = peopleCount;
+        document.getElementById('specific-people-input').style.display = 'none';
+    } else {
+        const count = parseInt(document.getElementById('people-count').value) || 10;
+        peopleCount = Math.min(count, allUsers.filter(u => !u.isAdmin).length);
+        document.getElementById('selected-people-name').textContent = `${peopleCount} usuário(s)`;
+        document.getElementById('affected-people-count').textContent = peopleCount;
+        document.getElementById('specific-people-input').style.display = 'block';
+    }
+
+    // Mostrar roleta 3 (quantidade)
+    document.getElementById('roulette-amount').classList.remove('hidden');
+    updateAmountWheel();
+
+    console.log(`✅ Seleção de pessoas: ${peopleMode}`);
+};
+
+/**
+ * Atualizar contagem de pessoas (input)
+ */
+window.updatePeopleCount = () => {
+    if (selectedPeople === 'specific') {
+        const count = parseInt(document.getElementById('people-count').value) || 10;
+        const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
+        peopleCount = Math.min(count, nonAdminUsers.length);
+        document.getElementById('selected-people-name').textContent = `${peopleCount} usuário(s)`;
+        document.getElementById('affected-people-count').textContent = peopleCount;
+    }
+};
 
 /**
  * Atualizar a roleta 3 baseado no tipo de evento
@@ -329,139 +350,92 @@ function updateAmountWheel() {
     const wheel = document.getElementById('amount-wheel');
     wheel.innerHTML = '';
 
+    const amountLabel = document.getElementById('amount-label');
+    const amountValue = document.getElementById('amount-value');
+
     if (selectedEvent === 'money_win' || selectedEvent === 'money_lose') {
+        amountLabel.textContent = 'Valor de Dinheiro (R$):';
+        amountValue.min = 10;
+        amountValue.step = 5;
+        amountValue.value = 100;
+        document.getElementById('amount-input').style.display = 'block';
+
+        // Criar cards para quantidade de dinheiro (pré-definidas)
         const amounts = [100, 250, 500, 1000, 2000, 5000];
         amounts.forEach(amount => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.textContent = `R$ ${amount.toLocaleString('pt-BR')}`;
-            card.dataset.amount = amount;
+            card.onclick = () => selectAmount(amount, `R$ ${amount.toLocaleString('pt-BR')}`);
             wheel.appendChild(card);
         });
 
     } else if (selectedEvent === 'game_win' || selectedEvent === 'game_lose') {
+        amountLabel.textContent = 'Quantidade de Jogos:';
+        amountValue.min = 1;
+        amountValue.step = 1;
+        amountValue.value = 1;
+        document.getElementById('amount-input').style.display = 'block';
+
+        // Criar cards para quantidade de jogos
         const quantities = [1, 2, 3, 5, 10];
         quantities.forEach(qty => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `<i class="fas fa-gamepad" style="margin-right: 5px;"></i> ${qty} Jogo${qty > 1 ? 's' : ''}`;
-            card.dataset.amount = qty;
+            card.onclick = () => selectAmount(qty, `${qty} Jogo${qty > 1 ? 's' : ''}`);
             wheel.appendChild(card);
         });
 
     } else if (selectedEvent === 'upgrade_random') {
+        amountLabel.textContent = 'Quantidade de Melhorias:';
+        amountValue.min = 1;
+        amountValue.step = 1;
+        amountValue.value = 1;
+        document.getElementById('amount-input').style.display = 'block';
+
+        // Criar cards para quantidade de upgrades
         const upgrades = [1, 2, 3];
         upgrades.forEach(upgrade => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `<i class="fas fa-star" style="margin-right: 5px;"></i> ${upgrade} Upgrade${upgrade > 1 ? 's' : ''}`;
-            card.dataset.amount = upgrade;
+            card.onclick = () => selectAmount(upgrade, `${upgrade} Upgrade${upgrade > 1 ? 's' : ''}`);
             wheel.appendChild(card);
         });
     }
 }
 
 /**
- * Selecionar quantidade aleatória
+ * ROLETA 3: Selecionar quantidade
  */
-function selectRandomAmount() {
-    const cards = document.querySelectorAll('#amount-wheel .event-card');
-    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+window.selectAmount = (amount, displayName) => {
+    selectedAmount = amount;
+    document.getElementById('selected-amount-name').textContent = displayName;
     
-    selectedAmount = parseInt(randomCard.dataset.amount);
+    // Atualizar input
+    document.getElementById('amount-value').value = amount;
+
+    // Atualizar visual dos cards - selecionar apenas o clicado
+    document.querySelectorAll('#amount-wheel .event-card').forEach(card => {
+        card.classList.remove('selected');
+    });
     
-    console.log(`✅ Quantidade selecionada: ${selectedAmount}`);
-    
-    document.getElementById('selected-amount-name').textContent = randomCard.textContent;
-    
-    // Marcar card selecionado
-    cards.forEach(card => card.classList.remove('selected'));
-    randomCard.classList.add('selected');
-}
+    // Encontrar e selecionar o card correto
+    document.querySelectorAll('#amount-wheel .event-card').forEach(card => {
+        if (card.textContent.trim() === displayName.trim() || 
+            card.innerText.includes(displayName)) {
+            card.classList.add('selected');
+        }
+    });
 
-/**
- * Mostrar modal de resultado
- */
-function showResultModal() {
-    const eventInfo = EVENTS[selectedEvent];
-    const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
-    let targetUsers = nonAdminUsers;
-    
-    if (selectedPeople === 'specific') {
-        targetUsers = nonAdminUsers.slice(0, peopleCount);
-    }
-
-    // Determinar tipo de quantidade
-    let quantityText = '';
-    if (selectedEvent === 'money_win' || selectedEvent === 'money_lose') {
-        quantityText = `R$ ${selectedAmount.toLocaleString('pt-BR')}`;
-    } else if (selectedEvent === 'game_win' || selectedEvent === 'game_lose') {
-        quantityText = `${selectedAmount} Jogo${selectedAmount > 1 ? 's' : ''}`;
-    } else if (selectedEvent === 'upgrade_random') {
-        quantityText = `${selectedAmount} Upgrade${selectedAmount > 1 ? 's' : ''}`;
-    }
-
-    // Preencher modal
-    document.getElementById('result-icon').textContent = 
-        selectedEvent === 'money_win' || selectedEvent === 'game_win' ? '✅' : '⚠️';
-    
-    document.getElementById('result-title').textContent = eventInfo.name;
-    document.getElementById('result-event-type').textContent = eventInfo.name;
-    document.getElementById('result-action').textContent = eventInfo.action;
-    document.getElementById('result-quantity').textContent = quantityText;
-    document.getElementById('result-affected-users').textContent = `${targetUsers.length} usuário${targetUsers.length > 1 ? 's' : ''}`;
-
-    // Mostrar modal
-    document.getElementById('result-modal').classList.add('active');
-
-    console.log('🎊 Modal de resultado exibido');
-}
-
-/**
- * Fechar modal de resultado
- */
-window.closeResultModal = () => {
-    document.getElementById('result-modal').classList.remove('active');
-    
-    // Resetar roletas
-    selectedEvent = null;
-    selectedPeople = null;
-    selectedAmount = null;
-    
-    document.getElementById('roulette-people').classList.add('hidden');
-    document.getElementById('roulette-amount').classList.add('hidden');
-    
-    document.querySelectorAll('.event-card').forEach(card => card.classList.remove('selected'));
-    
-    // Limpar displays
-    document.getElementById('selected-event-name').textContent = '-';
-    document.getElementById('selected-people-name').textContent = '-';
-    document.getElementById('affected-people-count').textContent = '-';
-    document.getElementById('selected-amount-name').textContent = '-';
-
-    console.log('🔄 Roleta resetada para novo giro');
-};
-
-/**
- * Confirmar e aplicar evento
- */
-window.confirmAndApplyEvent = async () => {
-    if (!selectedEvent || !selectedPeople || selectedAmount === null) {
-        window.showToast('Erro: dados de evento incompletos', 'error');
-        return;
-    }
-
-    // Fechar modal
-    document.getElementById('result-modal').classList.remove('active');
-
-    // Aplicar evento
-    await applyEvent();
+    console.log(`✅ Quantidade selecionada: ${displayName}`);
 };
 
 /**
  * Aplicar evento aos usuários
  */
-async function applyEvent() {
+window.applyEvent = async () => {
     if (!selectedEvent || !selectedPeople || selectedAmount === null) {
         window.showToast('Selecione evento, pessoas e quantidade!', 'warning');
         return;
@@ -502,6 +476,7 @@ async function applyEvent() {
                         const moneyWin = selectedAmount || 100;
                         console.log(`   💵 ${user.displayName}: +R$ ${moneyWin}`);
                         
+                        // Primeiro, get o documento para ter o balance atual
                         const userDocWin = await userRef.get();
                         const currentBalanceWin = userDocWin.data()?.balance || 0;
                         
@@ -514,6 +489,7 @@ async function applyEvent() {
                         const moneyLose = selectedAmount || 100;
                         console.log(`   💸 ${user.displayName}: -R$ ${moneyLose}`);
                         
+                        // Primeiro, get o documento para ter o balance atual
                         const userDocLose = await userRef.get();
                         const currentBalanceLose = userDocLose.data()?.balance || 0;
                         
@@ -523,6 +499,7 @@ async function applyEvent() {
                         break;
 
                     case 'game_win':
+                        // Selecionar jogos aleatórios
                         if (window.allGamesData && window.allGamesData.length > 0) {
                             const gamesToAdd = [];
                             const qtyGames = selectedAmount || 1;
@@ -542,6 +519,7 @@ async function applyEvent() {
                         break;
 
                     case 'game_lose':
+                        // Remover jogos aleatórios
                         const userDoc = await userRef.get();
                         const library = userDoc.data().library || [];
                         
@@ -604,17 +582,13 @@ async function applyEvent() {
             console.log(`⚠️ Evento com erros: ${processedCount} OK, ${errorCount} falhas`);
         }
 
-        // Resetar para próximo giro
-        await new Promise(r => setTimeout(r, 1500));
-        closeResultModal();
-
     } catch (error) {
         console.error('❌ Erro ao aplicar evento:', error);
         window.showToast('Erro ao aplicar evento: ' + error.message, 'error');
     } finally {
         eventInProgress = false;
     }
-}
+};
 
 /**
  * Reset de carteira - Todos usuários (menos admins) para R$ 5.000
@@ -638,23 +612,15 @@ window.resetAllWallets = async () => {
         window.showToast(`💰 Resetando carteiras de ${nonAdminUsers.length} usuários...`, 'info');
 
         let processedCount = 0;
-        let errorCount = 0;
 
         for (const user of nonAdminUsers) {
             try {
-                console.log(`📝 Atualizando ${user.displayName} (${user.uid})...`);
-                
-                const userRef = window.db.collection('users').doc(user.uid);
-                
-                await userRef.set({
+                await window.db.collection('users').doc(user.uid).update({
                     balance: 5000
-                }, { merge: true });
-                
-                console.log(`✅ ${user.displayName} atualizado com sucesso para R$ 5.000`);
+                });
                 processedCount++;
             } catch (error) {
-                errorCount++;
-                console.error(`❌ Erro ao resetar ${user.displayName}:`, error.message, error);
+                console.error(`Erro ao resetar usuário ${user.displayName}:`, error);
             }
         }
 
@@ -663,17 +629,12 @@ window.resetAllWallets = async () => {
         document.getElementById('last-event-status').textContent = 
             `💰 Reset R$ 5.000 | ${processedCount} usuários | ${timeStr}`;
 
-        if (errorCount === 0) {
-            window.showToast(`✅ Carteiras resetadas! ${processedCount} usuários com R$ 5.000`, 'success');
-            console.log(`✅ Reset de carteira concluído`);
-        } else {
-            window.showToast(`⚠️ Reset parcial: ${processedCount} OK, ${errorCount} erro(s)`, 'warning');
-            console.log(`⚠️ Reset com erros: ${processedCount} OK, ${errorCount} falhas`);
-        }
+        window.showToast(`✅ Carteiras resetadas! ${processedCount} usuários com R$ 5.000`, 'success');
+        console.log(`✅ Reset de carteira concluído`);
 
     } catch (error) {
-        console.error('❌ Erro ao resetar carteiras:', error.message, error);
-        window.showToast('Erro ao resetar carteiras: ' + error.message, 'error');
+        console.error('❌ Erro ao resetar carteiras:', error);
+        window.showToast('Erro ao resetar carteiras', 'error');
     } finally {
         eventInProgress = false;
     }
