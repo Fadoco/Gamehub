@@ -1,15 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Biblioteca - Veja seus jogos comprados no GameHub.">
+    <meta name="description" content="Revenda - Revenda seus jogos com 70% do valor.">
     <meta name="theme-color" content="#1a1a2e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="../manifest.json">
     <link rel="apple-touch-icon" href="../images/icon-192x192.png">
-    <title>GameHub - Minha Biblioteca</title>
+    <title>GameHub - Revenda de Jogos</title>
     
     <!-- === CSS MODULARIZADO (Mobile-First) === -->
     <link rel="stylesheet" href="../css/variables.css">
@@ -26,7 +26,7 @@
     
     <!-- === CSS ESPECÍFICO === -->
     <link rel="stylesheet" href="../css/header-footer.css">
-    <link rel="stylesheet" href="../css/biblioteca.css">
+    <link rel="stylesheet" href="../css/reseller.css">
     <link rel="stylesheet" href="../css/upgrades.css">
     
     <!-- === ÍCONES === -->
@@ -46,7 +46,7 @@
     <script src="../java/theme-switcher.js"></script>
     <script src="../java/notifications-manager.js" defer></script>
     <script src="../java/ranks.js" defer></script>
-    <script src="../java/library.js" defer></script>
+    <script src="../java/reseller.js" defer></script>
     <script src="../java/global.js" defer></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/search.js" defer></script>
@@ -56,10 +56,10 @@
         <div class="topbar__left">
             <div class="brand cursor-pointer" onclick="window.location.href='../index.html'">GameHub</div>
             <nav class="topbar__menu">
-                <a href="biblioteca.html" class="active">Biblioteca</a>
+                <a href="biblioteca.html">Biblioteca</a>
                 <a href="../Roleta/roleta.html">Roleta</a>
                 <a href="ranking.html">Ranking</a>
-                <a href="reseller.html">Revenda</a>
+                <a href="reseller.html" class="active">Revenda</a>
                 <a href="carrinho.html">Carrinho</a>
             </nav>
         </div>
@@ -75,9 +75,7 @@
                     <span id="notif-badge" class="notif-badge hidden">0</span>
                 </button>
             </div>
-            <!-- user-menu será preenchido dinamicamente por auth.js -->
             <div id="user-menu" class="flex items-center gap-3"></div>
-            <!-- btn-login será exibido se o usuário não estiver logado -->
             <button id="btn-login" class="btn btn-primary">Entrar</button>
         </div>
     </header>
@@ -85,7 +83,7 @@
     <header class="main-header">
         <div class="searchbar">
             <i class="fas fa-search searchbar__icon"></i>
-            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+            <input type="text" id="reseller-search" placeholder="Pesquisar seus jogos..." aria-label="Pesquisar jogos para revenda">
         </div>
         <nav class="section-nav">
             <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
@@ -94,7 +92,7 @@
         </nav>
     </header>
 
-    <!-- Painel de Notificações (Overlay Fixo) -->
+    <!-- Painel de Notificações -->
     <div id="notif-dropdown" class="notif-dropdown">
         <div class="notif-header">Pedidos de Amizade</div>
         <div id="notif-list" class="notif-list">
@@ -103,20 +101,69 @@
     </div>
 
     <main class="container">
-        <h2 class="section-title">Minha Biblioteca <span id="library-count" class="library-count-badge">0</span></h2>
-        
-        <!-- Grid de jogos comprados -->
-        <div id="library-grid" class="game-grid">
-            <!-- Injetado via JS no auth.js -->
-        </div>
+        <!-- Cabeçalho da Revenda -->
+        <section class="reseller-hero">
+            <div class="reseller-hero__content">
+                <h1><i class="fas fa-tags"></i> Revenda de Jogos</h1>
+                <p>Revenda seus jogos e recupere até <strong>70%</strong> do valor investido</p>
+                <div class="reseller-info">
+                    <div class="info-card">
+                        <i class="fas fa-percent"></i>
+                        <span>Taxa: 30%</span>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-wallet"></i>
+                        <span id="total-possible">R$ 0,00</span>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-gamepad"></i>
+                        <span id="games-available">0 Jogos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Estado vazio -->
-        <div id="library-empty" class="hidden">
-            <i class="fas fa-gamepad text-4xl mb-5 text-secondary block"></i>
-            <h2>Sua biblioteca está vazia</h2>
-            <p>Você ainda não possui nenhum jogo. Visite a loja para descobrir novos títulos!</p>
-            <a href="../index.html" class="buy-button inline-block w-auto mt-5 no-underline text-center">Explorar Loja</a>
-        </div>
+        <!-- Grid de Jogos para Revenda -->
+        <section class="reseller-section">
+            <h2 class="section-title">Seus Jogos Disponíveis</h2>
+            <div id="reseller-grid" class="reseller-grid">
+                <!-- Injetado via JS -->
+            </div>
+
+            <!-- Estado vazio -->
+            <div id="reseller-empty" class="reseller-empty hidden">
+                <i class="fas fa-inbox text-5xl mb-5 text-secondary"></i>
+                <h3>Sua biblioteca está vazia</h3>
+                <p>Você precisa possuir jogos para revendê-los</p>
+                <a href="../index.html" class="buy-button inline-block w-auto mt-5">Explorar Loja</a>
+            </div>
+        </section>
+
+        <!-- Resumo de Revenda -->
+        <section class="reseller-summary hidden" id="reseller-summary">
+            <h2 class="section-title">Resumo de Revenda</h2>
+            <div class="summary-card">
+                <div class="summary-row">
+                    <span>Total de Jogos Selecionados:</span>
+                    <strong id="summary-count">0</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Valor Original:</span>
+                    <strong id="summary-original">R$ 0,00</strong>
+                </div>
+                <div class="summary-row tax-row">
+                    <span>Taxa (30%):</span>
+                    <strong id="summary-tax">R$ 0,00</strong>
+                </div>
+                <div class="summary-row total-row">
+                    <span>Você Recebe:</span>
+                    <strong id="summary-total">R$ 0,00</strong>
+                </div>
+                <button id="btn-confirm-resale" class="buy-button btn-large" style="width: 100%; margin-top: 20px;">
+                    Confirmar Revenda
+                </button>
+            </div>
+        </section>
     </main>
 
     <footer class="main-footer">
@@ -128,8 +175,8 @@
                     <ul>
                         <li><a href="../index.html">Loja</a></li>
                         <li><a href="biblioteca.html">Biblioteca</a></li>
+                        <li><a href="reseller.html">Revenda</a></li>
                         <li><a href="carrinho.html">Carrinho</a></li>
-                        <li><a href="historico.html">Histórico</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

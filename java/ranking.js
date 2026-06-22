@@ -1,5 +1,5 @@
 /**
- * Lógica para o Ranking Global de Usuários (Saldos)
+ * Lógica para o Ranking Global de Usuários (Saldos + Valor dos Jogos)
  */
 
 function initRanking() {
@@ -16,23 +16,70 @@ function initRanking() {
             return;
         }
 
-        // Escuta mudanças em tempo real na coleção de usuários, ordenando pelo saldo (Decrescente)
+        // Lista de emails de admins
+        const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
+
+        // Escuta mudanças em tempo real na coleção de usuários
         window.db.collection('users')
-            .orderBy('balance', 'desc')
-            .limit(50) 
             .onSnapshot((snapshot) => {
                 if (snapshot.empty) {
                     listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
                 }
 
-                listContainer.innerHTML = snapshot.docs.map((doc, index) => {
-                    const user = doc.data();
-                    const uid = doc.id;
+                // Filtra usuários: remove admins e calcula valor total
+                let rankingData = snapshot.docs
+                    .map((doc) => {
+                        const user = doc.data();
+                        const uid = doc.id;
+                        const email = user.email || '';
+                        
+                        // Pula admins
+                        if (adminEmails.includes(email)) {
+                            return null;
+                        }
+
+                        // Calcula valor total: balance + valor dos jogos
+                        const balance = user.balance || 0;
+                        let gamesValue = 0;
+
+                        if (user.library && Array.isArray(user.library) && window.allGamesData) {
+                            user.library.forEach(gameId => {
+                                const game = window.allGamesData.find(g => String(g.id) === String(gameId));
+                                if (game) {
+                                    const gamePrice = window.utils.parsePrice(game.currentPrice);
+                                    gamesValue += gamePrice;
+                                }
+                            });
+                        }
+
+                        const totalValue = balance + gamesValue;
+
+                        return {
+                            uid,
+                            user,
+                            balance,
+                            gamesValue,
+                            totalValue,
+                            name: window.utils.getUserFriendlyName({ ...user, id: uid })
+                        };
+                    })
+                    .filter(item => item !== null) // Remove admins
+                    .sort((a, b) => b.totalValue - a.totalValue) // Ordena por valor total decrescente
+                    .slice(0, 50); // Pega top 50
+
+                if (rankingData.length === 0) {
+                    listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
+                    return;
+                }
+
+                listContainer.innerHTML = rankingData.map((data, index) => {
+                    const user = data.user;
+                    const uid = data.uid;
                     const pos = index + 1;
-                    const name = window.utils.getUserFriendlyName({ ...user, id: uid });
+                    const name = data.name;
                     const avatar = user.avatar || `https://ui-avatars.com/api/?name=${name}&background=27ae60&color=fff`;
-                    const balance = user.balance || 0;
+                    const totalValue = data.totalValue;
                     const profilePath = window.utils.getHtmlPath(`perfil.html?uid=${uid}`);
                     
                     // Determina o estado do botão de amigo
@@ -61,7 +108,7 @@ function initRanking() {
                                     <span>${name}</span>
                                 </div>
                             </td>
-                            <td class="rank-val">R$ ${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                            <td class="rank-val">R$ ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
                             <td style="text-align: center; padding: 10px 5px;">${friendBtn}</td>
                         </tr>
                     `;

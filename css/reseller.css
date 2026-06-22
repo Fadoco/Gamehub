@@ -1,0 +1,442 @@
+/* ===== RESELLER - Revenda de Jogos ===== */
+
+/* Hero da Revenda */
+.reseller-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a472a 100%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.reseller-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.reseller-hero__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.reseller-hero h1 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.reseller-hero h1 i {
+    font-size: 2.2rem;
+    color: var(--accent);
+    animation: float 3s ease-in-out infinite;
+}
+
+.reseller-hero p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 30px;
+}
+
+.reseller-hero p strong {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Info Cards do Hero */
+.reseller-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.info-card span {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Grid de Revenda */
+.reseller-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Card de Jogo para Revenda */
+.reseller-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.reseller-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.2);
+}
+
+.reseller-card.selected {
+    border-color: var(--accent);
+    background: var(--card-bg);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.3), inset 0 0 0 1px var(--accent);
+}
+
+/* Imagem do Card */
+.reseller-card__image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--primary) 0%, #1a472a 100%);
+}
+
+/* Conteúdo do Card */
+.reseller-card__content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.reseller-card__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+    min-height: 2.6em;
+}
+
+/* Preços do Card */
+.reseller-card__prices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.price-original {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.price-value {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.price-old {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.price-value.original {
+    color: var(--text-primary);
+}
+
+.price-value.resale {
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+.tax-badge {
+    display: inline-block;
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Botão de Revenda */
+.reseller-card__button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--accent) 0%, #27ae60 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.reseller-card__button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+}
+
+.reseller-card__button:active {
+    transform: scale(0.98);
+}
+
+.reseller-card.selected .reseller-card__button {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+/* Checkbox/Indicador de Seleção */
+.reseller-card__checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--card-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.reseller-card.selected .reseller-card__checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.reseller-card__checkbox i {
+    font-size: 14px;
+}
+
+/* Estado Vazio */
+.reseller-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.reseller-empty i {
+    color: var(--text-secondary);
+    opacity: 0.5;
+    margin-bottom: 20px;
+}
+
+.reseller-empty h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.reseller-empty p {
+    margin-bottom: 20px;
+}
+
+/* Resumo de Revenda */
+.reseller-summary {
+    margin-top: 40px;
+    padding: 20px;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+}
+
+.reseller-summary.hidden {
+    display: none;
+}
+
+.summary-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 15px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.summary-row:last-of-type {
+    border-bottom: none;
+}
+
+.summary-row span {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.summary-row strong {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.summary-row.tax-row strong {
+    color: #e74c3c;
+}
+
+.summary-row.total-row {
+    padding: 15px 0;
+    margin-top: 15px;
+    background: var(--secondary-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+}
+
+.summary-row.total-row strong {
+    color: var(--accent);
+    font-size: 1.3rem;
+}
+
+/* Seção de Revenda */
+.reseller-section {
+    margin-bottom: 40px;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .reseller-hero {
+        padding: 30px 15px;
+    }
+
+    .reseller-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .reseller-info {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .reseller-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .summary-card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .reseller-hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .reseller-hero p {
+        font-size: 0.95rem;
+    }
+
+    .reseller-info {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .reseller-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .reseller-card__content {
+        padding: 10px;
+    }
+
+    .reseller-card__prices {
+        padding: 10px;
+    }
+}
+
+/* Animação Float */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Animação de Entrada */
+.reseller-card {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
