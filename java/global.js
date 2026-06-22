@@ -52,7 +52,7 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
 // Função para disparar o evento raro do Mercado Negro
 window.triggerSecretEvent = (force = false) => {
     const chance = Math.random();
-    if (force || chance <= 1.0) { // 100% de chance para testes
+    if (force || chance <= 0.04) { // 4% de chance
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
         // 1. Congela o site visualmente com efeito mais intenso
@@ -367,6 +367,34 @@ async function fetchGamesData() {
                 console.error("Falha na resposta HTTP ao carregar games.json:", response.status, response.statusText);
                 console.error("Erro ao carregar games.json:", response.statusText);
             }
+        }
+
+        // Carregar e mesclar jogos locais (games-local.json)
+        try {
+            const localJsonPath = IS_SUBFOLDER ? '../json/games-local.json' : 'json/games-local.json';
+            console.log("Tentando carregar games-local.json de:", localJsonPath);
+            const localResponse = await fetch(localJsonPath);
+            if (localResponse.ok) {
+                const localGames = await localResponse.json();
+                if (Array.isArray(localGames) && localGames.length > 0) {
+                    // Mesclar: adicionar novos jogos e fazer override de existentes
+                    localGames.forEach(localGame => {
+                        const existingIndex = data.findIndex(g => String(g.id) === String(localGame.id));
+                        if (existingIndex >= 0) {
+                            // Override: substituir jogo existente
+                            data[existingIndex] = { ...data[existingIndex], ...localGame };
+                            console.log(`✏️ Jogo ${localGame.id} foi overridado pelos dados locais`);
+                        } else {
+                            // Novo jogo: adicionar
+                            data.push(localGame);
+                            console.log(`✨ Novo jogo adicionado localmente: ${localGame.id} - ${localGame.title}`);
+                        }
+                    });
+                    console.log(`📦 ${localGames.length} jogos locais carregados/mesclados`);
+                }
+            }
+        } catch (localError) {
+            console.log("games-local.json não encontrado ou erro ao carregar (isso é normal):", localError.message);
         }
 
         console.log("Conteúdo final de window.allGamesData (antes da normalização):", data); // Adicionado para depuração
