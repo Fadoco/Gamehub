@@ -415,9 +415,9 @@ function showResultModal() {
     document.getElementById('result-quantity').textContent = quantityText;
     document.getElementById('result-affected-users').textContent = `${targetUsers.length} usuário${targetUsers.length > 1 ? 's' : ''}`;
     
-    // Gerar lista de usuários afetados
+    // Gerar lista de usuários afetados (com clique para abrir perfil)
     const userListHTML = targetUsers.length > 0 
-        ? targetUsers.map(u => `<li>👤 ${u.displayName}</li>`).join('')
+        ? targetUsers.map(u => `<li onclick="window.openUserProfile('${u.uid}')">👤 ${u.displayName}</li>`).join('')
         : '<li style="opacity: 0.6;">Nenhum usuário</li>';
     
     const userListElement = document.getElementById('result-affected-list');
@@ -430,6 +430,15 @@ function showResultModal() {
 
     console.log('🎊 Modal de resultado exibido');
 }
+
+/**
+ * Abrir perfil do usuário em nova aba
+ */
+window.openUserProfile = (uid) => {
+    if (!uid) return;
+    window.open(`../html/perfil.html?uid=${uid}`, '_blank');
+    console.log(`🔗 Abrindo perfil do usuário: ${uid}`);
+};
 
 /**
  * Fechar modal de resultado
