@@ -101,7 +101,7 @@ async function loadUsers() {
             allUsers.push({
                 uid: doc.id,
                 email: email,
-                displayName: userData.displayName || 'Usuário Anônimo',
+                displayName: window.utils.getUserFriendlyName({ ...userData, id: doc.id }) || 'Usuário',
                 isAdmin: isAdmin,
                 avatar: userData.avatar || null,
                 gamesBought: userData.library ? userData.library.length : 0
