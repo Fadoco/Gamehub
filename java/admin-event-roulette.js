@@ -392,7 +392,7 @@ function showResultModal() {
         targetUsers = shuffleArray(nonAdminUsers).slice(0, peopleCount);
     }
     
-    // Armazenar usuários afetados
+    // 🔴 IMPORTANTE: Armazenar EXATAMENTE esses usuários para usar depois
     affectedUsers = targetUsers;
 
     // Determinar tipo de quantidade
@@ -441,6 +441,7 @@ window.closeResultModal = () => {
     selectedEvent = null;
     selectedPeople = null;
     selectedAmount = null;
+    affectedUsers = [];
     
     document.getElementById('roulette-people').classList.add('hidden');
     document.getElementById('roulette-amount').classList.add('hidden');
@@ -502,12 +503,9 @@ async function applyEvent() {
 
     try {
         const eventInfo = EVENTS[selectedEvent];
-        const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
         
-        let targetUsers = nonAdminUsers;
-        if (selectedPeople === 'specific') {
-            targetUsers = shuffleArray(nonAdminUsers).slice(0, peopleCount);
-        }
+        // 🔴 USAR os usuários que foram mostrados no modal (armazenados em affectedUsers)
+        const targetUsers = affectedUsers;
 
         console.log(`🎲 Aplicando evento: ${selectedEvent}`);
         console.log(`👥 Usuários alvo: ${targetUsers.length}`);
