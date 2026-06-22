@@ -42,19 +42,27 @@ const EVENTS = {
 
 // Inicializa o painel
 window.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Iniciando painel de Roleta de Eventos...');
+    
     // Aguarda Firebase inicializar
     let retries = 0;
     while (!window.db || !window.auth.currentUser) {
         if (retries++ > 30) {
+            console.error('❌ Firebase não inicializou após 30 tentativas');
             window.showToast('Erro ao carregar dados. Faça login novamente.', 'error');
             return;
         }
         await new Promise(r => setTimeout(r, 100));
     }
 
+    console.log('✅ Firebase inicializado');
+    console.log('👤 Usuário atual:', window.auth.currentUser.email);
+
     // Verificar se é admin
     const isAdmin = window.auth.currentUser.email === 'fadoco12311@gmail.com' || 
                    window.auth.currentUser.email === 'gabrielmomo6759@gmail.com';
+    
+    console.log('🔐 É Admin?', isAdmin);
     
     if (!isAdmin) {
         document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: red;"><h1>❌ Acesso Negado</h1><p>Apenas administradores podem acessar esta página.</p></div>';
@@ -65,7 +73,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     await loadTopUsers();
     await loadGames();
 
-    console.log('✅ Painel de Roleta de Eventos carregado');
+    console.log('✅ Painel de Roleta de Eventos carregado com sucesso');
 });
 
 /**
@@ -73,18 +81,27 @@ window.addEventListener('DOMContentLoaded', async () => {
  */
 async function loadUsers() {
     try {
+        console.log('📥 Carregando usuários do Firestore...');
         const snapshot = await window.db.collection('users').get();
         allUsers = [];
         
+        console.log(`📊 Total de documentos na coleção: ${snapshot.size}`);
+        
         snapshot.forEach(doc => {
+            const userData = doc.data();
+            const email = userData.email || 'sem-email';
+            const isAdmin = email === 'fadoco12311@gmail.com' || email === 'gabrielmomo6759@gmail.com';
+            
             allUsers.push({
                 uid: doc.id,
-                email: doc.data().email,
-                displayName: doc.data().displayName || 'Usuário Anônimo',
-                isAdmin: doc.data().email === 'fadoco12311@gmail.com' || doc.data().email === 'gabrielmomo6759@gmail.com',
-                avatar: doc.data().avatar || null,
-                gamesBought: doc.data().library ? doc.data().library.length : 0
+                email: email,
+                displayName: userData.displayName || 'Usuário Anônimo',
+                isAdmin: isAdmin,
+                avatar: userData.avatar || null,
+                gamesBought: userData.library ? userData.library.length : 0
             });
+            
+            console.log(`👤 ${userData.displayName || 'Anônimo'} (${email}) - Admin: ${isAdmin}`);
         });
 
         // Filtrar apenas usuários não-admin
@@ -93,10 +110,10 @@ async function loadUsers() {
         document.getElementById('total-users').textContent = allUsers.length;
         document.getElementById('non-admin-users').textContent = nonAdminUsers.length;
 
-        console.log(`✅ ${nonAdminUsers.length} usuários carregados`);
+        console.log(`✅ ${nonAdminUsers.length} usuários não-admin carregados`);
     } catch (error) {
         console.error('❌ Erro ao carregar usuários:', error);
-        window.showToast('Erro ao carregar usuários', 'error');
+        window.showToast('Erro ao carregar usuários: ' + error.message, 'error');
     }
 }
 
@@ -169,7 +186,18 @@ async function loadGames() {
  * Inicializar apresentação (reset de carteiras)
  */
 window.initializePresentation = async () => {
+    console.log('🔍 Verificando inicialização...');
+    console.log('Firebase DB disponível:', !!window.db);
+    console.log('Total de usuários carregados:', allUsers.length);
+    
     const nonAdminUsers = allUsers.filter(u => !u.isAdmin);
+    console.log('Usuários não-admin:', nonAdminUsers.length);
+    
+    if (nonAdminUsers.length === 0) {
+        window.showToast('❌ Nenhum usuário não-admin para resetar', 'warning');
+        return;
+    }
+
     const confirmed = confirm(
         `⚠️ Isso vai resetar a carteira de ${nonAdminUsers.length} usuários para R$ 5.000\n\nDeseja continuar?`
     );
@@ -187,15 +215,24 @@ window.initializePresentation = async () => {
         window.showToast(`💰 Inicializando apresentação (${nonAdminUsers.length} usuários)...`, 'info');
 
         let processedCount = 0;
+        let errorCount = 0;
 
         for (const user of nonAdminUsers) {
             try {
-                await window.db.collection('users').doc(user.uid).update({
+                console.log(`📝 Atualizando ${user.displayName} (${user.uid})...`);
+                
+                const userRef = window.db.collection('users').doc(user.uid);
+                
+                // Usar set com merge para garantir que funciona mesmo se balance não existir
+                await userRef.set({
                     balance: 5000
-                });
+                }, { merge: true });
+                
+                console.log(`✅ ${user.displayName} atualizado com sucesso para R$ 5.000`);
                 processedCount++;
             } catch (error) {
-                console.error(`Erro ao resetar usuário ${user.displayName}:`, error);
+                errorCount++;
+                console.error(`❌ Erro ao resetar ${user.displayName}:`, error.message, error);
             }
         }
 
@@ -204,12 +241,17 @@ window.initializePresentation = async () => {
         document.getElementById('last-event-status').textContent = 
             `💰 Apresentação Inicializada | ${processedCount} usuários | ${timeStr}`;
 
-        window.showToast(`✅ Apresentação inicializada! ${processedCount} usuários com R$ 5.000`, 'success');
-        console.log(`✅ Apresentação inicializada`);
+        if (errorCount === 0) {
+            window.showToast(`✅ Apresentação inicializada! ${processedCount} usuários com R$ 5.000`, 'success');
+            console.log(`✅ Apresentação inicializada com sucesso - ${processedCount} usuários atualizados`);
+        } else {
+            window.showToast(`⚠️ Apresentação parcial: ${processedCount} OK, ${errorCount} erro(s)`, 'warning');
+            console.log(`⚠️ Apresentação com erros: ${processedCount} OK, ${errorCount} falhas`);
+        }
 
     } catch (error) {
-        console.error('❌ Erro ao inicializar apresentação:', error);
-        window.showToast('Erro ao inicializar apresentação', 'error');
+        console.error('❌ Erro crítico ao inicializar apresentação:', error.message, error);
+        window.showToast('Erro ao inicializar apresentação: ' + error.message, 'error');
     } finally {
         eventInProgress = false;
     }
@@ -415,9 +457,14 @@ window.applyEvent = async () => {
             targetUsers = nonAdminUsers.slice(0, peopleCount);
         }
 
+        console.log(`🎲 Aplicando evento: ${selectedEvent}`);
+        console.log(`👥 Usuários alvo: ${targetUsers.length}`);
+        console.log(`💰 Quantidade: ${selectedAmount}`);
+
         window.showToast(`🎲 Aplicando evento a ${targetUsers.length} usuário(s)...`, 'info');
 
         let processedCount = 0;
+        let errorCount = 0;
 
         // Aplicar evento a cada usuário
         for (const user of targetUsers) {
@@ -427,16 +474,28 @@ window.applyEvent = async () => {
                 switch (selectedEvent) {
                     case 'money_win':
                         const moneyWin = selectedAmount || 100;
-                        await userRef.update({
-                            balance: firebase.firestore.FieldValue.increment(moneyWin)
-                        });
+                        console.log(`   💵 ${user.displayName}: +R$ ${moneyWin}`);
+                        
+                        // Primeiro, get o documento para ter o balance atual
+                        const userDocWin = await userRef.get();
+                        const currentBalanceWin = userDocWin.data()?.balance || 0;
+                        
+                        await userRef.set({
+                            balance: currentBalanceWin + moneyWin
+                        }, { merge: true });
                         break;
 
                     case 'money_lose':
                         const moneyLose = selectedAmount || 100;
-                        await userRef.update({
-                            balance: firebase.firestore.FieldValue.increment(-moneyLose)
-                        });
+                        console.log(`   💸 ${user.displayName}: -R$ ${moneyLose}`);
+                        
+                        // Primeiro, get o documento para ter o balance atual
+                        const userDocLose = await userRef.get();
+                        const currentBalanceLose = userDocLose.data()?.balance || 0;
+                        
+                        await userRef.set({
+                            balance: Math.max(0, currentBalanceLose - moneyLose)
+                        }, { merge: true });
                         break;
 
                     case 'game_win':
@@ -448,6 +507,8 @@ window.applyEvent = async () => {
                                 const randomGame = window.allGamesData[Math.floor(Math.random() * window.allGamesData.length)];
                                 gamesToAdd.push(randomGame.id);
                             }
+                            
+                            console.log(`   🎮 ${user.displayName}: +${gamesToAdd.length} jogo(s)`);
                             
                             for (const gameId of gamesToAdd) {
                                 await userRef.update({
@@ -469,6 +530,9 @@ window.applyEvent = async () => {
                                 const randomIndex = Math.floor(Math.random() * newLibrary.length);
                                 newLibrary.splice(randomIndex, 1);
                             }
+                            
+                            console.log(`   🗑️ ${user.displayName}: -${qtyToRemove} jogo(s)`);
+                            
                             await userRef.update({ library: newLibrary });
                         }
                         break;
@@ -479,6 +543,8 @@ window.applyEvent = async () => {
                         
                         if (userLibrary.length > 0) {
                             const qtyUpgrades = selectedAmount || 1;
+                            let upgradedCount = 0;
+                            
                             for (let i = 0; i < qtyUpgrades; i++) {
                                 const randomGameId = userLibrary[Math.floor(Math.random() * userLibrary.length)];
                                 const currentLevel = (userDoc2.data().upgrades || {})[randomGameId] || 0;
@@ -487,15 +553,19 @@ window.applyEvent = async () => {
                                     const upgradesObj = userDoc2.data().upgrades || {};
                                     upgradesObj[randomGameId] = currentLevel + 1;
                                     await userRef.update({ upgrades: upgradesObj });
+                                    upgradedCount++;
                                 }
                             }
+                            
+                            console.log(`   ⭐ ${user.displayName}: +${upgradedCount} upgrade(s)`);
                         }
                         break;
                 }
 
                 processedCount++;
             } catch (error) {
-                console.error(`Erro ao processar usuário ${user.displayName}:`, error);
+                errorCount++;
+                console.error(`❌ Erro ao processar usuário ${user.displayName}:`, error);
             }
         }
 
@@ -504,12 +574,17 @@ window.applyEvent = async () => {
         document.getElementById('last-event-status').textContent = 
             `${eventInfo.name} | ${processedCount} usuários | ${timeStr}`;
 
-        window.showToast(`✅ Evento aplicado a ${processedCount} usuário(s)!`, 'success');
-        console.log(`✅ Evento "${selectedEvent}" aplicado com sucesso`);
+        if (errorCount === 0) {
+            window.showToast(`✅ Evento aplicado a ${processedCount} usuário(s)!`, 'success');
+            console.log(`✅ Evento "${selectedEvent}" aplicado com sucesso`);
+        } else {
+            window.showToast(`⚠️ Evento parcial: ${processedCount} OK, ${errorCount} erro(s)`, 'warning');
+            console.log(`⚠️ Evento com erros: ${processedCount} OK, ${errorCount} falhas`);
+        }
 
     } catch (error) {
         console.error('❌ Erro ao aplicar evento:', error);
-        window.showToast('Erro ao aplicar evento', 'error');
+        window.showToast('Erro ao aplicar evento: ' + error.message, 'error');
     } finally {
         eventInProgress = false;
     }
