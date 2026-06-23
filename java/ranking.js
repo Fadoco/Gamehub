@@ -56,7 +56,13 @@ function initRanking() {
                                         basePrice;
 
                                     gamesValue += gamePriceWithUpgrade;
-                                    breakdown.push({ gameId, basePrice, upgradeLevel, valuation: gamePriceWithUpgrade });
+                                    breakdown.push({ 
+                                        gameId, 
+                                        gameName: game.name,
+                                        basePrice, 
+                                        upgradeLevel, 
+                                        valuation: gamePriceWithUpgrade 
+                                    });
                                 } else {
                                     breakdown.push({ gameId, error: 'game-not-found' });
                                 }
