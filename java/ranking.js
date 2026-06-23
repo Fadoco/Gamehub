@@ -84,16 +84,15 @@ function initRanking() {
                     return;
                 }
 
-                // Se estiver no modo de debug, imprime breakdowns no console
-                if (window.DEBUG_RANKING) {
-                    console.log('[RANKING][DEBUG] Breakdown for users:');
-                    rankingData.forEach((d) => {
-                        console.group(`uid=${d.uid} name=${d.name} total=${d.totalValue}`);
-                        console.log('balance:', d.balance);
-                        console.table(d._debug || []);
-                        console.groupEnd();
-                    });
-                }
+                // Imprime breakdown de cálculo no console para debug
+                console.log('[RANKING] Breakdown for users:');
+                rankingData.forEach((d) => {
+                    console.group(`${d.name} (uid=${d.uid.slice(0, 8)}...) total=R$ ${d.totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
+                    console.log('balance:', d.balance);
+                    console.log('gamesValue:', d.gamesValue);
+                    console.table(d._debug || []);
+                    console.groupEnd();
+                });
 
                 listContainer.innerHTML = rankingData.map((data, index) => {
                     const user = data.user;
