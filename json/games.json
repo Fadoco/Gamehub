@@ -1465,13 +1465,84 @@
         "oldPrice": null,
         "currentPrice": "Grátis",
         "featured": false
-    },
+    }
+    ,
     {
-        "id": 62,
+        "id": 67,
+        "title": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+        "Description": "Retorne à Zona de Exclusão de Chernobyl em 2185. Um jogo de tiro em primeira pessoa de mundo aberto com gráficos avançados, IA profunda e uma narrativa envolvente em um cenário pós-apocalíptico devastado.",
+        "image": "https://images.alphacoders.com/136/1360184.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2408520/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "FPS",
+            "Pós-apocalíptico",
+            "Mundo Aberto",
+            "Terror",
+            "Atmosférico"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 349,00",
+        "featured": true
+    }
+    ,
+    {
+        "id": 68,
+        "title": "Dragon Age: Inquisition",
+        "Description": "Como o Inquisidor escolhido, você pode recrutar e treinar guerreiros, mágicos e assassinos. Explore castelos magníficos, florestas bravias e cavernas perigosas enquanto reúne aliados para unir um império dividido contra uma ameaça maior.",
+        "image": "https://images.alphacoders.com/598/598088.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "RPG",
+            "Fantasia",
+            "Ação",
+            "Mundo Aberto",
+            "História"
+        ],
+        "discount": 75,
+        "oldPrice": "R$ 229,90",
+        "currentPrice": "R$ 57,47",
+        "featured": false
+    }
+    ,
+    {
+        "id": 69,
+        "title": "Final Fantasy XVI",
+        "Description": "A história do mundo de Valisthea desenrola-se através dos olhos de Clive Rosfield, um homem cujo destino foi moldado pela morte de seus pais e o poder dos Essêncios. Jogue em um universo de fantasia única com combate dinâmico e uma narrativa épica.",
+        "image": "https://images.alphacoders.com/134/1346088.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2191110/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation"
+        ],
+        "tags": [
+            "JRPG",
+            "Ação",
+            "Fantasia",
+            "História",
+            "Aventura"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 329,90",
+        "featured": true
+    }
+    ,
+    {
+        "id": 70,
         "title": "The Last of Us Part I",
         "Description": "Conheça a história emocionante e os personagens inesquecíveis de Joel e Ellie, reconstruídos para uma nova geração. Sobreviva em um mundo pós-apocalíptico dominado por infectados e humanos cruéis.",
-        "image": "https://images.ctfassets.net/c1xwrscr81as/5L0JqJmF0XxLNPWGj56zk9/2e8e6d5e7e5c5e5e5e5e5e5e5e5e5e5e/header.jpg",
-        "coverUrl": "https://images3.alphacoders.com/129/1295037.jpg",
+        "image": "https://images.alphacoders.com/129/1296645.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1489,11 +1560,11 @@
         "featured": true
     },
     {
-        "id": 63,
+        "id": 71,
         "title": "Bloodborne",
         "Description": "Enfrente seus pesadelos na cidade gótica e em ruínas de Yharnam. Use um arsenal único de armas brancas e armas de fogo para derrotar bestas aterrorizantes neste RPG de ação frenético.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/570940/ss_7ab39c097c37a46b9c29a65eed9e1a9a8d6f07d.1920x1080.jpg",
-        "coverUrl": "https://images.wallpapersden.com/image/download/bloodborne-game_a2tnaWyUmZqaraWkpJRobWllrWdobWY.jpg",
+        "image": "https://images5.alphacoders.com/587/587596.png",
+        "coverUrl": "https://image.api.playstation.com/vulcan/img/rnd/202010/2614/beHjtGE2uT7R1qR9DkL2K0Wk.png",
         "platforms": [
             "fab fa-playstation"
         ],
@@ -1510,11 +1581,11 @@
         "featured": false
     },
     {
-        "id": 64,
+        "id": 72,
         "title": "Horizon Zero Dawn",
         "Description": "Explore um mundo vibrante e exuberante habitado por misteriosas criaturas mecanizadas. Jogue como Aloy, uma jovem caçadora em uma missão para descobrir seu destino em um mundo pós-apocalíptico.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/06/PS4_HorizonZeroDawn_20170222_001.jpg",
-        "coverUrl": "https://cdn2.unrealengine.com/egs-horizonzerodawnremastered-guerrillagames-g1a-00-1920x1080-c0d45f881715.jpg",
+        "image": "https://images2.alphacoders.com/798/798606.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1532,11 +1603,11 @@
         "featured": false
     },
     {
-        "id": 65,
+        "id": 73,
         "title": "Mass Effect Legendary Edition",
         "Description": "Reviva a lenda do Comandante Shepard na aclamada trilogia Mass Effect. Inclui conteúdo base para um jogador e mais de 40 DLCs dos três jogos, remasterizados e otimizados.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1328670/ss_e95b4c8c5c0e1e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://wallpapercave.com/wp/wp9174023.jpg",
+        "image": "https://images5.alphacoders.com/112/1129532.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1328670/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1555,11 +1626,11 @@
         "featured": false
     },
     {
-        "id": 66,
+        "id": 74,
         "title": "Cities: Skylines II",
         "Description": "Erga uma cidade do zero e transforme-a na metrópole próspera que só você pode imaginar. Simulação profunda, economia viva e controle total sobre cada aspecto do seu império urbano.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/949230/ss_f1e3e5e5e5e5e5e5e5e5e5e5e5e5e5e5.1920x1080.jpg",
-        "coverUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2427743/9b35007466065f6b2b0d8d276fad430b2f9a7116/page_bg_raw.jpg?t=1764600381",
+        "image": "https://images8.alphacoders.com/133/1330919.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/949230/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1578,11 +1649,11 @@
         "featured": false
     },
     {
-        "id": 67,
+        "id": 75,
         "title": "Valheim",
         "Description": "Um jogo brutal de exploração e sobrevivência para até 10 jogadores, ambientado em um purgatório gerado proceduralmente inspirado na cultura viking. Lute, construa e conquiste.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/892970/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSklCy2Xw91cWhDhKGgQkFdEzQoRqnfvsgt2Wi5k9gCLFsP6KDZ9wCPQx5S&s=10",
+        "image": "https://images.alphacoders.com/113/1133589.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -1600,11 +1671,11 @@
         "featured": false
     },
     {
-        "id": 68,
+        "id": 76,
         "title": "Rust",
         "Description": "O único objetivo em Rust é sobreviver. Para fazer isso, você precisará superar lutas, fome, sede e o frio. Faça fogueiras, construa abrigos, mate animais, crie alianças ou lute com outros jogadores.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/252490/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://images7.alphacoders.com/980/thumb-1920-980572.jpg",
+        "image": "https://images7.alphacoders.com/118/1187425.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1623,11 +1694,11 @@
         "featured": false
     },
     {
-        "id": 69,
+        "id": 77,
         "title": "The Sims 4",
         "Description": "Solte a imaginação e crie um mundo de Sims totalmente único. Explore e personalize cada detalhe, dos Sims às suas casas e muito mais neste aclamado simulador de vida.",
-        "image": "https://images.simsvip.com/wp-content/uploads/2021/03/The-Sims-4-Eco-Lifestyle-Header.jpg",
-        "coverUrl": "https://images5.alphacoders.com/132/1325222.png",
+        "image": "https://images6.alphacoders.com/604/604928.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1647,11 +1718,11 @@
         "featured": false
     },
     {
-        "id": 70,
+        "id": 78,
         "title": "Sid Meier's Civilization VI",
         "Description": "Construa um império para resistir ao teste do tempo. Expanda sua civilização, pesquise novas tecnologias e encare os maiores líderes da história em um jogo de estratégia em turnos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/289070/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/146/392/860/sid-meier-s-civilization-vi-strategy-games-hd-wallpaper-preview.jpg",
+        "image": "https://images7.alphacoders.com/710/710672.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/289070/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1671,11 +1742,11 @@
         "featured": false
     },
     {
-        "id": 71,
+        "id": 79,
         "title": "Resident Evil Village",
         "Description": "A próxima geração do terror de sobrevivência. Jogue com Ethan Winters e enfrente horrores em uma vila sinistra habitada por vampiros, lobisomens e criaturas aterrorizantes.",
-        "image": "https://images.capcom-unity.com/fxmstr/image/upload/f_auto,q_auto/v1/fxmstr_us_cbp_uploads/Production/0001/08/header.jpg",
-        "coverUrl": "https://images.wallpapersden.com/image/download/resident-evil-village-winter-s-expansion_bWxpZ2mUmZqaraWkpJRobWllrWdma2U.jpg",
+        "image": "https://images2.alphacoders.com/113/1136979.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1196590/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1694,11 +1765,11 @@
         "featured": false
     },
     {
-        "id": 72,
+        "id": 80,
         "title": "Disco Elysium - The Final Cut",
         "Description": "Um RPG revolucionário. Você é um detetive com um sistema de habilidades único para moldar o seu caminho. Interrogue personagens, resolva assassinatos ou aceite subornos neste mundo sombrio.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/632470/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://www.psu.com/wp/wp-content/uploads/2021/03/Disco-Elysium-PS4-PS5-Wallpapers-06.png",
+        "image": "https://images2.alphacoders.com/105/1054946.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/632470/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1718,11 +1789,11 @@
         "featured": true
     },
     {
-        "id": 73,
+        "id": 81,
         "title": "RimWorld",
         "Description": "Um simulador de colônia de ficção científica controlado por uma IA contadora de histórias. Gerencie as emoções, necessidades e relacionamentos dos seus colonos enquanto sobrevive a piratas e alienígenas.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/294100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://cdnb.artstation.com/p/assets/images/images/081/386/035/large/soufian-addioui-rimworld-biotech-bg.jpg?1730131960",
+        "image": "https://images6.alphacoders.com/981/981442.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -1740,11 +1811,11 @@
         "featured": false
     },
     {
-        "id": 74,
+        "id": 82,
         "title": "Monster Hunter: World",
         "Description": "Bem-vindo a um novo mundo! Assuma o papel de um caçador, enfrente monstros ferozes em um ecossistema vivo, colete materiais e crie equipamentos mais fortes para abater bestas ainda maiores.",
-        "image": "https://images.capcom-unity.com/fxmstr/image/upload/f_auto,q_auto/v1/fxmstr_us_cbp_uploads/Production/0000/50/header.jpg",
-        "coverUrl": "https://cdn.mos.cms.futurecdn.net/dHGpivgmWvdGJq4XHtK3Tm-2048-80.jpg",
+        "image": "https://images6.alphacoders.com/861/861849.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1763,11 +1834,11 @@
         "featured": false
     },
     {
-        "id": 75,
+        "id": 83,
         "title": "DayZ",
         "Description": "Até onde você irá para sobreviver? Neste duro mundo online massivo, o perigo espreita em cada esquina. Colete recursos, lute contra infectados e tome cuidado com outros jogadores imprevisíveis.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/221100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://w0.peakpx.com/wallpaper/921/1016/HD-wallpaper-dayz-game.jpg",
+        "image": "https://images4.alphacoders.com/131/1319729.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/221100/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1786,11 +1857,11 @@
         "featured": false
     },
     {
-        "id": 76,
+        "id": 84,
         "title": "Returnal",
         "Description": "Quebre o ciclo do caos em um planeta alienígena hostil que muda a cada vez que você morre. Um intenso jogo de tiro roguelike em terceira pessoa que exige reflexos e estratégia.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/09/PS5_Returnal_20210414_001.jpg",
-        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/139/389/171/returnal-video-games-playstation-5-statue-hd-wallpaper-preview.jpg",
+        "image": "https://images.alphacoders.com/112/1125203.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1649240/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1808,11 +1879,11 @@
         "featured": false
     },
     {
-        "id": 77,
+        "id": 85,
         "title": "Death Stranding Director's Cut",
         "Description": "Reconecte uma sociedade despedaçada pelo evento Death Stranding. Entregue cargas, atravesse paisagens belas mas desoladas e evite ameaças de outro mundo nesta experiência única de Hideo Kojima.",
         "image": "https://images6.alphacoders.com/121/1210403.jpg",
-        "coverUrl": "https://images.hdqwalls.com/wallpapers/death-stranding-directors-cut-4k-fp.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1850570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1830,11 +1901,11 @@
         "featured": false
     },
     {
-        "id": 78,
+        "id": 86,
         "title": "Control Ultimate Edition",
         "Description": "Após uma ameaça sobrenatural invadir uma agência secreta em Nova York, você assume o papel de Diretora. Use telecinese e uma arma metamorfa para recuperar o controle deste prédio misterioso.",
         "image": "https://images7.alphacoders.com/101/1018698.jpg",
-        "coverUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrcJtg3xkmYTwezDtn1lk1g_z_yNTx2Ev9_VqsE8y0ezHTrNsYfHiA7pX89pruDw_KmBatpBV1QQQT3zzePHUoGXAubieBNgB4a1XSBdMxRdFszZRYWFs-cCkvuq49tdw1zpwVJ62qpTk/s984/control-1.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/870780/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1853,11 +1924,11 @@
         "featured": false
     },
     {
-        "id": 79,
+        "id": 87,
         "title": "Hitman: World of Assassination",
         "Description": "Entre no mundo da espionagem e torne-se o lendário Agente 47. Viaje pelo globo e elimine alvos em mapas sandbox elaborados usando criatividade, furtividade e disfarces mortais.",
         "image": "https://images3.alphacoders.com/128/1286085.jpg",
-        "coverUrl": "https://4kwallpapers.com/images/wallpapers/hitman-world-of-3840x2160-19124.jpeg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1659040/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1876,11 +1947,11 @@
         "featured": true
     },
     {
-        "id": 80,
+        "id": 88,
         "title": "Fall Guys",
         "Description": "Um jogo de festa battle royale online gratuito! Enfrente hordas de outros competidores em rodadas caóticas e baseadas em física cheias de obstáculos hilários até sobrar apenas um vencedor.",
         "image": "https://images7.alphacoders.com/109/1093155.jpg",
-        "coverUrl": "https://images7.alphacoders.com/125/1250780.png",
+        "coverUrl": "https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_FallGuys_Mediatonic_S2_1200x1600-b183dd2d346366050e820067bb0bf148",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1899,11 +1970,11 @@
         "featured": false
     },
     {
-        "id": 81,
+        "id": 89,
         "title": "Assetto Corsa",
         "Description": "Um simulador de corrida de última geração projetado para focar no realismo. Oferece física ultra detalhada, carros recriados fielmente e suporte a uma imensa biblioteca de mods criados pela comunidade.",
         "image": "https://images.alphacoders.com/497/497676.jpg",
-        "coverUrl": "https://res.allmacwallpaper.com/get/iMac-27-inch-4K-Retina-wallpapers/porsche-assetto-corsa-competizione-5k-5120x2880/24915-12.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/244210/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1922,11 +1993,11 @@
         "featured": false
     },
     {
-        "id": 82,
+        "id": 90,
         "title": "Undertale",
         "Description": "Um RPG amado onde ninguém precisa se machucar. Caia no subsolo cheio de monstros, negocie para evitar o combate ou lute até o fim, e encare uma história inesquecível com trilha sonora fantástica.",
         "image": "https://images8.alphacoders.com/669/669165.png",
-        "coverUrl": "https://images7.alphacoders.com/798/798682.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/391540/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1946,11 +2017,11 @@
         "featured": true
     },
     {
-        "id": 83,
+        "id": 91,
         "title": "Subnautica",
         "Description": "O clássico jogo de sobrevivência e exploração subaquática. Seu módulo de escape caiu em um planeta oceânico alienígena, e você precisa mergulhar fundo para encontrar recursos, construir bases e sobreviver.",
         "image": "https://images3.alphacoders.com/832/832791.png",
-        "coverUrl": "https://images6.alphacoders.com/784/784277.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1970,11 +2041,11 @@
         "featured": false
     },
     {
-        "id": 84,
+        "id": 92,
         "title": "Star Wars Jedi: Survivor",
         "Description": "A jornada de Cal Kestis continua. Este jogo de ação e aventura em terceira pessoa se passa cinco anos após os eventos do primeiro jogo, testando as habilidades do Jedi e suas novas posturas de sabre de luz.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2187320/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/128/744/947/jedi-star-wars-jedi-survivor-stormtrooper-cal-kestis-lightsaber-hd-wallpaper-preview.jpg",
+        "image": "https://images3.alphacoders.com/131/1310168.jpeg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1774580/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1993,11 +2064,11 @@
         "featured": false
     },
     {
-        "id": 85,
+        "id": 93,
         "title": "Need for Speed Unbound",
         "Description": "Corra contra o tempo, despiste a polícia e ganhe as eliminatórias para participar do Grand, o maior desafio de corrida de rua de Lakeshore. Desbloqueie carros exóticos com grafismos estilosos estilo grafite.",
         "image": "https://images7.alphacoders.com/128/1283733.jpg",
-        "coverUrl": "https://images3.alphacoders.com/127/1278569.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1846380/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2016,11 +2087,11 @@
         "featured": false
     },
     {
-        "id": 86,
+        "id": 94,
         "title": "Alan Wake 2",
         "Description": "O escritor Alan Wake está preso em um pesadelo sobrenatural. A agente do FBI Saga Anderson investiga uma série de assassinatos ritualísticos. Descubra a ligação neste espetacular survival horror psicológico.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1944200/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://www.alanwake.com/wp-content/uploads/2025/02/AlanWake2_DET_4K_089.jpg",
+        "image": "https://images2.alphacoders.com/131/1314644.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/offer/fe8ceb32cd5f4cc0bd43372f8eaad4c7/EGS_AlanWake2_RemedyEntertainment_S2_1200x1600-df3c965fb5df30ec5b7367c00e16790a",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2039,11 +2110,11 @@
         "featured": true
     },
     {
-        "id": 87,
+        "id": 95,
         "title": "Mount & Blade II: Bannerlord",
         "Description": "Um RPG e simulador de combates medievais. Lidere tropas nas batalhas épicas, gerencie feudos, forje alianças e crie seu próprio reino neste jogo que combina grande estratégia com lutas brutais.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/261570/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://images.alphacoders.com/107/thumb-1920-1072575.jpg",
+        "image": "https://images7.alphacoders.com/107/1070747.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/261550/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2062,11 +2133,11 @@
         "featured": false
     },
     {
-        "id": 88,
+        "id": 96,
         "title": "Garry's Mod",
         "Description": "Um jogo sandbox físico definitivo. Não há metas predefinidas nem objetivos finais. Nós damos as ferramentas para você criar, importar armas, objetos e veículos de outros jogos da Source e fazer o que quiser.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/4000/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://w0.peakpx.com/wallpaper/173/862/HD-wallpaper-vangard-video-games-ilwrath-creative-abstract-robot-garrys-mod-cool-half-life-2-gmod.jpg",
+        "image": "https://images.alphacoders.com/565/565780.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4000/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -2084,11 +2155,11 @@
         "featured": false
     },
     {
-        "id": 89,
+        "id": 97,
         "title": "Sons Of The Forest",
         "Description": "Enviado para encontrar um bilionário desaparecido em uma ilha remota, você se vê em uma floresta infestada de canibais. Sobreviva, crie armas, construa abrigos de madeira realistas e desvende mistérios assustadores.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1326470/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://wallpapercave.com/wp/wp12152122.jpg",
+        "image": "https://images6.alphacoders.com/130/1303868.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1326470/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -2105,11 +2176,11 @@
         "featured": false
     },
     {
-        "id": 90,
+        "id": 98,
         "title": "Slay the Spire",
         "Description": "Misturamos jogos de cartas e roguelikes para fazer o melhor jogo de construção de baralhos para um jogador. Crie um baralho único, encontre criaturas bizarras e relíquias imensamente poderosas.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/646570/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://images2.alphacoders.com/901/thumb-1920-901142.jpg",
+        "image": "https://images6.alphacoders.com/985/985449.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2129,11 +2200,11 @@
         "featured": false
     },
     {
-        "id": 91,
+        "id": 99,
         "title": "God of War",
         "Description": "Com a vingança contra os deuses do Olimpo em um passado distante, Kratos agora vive como um homem comum no reino dos deuses e monstros nórdicos. É nesse mundo duro e implacável que ele deve lutar para sobreviver... e ensinar seu filho a fazer o mesmo.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/01/PS4_GodofWar_20180420_001.jpg",
-        "coverUrl": "https://pixelz.cc/wp-content/uploads/2023/11/god-of-war-ragnarok-kratos-blades-of-chaos-uhd-4k-wallpaper.jpg",
+        "image": "https://images.alphacoders.com/834/834479.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -2151,11 +2222,11 @@
         "featured": true
     },
     {
-        "id": 92,
+        "id": 100,
         "title": "Sekiro: Shadows Die Twice",
         "Description": "Neste premiado jogo da FromSoftware, você é o 'lobo de um braço só', um guerreiro desonrado e desfigurado, resgatado da beira da morte. Proteja um jovem lorde e enfrente inimigos mortais em uma jornada de vingança no Japão do final do século XVI.",
-        "image": "https://images.fromsoftware.jp/mkt_images/sekiro/common/main_header_en.jpg",
-        "coverUrl": "https://i.pinimg.com/736x/cf/a8/21/cfa821cd8213ac508b9fe968d1dbcb43.jpg",
+        "image": "https://images4.alphacoders.com/933/933037.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2174,11 +2245,11 @@
         "featured": false
     },
     {
-        "id": 93,
+        "id": 101,
         "title": "Portal 2",
         "Description": "O 'Teste de Iniciativa Cooperativa' foi um sucesso: você e um amigo, como os robôs Atlas e P-Body, foram os únicos a sobreviver. Agora, prepare-se para mais quebra-cabeças alucinantes, portais e a inteligência artificial mais sarcástica da história dos games.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/620/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://images6.alphacoders.com/567/thumb-1920-567500.jpg",
+        "image": "https://images5.alphacoders.com/312/312481.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -2196,11 +2267,11 @@
         "featured": false
     },
     {
-        "id": 94,
+        "id": 102,
         "title": "No Man's Sky",
         "Description": "Inspirado na aventura e imaginação que amamos da ficção científica clássica, No Man's Sky apresenta uma galáxia para explorar, cheia de planetas e formas de vida únicos, perigo e ação constantes. Voe, lute, negocie e sobreviva em um universo infinito.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/275850/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://images.wallpapersden.com/image/download/no-man-s-sky-game_a2ltbmiUmZqaraWkpJRoaWllrWdma2U.jpg",
+        "image": "https://images.alphacoders.com/592/592339.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/275850/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2217,13 +2288,14 @@
         "oldPrice": "R$ 149,99",
         "currentPrice": "R$ 74,99",
         "featured": false
-    },
+    }
+,
     {
-        "id": 95,
+        "id": 103,
         "title": "Diablo IV",
         "Description": "Junte-se à batalha pelo Santuário em Diablo IV, o RPG de ação de última geração. Com maldade infindável para massacrar, inúmeras habilidades para dominar, masmorras horripilantes e saques lendários, esta é uma experiência completa.",
-        "image": "https://images.blizzard.com/us/diablo/diablo-iv/media/wallpapers/diablo-iv-wallpaper-01-1920x1080.jpg",
-        "coverUrl": "https://images.hdqwalls.com/wallpapers/diablo-iv-4k-1q.jpg",
+        "image": "https://images.alphacoders.com/131/1312203.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2242,11 +2314,11 @@
         "featured": true
     },
     {
-        "id": 96,
+        "id": 104,
         "title": "Starfield",
         "Description": "Starfield é o primeiro novo universo em 25 anos da Bethesda Game Studios. Neste RPG de última geração ambientado entre as estrelas, crie qualquer personagem que desejar e explore com liberdade incomparável enquanto embarca em uma jornada épica.",
         "image": "https://images.alphacoders.com/132/1325338.jpg",
-        "coverUrl": "https://images.ctfassets.net/rporu91m20dc/58n6Gu5YxroKHDgKQqTUDP/a9286e1d2568f17fbdad0fb1c74b696e/Starfield-FirstSteps_Wallpaper_5654x2763-01.jpg?q=70&fm=webp",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -2264,10 +2336,10 @@
         "featured": false
     },
     {
-        "id": 97,
+        "id": 105,
         "title": "Lies of P",
         "Description": "Você é um boneco criado por Geppetto, preso em uma teia de mentiras com monstros inimagináveis. Desperte na cidade de Krat, um lugar mergulhado em loucura e sede de sangue, e descubra os segredos sombrios da cidade neste souls-like único.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1627720/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images2.alphacoders.com/132/1328580.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1627720/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2287,10 +2359,10 @@
         "featured": false
     },
     {
-        "id": 98,
+        "id": 106,
         "title": "Dave the Diver",
         "Description": "Explore um misterioso poço azul durante o dia e gerencie um restaurante de sushi exótico à noite. Junte-se a Dave e seus amigos excêntricos para desvendar os segredos do Poço Azul nesta aventura que mistura RPG, gerenciamento e exploração.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1868140/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/132/1321033.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1868140/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2308,12 +2380,13 @@
         "oldPrice": null,
         "currentPrice": "R$ 39,99",
         "featured": true
-    },
+    }
+,
     {
-        "id": 99,
+        "id": 107,
         "title": "Dark Souls III",
         "Description": "Viaje para o reino de Lothric em sua jornada final para restaurar o fogo e salvar o mundo da ruína. Enfrente inimigos colossais, domine um combate complexo e explore um mundo sombrio e interconectado.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/374320/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/593/593970.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/374320/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2333,10 +2406,10 @@
         "featured": false
     },
     {
-        "id": 100,
+        "id": 108,
         "title": "Fallout: New Vegas",
         "Description": "Bem-vindo a New Vegas. É o tipo de cidade onde você cava sua própria cova antes de levar um tiro na cabeça. Lute pelo controle do deserto de Mojave nesta obra-prima de RPG pós-apocalíptico.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/22380/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images5.alphacoders.com/311/311088.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/22380/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2356,10 +2429,10 @@
         "featured": false
     },
     {
-        "id": 101,
+        "id": 109,
         "title": "DOOM Eternal",
         "Description": "Os exércitos do inferno invadiram a Terra. Torne-se o Slayer em uma campanha épica para um jogador, conquistando demônios através de dimensões e impedindo a destruição final da humanidade.",
-        "image": "https://images.bethesda.net/aHR0cHM6Ly9jZG4uYmV0aGVzZGEubmV0L2Jlc3RlbGRhLmpwZWc.jpg",
+        "image": "https://images4.alphacoders.com/107/1071873.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/782330/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2379,10 +2452,10 @@
         "featured": false
     },
     {
-        "id": 102,
+        "id": 110,
         "title": "Persona 5 Royal",
         "Description": "Forçado a se transferir para uma escola em Tóquio, o protagonista tem um sonho estranho. Use sua máscara, junte-se aos Phantom Thieves of Hearts e realize grandes assaltos para mudar o coração dos corruptos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1525200/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/133/1337803.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1687950/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2402,10 +2475,10 @@
         "featured": false
     },
     {
-        "id": 103,
+        "id": 111,
         "title": "Final Fantasy VII Remake Intergrade",
         "Description": "Cloud Strife, um ex-membro da unidade de elite SOLDIER, chega à cidade de Midgar. O mundo do clássico atemporal FINAL FANTASY VII renasce, usando tecnologia gráfica de ponta e um sistema de batalha moderno.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/08/PS5_FF7RI_20210609_001.jpg",
+        "image": "https://images6.alphacoders.com/114/1144241.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1462040/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2424,10 +2497,10 @@
         "featured": false
     },
     {
-        "id": 104,
+        "id": 112,
         "title": "Nier: Automata",
         "Description": "Invasores de outro mundo atacam sem aviso, liberando as formas de vida mecânicas. Para quebrar o impasse, uma nova raça de infantaria androide é enviada para a briga: o esquadrão YoRHa.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/524220/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images3.alphacoders.com/818/818115.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/524220/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2447,10 +2520,10 @@
         "featured": false
     },
     {
-        "id": 105,
+        "id": 113,
         "title": "Stray",
         "Description": "Perdido, sozinho e separado de sua família, um gato de rua deve desvendar um mistério antigo para escapar de uma cidade cibernética há muito esquecida e encontrar o caminho de casa.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1332010/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images2.alphacoders.com/125/1251838.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1332010/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2470,10 +2543,10 @@
         "featured": false
     },
     {
-        "id": 106,
+        "id": 114,
         "title": "Cuphead",
         "Description": "Um jogo de ação e plataforma com foco em batalhas de chefes, inspirado nos desenhos animados dos anos 1930. Jogue como Cuphead ou Mugman (em modo solo ou cooperativo) e atravesse mundos estranhos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/268910/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images8.alphacoders.com/872/872978.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/268910/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2494,10 +2567,10 @@
         "featured": false
     },
     {
-        "id": 107,
+        "id": 115,
         "title": "Ori and the Will of the Wisps",
         "Description": "Embarque em uma nova jornada em um mundo vasto e exótico, onde você encontrará inimigos imponentes e quebra-cabeças desafiadores em sua busca para desvendar o verdadeiro destino de Ori.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1181100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images4.alphacoders.com/107/1078035.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1057090/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2516,10 +2589,10 @@
         "featured": false
     },
     {
-        "id": 108,
+        "id": 116,
         "title": "Divinity: Original Sin 2",
         "Description": "O Divino está morto. O Vazio se aproxima. E os poderes adormecidos dentro de você estão prestes a despertar. A batalha pela Divindade começou. Escolha sabiamente e confie com moderação; a escuridão se esconde em cada coração.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/435150/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images3.alphacoders.com/868/868439.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/435150/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2540,10 +2613,10 @@
         "featured": false
     },
     {
-        "id": 109,
+        "id": 117,
         "title": "XCOM 2",
         "Description": "Os alienígenas governam a Terra, prometendo um futuro brilhante para a humanidade enquanto secretamente escondem uma agenda sinistra. Como líder de uma força de guerrilha, você deve acender uma resistência global para eliminar a ameaça.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/268500/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images6.alphacoders.com/688/688221.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/268500/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2564,10 +2637,10 @@
         "featured": false
     },
     {
-        "id": 110,
+        "id": 118,
         "title": "A Plague Tale: Requiem",
         "Description": "Embarque em uma jornada comovente em um mundo brutal e de tirar o fôlego, e descubra o custo de salvar aqueles que você ama em uma luta desesperada pela sobrevivência. Ataque das sombras ou liberte o inferno com ratos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1897370/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images4.alphacoders.com/125/1250308.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1182900/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2587,7 +2660,7 @@
         "featured": false
     },
     {
-        "id": 111,
+        "id": 119,
         "title": "Ghost of Tsushima Director's Cut",
         "Description": "Forje um novo caminho e trave uma guerra não convencional pela liberdade de Tsushima. Desafie oponentes com sua katana, domine o arco para eliminar ameaças distantes e desenvolva táticas de furtividade.",
         "image": "https://images8.alphacoders.com/110/1104538.jpg",
@@ -2609,7 +2682,7 @@
         "featured": true
     },
     {
-        "id": 112,
+        "id": 120,
         "title": "Titanfall 2",
         "Description": "Piloto e Titã se unem como nunca antes. Apresentando uma campanha para um jogador que explora o vínculo único entre homem e máquina, e uma experiência multijogador mais profunda e robusta.",
         "image": "https://images2.alphacoders.com/735/735998.jpg",
@@ -2632,7 +2705,7 @@
         "featured": false
     },
     {
-        "id": 113,
+        "id": 121,
         "title": "Batman: Arkham Knight",
         "Description": "Na conclusão explosiva da série Arkham, o Espantalho retorna para unir um grupo impressionante de supervilões para destruir o Batman para sempre. Pilote o Batmóvel e proteja Gotham.",
         "image": "https://images6.alphacoders.com/609/609973.jpg",
@@ -2655,7 +2728,7 @@
         "featured": false
     },
     {
-        "id": 114,
+        "id": 122,
         "title": "Mortal Kombat 1",
         "Description": "Descubra um Universo Mortal Kombat renascido, criado pelo Deus do Fogo Liu Kang. Mortal Kombat 1 inaugura uma nova era da franquia icônica com um novo sistema de luta, modos de jogo e fatalidades!",
         "image": "https://images.alphacoders.com/131/1314979.jpg",
@@ -2678,7 +2751,7 @@
         "featured": false
     },
     {
-        "id": 115,
+        "id": 123,
         "title": "Tekken 8",
         "Description": "Prepare-se para o próximo capítulo da lendária franquia de jogos de luta. Apresentando modelos de personagens completamente redesenhados e um novo sistema 'Heat' para intensificar as táticas agressivas.",
         "image": "https://images3.alphacoders.com/132/1323910.jpg",
@@ -2701,7 +2774,7 @@
         "featured": false
     },
     {
-        "id": 116,
+        "id": 124,
         "title": "Dragon's Dogma 2",
         "Description": "Embarque em sua grande aventura, Arisen! Um RPG de ação para um jogador, movido por narrativa, que desafia os jogadores a escolherem sua própria experiência, desde a aparência de seu Arisen até sua vocação e seu grupo.",
         "image": "https://images2.alphacoders.com/134/1342718.jpeg",
@@ -2724,7 +2797,7 @@
         "featured": true
     },
     {
-        "id": 117,
+        "id": 125,
         "title": "Manor Lords",
         "Description": "Um jogo de estratégia medieval que apresenta construção de cidades em profundidade, batalhas táticas em grande escala e complexas simulações econômicas e sociais. Governe suas terras como um lorde medieval.",
         "image": "https://images.alphacoders.com/135/1359328.jpeg",
@@ -2745,7 +2818,7 @@
         "featured": false
     },
     {
-        "id": 118,
+        "id": 126,
         "title": "Remnant II",
         "Description": "A sequência do best-seller Remnant: From the Ashes, que coloca sobreviventes da humanidade contra novas criaturas mortais e chefes divinos em mundos aterrorizantes. Jogue sozinho ou em cooperação com dois amigos.",
         "image": "https://images.alphacoders.com/132/1320251.jpg",
@@ -2768,7 +2841,7 @@
         "featured": false
     },
     {
-        "id": 119,
+        "id": 127,
         "title": "Warframe",
         "Description": "Acorde como um guerreiro imparável e lute ao lado de seus amigos neste jogo de ação online gratuito e baseado em histórias. Enfrente facções em guerra em um vasto sistema interplanetário e domine o poder dos Warframes.",
         "image": "https://images4.alphacoders.com/910/910489.jpg",
@@ -2791,7 +2864,7 @@
         "featured": false
     },
     {
-        "id": 120,
+        "id": 128,
         "title": "Path of Exile",
         "Description": "Você é um Exilado, lutando para sobreviver no continente sombrio de Wraeclast. Este RPG de Ação online é sobre combate visceral, itens poderosos e personalização profunda de personagens.",
         "image": "https://images2.alphacoders.com/100/1003297.jpg",
@@ -2814,10 +2887,10 @@
         "featured": false
     },
     {
-        "id": 121,
+        "id": 129,
         "title": "Among Us",
         "Description": "Um jogo online de trabalho em equipe e traição para 4-15 jogadores. Prepare sua nave espacial para a partida, mas cuidado, pois um ou mais jogadores aleatórios entre a Tripulação são Impostores.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/945360/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images5.alphacoders.com/110/1102559.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/945360/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2837,10 +2910,10 @@
         "featured": false
     },
     {
-        "id": 122,
+        "id": 130,
         "title": "Risk of Rain 2",
         "Description": "Fuja de um planeta alienígena caótico lutando contra hordas de monstros frenéticos com amigos ou sozinho. Combine itens de maneiras surpreendentes e domine cada personagem até se tornar o caos que você temia.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/632380/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/100/1000834.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/632360/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2860,10 +2933,10 @@
         "featured": false
     },
     {
-        "id": 123,
+        "id": 131,
         "title": "Dead by Daylight",
         "Description": "Um jogo de terror multijogador (4vs1) onde um jogador assume o papel do Assassino selvagem, e os outros quatro jogadores jogam como Sobreviventes, tentando escapar do Assassino e evitar serem pegos e mortos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/381210/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/720/720838.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/381210/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2883,10 +2956,10 @@
         "featured": false
     },
     {
-        "id": 124,
+        "id": 132,
         "title": "The Forest",
         "Description": "Como o único sobrevivente de um acidente de avião, você se encontra em uma floresta misteriosa lutando para se manter vivo contra uma sociedade de mutantes canibais. Construa, explore, sobreviva neste aterrorizante simulador.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/242760/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images6.alphacoders.com/503/503958.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2905,10 +2978,10 @@
         "featured": false
     },
     {
-        "id": 125,
+        "id": 133,
         "title": "7 Days to Die",
         "Description": "Um sandbox de mundo aberto único que combina tiro em primeira pessoa, terror de sobrevivência, defesa de torre e RPG. Jogue o RPG definitivo de sobrevivência zumbi que veio primeiro.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/251570/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images2.alphacoders.com/582/582379.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/251570/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2929,10 +3002,10 @@
         "featured": false
     },
     {
-        "id": 126,
+        "id": 134,
         "title": "Satisfactory",
         "Description": "Um jogo de construção de fábricas em primeira pessoa de mundo aberto com uma pitada de exploração e combate. Jogue sozinho ou com amigos, explore um planeta alienígena, crie fábricas de vários andares e entre no paraíso das esteiras.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/526870/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/100/1002098.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/526870/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -2950,10 +3023,10 @@
         "featured": false
     },
     {
-        "id": 127,
+        "id": 135,
         "title": "Frostpunk",
         "Description": "O primeiro jogo de sobrevivência de sociedade. Como governante da última cidade na Terra, é seu dever gerenciar seus cidadãos e infraestrutura. Que decisões você tomará para garantir a sobrevivência da sua sociedade?",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/323190/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images3.alphacoders.com/904/904908.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/323190/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2974,10 +3047,10 @@
         "featured": false
     },
     {
-        "id": 128,
+        "id": 136,
         "title": "Total War: WARHAMMER III",
         "Description": "O cataclísmico final da trilogia. Reúna suas forças e entre no Reino do Caos, uma dimensão de horror alucinante onde o próprio destino do mundo será decidido. Você conquistará seus demônios... ou os comandará?",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1142710/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/115/1151065.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1142710/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -2996,10 +3069,10 @@
         "featured": false
     },
     {
-        "id": 129,
+        "id": 137,
         "title": "F1 24",
         "Description": "Aproxime-se da ação como nunca antes com o EA SPORTS F1 24. Pilote os carros de 2024 atualizados com o autêntico grid de 20 pilotos e 10 equipes da F1. Liberte o campeão que há em você no novo modo Carreira de Piloto.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2415990/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/136/1360183.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2415990/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3019,10 +3092,10 @@
         "featured": false
     },
     {
-        "id": 130,
+        "id": 138,
         "title": "EA SPORTS FC 24",
         "Description": "O EA SPORTS FC 24 dá as boas-vindas a você no Jogo de Todo Mundo: a experiência de futebol mais realista de todos os tempos com HyperMotionV, Estilos de Jogo otimizados pela Opta e uma Frostbite Engine aprimorada.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2195250/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/132/1321890.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3042,10 +3115,10 @@
         "featured": false
     },
     {
-        "id": 131,
+        "id": 139,
         "title": "The Finals",
         "Description": "Junte-se ao game show de combate gratuito e centrado em equipes! Lute ao lado de seus companheiros de equipe em arenas virtuais que você pode alterar, explorar e destruir. Construa seu próprio estilo de jogo nesta arena de tiro em primeira pessoa.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2073850/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/134/1344171.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2073850/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3065,10 +3138,10 @@
         "featured": false
     },
     {
-        "id": 132,
+        "id": 140,
         "title": "Ready or Not",
         "Description": "Um jogo de tiro em primeira pessoa tático e intenso que retrata um mundo moderno onde as forças policiais da SWAT são chamadas para desarmar situações hostis e de confronto.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1144200/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/134/1346087.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1144200/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3086,10 +3159,10 @@
         "featured": false
     },
     {
-        "id": 133,
+        "id": 141,
         "title": "Gray Zone Warfare",
         "Description": "Um imersivo FPS tático com foco máximo no realismo. Junte-se a uma empresa militar privada e navegue por um vasto cenário de mundo aberto. Adapte-se ao seu ambiente, use táticas a seu favor e lute contra outros operadores.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2074450/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/135/1358981.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2074450/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3107,10 +3180,10 @@
         "featured": false
     },
     {
-        "id": 134,
+        "id": 142,
         "title": "Escape from Tarkov: Arena",
         "Description": "Um projeto multiplayer autônomo: um jogo de tiro em primeira pessoa para gladiadores em várias arenas da cidade de Tarkov. Os jogadores participarão de batalhas de gladiadores em várias arenas com diferentes configurações de armas e equipamentos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/2574990/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/131/1319717.jpg",
         "coverUrl": "https://assets.reedpopcdn.com/escape-from-tarkov-arena-art.jpg/BROK/thumbnail/1200x1200/quality/100/escape-from-tarkov-arena-art.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3128,10 +3201,10 @@
         "featured": false
     },
     {
-        "id": 135,
+        "id": 143,
         "title": "Squad",
         "Description": "Um jogo de tiro em primeira pessoa para 100 jogadores com foco em comunicação e trabalho em equipe. Apresentando grandes mapas de mundo aberto, jogabilidade de armas combinadas e construção de bases para criar uma experiência de combate visceral.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/393380/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/133/1336189.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/393380/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3149,10 +3222,10 @@
         "featured": false
     },
     {
-        "id": 136,
+        "id": 144,
         "title": "Arma 3",
         "Description": "Experimente uma verdadeira jogabilidade de combate em um enorme sandbox militar. Com uma grande variedade de conteúdo para um e vários jogadores, mais de 20 veículos e 40 armas, e oportunidades ilimitadas para criação de conteúdo.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/107410/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images4.alphacoders.com/588/588810.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/107410/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3170,10 +3243,10 @@
         "featured": false
     },
     {
-        "id": 137,
+        "id": 145,
         "title": "Farming Simulator 22",
         "Description": "Assuma o papel de um agricultor moderno! Agricultura, pecuária e silvicultura oferecem uma enorme variedade de atividades agrícolas enquanto você enfrenta os desafios das quatro estações, especialmente quando o inverno chega.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1248130/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/117/1172902.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1248130/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3194,10 +3267,10 @@
         "featured": false
     },
     {
-        "id": 138,
+        "id": 146,
         "title": "Microsoft Flight Simulator 2020",
         "Description": "De aviões leves a jatos de grande porte, pilote aeronaves altamente detalhadas e precisas na próxima geração do Microsoft Flight Simulator. Teste suas habilidades de pilotagem contra os desafios do voo noturno e clima em tempo real.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1250410/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images5.alphacoders.com/108/1088319.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1250410/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3216,10 +3289,10 @@
         "featured": false
     },
     {
-        "id": 139,
+        "id": 147,
         "title": "PowerWash Simulator",
         "Description": "Libere a pressão com o PowerWash Simulator! Lave suas preocupações com os sons suaves da água em alta pressão. Ligue seu lavador de alta pressão e elimine toda a sujeira e fuligem que encontrar.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1290000/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/125/1259740.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1290000/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3239,10 +3312,10 @@
         "featured": false
     },
     {
-        "id": 140,
+        "id": 148,
         "title": "House Flipper 2",
         "Description": "Não importa se você é um veterano das reformas ou se está apenas começando - você se sentirá em casa! House Flipper 2 apresenta novas mecânicas e renova as do jogo original. O bom e velho martelo, o rolo de pintura fiel e o esfregão resistente aguardam seu retorno!",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1814110/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/134/1345919.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1190970/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3262,10 +3335,10 @@
         "featured": false
     },
     {
-        "id": 141,
+        "id": 149,
         "title": "Inscryption",
         "Description": "Dos criadores de Pony Island e The Hex, vem a mais nova carta de amor alucinante e autodestrutiva aos videogames. Inscryption é uma odisséia sombria baseada em cartas que mistura roguelike de construção de baralhos, quebra-cabeças no estilo escape-room e terror psicológico.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1092790/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/118/1189312.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1092790/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3286,10 +3359,10 @@
         "featured": false
     },
     {
-        "id": 142,
+        "id": 150,
         "title": "V Rising",
         "Description": "Desperte como um vampiro. Cace sangue em assentamentos próximos para recuperar sua força e evite o sol escaldante para sobreviver. Erga seu castelo e prospere em um mundo aberto misterioso e em constante mudança. Faça aliados ou inimigos online.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1604490/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/124/1240182.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1604030/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3308,10 +3381,10 @@
         "featured": false
     },
     {
-        "id": 143,
+        "id": 151,
         "title": "Enshrouded",
         "Description": "Você é a última esperança de uma raça moribunda. Sobreviva à névoa corruptora e recupere a beleza perdida do seu reino. Aventure-se em um vasto mundo, enfrente chefes impiedosos, construa salões épicos e forje seu caminho neste RPG de Ação e Sobrevivência Cooperativo.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1203620/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/135/1350172.jpeg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1203620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3329,10 +3402,10 @@
         "featured": false
     },
     {
-        "id": 144,
+        "id": 152,
         "title": "Dyson Sphere Program",
         "Description": "Construa o império industrial intergaláctico mais eficiente! Colha recursos, planeje linhas de produção e desenvolva sua fábrica de um pequeno workshop para uma galáxia inteira, para construir uma Esfera de Dyson e aproveitar a energia de uma estrela.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1366540/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/113/1138860.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1366540/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3350,10 +3423,10 @@
         "featured": false
     },
     {
-        "id": 145,
+        "id": 153,
         "title": "Kenshi",
         "Description": "Um RPG de mundo aberto baseado em esquadrões com um cenário de 'espada-punk'. Seja um comerciante, um ladrão, um rebelde, um senhor da guerra, um aventureiro, um fazendeiro, um escravo ou apenas comida para os canibais. Pesquise novos equipamentos e crie novos equipamentos.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/233860/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/985/985903.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/233860/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3371,10 +3444,10 @@
         "featured": false
     },
     {
-        "id": 146,
+        "id": 154,
         "title": "ULTRAKILL",
         "Description": "Um FPS retrô ultraviolento, rápido e estiloso que combina o estilo de pontuação baseado em habilidade dos jogos de ação de personagens com carnificina sem adulteração inspirada nos melhores shooters dos anos 90. Destrua seus inimigos com uma variedade de armas destrutivas.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1407710/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/132/1328906.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1229490/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3392,10 +3465,10 @@
         "featured": false
     },
     {
-        "id": 147,
+        "id": 155,
         "title": "Barotrauma",
         "Description": "Um simulador de submarino de terror de sobrevivência cooperativo 2D. Navegue, dê ordens, lute, conserte vazamentos, opere máquinas, maneje as armas e crie itens, mas tenha cuidado: o perigo em Barotrauma não se anuncia.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/602960/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/131/1314352.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/602960/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3414,10 +3487,10 @@
         "featured": false
     },
     {
-        "id": 148,
+        "id": 156,
         "title": "The Long Dark",
         "Description": "Uma experiência de sobrevivência pensativa que desafia os jogadores solo a pensarem por si mesmos enquanto exploram um vasto deserto congelado após um desastre geomagnético. Não há zumbis - apenas você, o frio e todas as ameaças que a Mãe Natureza pode reunir.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/305620/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/873/873003.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/305620/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3438,10 +3511,10 @@
         "featured": false
     },
     {
-        "id": 149,
+        "id": 157,
         "title": "Subnautica: Below Zero",
         "Description": "Mergulhe em uma aventura subaquática gelada em um planeta alienígena. Passado um ano após o Subnautica original, Below Zero desafia você a sobreviver a um desastre em uma estação de pesquisa alienígena. Crie ferramentas, procure suprimentos e desvende o próximo capítulo da história.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1127100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images4.alphacoders.com/985/985888.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/848450/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3460,12 +3533,13 @@
         "oldPrice": "R$ 88,99",
         "currentPrice": "R$ 29,36",
         "featured": false
-    },
+    }
+,
     {
-        "id": 150,
+        "id": 158,
         "title": "BioShock Infinite",
         "Description": "Leve-nos a garota, apague a dívida. O ano é 1912. O detetive Booker DeWitt deve resgatar uma jovem misteriosa da cidade flutuante de Columbia ou nunca mais sair de lá vivo. Uma obra-prima de FPS com uma narrativa inesquecível.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/8850/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/295/295329.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/8870/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3486,7 +3560,7 @@
         "featured": false
     },
     {
-        "id": 151,
+        "id": 159,
         "title": "The Elder Scrolls IV: Oblivion",
         "Description": "Com o império à beira do colapso, os portões do Oblivion se abrem e demônios marcham sobre a terra. Na sombra do mal, um herói surgirá das cinzas de um império em ruínas. Um clássico RPG de mundo aberto.",
         "image": "https://images.alphacoders.com/486/486084.jpg",
@@ -3509,7 +3583,7 @@
         "featured": false
     },
     {
-        "id": 152,
+        "id": 160,
         "title": "Fallout 3",
         "Description": "Prepare-se para o futuro. Do Vault 101, você emerge para a vastidão desolada da Capital Wasteland. Lute pela sobrevivência em um mundo pós-apocalíptico devastado pela guerra nuclear.",
         "image": "https://images3.alphacoders.com/289/28953.jpg",
@@ -3532,7 +3606,7 @@
         "featured": false
     },
     {
-        "id": 153,
+        "id": 161,
         "title": "Dragon Age: Origins",
         "Description": "Você é um Grey Warden, um dos últimos de uma ordem lendária de guardiões. Com o retorno de um antigo inimigo e o reino mergulhado em guerra civil, você foi escolhido pelo destino para unir as terras devastadas e matar o arquidemônio de uma vez por todas.",
         "image": "https://images2.alphacoders.com/704/70408.jpg",
@@ -3555,7 +3629,7 @@
         "featured": false
     },
     {
-        "id": 154,
+        "id": 162,
         "title": "Half-Life 2",
         "Description": "Gordon Freeman é retirado da estase para um mundo infestado por alienígenas, esgotado de seus recursos, sua população diminuindo. Freeman é empurrado para o papel nada invejável de resgatar o mundo do mal que ele desencadeou em Black Mesa.",
         "image": "https://images6.alphacoders.com/312/312479.jpg",
@@ -3577,7 +3651,7 @@
         "featured": false
     },
     {
-        "id": 155,
+        "id": 163,
         "title": "S.T.A.L.K.E.R.: Shadow of Chernobyl",
         "Description": "Um jogo de tiro em primeira pessoa de sobrevivência e terror ambientado na Zona de Exclusão de Chernobyl. Explore um vasto mundo aberto cheio de locais perigosos, anomalias mortais e facções em guerra.",
         "image": "https://images.alphacoders.com/134/1349699.jpeg",
@@ -3598,7 +3672,7 @@
         "featured": false
     },
     {
-        "id": 156,
+        "id": 164,
         "title": "Vampire: The Masquerade - Bloodlines",
         "Description": "Um RPG de ação cult clássico. Você é um vampiro recém-nascido, jogado no perigoso mundo da noite de Los Angeles. Navegue pela política dos clãs, use seus poderes e lute para sobreviver.",
         "image": "https://images5.alphacoders.com/511/511843.jpg",
@@ -3619,7 +3693,7 @@
         "featured": false
     },
     {
-        "id": 157,
+        "id": 165,
         "title": "Deus Ex: Human Revolution",
         "Description": "Você joga como Adam Jensen, um ex-SWAT que foi escolhido para supervisionar as necessidades defensivas de uma das empresas de biotecnologia mais experimentais da América. Seu trabalho é proteger os segredos da empresa, mas quando uma equipe de operações secretas invade, tudo o que você pensava que sabia sobre seu trabalho muda.",
         "image": "https://images2.alphacoders.com/152/152062.jpg",
@@ -3642,7 +3716,7 @@
         "featured": false
     },
     {
-        "id": 158,
+        "id": 166,
         "title": "System Shock (Remake)",
         "Description": "Enfrente SHODAN, a IA psicótica que assumiu o controle da Citadel Station e transformou a tripulação em um exército de ciborgues e mutantes. Lute para sobreviver nas profundezas do espaço neste remake fiel do clássico de 1994.",
         "image": "https://images.alphacoders.com/131/1314354.jpg",
@@ -3665,7 +3739,7 @@
         "featured": false
     },
     {
-        "id": 159,
+        "id": 167,
         "title": "Black Mesa",
         "Description": "Um remake feito por fãs e reimaginado do jogo Half-Life. Você é Gordon Freeman, um físico teórico no Centro de Pesquisa Black Mesa. Quando um experimento de rotina dá terrivelmente errado, você deve lutar para sair de um complexo invadido por alienígenas e uma unidade de limpeza militar.",
         "image": "https://images.alphacoders.com/108/1088320.jpg",
@@ -3686,7 +3760,7 @@
         "featured": false
     },
     {
-        "id": 160,
+        "id": 168,
         "title": "Hotline Miami",
         "Description": "Um jogo de ação de alta octanagem, transbordando de brutalidade crua, tiroteios difíceis e combate corpo a corpo esmagador. Situado em uma Miami alternativa de 1989, você assumirá o papel de um anti-herói misterioso em uma onda de assassinatos contra o submundo sombrio.",
         "image": "https://images.alphacoders.com/132/1329596.png",
@@ -3710,7 +3784,7 @@
         "featured": false
     },
     {
-        "id": 161,
+        "id": 169,
         "title": "Katana ZERO",
         "Description": "Um estiloso jogo de plataforma de ação neo-noir com ação vertiginosa e combate de morte instantânea. Ataque, corra e manipule o tempo para desvendar seu passado em uma exibição acrobática brutalmente bela.",
         "image": "https://images.alphacoders.com/100/1001135.jpg",
@@ -3733,7 +3807,7 @@
         "featured": false
     },
     {
-        "id": 162,
+        "id": 170,
         "title": "Papers, Please",
         "Description": "Parabéns. A loteria de trabalho de outubro está completa. Seu nome foi sorteado. Para admissão imediata no posto de fronteira de Grestin, aloque um apartamento para você e sua família. Glória a Arstotzka. Um simulador de inspetor de imigração.",
         "image": "https://images.alphacoders.com/133/1330925.png",
@@ -3755,10 +3829,10 @@
         "featured": false
     },
     {
-        "id": 163,
+        "id": 171,
         "title": "Return of the Obra Dinn",
         "Description": "Em 1802, o navio mercante Obra Dinn partiu de Londres com mais de 200 toneladas de carga comercial. Seis meses depois, não havia chegado ao seu ponto de encontro. Agora, em 1807, ele chega à deriva no porto com velas danificadas e sem tripulação visível. Como inspetor de seguros, descubra o que aconteceu.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/653530/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/968/968888.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/653530/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3779,7 +3853,7 @@
         "featured": false
     },
     {
-        "id": 164,
+        "id": 172,
         "title": "What Remains of Edith Finch",
         "Description": "Uma coleção de contos estranhos sobre uma família no estado de Washington. Como Edith, você explorará a colossal casa dos Finch, procurando por histórias enquanto ela explora sua história familiar e tenta descobrir por que é a última de sua família a permanecer viva.",
         "image": "https://images.alphacoders.com/826/826274.jpg",
@@ -3802,7 +3876,7 @@
         "featured": false
     },
     {
-        "id": 165,
+        "id": 173,
         "title": "Firewatch",
         "Description": "Um mistério para um jogador em primeira pessoa ambientado na selva de Wyoming. O ano é 1989. Você é um homem chamado Henry que se retirou de sua vida bagunçada para trabalhar como vigia de incêndio. Sua única conexão emocional é com a mulher em seu rádio, Delilah.",
         "image": "https://images.alphacoders.com/688/688053.jpg",
@@ -3826,10 +3900,10 @@
         "featured": false
     },
     {
-        "id": 166,
+        "id": 174,
         "title": "Life is Strange",
         "Description": "Max Caulfield, uma estudante de fotografia, descobre que pode voltar no tempo enquanto salva sua melhor amiga Chloe Price. As duas logo se veem investigando o misterioso desaparecimento de outra estudante, Rachel Amber, descobrindo um lado sombrio da vida em Arcadia Bay.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/319950/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images3.alphacoders.com/618/618384.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/319630/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3850,10 +3924,10 @@
         "featured": false
     },
     {
-        "id": 167,
+        "id": 175,
         "title": "The Wolf Among Us",
         "Description": "Dos criadores do Jogo do Ano de 2012: The Walking Dead, vem um thriller corajoso, violento e maduro baseado nos premiados quadrinhos Fables. Como Bigby Wolf - o grande lobo mau - você descobrirá que um assassinato brutal e sangrento é apenas o começo.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/250320/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images6.alphacoders.com/494/494278.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/250320/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3874,10 +3948,10 @@
         "featured": false
     },
     {
-        "id": 168,
+        "id": 176,
         "title": "Detroit: Become Human",
         "Description": "Detroit, 2038. A tecnologia evoluiu a um ponto em que androides semelhantes a humanos estão por toda parte. Eles falam, se movem e se comportam como seres humanos, mas são apenas máquinas a serviço dos humanos. Jogue com três androides distintos e veja um mundo à beira do caos.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/02/PS4_DetroitBecomeHuman_20180525_001.jpg",
+        "image": "https://images4.alphacoders.com/911/911734.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222140/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3896,10 +3970,10 @@
         "featured": false
     },
     {
-        "id": 169,
+        "id": 177,
         "title": "Heavy Rain",
         "Description": "Lidere a caça para desmascarar o misterioso Assassino do Origami enquanto joga como quatro personagens diferentes neste thriller psicológico tenso. Escolha seu próximo movimento com cuidado - cada decisão pode ter consequências dramáticas.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/03/PS4_HeavyRain_20170221_001.jpg",
+        "image": "https://images.alphacoders.com/109/109159.jpg",
         "coverUrl": "https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_HeavyRain_QuanticDream_S2_1200x1600-5845a454375b7a0595c5025d0a51552a",
         "platforms": [
             "fab fa-windows",
@@ -3918,10 +3992,10 @@
         "featured": false
     },
     {
-        "id": 170,
+        "id": 178,
         "title": "Beyond: Two Souls",
         "Description": "Um thriller psicológico de ação único com os atores de Hollywood Elliot Page e Willem Dafoe. Viva uma vida extraordinária: uma vida, duas almas. Você embarca em uma jornada emocionante pelo mundo enquanto joga como Jodie Holmes, uma mulher conectada a uma entidade sobrenatural.",
-        "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/04/PS4_BeyondTwoSouls_20170222_001.jpg",
+        "image": "https://images2.alphacoders.com/480/480572.jpg",
         "coverUrl": "https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_BeyondTwoSouls_QuanticDream_S2_1200x1600-c3c63b38707133857cc22680b5652db5",
         "platforms": [
             "fab fa-windows",
@@ -3940,10 +4014,10 @@
         "featured": false
     },
     {
-        "id": 171,
+        "id": 179,
         "title": "F.E.A.R.",
         "Description": "Seja o herói em seu próprio thriller cinematográfico de ação, suspense e terror. Uma misteriosa força paramilitar se infiltra em um complexo aeroespacial multibilionário, e o governo responde enviando as Forças Especiais, mas perde o contato. É aí que você entra.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/21090/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/169/1699.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/21090/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows"
@@ -3961,10 +4035,10 @@
         "featured": false
     },
     {
-        "id": 172,
+        "id": 180,
         "title": "Crysis Remastered",
         "Description": "O clássico jogo de tiro em primeira pessoa da Crytek está de volta com jogabilidade cheia de ação, um mundo sandbox e as emocionantes batalhas épicas que você amou da primeira vez - agora com gráficos remasterizados otimizados para uma nova geração de hardware.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/1244620/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/110/1101851.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1715130/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -3984,10 +4058,10 @@
         "featured": false
     },
     {
-        "id": 173,
+        "id": 181,
         "title": "Kingdom Come: Deliverance",
         "Description": "Um RPG de mundo aberto, focado em história, que te imerge em uma aventura épica no Sacro Império Romano. Vingue a morte de seus pais enquanto luta contra forças invasoras, cumpre missões que mudam o jogo e faz escolhas influentes.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/379430/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images2.alphacoders.com/807/807808.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/379430/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -4007,10 +4081,10 @@
         "featured": false
     },
     {
-        "id": 174,
+        "id": 182,
         "title": "Oxygen Not Included",
         "Description": "Um jogo de simulação de colônia espacial. No fundo de uma rocha espacial alienígena, sua tripulação animada precisará dominar a ciência, superar novas formas de vida estranhas e aproveitar a incrível tecnologia espacial para sobreviver... e talvez, prosperar.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/457140/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/839/839071.png",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/457140/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -4029,10 +4103,10 @@
         "featured": false
     },
     {
-        "id": 175,
+        "id": 183,
         "title": "Planet Zoo",
         "Description": "Construa um mundo para a vida selvagem no simulador de zoológico definitivo dos criadores de Planet Coaster. Construa habitats detalhados, gerencie seu zoológico e encontre animais autênticos que pensam, sentem e exploram o mundo que você cria ao redor deles.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/813100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/103/1033990.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/703080/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -4052,7 +4126,7 @@
         "featured": false
     },
     {
-        "id": 176,
+        "id": 184,
         "title": "Planet Coaster",
         "Description": "Surpreenda, encante e emocione multidões enquanto constrói o império do seu parque de montanhas-russas. Deixe sua imaginação correr solta com o futuro dos jogos de simulação de parques de diversões.",
         "image": "https://images5.alphacoders.com/741/741238.jpg",
@@ -4076,7 +4150,7 @@
         "featured": false
     },
     {
-        "id": 177,
+        "id": 185,
         "title": "Euro Truck Simulator 2",
         "Description": "Viaje pela Europa como rei da estrada, um caminhoneiro que entrega cargas importantes por distâncias impressionantes! Com dezenas de cidades para explorar, sua resistência, habilidade e velocidade serão levadas ao limite.",
         "image": "https://images.alphacoders.com/483/483979.jpg",
@@ -4098,7 +4172,7 @@
         "featured": false
     },
     {
-        "id": 178,
+        "id": 186,
         "title": "American Truck Simulator",
         "Description": "Experimente os lendários caminhões americanos e entregue várias cargas pela ensolarada Califórnia, a arenosa Nevada e o estado do Grand Canyon, o Arizona. O American Truck Simulator leva você a uma jornada por paisagens de tirar o fôlego e marcos amplamente reconhecidos nos Estados Unidos.",
         "image": "https://images.alphacoders.com/684/684491.jpg",
@@ -4120,7 +4194,7 @@
         "featured": false
     },
     {
-        "id": 179,
+        "id": 187,
         "title": "The Talos Principle 2",
         "Description": "Nascido em um novo mundo onde a humanidade biológica está extinta, mas a cultura humana vive em uma cidade de robôs, você se verá envolvido em uma aventura alucinante envolvendo uma megaestrutura misteriosa com enormes poderes.",
         "image": "https://images.alphacoders.com/131/1314353.jpg",
@@ -4143,7 +4217,7 @@
         "featured": false
     },
     {
-        "id": 180,
+        "id": 188,
         "title": "Unpacking",
         "Description": "Um jogo de quebra-cabeça zen sobre a experiência familiar de tirar pertences de caixas e encaixá-los em uma nova casa. Parte quebra-cabeça de blocos, parte decoração de interiores, você é convidado a criar um espaço de vida satisfatório enquanto aprende pistas sobre a vida que está desempacotando.",
         "image": "https://images.alphacoders.com/119/1190563.jpg",
@@ -4167,7 +4241,7 @@
         "featured": false
     },
     {
-        "id": 181,
+        "id": 189,
         "title": "A Short Hike",
         "Description": "Caminhe, escale e voe pelas paisagens montanhosas pacíficas do Hawk Peak Provincial Park. Siga as trilhas marcadas ou explore o interior enquanto segue para o cume. Ao longo do caminho, conheça outros caminhantes, descubra tesouros escondidos e aprecie o mundo ao seu redor.",
         "image": "https://images.alphacoders.com/129/1295988.jpg",
@@ -4191,7 +4265,7 @@
         "featured": false
     },
     {
-        "id": 182,
+        "id": 190,
         "title": "Darkest Dungeon",
         "Description": "Um desafiador RPG gótico de roguelike por turnos sobre o estresse psicológico da aventura. Recrute, treine e lidere uma equipe de heróis imperfeitos através de florestas retorcidas, labirintos esquecidos, criptas em ruínas e além.",
         "image": "https://images8.alphacoders.com/680/680920.jpg",
@@ -4215,7 +4289,7 @@
         "featured": false
     },
     {
-        "id": 183,
+        "id": 191,
         "title": "Into the Breach",
         "Description": "Controle mechs poderosos do futuro para derrotar uma ameaça alienígena. Cada tentativa de salvar o mundo apresenta um novo desafio gerado aleatoriamente neste jogo de estratégia por turnos dos criadores de FTL.",
         "image": "https://images.alphacoders.com/900/900948.png",
@@ -4237,7 +4311,7 @@
         "featured": false
     },
     {
-        "id": 184,
+        "id": 192,
         "title": "FTL: Faster Than Light",
         "Description": "Neste 'simulador de nave espacial roguelike', você experimenta a atmosfera de comandar uma nave estelar tentando salvar a galáxia. É uma missão perigosa, com cada encontro apresentando um desafio único com múltiplas soluções.",
         "image": "https://images.alphacoders.com/534/534727.jpg",
@@ -4259,7 +4333,7 @@
         "featured": false
     },
     {
-        "id": 185,
+        "id": 193,
         "title": "Spelunky 2",
         "Description": "A sequência do clássico roguelike de plataforma! Conheça a próxima geração de exploradores enquanto eles se encontram na Lua, em busca de tesouros e família desaparecida. Um mundo vasto e aleatório oferece desafios e surpresas infinitas.",
         "image": "https://images.alphacoders.com/110/1100030.jpg",
@@ -4282,7 +4356,7 @@
         "featured": false
     },
     {
-        "id": 186,
+        "id": 194,
         "title": "Outer Wilds",
         "Description": "Nomeado Jogo do Ano de 2019. Você é o mais novo recruta do Outer Wilds Ventures, um programa espacial incipiente que busca respostas em um sistema solar estranho e em constante evolução. O que se esconde no coração do sinistro Dark Bramble? Quem construiu as ruínas alienígenas na Lua? O loop temporal infinito pode ser interrompido?",
         "image": "https://images.alphacoders.com/103/1033991.jpg",
@@ -4305,7 +4379,7 @@
         "featured": false
     },
     {
-        "id": 187,
+        "id": 195,
         "title": "Psychonauts 2",
         "Description": "Combinando missões peculiares e conspirações misteriosas, Psychonauts 2 é um jogo de plataforma e aventura com estilo cinematográfico e toneladas de poderes psíquicos personalizáveis. O jogo retoma a história do jovem psíquico, Razputin 'Raz' Aquato, enquanto ele realiza seu sonho de se juntar à organização internacional de espionagem psíquica conhecida como Psychonauts!",
         "image": "https://images.alphacoders.com/116/1166324.jpg",
@@ -4329,7 +4403,7 @@
         "featured": false
     },
     {
-        "id": 188,
+        "id": 196,
         "title": "Yakuza 0",
         "Description": "O brilho, o glamour e a decadência desenfreada dos anos 80 estão de volta. Lute como o inferno por Tóquio e Osaka com o protagonista Kazuma Kiryu e o personagem regular da série Goro Majima. Explore um Japão dos anos 80 rico em detalhes, com minigames, missões secundárias e muito mais.",
         "image": "https://images.alphacoders.com/941/941139.jpg",
@@ -4352,7 +4426,7 @@
         "featured": false
     },
     {
-        "id": 189,
+        "id": 197,
         "title": "Metal Gear Solid V: The Phantom Pain",
         "Description": "Inaugurando uma nova era para a franquia com a tecnologia de ponta do Fox Engine, MGSV: The Phantom Pain proporcionará aos jogadores uma experiência de primeira classe, pois eles terão liberdade tática para realizar missões de mundo aberto.",
         "image": "https://images3.alphacoders.com/632/632962.jpg",
@@ -4375,7 +4449,7 @@
         "featured": false
     },
     {
-        "id": 190,
+        "id": 198,
         "title": "Prey (2017)",
         "Description": "Em Prey, você acorda a bordo da Talos I, uma estação espacial que orbita a lua em 2032. Você é o principal sujeito de um experimento destinado a alterar a humanidade para sempre - mas as coisas deram terrivelmente errado. A estação espacial foi invadida por alienígenas hostis e agora você está sendo caçado.",
         "image": "https://images8.alphacoders.com/818/818111.jpg",
@@ -4398,10 +4472,10 @@
         "featured": false
     },
     {
-        "id": 191,
+        "id": 199,
         "title": "Dishonored",
         "Description": "Você é o outrora confiável guarda-costas da amada Imperatriz. Acusado de seu assassinato, você se torna um assassino infame, conhecido apenas pela máscara perturbadora que se tornou seu cartão de visita. Em um tempo de incerteza, quando a cidade é assolada pela peste e governada por um governo corrupto, forças sombrias conspiram para lhe conceder habilidades além das de qualquer homem comum - mas a que custo?",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/205100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/262/262880.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/205100/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -4421,10 +4495,10 @@
         "featured": false
     },
     {
-        "id": 192,
+        "id": 200,
         "title": "The Outer Worlds",
         "Description": "Um RPG de ficção científica para um jogador dos criadores de Fallout: New Vegas. Perdido em trânsito enquanto estava em uma nave colonizadora com destino à borda mais distante da galáxia, você acorda décadas depois apenas para se encontrar no meio de uma profunda conspiração que ameaça destruir a colônia. Explore os confins do espaço e encontre várias facções, todas competindo pelo poder.",
-        "image": "https://steamcdn-a.akamaihd.net/steam/apps/578650/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
+        "image": "https://images.alphacoders.com/951/951909.jpg",
         "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/578650/library_600x900_2x.jpg",
         "platforms": [
             "fab fa-windows",
@@ -4443,4 +4517,5 @@
         "currentPrice": "R$ 86,43",
         "featured": false
     }
+
 ]
