@@ -68,8 +68,8 @@
     width: 100%;
     /* Definimos uma proporção de banner (16:9) para a página de detalhes */
     aspect-ratio: 16 / 9; 
-    /* O cover garante que a imagem preencha o banner sem achatar */
-    object-fit: cover; 
+    /* O contain mostra a imagem completa sem cortar */
+    object-fit: contain; 
     object-position: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     background-color: var(--bg-dark);
