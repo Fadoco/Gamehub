@@ -103,6 +103,7 @@ async function renderProfile() {
 
     // 3. Estatísticas e Patrimônio Total (Calcula valor dos upgrades)
     let totalInventoryValue = 0;
+    const breakdown = [];
 
     (data.library || []).forEach(gameId => {
         const game = window.allGamesData.find(g => String(g.id) === String(gameId));
@@ -110,9 +111,17 @@ async function renderProfile() {
             // Tenta recuperar upgrades tanto com chave string quanto número (mesmo que no ranking)
             const level = (data.upgrades && (data.upgrades[String(gameId)] ?? data.upgrades[gameId])) || 0;
             const basePrice = window.utils.parsePrice(game.currentPrice);
-            totalInventoryValue += window.RankSystem.calculateValuation(basePrice, level);
+            const valuation = window.RankSystem.calculateValuation(basePrice, level);
+            totalInventoryValue += valuation;
+            breakdown.push({ gameId, title: game.title, basePrice, level, valuation });
         }
     });
+
+    console.log('[PERFIL] Breakdown completo:');
+    breakdown.forEach(item => {
+        console.log(`  ID ${item.gameId}: ${item.title} | Base=${item.basePrice.toFixed(2)} | Level=${item.level} | Valuation=${item.valuation.toFixed(2)}`);
+    });
+    console.log('[PERFIL] TOTAL INVENTORY VALUE:', totalInventoryValue.toFixed(2));
 
     const libraryCount = (data.library || []).length;
     const friendsCount = (data.friends || []).length;
