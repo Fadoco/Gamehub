@@ -1,0 +1,1469 @@
+[
+    {
+        "id": 1,
+        "title": "Euro Truck Simulator 2",
+        "Description": "Viaje por toda a Europa dirigindo caminhões licenciados, gerenciando rotas, combustível e manutenção. Expanda sua empresa de transporte, contrate motoristas e enfrente tráfego realista, clima variável e contratos de carga desafiadores.",
+        "image": "https://images.steamusercontent.com/ugc/946212858972232068/8B1FBE900F3DF19689A782AA418C4E6B341DE267/?imw=1024&imh=576&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Simulação",
+            "Mundo Aberto",
+            "Condução",
+            "Logística",
+            "Relaxante",
+            "Dirigir"
+        ],
+        "discount": 50,
+        "oldPrice": "R$ 61,99",
+        "currentPrice": "R$ 30,99",
+        "featured": true
+    },
+    {
+        "id": 2,
+        "title": "Subnaltica 2",
+        "Description": "Explore oceanos alienígenas, construa bases submarinas é colecione recursos para sobreviver. Enfrente criaturas marinhas, personalize equipamentos e descubra mistérios de civilizações perdidas sob o mar.",
+        "image": "https://www.gamewallpapers.com/download.php?img=wallpaper_subnautica_2_01_1920x1080.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation"
+        ],
+        "tags": [
+            "Aventura",
+            "Sobrevivência",
+            "Exploração",
+            "Sci-fi",
+            "Crafting",
+            "Mundo Aberto"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 59,99",
+        "featured": true
+    },
+    {
+        "id": 3,
+        "title": "Forza Horizon 6",
+        "Description": "Pilote carros de alta performance em um festival de corridas de mundo aberto com pistas variadas, desafios de drift, eventos off-road e personalização completa de veículos. Descubra novos lugares, participe de campeonatos e aperfeiçoe seu estilo de direção.",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1401537.jpg",
+        "coverUrl": "https://store-images.s-microsoft.com/image/apps.29856.14202278764680089.8e4c786a-0a1c-4737-a244-0bdfa34aab7b.64883cac-25a8-4715-a0dc-0dd42b0e5435",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Corrida",
+            "Mundo Aberto",
+            "Esportes",
+            "Simulação",
+            "Multijogador"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 249,00",
+        "currentPrice": "R$ 199,20",
+        "featured": true
+    },
+    {
+        "id": 4,
+        "title": "Hades II",
+        "Description": "Enfrente inimigos míticos em um roguelike frenético, usando habilidades únicas e armas diversas. Progrida com melhorias permanentes, conheça personagens do panteão grego e experimente uma história que evolui a cada tentativa de fuga do submundo.",
+        "image": "https://images.ctfassets.net/5owu3y35gz1g/4sNV3vIhSGWlR8KB86POBX/882b275b8af289ff2f21ca393a5ad92b/H2_Olympic_NoLogo_4K.jpg?w=1920&q=80",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-apple"
+        ],
+        "tags": [
+            "Roguelike",
+            "Ação",
+            "Fantasia",
+            "RPG",
+            "Mitologia",
+            "Indie"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 88,99",
+        "featured": false
+    },
+    {
+        "id": 5,
+        "title": "outbound",
+        "Description": "Aventure-se em um planeta selvagem e desconhecido, recolhendo recursos, construindo abrigo e lutando pela sobrevivência. Enfrente biomas hostis, perigos naturais e criaturas alienígenas enquanto descobre o passado do mundo.",
+        "image": "https://www.thexboxhub.com/wp-content/uploads/2026/05/Outbound-review-1-scaled.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/c6cb1263d52c4212a11359ef4c8c29f0/outbound-1solh.png?resize=1&w=360&h=480&quality=medium",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Aventura",
+            "Ação",
+            "Survival",
+            "Sci-fi",
+            "Mundo Aberto",
+            "Crafting"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 79,90",
+        "featured": false
+    },
+    {
+        "id": 6,
+        "title": "Apex Legends",
+        "Description": "Participe de batalhas em equipes com heróis táticos, cada um com habilidades únicas. Sobreviva em um battle royale rápido, coordene o uso de gadgets e armas, e aproveite atualizações constantes com novos mapas e personagens.",
+        "image": "https://cdn2.unrealengine.com/s24-launch-anniversary4man-v01-1920x1080-015dc79eafbb.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Battle Royale",
+            "Tiro",
+            "Multijogador",
+            "FPS",
+            "Sci-fi",
+            "Heróis"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 7,
+        "title": "Dota 2",
+        "Description": "Lidere seu time em batalhas 5v5 intensas, escolhendo entre mais de 120 heróis com habilidades únicas. Equilibre farm, visão e controle de objetivos para destruir a base inimiga em partidas estratégicas de alto nível.",
+        "image": "https://wallpapers.com/images/hd/best-dota-2-background-vlilg7n32mcf198h.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "MOBA",
+            "Estratégia",
+            "Competitivo",
+            "Multijogador",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 8,
+        "title": "Dying Light The Beast",
+        "Description": "Explore uma cidade infestada por zumbis usando parkour, armas improvisadas e combate corpo a corpo. Melhore suas habilidades, complete missões e enfrente monstros perigosos em um mundo aberto sombrio.",
+        "image": "https://i.ytimg.com/vi/SQRFxRMaIKo/maxresdefault.jpg",
+        "coverUrl": "https://sm.ign.com/ign_br/cover/d/dying-ligh/dying-light-the-beast_92cs.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Terror",
+            "Ação",
+            "Parkour",
+            "Zumbi",
+            "Mundo Aberto",
+            "Sobrevivência"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 189,90",
+        "currentPrice": "R$ 170,91",
+        "featured": false
+    },
+    {
+        "id": 9,
+        "title": "Invincible VS",
+        "Description": "Lute com heróis e vilões em batalhas estilo quadrinhos, combinando poderes únicos e combos explosivos. Enfrente chefes poderosos e personalize sua equipe para vencer duelos frenéticos.",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1409162.png",
+        "coverUrl": "https://external-game-cover-image-cf.store.on.epicgames.com/348216?resize=1&w=360&h=480&quality=medium",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Ação",
+            "Super-herói",
+            "Luta",
+            "Multijogador"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 129,90",
+        "featured": false
+    },
+    {
+        "id": 10,
+        "title": "League of Legends",
+        "Description": "Participe de partidas competitivas em equipe, escolhendo campeões com habilidades únicas. Trabalhe em conjunto para controlar o mapa, destruir torres e conquistar objetivos estratégicos.",
+        "image": "https://c4.wallpaperflare.com/wallpaper/50/914/446/spirit-blossom-ahri-league-of-legends-ahri-league-of-legends-riot-games-hd-wallpaper-preview.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/21779-285x380.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "MOBA",
+            "Competitivo",
+            "Estratégia",
+            "Fantasia",
+            "Multijogador"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 11,
+        "title": "Marvel's Spider-Man 2",
+        "Description": "Balance pelos céus de Nova York como Peter Parker e Miles Morales, enfrente vilões clássicos e use acrobacias de teia e combate dinâmico para proteger a cidade.",
+        "image": "https://cdn1.epicgames.com/offer/b2818b59c0bb420e9647983dfd254931/EGS_Octopus_InsomniacGamesNixxesSoftware_S2_1200x1600-5831c61378872a1fe233b295fbf3140f",
+        "coverUrl": "https://cdn1.epicgames.com/offer/b2818b59c0bb420e9647983dfd254931/EGS_Octopus_InsomniacGamesNixxesSoftware_S2_1200x1600-5831c61378872a1fe233b295fbf3140f",
+        "platforms": [
+            "fab fa-playstation"
+        ],
+        "tags": [
+            "Ação",
+            "Aventura",
+            "Super-herói",
+            "Mundo Aberto"
+        ],
+        "discount": 15,
+        "oldPrice": "R$ 349,90",
+        "currentPrice": "R$ 297,42",
+        "featured": false
+    },
+    {
+        "id": 12,
+        "title": "Overwatch 2",
+        "Description": "Junte-se a uma equipe de heróis com habilidades distintas em um shooter objetivo. Coordene ataques, defesas e utilitários em partidas rápidas e competitivas com atualizações contínuas.",
+        "image": "https://images7.alphacoders.com/124/1249649.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2357570/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Tiro",
+            "Multijogador",
+            "Heróis",
+            "Ação",
+            "Sci-fi",
+            "FPS"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 13,
+        "title": "Red Dead Redemption 2",
+        "Description": "Mergulhe no Velho Oeste com uma narrativa profunda, missões de história, caça, acampamentos e interações realistas. Siga Arthur Morgan enquanto escolhe entre honra ou sobrevivência em um mundo aberto imersivo.",
+        "image": "https://i.redd.it/jvs9j0xke0f61.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Ação",
+            "Aventura",
+            "Western",
+            "Mundo Aberto",
+            "RPG",
+            "História"
+        ],
+        "discount": 25,
+        "oldPrice": "R$ 299,90",
+        "currentPrice": "R$ 224,93",
+        "featured": false
+    },
+    {
+        "id": 14,
+        "title": "Rocket League",
+        "Description": "Conecte futebol e carros turbo em partidas de alta velocidade com saltos, boosts e dribles. Jogue solo ou em equipe em arenas competitivas e suba de ranking com habilidades de mecânica e coordenação.",
+        "image": "https://images4.alphacoders.com/885/thumb-1920-885543.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252950/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Esportes",
+            "Multijogador",
+            "Ação",
+            "Física",
+            "Competitivo"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 15,
+        "title": "Sinisistar 2",
+        "Description": "Revisite o estilo arcade retrô em um shooter intenso, enfrentando ondas de inimigos, chefes desafiadores e coletando power-ups para sobreviver.",
+        "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4466620/9a733502a870305fd2ce8998910a8eb60664b546/ss_9a733502a870305fd2ce8998910a8eb60664b546.1920x1080.jpg?t=1779777015",
+        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZOg5JxloHHaOfdVILzZxujM1xmIIgkzFbEA&s",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Ação",
+            "Arcade",
+            "Retro",
+            "Shooter",
+            "Espaço"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 59,90",
+        "featured": false
+    },
+    {
+        "id": 16,
+        "title": "Street Fighter 6",
+        "Description": "Entre nas arenas de luta com gráficos modernos e um sistema de combate acessível. Treine combos, use movimentos especiais e desafie jogadores online em um evento global de luta.",
+        "image": "https://image.api.playstation.com/vulcan/ap/rnd/202211/1408/l3bg7nmfPpPzam5jOVlaUFww.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Luta",
+            "Competitivo",
+            "Arcade",
+            "Ação",
+            "Multijogador"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 219,90",
+        "currentPrice": "R$ 197,91",
+        "featured": false
+    },
+    {
+        "id": 17,
+        "title": "Teamfight Tactics",
+        "Description": "Monte um time de campeões em um auto battler com sinergias e estratégias de posicionamento. Adapte sua composição conforme o jogo evolui e escolha itens inteligentes para dominar as batalhas automáticas.",
+        "image": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/fc9a0cca66f8acd38c08dfd0f5aed45a1440f9d0-1280x720.jpg?accountingTag=TFT&auto=format&fit=fill&q=80&w=1082",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/513143-285x380.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "Auto Battler",
+            "Multijogador",
+            "RPG",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 18,
+        "title": "Tom Clancy's Rainbow Six Siege",
+        "Description": "Jogue um shooter tático onde destruição ambiental e operadores especializados definem o ritmo. Planeje ataques, use gadgets e coopere com seu time para controlar pontos e eliminar o inimigo.",
+        "image": "https://gamespace.com/wp-content/uploads/2022/12/Rainbow-Six-Siege-free-week-2022.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Tiro",
+            "Tático",
+            "Multijogador",
+            "FPS",
+            "Estratégia"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 79,90",
+        "featured": false
+    },
+    {
+        "id": 19,
+        "title": "Valorant",
+        "Description": "Combine mira precisa com habilidades de agentes em um shooter tático 5v5. Compre armas, use utilitários estratégicos e trabalhe com sua equipe para dominar cada rodada.",
+        "image": "https://assets.b9.com.br/wp-content/uploads/2021/06/vavab9.jpg",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/516575-285x380.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Tiro",
+            "Competitivo",
+            "Tático",
+            "FPS",
+            "Heróis",
+            "Multijogador"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 20,
+        "title": "Age of Empires IV",
+        "Description": "Comande civilizações em batalhas históricas, gerencie exércitos e recursos em um RTS profundo com campanhas realistas.",
+        "image": "https://jogandocasualmente.com.br/wp-content/uploads/2025/11/review-age-of-empires-iv-anniversary-edition-ps5-1-900x506.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1466860/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "RTS",
+            "Histórico",
+            "Multijogador",
+            "Guerra"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 199,90",
+        "currentPrice": "R$ 159,92",
+        "featured": false
+    },
+    {
+        "id": 21,
+        "title": "Ark Survival Ascended",
+        "Description": "Sobreviva em um mundo pré-histórico com criaturas gigantes, construa bases e crie dinos para explorar e proteger seu território.",
+        "image": "https://images3.alphacoders.com/135/1358734.png",
+        "coverUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/06/Ark_Survival_Ascended.jpg/250px-Ark_Survival_Ascended.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Aventura",
+            "Dinossauros",
+            "Mundo Aberto",
+            "Crafting",
+            "Multijogador"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 169,90",
+        "currentPrice": "R$ 152,91",
+        "featured": false
+    },
+    {
+        "id": 22,
+        "title": "Arknights Endfield",
+        "Description": "Gerencie uma equipe de operadores em um jogo tático de defesa, com história sombria e estratégias de posicionamento de unidades.",
+        "image": "https://images2.alphacoders.com/140/1405038.jpg",
+        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDlsxh6SkWANcLUoUDa_4vxfPn39bjbvwWZg&s",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Tática",
+            "RPG",
+            "Futurista",
+            "Anime",
+            "Aventura",
+            "Sci-fi"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 23,
+        "title": "Baldur's Gate 3",
+        "Description": "RPG de fantasia com decisões profundas, combate por turnos e uma aventura épica na tradição de clássicos de Dungeons & Dragons.",
+        "image": "https://s2-techtudo.glbimg.com/2D667S7pICHVyam9A302KIy_DoM=/0x0:1200x675/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2023/E/X/TaJmxtSoSOIZsGLuhe0w/baldurs-gate-3-lancmento-xbox-series-x-s-2023-multiplayer-tela-dividida.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "RPG",
+            "Fantasia",
+            "Turn-based",
+            "Aventura",
+            "Escolhas",
+            "Narrativa"
+        ],
+        "discount": 15,
+        "oldPrice": "R$ 274,90",
+        "currentPrice": "R$ 233,66",
+        "featured": false
+    },
+    {
+        "id": 24,
+        "title": "Celeste",
+        "Description": "Plataforma desafiadora com foco em precisão e narrativa emocional sobre superar medos enquanto escala a montanha Celeste.",
+        "image": "https://image.api.playstation.com/cdn/UP2120/CUSA11302_00/hgqlI1LTcsd6zuL7YWVLQ8d00jkBmtCg.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/504230/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Plataforma",
+            "Indie",
+            "Desafio",
+            "Aventura",
+            "Pixel Art"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 36,99",
+        "currentPrice": "R$ 36,99",
+        "featured": false
+    },
+    {
+        "id": 25,
+        "title": "Counter-Strike 2",
+        "Description": "Competitivo shooter tático com economia, habilidades de equipe e partidas intensas entre terroristas e contra-terroristas.",
+        "image": "https://wallpapers.com/images/hd/counter-strike-global-offensive-desktop-5u8oo2n3tfwk3c8v.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Tiro",
+            "Multijogador",
+            "Competitivo",
+            "FPS",
+            "Tático"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": true
+    },
+    {
+        "id": 26,
+        "title": "Crusader Kings III",
+        "Description": "Controle dinastias medievais em um grande simulador de estratégias políticas, alianças, casamentos e guerras.",
+        "image": "https://images.alphacoders.com/110/1104489.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1158310/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "Grande Estratégia",
+            "Histórico",
+            "Simulação",
+            "RPG"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 149,90",
+        "currentPrice": "R$ 119,92",
+        "featured": false
+    },
+    {
+        "id": 27,
+        "title": "Cyberpunk 2077",
+        "Description": "RPG futurista em Night City, com escolhas, personalização de implantes e missões eletrizantes em um mundo aberto neon.",
+        "image": "https://images5.alphacoders.com/927/thumb-1920-927025.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "RPG",
+            "Ação",
+            "Mundo Aberto",
+            "Cyberpunk",
+            "Sci-fi",
+            "FPS"
+        ],
+        "discount": 15,
+        "oldPrice": "R$ 149,90",
+        "currentPrice": "R$ 127,42",
+        "featured": false
+    },
+    {
+        "id": 28,
+        "title": "Dead Cells",
+        "Description": "Ação roguelike com combate fluido, armas variadas e fases geradas proceduralmente em busca da próxima tentativa de fuga.",
+        "image": "https://image.api.playstation.com/cdn/EP3862/CUSA10484_00/uqZcouxNAPwBkWgMbGGsunPHSEupucOb.png",
+        "coverUrl": "https://upload.wikimedia.org/wikipedia/en/1/1f/Dead_cells_cover_art.png",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Roguelike",
+            "Ação",
+            "Indie",
+            "Metroidvania",
+            "Pixel Art",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 39,90",
+        "currentPrice": "R$ 39,90",
+        "featured": false
+    },
+    {
+        "id": 29,
+        "title": "Deep Rock Galactic",
+        "Description": "Jogo cooperativo de mineração espacial, onde anões enfrentam cavernas alienígenas enquanto coletam recursos e lutam por suas vidas.",
+        "image": "https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467575016-X4ACF9C4HUAB7PV7L3OX/DRG_Wallpaper_RadioactiveZone.jpg?format=1000w",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/548430/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Coop",
+            "Ação",
+            "Mineração",
+            "Sci-fi",
+            "FPS",
+            "Exploração"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 64,90",
+        "currentPrice": "R$ 58,41",
+        "featured": false
+    },
+    {
+        "id": 30,
+        "title": "Don't Starve Together",
+        "Description": "Survival cooperativo em um mundo sombrio e cheio de perigos, onde você precisa craftar, gerenciar fome e derrotar criaturas bizarras.",
+        "image": "https://images6.alphacoders.com/130/1304590.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322330/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Multijogador",
+            "Aventura",
+            "Indie",
+            "Terror",
+            "Crafting"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 31,
+        "title": "Elden Ring",
+        "Description": "RPG de ação em mundo aberto criado por FromSoftware e George R.R. Martin, com combate desafiador e exploração mística.",
+        "image": "https://images.steamusercontent.com/ugc/2058741034012528498/BE0BDF559F8E3A847702D4AFA66C30FFCF44C62B/",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "RPG",
+            "Ação",
+            "Mundo Aberto",
+            "Souls-like",
+            "Fantasia",
+            "Desafio"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 264,90",
+        "currentPrice": "R$ 211,92",
+        "featured": true
+    },
+    {
+        "id": 32,
+        "title": "Factorio",
+        "Description": "Automatize fábricas complexas, otimize cadeias de produção e defenda suas linhas de suprimentos contra inimigos alienígenas.",
+        "image": "https://images5.alphacoders.com/778/thumb-1920-778421.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/427520/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "Construção",
+            "Simulação",
+            "Gestão",
+            "Automação",
+            "Indie"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 89,91",
+        "featured": false
+    },
+    {
+        "id": 33,
+        "title": "Fallout 4",
+        "Description": "RPG pós-apocalíptico em Boston, com construção de assentamentos, armas customizáveis e uma trama cheia de facções.",
+        "image": "https://4kwallpapers.com/images/wallpapers/fallout-4-power-armor-5k-3840x2160-24486.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/377160/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "RPG",
+            "Ação",
+            "Pós-apocalíptico",
+            "Mundo Aberto",
+            "Shooter",
+            "Sci-fi"
+        ],
+        "discount": 25,
+        "oldPrice": "R$ 149,90",
+        "currentPrice": "R$ 112,42",
+        "featured": false
+    },
+    {
+        "id": 34,
+        "title": "Genshin Impact",
+        "Description": "RPG de ação gratuito com exploração elemental, mundo aberto impressionante e uma variedade de personagens colecionáveis.",
+        "image": "https://wallpapercat.com/w/full/2/5/d/1225-3840x2160-desktop-4k-genshin-impact-background-image.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/99dc46c68ea14324964a856d18dcac5b/genshin-impact-40jjf.jpg?resize=1&w=360&h=480&quality=medium",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation"
+        ],
+        "tags": [
+            "RPG",
+            "Mundo Aberto",
+            "Multijogador",
+            "Anime",
+            "Ação",
+            "Exploração"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": true
+    },
+    {
+        "id": 35,
+        "title": "Grand Theft Auto V",
+        "Description": "Mundo aberto criminoso em Los Santos, com missões de assalto, direção, multiplayer e muita ação urbana.",
+        "image": "https://wallpaperaccess.com/full/842447.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Ação",
+            "Mundo Aberto",
+            "Crime",
+            "Multijogador",
+            "Dirigir"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 109,90",
+        "currentPrice": "R$ 87,92",
+        "featured": false
+    },
+    {
+        "id": 36,
+        "title": "Hearts of Iron IV",
+        "Description": "Grande estratégia da Segunda Guerra Mundial, controlando frentes, produção e diplomacia em escala global.",
+        "image": "https://images3.alphacoders.com/127/1273283.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/394360/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "Histórico",
+            "Guerra",
+            "Grande Estratégia",
+            "Simulação"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 79,92",
+        "featured": false
+    },
+    {
+        "id": 37,
+        "title": "Helldivers 2",
+        "Description": "Tiro cooperativo intenso em uma guerra intergaláctica, com queda de equipamentos, coordenação e inimigos implacáveis.",
+        "image": "https://4kwallpapers.com/images/wallpapers/helldivers-2-2024-3840x2160-18365.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Coop",
+            "Ação",
+            "Sci-fi",
+            "Shooter",
+            "Multijogador",
+            "Tiro"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 89,91",
+        "featured": false
+    },
+    {
+        "id": 38,
+        "title": "Hollow Knight",
+        "Description": "Metroidvania sombrio com exploração profunda, combate preciso e um mundo submerso cheio de segredos.",
+        "image": "https://c4.wallpaperflare.com/wallpaper/296/96/958/hollow-knight-quirrel-hollow-knight-hd-wallpaper-preview.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Plataforma",
+            "Metroidvania",
+            "Indie",
+            "Fantasia",
+            "Desafio",
+            "Atmosférico"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 59,90",
+        "currentPrice": "R$ 59,90",
+        "featured": false
+    },
+    {
+        "id": 39,
+        "title": "Honkai Impact",
+        "Description": "RPG de ação anime com personagens colecionáveis, combate dinâmico e história futurista cheia de mistério.",
+        "image": "https://upload-os-bbs.hoyolab.com/upload/2023/02/08/83878114/79c30dd177872935aff0e2970a2ae8be_5726277750652233117.jpg?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1671200/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "RPG",
+            "Ação",
+            "Anime",
+            "Sci-fi",
+            "Aventura"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 40,
+        "title": "Honkai Star Rail",
+        "Description": "RPG de exploração espacial com batalhas por turnos, personagens estilizados e um universo de fantasia sci-fi.",
+        "image": "https://static-cdn.jtvnw.net/ttv-boxart/1544854203_IGDB-1920x1080.jpg",
+        "coverUrl": "https://image.api.playstation.com/vulcan/ap/rnd/202308/1103/8c3ce3611a4bb187418bb5e24924a055ba33d3046a7aaacb.png",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "RPG",
+            "Turn-based",
+            "Anime",
+            "Sci-fi",
+            "Espaço"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 41,
+        "title": "It Takes Two",
+        "Description": "Aventura cooperativa criativa com mecânicas únicas para cada personagem, onde você resolve puzzles e reconstrói um relacionamento.",
+        "image": "https://images7.alphacoders.com/130/thumb-1920-1301860.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Coop",
+            "Aventura",
+            "Puzzle",
+            "Plataforma",
+            "Casual"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 89,90",
+        "currentPrice": "R$ 89,90",
+        "featured": false
+    },
+    {
+        "id": 42,
+        "title": "Left 4 Dead 2",
+        "Description": "Shooter cooperativo com zumbis, sobrevivência e hordas rápidas. Junte-se aos sobreviventes e lute até o próximo ponto seguro.",
+        "image": "https://wallpapers.com/images/hd/left-4-dead-2-survivors-8z3pb5bfrs2mk2pm.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/550/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Coop",
+            "Tiro",
+            "Terror",
+            "FPS",
+            "Zumbi",
+            "Ação"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 43,
+        "title": "Lethal Company",
+        "Description": "Explore fábricas perigosas com seus amigos, colete recursos e evite criaturas enquanto trabalha sob pressão constante.",
+        "image": "https://images2.alphacoders.com/134/1344905.jpeg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1966720/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Coop",
+            "Horror",
+            "Indie",
+            "Sci-fi",
+            "Exploração",
+            "Humor"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 43,90",
+        "currentPrice": "R$ 39,51",
+        "featured": false
+    },
+    {
+        "id": 44,
+        "title": "Minecraft",
+        "Description": "Jogo emocionante com muitas aventuras e desafios.",
+        "image": "https://i.redd.it/wallpaper-material-right-here-from-minecraft-live-v0-u8v4f3rckut71.jpg?width=1920&format=pjpg&auto=webp&s=85bfcb7bf3e8775202950df238d73c5e8ccb5b59",
+        "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/27471_IGDB-285x380.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Ação",
+            "Aventura",
+            "Sobrevivência",
+            "Mundo Aberto",
+            "Sandbox",
+            "Crafting"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 79,90",
+        "featured": false
+    },
+    {
+        "id": 45,
+        "title": "Monster Hunter World",
+        "Description": "Cace monstros gigantes em ambientes vivos, equipe armas e armaduras e coopere com outros caçadores.",
+        "image": "https://preview.redd.it/monster-hunter-wallpaper-v0-cj97pz5etjy21.jpg?auto=webp&s=baa70fcc85f7d09f5cbf6019b07deb4a28685815",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Ação",
+            "Caça",
+            "Multijogador",
+            "RPG",
+            "Aventura",
+            "Fantasia"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 159,90",
+        "currentPrice": "R$ 127,92",
+        "featured": false
+    },
+    {
+        "id": 46,
+        "title": "Neverness to Everness",
+        "Description": "Aventura de fantasia com exploração surreal, missões encantadoras e um mundo misterioso para descobrir.",
+        "image": "https://pbs.twimg.com/media/HJJxDoFboAA9ZWu.jpg",
+        "coverUrl": "https://image.api.playstation.com/vulcan/ap/rnd/202508/1211/275015ea9ed8af0b36ad6f13d956f5e670566195ecdfc2cc.png",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Aventura",
+            "Fantasia",
+            "Exploração",
+            "RPG",
+            "Mundo Aberto",
+            "Anime"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 47,
+        "title": "Outer Wilds",
+        "Description": "Explore um sistema solar em constante mudança, resolva mistérios e use um ciclo temporal para desvendar segredos antigos.",
+        "image": "https://wallpapercat.com/w/full/4/a/3/1989-3840x2160-desktop-4k-outer-wilds-background-photo.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/753640/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Aventura",
+            "Exploração",
+            "Sci-fi",
+            "Mistério",
+            "Espaço",
+            "Indie"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 79,90",
+        "currentPrice": "R$ 79,90",
+        "featured": false
+    },
+    {
+        "id": 48,
+        "title": "Overcooked 2",
+        "Description": "Jogo de cozinha cooperativa com receitas malucas, tempo apertado e muita bagunça em cozinha junto com amigos.",
+        "image": "https://images5.alphacoders.com/112/1127812.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/728880/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Coop",
+            "Simulação",
+            "Casual",
+            "Cozinha",
+            "Gerenciamento",
+            "Humor"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 49,
+        "title": "Palworld",
+        "Description": "Capture criaturas, construa bases e enfrente perigos em um mundo que mistura aventura e sobrevivência com monstros.",
+        "image": "https://images7.alphacoders.com/134/thumb-1920-1348510.jpeg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Aventura",
+            "Sobrevivência",
+            "Criaturas",
+            "Mundo Aberto",
+            "Crafting",
+            "Ação"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 99,90",
+        "featured": false
+    },
+    {
+        "id": 50,
+        "title": "Phasmophobia",
+        "Description": "Caça fantasmas cooperativa em locais assombrados, com ferramentas paranormais e sustos em equipe.",
+        "image": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/04/phasmophobia-character-customization-update-may-2026.jpg?&fit=crop&w=1600&h=900",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/739630/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Terror",
+            "Coop",
+            "Investigação",
+            "Primeira Pessoa",
+            "Sobrevivência"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 59,90",
+        "currentPrice": "R$ 59,90",
+        "featured": false
+    },
+    {
+        "id": 51,
+        "title": "Project Zomboid",
+        "Description": "Simulador de sobrevivência zumbi com crafting, controle de ferimentos e um mundo aberto implacável.",
+        "image": "https://wallpapers.com/images/hd/project-zomboid-emergency-response-scene-zqqgusllczcntw55.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/108600/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Zumbi",
+            "Simulação",
+            "Mundo Aberto",
+            "RPG",
+            "Crafting"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 39,90",
+        "currentPrice": "R$ 39,90",
+        "featured": false
+    },
+    {
+        "id": 52,
+        "title": "RimWorld",
+        "Description": "Gerencie colonos, construções e eventos imprevisíveis em uma colônia espacial isolada.",
+        "image": "https://images5.alphacoders.com/121/1212344.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Simulação",
+            "Estratégia",
+            "Sci-fi",
+            "Gestão",
+            "História",
+            "Sobrevivência"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 89,91",
+        "featured": false
+    },
+    {
+        "id": 53,
+        "title": "Rust",
+        "Description": "Sobreviva em um mundo aberto hostil, construa bases, colete recursos e enfrente outros jogadores e criaturas.",
+        "image": "https://images4.alphacoders.com/980/980708.png",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Multijogador",
+            "PvP",
+            "Mundo Aberto",
+            "Crafting",
+            "Ação"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 79,90",
+        "currentPrice": "R$ 79,90",
+        "featured": false
+    },
+    {
+        "id": 54,
+        "title": "Sea of Thieves",
+        "Description": "Aventure-se como pirata em alto mar, busque tesouros, lute contra outros navios e explore ilhas misteriosas.",
+        "image": "https://images.alphacoders.com/902/902096.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172620/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Aventura",
+            "Coop",
+            "Piratas",
+            "Mundo Aberto",
+            "Multijogador",
+            "Exploração"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 99,90",
+        "featured": false
+    },
+    {
+        "id": 55,
+        "title": "Skyrim (The Elder Scrolls V)",
+        "Description": "RPG de mundo aberto em Tamriel, com dragões, magia, guildas e liberdade total de exploração.",
+        "image": "https://wallpapers.com/images/hd/elder-scrolls-skyrim-landscape-gb1aq85ageapbs6d.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/489830/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "RPG",
+            "Mundo Aberto",
+            "Fantasia",
+            "Ação",
+            "Aventura",
+            "História"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 149,00",
+        "currentPrice": "R$ 134,10",
+        "featured": false
+    },
+    {
+        "id": 56,
+        "title": "Slay the Spire",
+        "Description": "Misture roguelike e deckbuilding para escalar uma torre cheia de inimigos com cartas e poderes únicos.",
+        "image": "https://wallpaperaccess.com/full/7145040.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Roguelike",
+            "Cartas",
+            "Estratégia",
+            "Turn-based",
+            "Indie",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 57,
+        "title": "Stardew Valley",
+        "Description": "Gerencie sua fazenda, cultive plantações, crie animais e construa relacionamentos com moradores de uma vila charmosa.",
+        "image": "https://images.wallpapersden.com/image/download/stardew-valley_a2lna2qUmZqaraWkpJRmbmdlrWZlbWU.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Simulação",
+            "RPG",
+            "Fazenda",
+            "Indie",
+            "Pixel Art",
+            "Relaxante"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 58,
+        "title": "Terraria",
+        "Description": "Aventura em 2D com exploração, mineração, construção e chefes épicos em um mundo pixelado cheio de segredos.",
+        "image": "https://i.redd.it/gallery-of-all-my-more-or-less-game-realistic-terraria-v0-k6kznvhfu6d71.png?width=1920&format=png&auto=webp&s=e249a5812c72dbccc50dbaf4f1820cf0d4783b15",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Ação",
+            "Construção",
+            "Exploração",
+            "Aventura",
+            "Sandbox",
+            "Sobrevivência"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 39,90",
+        "currentPrice": "R$ 39,90",
+        "featured": false
+    },
+    {
+        "id": 59,
+        "title": "The Binding of Isaac Rebirth",
+        "Description": "Roguelike macabro com salas geradas, poderes estranhos e uma grande variedade de itens para combinar.",
+        "image": "https://m.media-amazon.com/images/I/7177yw600iS._AC_SL1500_.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/250900/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Roguelike",
+            "Ação",
+            "Indie",
+            "Terror",
+            "Exploração"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 39,90",
+        "currentPrice": "R$ 39,90",
+        "featured": false
+    },
+    {
+        "id": 60,
+        "title": "The Sims 4",
+        "Description": "Crie personagens, construa casas e controle vidas em um simulador social que permite criar histórias próprias.",
+        "image": "https://wallpapers.com/images/hd/the-sims-4-1280-x-717-wallpaper-jp1osnlfj7z336th.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Simulação",
+            "Casual",
+            "Vida",
+            "Construção",
+            "Estratégia",
+            "Relaxante"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 61,
+        "title": "The Witcher 3 Wild Hunt",
+        "Description": "RPG narrativo com caçadas de monstros, decisões morais difíceis e um mundo aberto vibrante cheio de detalhes.",
+        "image": "https://c4.wallpaperflare.com/wallpaper/620/343/647/the-witcher-the-witcher-3-wild-hunt-geralt-of-rivia-video-games-wallpaper-preview.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "RPG",
+            "Fantasia",
+            "Aventura",
+            "Mundo Aberto",
+            "Ação",
+            "História"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 129,90",
+        "currentPrice": "R$ 103,92",
+        "featured": true
+    },
+    {
+        "id": 62,
+        "title": "Untitled Goose Game",
+        "Description": "Controle um ganso travesso e cause caos em uma vila, completando objetivos divertidos e engraçados.",
+        "image": "https://s2.glbimg.com/ApdzZ4ftHFfaefF03xmkAo2Rh1o=/e.glbimg.com/og/ed/f/original/2017/10/09/goose_-_house_house.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/f7e06ee3d0c1491094cc0215859f0120/offer/EGS_UntitledGooseGame_HouseHouse_S2-1200x1600-81cd84044b7cf9825c44841e0671d227.jpg?resize=1&w=360&h=480&quality=medium",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Puzzle",
+            "Humor",
+            "Indie",
+            "Casual",
+            "Furtividade"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 29,90",
+        "currentPrice": "R$ 29,90",
+        "featured": false
+    },
+    {
+        "id": 63,
+        "title": "Valheim",
+        "Description": "Sobreviva em um mundo viking mitológico com construção, caça, exploração e batalhas contra criaturas lendárias.",
+        "image": "https://wallpapers.com/images/hd/valheim-wooden-house-scenery-2510pkd33oggdkac.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Aventura",
+            "Coop",
+            "Mundo Aberto",
+            "Crafting",
+            "Fantasia"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 65,90",
+        "currentPrice": "R$ 59,31",
+        "featured": false
+    },
+    {
+        "id": 64,
+        "title": "Vampire Survivors",
+        "Description": "Roguelike simples e viciante onde você sobrevive a ondas de inimigos enquanto melhora ataques automáticos e habilidades.",
+        "image": "https://images5.alphacoders.com/140/thumb-1920-1405711.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1794680/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Roguelike",
+            "Ação",
+            "Indie",
+            "Casual",
+            "Pixel Art"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 19,90",
+        "currentPrice": "R$ 19,90",
+        "featured": false
+    },
+    {
+        "id": 65,
+        "title": "Warhammer 40,000",
+        "Description": "Jogo de estratégia sombria no universo Warhammer 40K, com combates táticos e temas de guerra futurista.",
+        "image": "https://images.wallpapersden.com/image/download/warhammer-40k-darktide_bGdnamaUmZqaraWkpJRmbmdlrWZlbWU.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/55150/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Estratégia",
+            "Sci-fi",
+            "Warhammer",
+            "Guerra",
+            "Tático"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 87,90",
+        "currentPrice": "R$ 79,11",
+        "featured": false
+    },
+    {
+        "id": 66,
+        "title": "Wuthering Waves",
+        "Description": "RPG de ação anime com exploração e batalhas estilizadas em um mundo cheio de fantasias e mistérios.",
+        "image": "https://cdn2.unrealengine.com/wuthering-waves-2-0-rinascita-whats-new-overview-3840x2160-ea104a7f5950.jpg",
+        "coverUrl": "https://cdn1.epicgames.com/spt-assets/c1586295960b46f88bbfeec32c199e0e/wuthering-waves-1vbt1.jpg?resize=1&w=360&h=480&quality=medium",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "RPG",
+            "Anime",
+            "Aventura",
+            "Ação",
+            "Mundo Aberto",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    }
+]
