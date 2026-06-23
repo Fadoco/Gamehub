@@ -36,22 +36,7 @@ window.RankSystem = {
 
     // Calcula o valor de mercado atualizado
     calculateValuation: (basePrice, level) => {
-        const multiplier = window.RankSystem.multipliers[level] || 1;
-        const result = basePrice * multiplier;
-        
-        // Debug se level é 1 e resultado não é esperado
-        if (level === 1 && Math.abs(result - (basePrice * 1.5)) > 0.01) {
-            console.warn('[VALUATION BUG] level=1 mas resultado errado:', {
-                basePrice,
-                level,
-                multiplier,
-                'multipliers[1]': window.RankSystem.multipliers[1],
-                'expected': basePrice * 1.5,
-                'actual': result
-            });
-        }
-        
-        return result;
+        return basePrice * (window.RankSystem.multipliers[level] || 1);
     }
 };
 
