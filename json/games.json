@@ -972,6 +972,30 @@
     },
     {
         "id": 45,
+        "title": "Monster Hunter World",
+        "Description": "Cace monstros gigantes em ambientes vivos, equipe armas e armaduras e coopere com outros caçadores.",
+        "image": "https://preview.redd.it/monster-hunter-wallpaper-v0-cj97pz5etjy21.jpg?auto=webp&s=baa70fcc85f7d09f5cbf6019b07deb4a28685815",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows",
+            "fab fa-playstation",
+            "fab fa-xbox"
+        ],
+        "tags": [
+            "Ação",
+            "Caça",
+            "Multijogador",
+            "RPG",
+            "Aventura",
+            "Fantasia"
+        ],
+        "discount": 20,
+        "oldPrice": "R$ 159,90",
+        "currentPrice": "R$ 127,92",
+        "featured": false
+    },
+    {
+        "id": 46,
         "title": "Neverness to Everness",
         "Description": "Aventura de fantasia com exploração surreal, missões encantadoras e um mundo misterioso para descobrir.",
         "image": "https://pbs.twimg.com/media/HJJxDoFboAA9ZWu.jpg",
@@ -993,7 +1017,7 @@
         "featured": false
     },
     {
-        "id": 46,
+        "id": 47,
         "title": "Outer Wilds",
         "Description": "Explore um sistema solar em constante mudança, resolva mistérios e use um ciclo temporal para desvendar segredos antigos.",
         "image": "https://wallpapercat.com/w/full/4/a/3/1989-3840x2160-desktop-4k-outer-wilds-background-photo.jpg",
@@ -1017,7 +1041,7 @@
         "featured": false
     },
     {
-        "id": 47,
+        "id": 48,
         "title": "Overcooked 2",
         "Description": "Jogo de cozinha cooperativa com receitas malucas, tempo apertado e muita bagunça em cozinha junto com amigos.",
         "image": "https://images5.alphacoders.com/112/1127812.jpg",
@@ -1041,7 +1065,7 @@
         "featured": false
     },
     {
-        "id": 48,
+        "id": 49,
         "title": "Palworld",
         "Description": "Capture criaturas, construa bases e enfrente perigos em um mundo que mistura aventura e sobrevivência com monstros.",
         "image": "https://images7.alphacoders.com/134/thumb-1920-1348510.jpeg",
@@ -1063,7 +1087,7 @@
         "featured": false
     },
     {
-        "id": 49,
+        "id": 50,
         "title": "Phasmophobia",
         "Description": "Caça fantasmas cooperativa em locais assombrados, com ferramentas paranormais e sustos em equipe.",
         "image": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/04/phasmophobia-character-customization-update-may-2026.jpg?&fit=crop&w=1600&h=900",
@@ -1084,7 +1108,7 @@
         "featured": false
     },
     {
-        "id": 50,
+        "id": 51,
         "title": "Project Zomboid",
         "Description": "Simulador de sobrevivência zumbi com crafting, controle de ferimentos e um mundo aberto implacável.",
         "image": "https://wallpapers.com/images/hd/project-zomboid-emergency-response-scene-zqqgusllczcntw55.jpg",
@@ -1106,7 +1130,29 @@
         "featured": false
     },
     {
-        "id": 51,
+        "id": 52,
+        "title": "RimWorld",
+        "Description": "Gerencie colonos, construções e eventos imprevisíveis em uma colônia espacial isolada.",
+        "image": "https://images5.alphacoders.com/121/1212344.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Simulação",
+            "Estratégia",
+            "Sci-fi",
+            "Gestão",
+            "História",
+            "Sobrevivência"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 99,90",
+        "currentPrice": "R$ 89,91",
+        "featured": false
+    },
+    {
+        "id": 53,
         "title": "Rust",
         "Description": "Sobreviva em um mundo aberto hostil, construa bases, colete recursos e enfrente outros jogadores e criaturas.",
         "image": "https://images4.alphacoders.com/980/980708.png",
@@ -1128,7 +1174,7 @@
         "featured": false
     },
     {
-        "id": 52,
+        "id": 54,
         "title": "Sea of Thieves",
         "Description": "Aventure-se como pirata em alto mar, busque tesouros, lute contra outros navios e explore ilhas misteriosas.",
         "image": "https://images.alphacoders.com/902/902096.jpg",
@@ -1151,7 +1197,7 @@
         "featured": false
     },
     {
-        "id": 53,
+        "id": 55,
         "title": "Skyrim (The Elder Scrolls V)",
         "Description": "RPG de mundo aberto em Tamriel, com dragões, magia, guildas e liberdade total de exploração.",
         "image": "https://wallpapers.com/images/hd/elder-scrolls-skyrim-landscape-gb1aq85ageapbs6d.jpg",
@@ -1175,7 +1221,29 @@
         "featured": false
     },
     {
-        "id": 54,
+        "id": 56,
+        "title": "Slay the Spire",
+        "Description": "Misture roguelike e deckbuilding para escalar uma torre cheia de inimigos com cartas e poderes únicos.",
+        "image": "https://wallpaperaccess.com/full/7145040.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Roguelike",
+            "Cartas",
+            "Estratégia",
+            "Turn-based",
+            "Indie",
+            "Fantasia"
+        ],
+        "discount": 0,
+        "oldPrice": "R$ 49,90",
+        "currentPrice": "R$ 49,90",
+        "featured": false
+    },
+    {
+        "id": 57,
         "title": "Stardew Valley",
         "Description": "Gerencie sua fazenda, cultive plantações, crie animais e construa relacionamentos com moradores de uma vila charmosa.",
         "image": "https://images.wallpapersden.com/image/download/stardew-valley_a2lna2qUmZqaraWkpJRmbmdlrWZlbWU.jpg",
@@ -1199,7 +1267,7 @@
         "featured": false
     },
     {
-        "id": 55,
+        "id": 58,
         "title": "Terraria",
         "Description": "Aventura em 2D com exploração, mineração, construção e chefes épicos em um mundo pixelado cheio de segredos.",
         "image": "https://i.redd.it/gallery-of-all-my-more-or-less-game-realistic-terraria-v0-k6kznvhfu6d71.png?width=1920&format=png&auto=webp&s=e249a5812c72dbccc50dbaf4f1820cf0d4783b15",
@@ -1223,7 +1291,7 @@
         "featured": false
     },
     {
-        "id": 56,
+        "id": 59,
         "title": "The Binding of Isaac Rebirth",
         "Description": "Roguelike macabro com salas geradas, poderes estranhos e uma grande variedade de itens para combinar.",
         "image": "https://m.media-amazon.com/images/I/7177yw600iS._AC_SL1500_.jpg",
@@ -1244,7 +1312,29 @@
         "featured": false
     },
     {
-        "id": 57,
+        "id": 60,
+        "title": "The Sims 4",
+        "Description": "Crie personagens, construa casas e controle vidas em um simulador social que permite criar histórias próprias.",
+        "image": "https://wallpapers.com/images/hd/the-sims-4-1280-x-717-wallpaper-jp1osnlfj7z336th.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Simulação",
+            "Casual",
+            "Vida",
+            "Construção",
+            "Estratégia",
+            "Relaxante"
+        ],
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "Grátis",
+        "featured": false
+    },
+    {
+        "id": 61,
         "title": "The Witcher 3 Wild Hunt",
         "Description": "RPG narrativo com caçadas de monstros, decisões morais difíceis e um mundo aberto vibrante cheio de detalhes.",
         "image": "https://c4.wallpaperflare.com/wallpaper/620/343/647/the-witcher-the-witcher-3-wild-hunt-geralt-of-rivia-video-games-wallpaper-preview.jpg",
@@ -1268,7 +1358,7 @@
         "featured": true
     },
     {
-        "id": 58,
+        "id": 62,
         "title": "Untitled Goose Game",
         "Description": "Controle um ganso travesso e cause caos em uma vila, completando objetivos divertidos e engraçados.",
         "image": "https://s2.glbimg.com/ApdzZ4ftHFfaefF03xmkAo2Rh1o=/e.glbimg.com/og/ed/f/original/2017/10/09/goose_-_house_house.jpg",
@@ -1291,7 +1381,29 @@
         "featured": false
     },
     {
-        "id": 59,
+        "id": 63,
+        "title": "Valheim",
+        "Description": "Sobreviva em um mundo viking mitológico com construção, caça, exploração e batalhas contra criaturas lendárias.",
+        "image": "https://wallpapers.com/images/hd/valheim-wooden-house-scenery-2510pkd33oggdkac.jpg",
+        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
+        "platforms": [
+            "fab fa-windows"
+        ],
+        "tags": [
+            "Sobrevivência",
+            "Aventura",
+            "Coop",
+            "Mundo Aberto",
+            "Crafting",
+            "Fantasia"
+        ],
+        "discount": 10,
+        "oldPrice": "R$ 65,90",
+        "currentPrice": "R$ 59,31",
+        "featured": false
+    },
+    {
+        "id": 64,
         "title": "Vampire Survivors",
         "Description": "Roguelike simples e viciante onde você sobrevive a ondas de inimigos enquanto melhora ataques automáticos e habilidades.",
         "image": "https://images5.alphacoders.com/140/thumb-1920-1405711.jpg",
@@ -1312,7 +1424,7 @@
         "featured": false
     },
     {
-        "id": 60,
+        "id": 65,
         "title": "Warhammer 40,000",
         "Description": "Jogo de estratégia sombria no universo Warhammer 40K, com combates táticos e temas de guerra futurista.",
         "image": "https://images.wallpapersden.com/image/download/warhammer-40k-darktide_bGdnamaUmZqaraWkpJRmbmdlrWZlbWU.jpg",
@@ -1333,7 +1445,7 @@
         "featured": false
     },
     {
-        "id": 61,
+        "id": 66,
         "title": "Wuthering Waves",
         "Description": "RPG de ação anime com exploração e batalhas estilizadas em um mundo cheio de fantasias e mistérios.",
         "image": "https://cdn2.unrealengine.com/wuthering-waves-2-0-rinascita-whats-new-overview-3840x2160-ea104a7f5950.jpg",
@@ -1359,7 +1471,7 @@
         "title": "The Last of Us Part I",
         "Description": "Conheça a história emocionante e os personagens inesquecíveis de Joel e Ellie, reconstruídos para uma nova geração. Sobreviva em um mundo pós-apocalíptico dominado por infectados e humanos cruéis.",
         "image": "https://images.ctfassets.net/c1xwrscr81as/5L0JqJmF0XxLNPWGj56zk9/2e8e6d5e7e5c5e5e5e5e5e5e5e5e5e5e/header.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900_2x.jpg",
+        "coverUrl": "https://images3.alphacoders.com/129/1295037.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1381,7 +1493,7 @@
         "title": "Bloodborne",
         "Description": "Enfrente seus pesadelos na cidade gótica e em ruínas de Yharnam. Use um arsenal único de armas brancas e armas de fogo para derrotar bestas aterrorizantes neste RPG de ação frenético.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/570940/ss_7ab39c097c37a46b9c29a65eed9e1a9a8d6f07d.1920x1080.jpg",
-        "coverUrl": "https://image.api.playstation.com/vulcan/img/rnd/202010/2614/beHjtGE2uT7R1qR9DkL2K0Wk.png",
+        "coverUrl": "https://images.wallpapersden.com/image/download/bloodborne-game_a2tnaWyUmZqaraWkpJRobWllrWdobWY.jpg",
         "platforms": [
             "fab fa-playstation"
         ],
@@ -1402,7 +1514,7 @@
         "title": "Horizon Zero Dawn",
         "Description": "Explore um mundo vibrante e exuberante habitado por misteriosas criaturas mecanizadas. Jogue como Aloy, uma jovem caçadora em uma missão para descobrir seu destino em um mundo pós-apocalíptico.",
         "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/06/PS4_HorizonZeroDawn_20170222_001.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/library_600x900_2x.jpg",
+        "coverUrl": "https://cdn2.unrealengine.com/egs-horizonzerodawnremastered-guerrillagames-g1a-00-1920x1080-c0d45f881715.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1424,7 +1536,7 @@
         "title": "Mass Effect Legendary Edition",
         "Description": "Reviva a lenda do Comandante Shepard na aclamada trilogia Mass Effect. Inclui conteúdo base para um jogador e mais de 40 DLCs dos três jogos, remasterizados e otimizados.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/1328670/ss_e95b4c8c5c0e1e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1328670/library_600x900_2x.jpg",
+        "coverUrl": "https://wallpapercave.com/wp/wp9174023.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1447,7 +1559,7 @@
         "title": "Cities: Skylines II",
         "Description": "Erga uma cidade do zero e transforme-a na metrópole próspera que só você pode imaginar. Simulação profunda, economia viva e controle total sobre cada aspecto do seu império urbano.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/949230/ss_f1e3e5e5e5e5e5e5e5e5e5e5e5e5e5e5.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/949230/library_600x900_2x.jpg",
+        "coverUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2427743/9b35007466065f6b2b0d8d276fad430b2f9a7116/page_bg_raw.jpg?t=1764600381",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1470,7 +1582,7 @@
         "title": "Valheim",
         "Description": "Um jogo brutal de exploração e sobrevivência para até 10 jogadores, ambientado em um purgatório gerado proceduralmente inspirado na cultura viking. Lute, construa e conquiste.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/892970/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg",
+        "coverUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSklCy2Xw91cWhDhKGgQkFdEzQoRqnfvsgt2Wi5k9gCLFsP6KDZ9wCPQx5S&s=10",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -1492,7 +1604,7 @@
         "title": "Rust",
         "Description": "O único objetivo em Rust é sobreviver. Para fazer isso, você precisará superar lutas, fome, sede e o frio. Faça fogueiras, construa abrigos, mate animais, crie alianças ou lute com outros jogadores.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/252490/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg",
+        "coverUrl": "https://images7.alphacoders.com/980/thumb-1920-980572.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1515,7 +1627,7 @@
         "title": "The Sims 4",
         "Description": "Solte a imaginação e crie um mundo de Sims totalmente único. Explore e personalize cada detalhe, dos Sims às suas casas e muito mais neste aclamado simulador de vida.",
         "image": "https://images.simsvip.com/wp-content/uploads/2021/03/The-Sims-4-Eco-Lifestyle-Header.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/library_600x900_2x.jpg",
+        "coverUrl": "https://images5.alphacoders.com/132/1325222.png",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1539,7 +1651,7 @@
         "title": "Sid Meier's Civilization VI",
         "Description": "Construa um império para resistir ao teste do tempo. Expanda sua civilização, pesquise novas tecnologias e encare os maiores líderes da história em um jogo de estratégia em turnos.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/289070/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/289070/library_600x900_2x.jpg",
+        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/146/392/860/sid-meier-s-civilization-vi-strategy-games-hd-wallpaper-preview.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1563,7 +1675,7 @@
         "title": "Resident Evil Village",
         "Description": "A próxima geração do terror de sobrevivência. Jogue com Ethan Winters e enfrente horrores em uma vila sinistra habitada por vampiros, lobisomens e criaturas aterrorizantes.",
         "image": "https://images.capcom-unity.com/fxmstr/image/upload/f_auto,q_auto/v1/fxmstr_us_cbp_uploads/Production/0001/08/header.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1196590/library_600x900_2x.jpg",
+        "coverUrl": "https://images.wallpapersden.com/image/download/resident-evil-village-winter-s-expansion_bWxpZ2mUmZqaraWkpJRobWllrWdma2U.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1586,7 +1698,7 @@
         "title": "Disco Elysium - The Final Cut",
         "Description": "Um RPG revolucionário. Você é um detetive com um sistema de habilidades único para moldar o seu caminho. Interrogue personagens, resolva assassinatos ou aceite subornos neste mundo sombrio.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/632470/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/632470/library_600x900_2x.jpg",
+        "coverUrl": "https://www.psu.com/wp/wp-content/uploads/2021/03/Disco-Elysium-PS4-PS5-Wallpapers-06.png",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1610,7 +1722,7 @@
         "title": "RimWorld",
         "Description": "Um simulador de colônia de ficção científica controlado por uma IA contadora de histórias. Gerencie as emoções, necessidades e relacionamentos dos seus colonos enquanto sobrevive a piratas e alienígenas.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/294100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/294100/library_600x900_2x.jpg",
+        "coverUrl": "https://cdnb.artstation.com/p/assets/images/images/081/386/035/large/soufian-addioui-rimworld-biotech-bg.jpg?1730131960",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -1632,7 +1744,7 @@
         "title": "Monster Hunter: World",
         "Description": "Bem-vindo a um novo mundo! Assuma o papel de um caçador, enfrente monstros ferozes em um ecossistema vivo, colete materiais e crie equipamentos mais fortes para abater bestas ainda maiores.",
         "image": "https://images.capcom-unity.com/fxmstr/image/upload/f_auto,q_auto/v1/fxmstr_us_cbp_uploads/Production/0000/50/header.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg",
+        "coverUrl": "https://cdn.mos.cms.futurecdn.net/dHGpivgmWvdGJq4XHtK3Tm-2048-80.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1655,7 +1767,7 @@
         "title": "DayZ",
         "Description": "Até onde você irá para sobreviver? Neste duro mundo online massivo, o perigo espreita em cada esquina. Colete recursos, lute contra infectados e tome cuidado com outros jogadores imprevisíveis.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/221100/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/221100/library_600x900_2x.jpg",
+        "coverUrl": "https://w0.peakpx.com/wallpaper/921/1016/HD-wallpaper-dayz-game.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1678,7 +1790,7 @@
         "title": "Returnal",
         "Description": "Quebre o ciclo do caos em um planeta alienígena hostil que muda a cada vez que você morre. Um intenso jogo de tiro roguelike em terceira pessoa que exige reflexos e estratégia.",
         "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/09/PS5_Returnal_20210414_001.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1649240/library_600x900_2x.jpg",
+        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/139/389/171/returnal-video-games-playstation-5-statue-hd-wallpaper-preview.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1700,7 +1812,7 @@
         "title": "Death Stranding Director's Cut",
         "Description": "Reconecte uma sociedade despedaçada pelo evento Death Stranding. Entregue cargas, atravesse paisagens belas mas desoladas e evite ameaças de outro mundo nesta experiência única de Hideo Kojima.",
         "image": "https://images6.alphacoders.com/121/1210403.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1850570/library_600x900_2x.jpg",
+        "coverUrl": "https://images.hdqwalls.com/wallpapers/death-stranding-directors-cut-4k-fp.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -1722,7 +1834,7 @@
         "title": "Control Ultimate Edition",
         "Description": "Após uma ameaça sobrenatural invadir uma agência secreta em Nova York, você assume o papel de Diretora. Use telecinese e uma arma metamorfa para recuperar o controle deste prédio misterioso.",
         "image": "https://images7.alphacoders.com/101/1018698.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/870780/library_600x900_2x.jpg",
+        "coverUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrcJtg3xkmYTwezDtn1lk1g_z_yNTx2Ev9_VqsE8y0ezHTrNsYfHiA7pX89pruDw_KmBatpBV1QQQT3zzePHUoGXAubieBNgB4a1XSBdMxRdFszZRYWFs-cCkvuq49tdw1zpwVJ62qpTk/s984/control-1.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1745,7 +1857,7 @@
         "title": "Hitman: World of Assassination",
         "Description": "Entre no mundo da espionagem e torne-se o lendário Agente 47. Viaje pelo globo e elimine alvos em mapas sandbox elaborados usando criatividade, furtividade e disfarces mortais.",
         "image": "https://images3.alphacoders.com/128/1286085.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1659040/library_600x900_2x.jpg",
+        "coverUrl": "https://4kwallpapers.com/images/wallpapers/hitman-world-of-3840x2160-19124.jpeg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1768,7 +1880,7 @@
         "title": "Fall Guys",
         "Description": "Um jogo de festa battle royale online gratuito! Enfrente hordas de outros competidores em rodadas caóticas e baseadas em física cheias de obstáculos hilários até sobrar apenas um vencedor.",
         "image": "https://images7.alphacoders.com/109/1093155.jpg",
-        "coverUrl": "https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_FallGuys_Mediatonic_S2_1200x1600-b183dd2d346366050e820067bb0bf148",
+        "coverUrl": "https://images7.alphacoders.com/125/1250780.png",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1791,7 +1903,7 @@
         "title": "Assetto Corsa",
         "Description": "Um simulador de corrida de última geração projetado para focar no realismo. Oferece física ultra detalhada, carros recriados fielmente e suporte a uma imensa biblioteca de mods criados pela comunidade.",
         "image": "https://images.alphacoders.com/497/497676.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/244210/library_600x900_2x.jpg",
+        "coverUrl": "https://res.allmacwallpaper.com/get/iMac-27-inch-4K-Retina-wallpapers/porsche-assetto-corsa-competizione-5k-5120x2880/24915-12.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1814,7 +1926,7 @@
         "title": "Undertale",
         "Description": "Um RPG amado onde ninguém precisa se machucar. Caia no subsolo cheio de monstros, negocie para evitar o combate ou lute até o fim, e encare uma história inesquecível com trilha sonora fantástica.",
         "image": "https://images8.alphacoders.com/669/669165.png",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/391540/library_600x900_2x.jpg",
+        "coverUrl": "https://images7.alphacoders.com/798/798682.png",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1838,7 +1950,7 @@
         "title": "Subnautica",
         "Description": "O clássico jogo de sobrevivência e exploração subaquática. Seu módulo de escape caiu em um planeta oceânico alienígena, e você precisa mergulhar fundo para encontrar recursos, construir bases e sobreviver.",
         "image": "https://images3.alphacoders.com/832/832791.png",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg",
+        "coverUrl": "https://images6.alphacoders.com/784/784277.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1862,7 +1974,7 @@
         "title": "Star Wars Jedi: Survivor",
         "Description": "A jornada de Cal Kestis continua. Este jogo de ação e aventura em terceira pessoa se passa cinco anos após os eventos do primeiro jogo, testando as habilidades do Jedi e suas novas posturas de sabre de luz.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/2187320/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1774580/library_600x900_2x.jpg",
+        "coverUrl": "https://c4.wallpaperflare.com/wallpaper/128/744/947/jedi-star-wars-jedi-survivor-stormtrooper-cal-kestis-lightsaber-hd-wallpaper-preview.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1885,7 +1997,7 @@
         "title": "Need for Speed Unbound",
         "Description": "Corra contra o tempo, despiste a polícia e ganhe as eliminatórias para participar do Grand, o maior desafio de corrida de rua de Lakeshore. Desbloqueie carros exóticos com grafismos estilosos estilo grafite.",
         "image": "https://images7.alphacoders.com/128/1283733.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1846380/library_600x900_2x.jpg",
+        "coverUrl": "https://images3.alphacoders.com/127/1278569.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1908,7 +2020,7 @@
         "title": "Alan Wake 2",
         "Description": "O escritor Alan Wake está preso em um pesadelo sobrenatural. A agente do FBI Saga Anderson investiga uma série de assassinatos ritualísticos. Descubra a ligação neste espetacular survival horror psicológico.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/1944200/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://cdn1.epicgames.com/offer/fe8ceb32cd5f4cc0bd43372f8eaad4c7/EGS_AlanWake2_RemedyEntertainment_S2_1200x1600-df3c965fb5df30ec5b7367c00e16790a",
+        "coverUrl": "https://www.alanwake.com/wp-content/uploads/2025/02/AlanWake2_DET_4K_089.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1931,7 +2043,7 @@
         "title": "Mount & Blade II: Bannerlord",
         "Description": "Um RPG e simulador de combates medievais. Lidere tropas nas batalhas épicas, gerencie feudos, forje alianças e crie seu próprio reino neste jogo que combina grande estratégia com lutas brutais.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/261570/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/261550/library_600x900_2x.jpg",
+        "coverUrl": "https://images.alphacoders.com/107/thumb-1920-1072575.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -1954,7 +2066,7 @@
         "title": "Garry's Mod",
         "Description": "Um jogo sandbox físico definitivo. Não há metas predefinidas nem objetivos finais. Nós damos as ferramentas para você criar, importar armas, objetos e veículos de outros jogos da Source e fazer o que quiser.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/4000/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4000/library_600x900_2x.jpg",
+        "coverUrl": "https://w0.peakpx.com/wallpaper/173/862/HD-wallpaper-vangard-video-games-ilwrath-creative-abstract-robot-garrys-mod-cool-half-life-2-gmod.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -1976,7 +2088,7 @@
         "title": "Sons Of The Forest",
         "Description": "Enviado para encontrar um bilionário desaparecido em uma ilha remota, você se vê em uma floresta infestada de canibais. Sobreviva, crie armas, construa abrigos de madeira realistas e desvende mistérios assustadores.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/1326470/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1326470/library_600x900_2x.jpg",
+        "coverUrl": "https://wallpapercave.com/wp/wp12152122.jpg",
         "platforms": [
             "fab fa-windows"
         ],
@@ -1997,7 +2109,7 @@
         "title": "Slay the Spire",
         "Description": "Misturamos jogos de cartas e roguelikes para fazer o melhor jogo de construção de baralhos para um jogador. Crie um baralho único, encontre criaturas bizarras e relíquias imensamente poderosas.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/646570/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg",
+        "coverUrl": "https://images2.alphacoders.com/901/thumb-1920-901142.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2021,7 +2133,7 @@
         "title": "God of War",
         "Description": "Com a vingança contra os deuses do Olimpo em um passado distante, Kratos agora vive como um homem comum no reino dos deuses e monstros nórdicos. É nesse mundo duro e implacável que ele deve lutar para sobreviver... e ensinar seu filho a fazer o mesmo.",
         "image": "https://images.playstation.com/cdn-cgi/image/w=1920,h=1080,quality=smart,format=auto/eye_psapp/eyapp-static/common/img/games/00/01/PS4_GodofWar_20180420_001.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900_2x.jpg",
+        "coverUrl": "https://pixelz.cc/wp-content/uploads/2023/11/god-of-war-ragnarok-kratos-blades-of-chaos-uhd-4k-wallpaper.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
@@ -2043,7 +2155,7 @@
         "title": "Sekiro: Shadows Die Twice",
         "Description": "Neste premiado jogo da FromSoftware, você é o 'lobo de um braço só', um guerreiro desonrado e desfigurado, resgatado da beira da morte. Proteja um jovem lorde e enfrente inimigos mortais em uma jornada de vingança no Japão do final do século XVI.",
         "image": "https://images.fromsoftware.jp/mkt_images/sekiro/common/main_header_en.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900_2x.jpg",
+        "coverUrl": "https://i.pinimg.com/736x/cf/a8/21/cfa821cd8213ac508b9fe968d1dbcb43.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2066,7 +2178,7 @@
         "title": "Portal 2",
         "Description": "O 'Teste de Iniciativa Cooperativa' foi um sucesso: você e um amigo, como os robôs Atlas e P-Body, foram os únicos a sobreviver. Agora, prepare-se para mais quebra-cabeças alucinantes, portais e a inteligência artificial mais sarcástica da história dos games.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/620/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/620/library_600x900_2x.jpg",
+        "coverUrl": "https://images6.alphacoders.com/567/thumb-1920-567500.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-apple"
@@ -2088,7 +2200,7 @@
         "title": "No Man's Sky",
         "Description": "Inspirado na aventura e imaginação que amamos da ficção científica clássica, No Man's Sky apresenta uma galáxia para explorar, cheia de planetas e formas de vida únicos, perigo e ação constantes. Voe, lute, negocie e sobreviva em um universo infinito.",
         "image": "https://steamcdn-a.akamaihd.net/steam/apps/275850/ss_5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e.1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/275850/library_600x900_2x.jpg",
+        "coverUrl": "https://images.wallpapersden.com/image/download/no-man-s-sky-game_a2ltbmiUmZqaraWkpJRoaWllrWdma2U.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
@@ -2111,7 +2223,7 @@
         "title": "Diablo IV",
         "Description": "Junte-se à batalha pelo Santuário em Diablo IV, o RPG de ação de última geração. Com maldade infindável para massacrar, inúmeras habilidades para dominar, masmorras horripilantes e saques lendários, esta é uma experiência completa.",
         "image": "https://images.blizzard.com/us/diablo/diablo-iv/media/wallpapers/diablo-iv-wallpaper-01-1920x1080.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900_2x.jpg",
+        "coverUrl": "https://images.hdqwalls.com/wallpapers/diablo-iv-4k-1q.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation",
