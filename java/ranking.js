@@ -51,6 +51,19 @@ function initRanking() {
                                     const basePrice = window.utils.parsePrice(game.currentPrice);
                                     // tenta recuperar upgrades por chave string ou número
                                     const upgradeLevel = (user.upgrades && (user.upgrades[String(gameId)] ?? user.upgrades[gameId])) || 0;
+                                    
+                                    // DEBUG para Super teste
+                                    if (user.username === 'Super teste' && gameId === 38) {
+                                        console.warn('[DEBUG ID 38]', {
+                                            gameId,
+                                            'user.upgrades': user.upgrades,
+                                            'user.upgrades[String(38)]': user.upgrades?.[String(38)],
+                                            'user.upgrades[38]': user.upgrades?.[38],
+                                            upgradeLevel,
+                                            basePrice
+                                        });
+                                    }
+                                    
                                     const gamePriceWithUpgrade = window.RankSystem ?
                                         window.RankSystem.calculateValuation(basePrice, upgradeLevel) :
                                         basePrice;
