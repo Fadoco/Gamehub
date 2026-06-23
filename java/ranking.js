@@ -34,8 +34,24 @@ function initRanking() {
                         const uid = doc.id;
                         const email = user.email || '';
                         
-                        // Pula admins — eles não aparecem no ranking
+                        // VALIDAÇÕES para detectar usuários deletados ou corrompidos
+                        // 1. Pula admins
                         if (adminEmails.includes(email)) {
+                            return null;
+                        }
+                        
+                        // 2. Pula usuários sem email válido (dados corrompidos/deletados)
+                        if (!email || email.trim() === '') {
+                            return null;
+                        }
+                        
+                        // 3. Pula usuários sem username (indicativo de deleção parcial)
+                        if (!user.username || user.username.trim() === '') {
+                            return null;
+                        }
+                        
+                        // 4. Pula usuários marcados como deletados
+                        if (user.active === false) {
                             return null;
                         }
 
@@ -89,6 +105,16 @@ function initRanking() {
                 if (rankingData.length === 0) {
                     listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
+                }
+
+                // LIMPEZA DE USUÁRIOS DELETADOS
+                if (window.UserCleanup) {
+                    rankingData = window.UserCleanup.cleanRanking(rankingData);
+                    
+                    if (rankingData.length === 0) {
+                        listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
+                        return;
+                    }
                 }
 
                 // Imprime breakdown de cálculo no console para debug

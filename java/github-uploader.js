@@ -139,5 +139,125 @@ const GitHubUploader = {
         }
 
         return results;
+    },
+
+    /**
+     * Deletar uma imagem do GitHub
+     * @param {string} userId - ID do usuário
+     * @param {string} filename - Nome do arquivo (avatar.jpg, banner.jpg, etc)
+     * @returns {Promise<boolean>} true se deletado com sucesso
+     */
+    async deleteImage(userId, filename) {
+        // Obter token do Firestore (carregado na memória)
+        let token = GitHubConfig.getToken();
+        
+        if (!token || token === '') {
+            console.warn('⚠️ Token do GitHub não está configurado');
+            return false;
+        }
+
+        const filePath = GitHubConfig.getFilePath(userId, filename);
+        const apiUrl = `https://api.github.com/repos/${GitHubConfig.user}/${GitHubConfig.repo}/contents/${filePath}`;
+
+        try {
+            // Primeiro: obter o SHA do arquivo
+            let sha = null;
+            try {
+                const checkResponse = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (checkResponse.ok) {
+                    const fileData = await checkResponse.json();
+                    sha = fileData.sha; // Obter SHA necessário para deletar
+                } else {
+                    // Arquivo não existe, não há nada para deletar
+                    console.log(`ℹ️ Arquivo ${filename} não existe para ${userId}`);
+                    return true;
+                }
+            } catch (e) {
+                console.log(`ℹ️ Arquivo ${filename} não encontrado para ${userId}`);
+                return true;
+            }
+
+            // Se não houver SHA, arquivo não existe
+            if (!sha) {
+                return true;
+            }
+
+            // Segundo: deletar o arquivo
+            const deleteResponse = await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify({
+                    message: `Deletar ${filename} do usuário ${userId}`,
+                    sha: sha,
+                    branch: GitHubConfig.branch
+                })
+            });
+
+            if (!deleteResponse.ok) {
+                const error = await deleteResponse.json();
+                console.error(`❌ Erro ao deletar ${filename}:`, error.message);
+                return false;
+            }
+
+            console.log(`✓ ${filename} deletado com sucesso para ${userId}`);
+            return true;
+
+        } catch (error) {
+            console.error(`❌ Erro ao deletar ${filename}:`, error);
+            return false;
+        }
+    },
+
+    /**
+     * Deletar avatar de um usuário
+     * @param {string} userId - ID do usuário
+     * @returns {Promise<boolean>} true se deletado com sucesso
+     */
+    async deleteAvatar(userId) {
+        return this.deleteImage(userId, 'avatar.jpg');
+    },
+
+    /**
+     * Deletar banner de um usuário
+     * @param {string} userId - ID do usuário
+     * @returns {Promise<boolean>} true se deletado com sucesso
+     */
+    async deleteBanner(userId) {
+        return this.deleteImage(userId, 'banner.jpg');
+    },
+
+    /**
+     * Deletar todas as imagens de um usuário (avatar + banner)
+     * @param {string} userId - ID do usuário
+     * @returns {Promise<{avatar: boolean, banner: boolean}>} Resultado das deleções
+     */
+    async deleteAllUserImages(userId) {
+        const results = {};
+
+        try {
+            results.avatar = await this.deleteAvatar(userId);
+        } catch (error) {
+            console.error('Erro ao deletar avatar:', error);
+            results.avatar = false;
+        }
+
+        try {
+            results.banner = await this.deleteBanner(userId);
+        } catch (error) {
+            console.error('Erro ao deletar banner:', error);
+            results.banner = false;
+        }
+
+        return results;
     }
 };

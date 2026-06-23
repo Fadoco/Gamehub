@@ -298,6 +298,11 @@ async function renderRequests() {
 async function renderFriendsList(friendsUids) {
     if (!el.listFriends) return;
     
+    // LIMPEZA: Remove amigos que foram deletados
+    if (window.UserCleanup && Array.isArray(friendsUids)) {
+        friendsUids = await window.UserCleanup.cleanFriendsForProfile(friendsUids);
+    }
+    
     if (friendsUids.length === 0) {
         el.listFriends.innerHTML = ProfileState.isMyProfile ? "<p>Nenhum amigo para exibir.</p>" : "<p>Este usuário não tem amigos.</p>";
         return;
