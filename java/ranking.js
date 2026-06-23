@@ -92,6 +92,7 @@ function initRanking() {
 
                 // Imprime breakdown de cálculo no console para debug
                 console.log('[RANKING] Breakdown for users:');
+                window.rankingDebugData = rankingData; // Salva para comparação com perfil
                 rankingData.forEach((d) => {
                     console.group(`${d.name} (uid=${d.uid.slice(0, 8)}...) total=R$ ${d.totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
                     console.log('balance:', d.balance);
