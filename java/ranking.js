@@ -16,20 +16,16 @@ function initRanking() {
             return;
         }
 
+// Escuta mudanças em tempo real na coleção de usuários
         // Lista de emails de admins
         const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
 
-                // Escuta mudanças em tempo real na coleção de usuários marcados como públicos
-                // Consulta filtrada para reduzir leituras e respeitar as regras (campo `public == true`)
-                window.db.collection('users').where('public', '==', true)
-                    .onSnapshot((snapshot) => {
+        window.db.collection('users')
+            .onSnapshot((snapshot) => {
                 if (snapshot.empty) {
-                            listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário público encontrado para exibir no ranking.</td></tr>";
+                    listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
                 }
-
-                // Lista de emails de admins
-                const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
 
                 // Filtra usuários: remove admins e calcula valor total
                 let rankingData = snapshot.docs
@@ -38,7 +34,7 @@ function initRanking() {
                         const uid = doc.id;
                         const email = user.email || '';
                         
-                        // Pula admins
+                        // Pula admins — eles não aparecem no ranking
                         if (adminEmails.includes(email)) {
                             return null;
                         }
