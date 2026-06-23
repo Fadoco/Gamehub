@@ -19,11 +19,12 @@ function initRanking() {
         // Lista de emails de admins
         const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
 
-                // Escuta mudanças em tempo real na coleção de usuários
-        window.db.collection('users')
-            .onSnapshot((snapshot) => {
+                // Escuta mudanças em tempo real na coleção de usuários marcados como públicos
+                // Consulta filtrada para reduzir leituras e respeitar as regras (campo `public == true`)
+                window.db.collection('users').where('public', '==', true)
+                    .onSnapshot((snapshot) => {
                 if (snapshot.empty) {
-                    listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
+                            listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário público encontrado para exibir no ranking.</td></tr>";
                     return;
                 }
 
@@ -45,20 +46,23 @@ function initRanking() {
                         // Calcula valor total: balance + valor dos jogos COM UPGRADES
                         const balance = user.balance || 0;
                         let gamesValue = 0;
+                        const breakdown = [];
 
                         if (user.library && Array.isArray(user.library) && window.allGamesData) {
                             user.library.forEach(gameId => {
                                 const game = window.allGamesData.find(g => String(g.id) === String(gameId));
                                 if (game) {
                                     const basePrice = window.utils.parsePrice(game.currentPrice);
-                                    const upgradeLevel = (user.upgrades && user.upgrades[String(gameId)]) || 0;
-                                    
-                                    // Calcula valor com upgrade (mesmo que no perfil)
-                                    const gamePriceWithUpgrade = window.RankSystem ? 
-                                        window.RankSystem.calculateValuation(basePrice, upgradeLevel) : 
+                                    // tenta recuperar upgrades por chave string ou número
+                                    const upgradeLevel = (user.upgrades && (user.upgrades[String(gameId)] ?? user.upgrades[gameId])) || 0;
+                                    const gamePriceWithUpgrade = window.RankSystem ?
+                                        window.RankSystem.calculateValuation(basePrice, upgradeLevel) :
                                         basePrice;
-                                    
+
                                     gamesValue += gamePriceWithUpgrade;
+                                    breakdown.push({ gameId, basePrice, upgradeLevel, valuation: gamePriceWithUpgrade });
+                                } else {
+                                    breakdown.push({ gameId, error: 'game-not-found' });
                                 }
                             });
                         }
@@ -72,6 +76,7 @@ function initRanking() {
                             gamesValue,
                             totalValue,
                             name: window.utils.getUserFriendlyName({ ...user, id: uid })
+                            ,_debug: breakdown
                         };
                     })
                     .filter(item => item !== null) // Remove admins
@@ -81,6 +86,17 @@ function initRanking() {
                 if (rankingData.length === 0) {
                     listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
+                }
+
+                // Se estiver no modo de debug, imprime breakdowns no console
+                if (window.DEBUG_RANKING) {
+                    console.log('[RANKING][DEBUG] Breakdown for users:');
+                    rankingData.forEach((d) => {
+                        console.group(`uid=${d.uid} name=${d.name} total=${d.totalValue}`);
+                        console.log('balance:', d.balance);
+                        console.table(d._debug || []);
+                        console.groupEnd();
+                    });
                 }
 
                 listContainer.innerHTML = rankingData.map((data, index) => {
@@ -109,7 +125,11 @@ function initRanking() {
                 }).join('');
             }, (error) => {
                 console.error("[RANKING] Error on snapshot:", error);
-                listContainer.innerHTML = `<tr><td colspan='4' style='text-align:center; color: var(--danger)'>Erro ao carregar ranking. Verifique as Regras do Firestore ou Índices.</td></tr>`;
+                if (error && error.code === 'permission-denied') {
+                    listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center; color: var(--danger)'>Acesso negado ao ranking. Faça login ou contacte o administrador.</td></tr>";
+                } else {
+                    listContainer.innerHTML = `<tr><td colspan='4' style='text-align:center; color: var(--danger)'>Erro ao carregar ranking. Verifique as Regras do Firestore ou Índices.</td></tr>`;
+                }
             });
     };
 

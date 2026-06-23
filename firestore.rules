@@ -23,7 +23,8 @@ service cloud.firestore {
       // - Próprio usuário (acesso completo)
       // - Admin (acesso completo)
       // - Usuário autenticado (para buscas de amigos, campos públicos são suficientes)
-      allow read: if isOwnUser(userId) || isAdmin() || request.auth != null;
+      // - Documentos explicitamente públicos (campo `public == true`) podem ser lidos sem autenticação
+      allow read: if isOwnUser(userId) || isAdmin() || request.auth != null || (resource.data.public == true);
       
       // Escrita: 
       // - Próprio usuário com validação
