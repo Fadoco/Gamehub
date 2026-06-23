@@ -107,7 +107,8 @@ async function renderProfile() {
     (data.library || []).forEach(gameId => {
         const game = window.allGamesData.find(g => String(g.id) === String(gameId));
         if (game) {
-            const level = (data.upgrades || {})[gameId] || 0;
+            // Tenta recuperar upgrades tanto com chave string quanto número (mesmo que no ranking)
+            const level = (data.upgrades && (data.upgrades[String(gameId)] ?? data.upgrades[gameId])) || 0;
             const basePrice = window.utils.parsePrice(game.currentPrice);
             totalInventoryValue += window.RankSystem.calculateValuation(basePrice, level);
         }
