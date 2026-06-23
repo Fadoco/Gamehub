@@ -45,6 +45,11 @@ function initRanking() {
                         const breakdown = [];
 
                         if (user.library && Array.isArray(user.library) && window.allGamesData) {
+                            // DEBUG: Se for Super teste, mostra os upgrades
+                            if (user.username === 'Super teste') {
+                                console.warn('[DEBUG SUPER TESTE] user.upgrades completo:', JSON.stringify(user.upgrades, null, 2));
+                            }
+                            
                             user.library.forEach(gameId => {
                                 const game = window.allGamesData.find(g => String(g.id) === String(gameId));
                                 if (game) {
@@ -52,7 +57,7 @@ function initRanking() {
                                     // tenta recuperar upgrades por chave string ou número
                                     const upgradeLevel = (user.upgrades && (user.upgrades[String(gameId)] ?? user.upgrades[gameId])) || 0;
                                     
-                                    // DEBUG para Super teste
+                                    // DEBUG para Super teste ID 38
                                     if (user.username === 'Super teste' && gameId === 38) {
                                         console.warn('[DEBUG ID 38]', {
                                             gameId,
