@@ -4,56 +4,81 @@
 
 function initRanking() {
     const listContainer = document.getElementById('ranking-list-body');
-    if (!listContainer) return;
+    if (!listContainer) {
+        console.error('[RANKING] ❌ Elemento ranking-list-body não encontrado!');
+        return;
+    }
+
+    console.log('[RANKING] 🟢 Iniciando ranking...');
 
     // Estado de carregamento
     listContainer.innerHTML = "<tr><td colspan='3' style='text-align:center; padding: 20px;'>Buscando milionários...</td></tr>";
 
     // Pequena função para rodar a busca quando o banco estiver pronto
     const startListener = () => {
+        console.log('[RANKING] Verificando dependências: db=', !!window.db, 'allGamesData=', !!window.allGamesData);
+        
         if (!window.db || !window.allGamesData || window.allGamesData.length === 0) {
+            console.log('[RANKING] ⏳ Aguardando dependências...');
             setTimeout(startListener, 500);
             return;
         }
 
-// Escuta mudanças em tempo real na coleção de usuários
+        console.log('[RANKING] ✅ Dependências prontas, iniciando listener Firestore...');
+
+        // Escuta mudanças em tempo real na coleção de usuários
         // Lista de emails de admins
         const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
 
         window.db.collection('users')
             .onSnapshot((snapshot) => {
+                console.log('[RANKING] 📦 Snapshot recebido:', {
+                    empty: snapshot.empty,
+                    size: snapshot.size,
+                    docs: snapshot.docs.length
+                });
+
                 if (snapshot.empty) {
+                    console.warn('[RANKING] ⚠️ Snapshot vazio - nenhum usuário no Firestore');
                     listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
                 }
 
-                // Filtra usuários: remove admins e calcula valor total
+                console.log('[RANKING] 📋 Processando', snapshot.docs.length, 'documentos do Firestore');
                 let rankingData = snapshot.docs
                     .map((doc) => {
                         const user = doc.data();
                         const uid = doc.id;
                         const email = user.email || '';
                         
+                        console.log(`[RANKING] Processando usuário: email=${email}, username=${user.username}, active=${user.active}, uid=${uid.slice(0, 8)}...`);
+                        
                         // VALIDAÇÕES para detectar usuários deletados ou corrompidos
                         // 1. Pula admins
                         if (adminEmails.includes(email)) {
+                            console.log(`[RANKING]   ⏭️ Pulando admin: ${email}`);
                             return null;
                         }
                         
                         // 2. Pula usuários sem email válido (dados corrompidos/deletados)
                         if (!email || email.trim() === '') {
+                            console.log(`[RANKING]   ⏭️ Pulando: sem email`);
                             return null;
                         }
                         
                         // 3. Pula usuários sem username (indicativo de deleção parcial)
                         if (!user.username || user.username.trim() === '') {
+                            console.log(`[RANKING]   ⏭️ Pulando: sem username`);
                             return null;
                         }
                         
                         // 4. Pula usuários marcados como deletados
                         if (user.active === false) {
+                            console.log(`[RANKING]   ⏭️ Pulando: marcado como inativo`);
                             return null;
                         }
+
+                        console.log(`[RANKING]   ✅ Usuário válido: ${user.username}`);
 
                         // Calcula valor total: balance + valor dos jogos COM UPGRADES
                         const balance = user.balance || 0;
@@ -101,6 +126,8 @@ function initRanking() {
                     .filter(item => item !== null) // Remove admins
                     .sort((a, b) => b.totalValue - a.totalValue) // Ordena por valor total decrescente
                     .slice(0, 50); // Pega top 50
+
+                console.log(`[RANKING] 🔍 Após filtros: ${rankingData.length} usuários válidos`);
 
                 if (rankingData.length === 0) {
                     console.log('[RANKING] ❌ Nenhum usuário encontrado após filtragem inicial');
