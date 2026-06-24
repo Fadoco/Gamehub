@@ -41,16 +41,19 @@ window.UserCleanup = {
             
             console.log(`[USER CLEANUP] Deletando usuário ${uid} de todas as referências...`);
             
-            // 1. Deleta imagens do GitHub
-            if (window.GitHubUploader) {
-                console.log(`[USER CLEANUP] Deletando imagens do GitHub para ${uid}...`);
+            // 1. Tenta deletar imagens do GitHub APENAS se disponível
+            // (GitHubUploader está disponível apenas em perfil.html e páginas que o carregam)
+            if (window.GitHubUploader && typeof window.GitHubUploader.deleteAllUserImages === 'function') {
                 try {
+                    console.log(`[USER CLEANUP] Deletando imagens do GitHub para ${uid}...`);
                     const imageResults = await window.GitHubUploader.deleteAllUserImages(uid);
                     console.log(`[USER CLEANUP] ✓ Imagens deletadas:`, imageResults);
                 } catch (error) {
-                    console.warn(`[USER CLEANUP] ⚠️ Erro ao deletar imagens do GitHub:`, error);
-                    // Continua mesmo se falhar, pois o usuário já foi deletado
+                    console.warn(`[USER CLEANUP] ⚠️ Erro ao deletar imagens (esperado se não disponível):`, error.message);
+                    // Continua mesmo se falhar - não é crítico
                 }
+            } else {
+                console.log(`[USER CLEANUP] ℹ️ GitHubUploader não disponível nesta página`);
             }
             
             // 2. Remove de amigos de outros usuários
@@ -83,6 +86,11 @@ window.UserCleanup = {
                 .where('friends', 'array-contains', deletedUid)
                 .get();
             
+            if (usersWithThisFriend.docs.length === 0) {
+                console.log(`[USER CLEANUP] Nenhum usuário tinha ${deletedUid} na lista de amigos`);
+                return;
+            }
+            
             // Remove de cada um
             const batch = window.db.batch();
             usersWithThisFriend.docs.forEach(doc => {
@@ -95,6 +103,7 @@ window.UserCleanup = {
             console.log(`[USER CLEANUP] ✅ Removido de ${usersWithThisFriend.docs.length} listas de amigos`);
         } catch (error) {
             console.warn('[USER CLEANUP] Erro ao remover de amigos:', error);
+            // Não relança erro para não quebrar o fluxo
         }
     },
 
@@ -142,13 +151,52 @@ window.UserCleanup = {
      * Chamado automaticamente pelo ranking.js
      */
     cleanRanking: (rankingData) => {
-        return rankingData.filter(item => {
-            const isValid = item.user && item.user.email && item.user.username && item.user.active !== false;
-            if (!isValid) {
-                window.UserCleanup.deleteUserCompletely(item.uid);
-            }
-            return isValid;
-        });
+        if (!Array.isArray(rankingData) || rankingData.length === 0) {
+            return rankingData;
+        }
+
+        try {
+            // Filtra apenas usuários que claramente não existem
+            const cleaned = rankingData.filter(item => {
+                try {
+                    // Estrutura esperada: { uid, user, balance, gamesValue, totalValue, name, _debug }
+                    if (!item || !item.user) return false;
+                    
+                    const user = item.user;
+                    
+                    // Se não tem dados básicos, é usuário deletado/corrompido
+                    if (!user.email || !user.username) {
+                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid}: dados inválidos`);
+                        // Chama async, mas não aguarda (será feito em background)
+                        window.UserCleanup.deleteUserCompletely(item.uid).catch(err => {
+                            console.warn(`[USER CLEANUP] Erro background ao deletar ${item.uid}:`, err);
+                        });
+                        return false;
+                    }
+                    
+                    // Se está marcado como inativo, é deleção intencional
+                    if (user.active === false) {
+                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid}: marcado como inativo`);
+                        // Chama async, mas não aguarda (será feito em background)
+                        window.UserCleanup.deleteUserCompletely(item.uid).catch(err => {
+                            console.warn(`[USER CLEANUP] Erro background ao deletar ${item.uid}:`, err);
+                        });
+                        return false;
+                    }
+                    
+                    return true; // Usuário válido
+                } catch (err) {
+                    console.warn(`[USER CLEANUP] Erro ao validar item:`, err);
+                    return true; // Mantém em caso de erro
+                }
+            });
+            
+            console.log(`[USER CLEANUP] Ranking: ${rankingData.length} → ${cleaned.length} usuários válidos`);
+            return cleaned;
+        } catch (error) {
+            console.error('[USER CLEANUP] Erro geral em cleanRanking:', error);
+            return rankingData; // Retorna original em caso de erro crítico
+        }
     },
 
     /**

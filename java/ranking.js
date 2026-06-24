@@ -103,18 +103,26 @@ function initRanking() {
                     .slice(0, 50); // Pega top 50
 
                 if (rankingData.length === 0) {
+                    console.log('[RANKING] ❌ Nenhum usuário encontrado após filtragem inicial');
                     listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                     return;
                 }
 
+                console.log(`[RANKING] ✅ ${rankingData.length} usuários válidos após filtragem inicial`);
+
                 // LIMPEZA DE USUÁRIOS DELETADOS
                 if (window.UserCleanup) {
+                    console.log('[RANKING] Iniciando limpeza de usuários deletados...');
                     rankingData = window.UserCleanup.cleanRanking(rankingData);
+                    console.log(`[RANKING] ✅ ${rankingData.length} usuários após limpeza`);
                     
                     if (rankingData.length === 0) {
+                        console.log('[RANKING] ❌ Nenhum usuário encontrado após limpeza');
                         listContainer.innerHTML = "<tr><td colspan='4' style='text-align:center'>Nenhum usuário encontrado.</td></tr>";
                         return;
                     }
+                } else {
+                    console.log('[RANKING] ⚠️ UserCleanup não disponível, pulando limpeza');
                 }
 
                 // Imprime breakdown de cálculo no console para debug
