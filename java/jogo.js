@@ -14,7 +14,9 @@ function renderGameDetails(games) {
         // Preenche os elementos da página com os dados do JSON
         document.title = `GameHub - ${game.title}`;
         document.getElementById('game-title-detail').textContent = game.title;
-        document.getElementById('game-image-detail').src = game.coverUrl || game.image;
+
+        const detailImage = game.image || game.coverUrl || game.Image || game.CoverUrl || '';
+        document.getElementById('game-image-detail').src = detailImage;
         document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
 
         // Preenche a descrição usando o campo já normalizado pelo global.js
