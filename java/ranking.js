@@ -51,7 +51,8 @@ function initRanking() {
                         const uid = doc.id;
                         const email = user.email || '';
                         
-                        console.log(`[RANKING] Processando usuário: email=${email}, username=${user.username}, active=${user.active}, uid=${uid.slice(0, 8)}...`);
+                        const displayName = user.displayName || (email ? email.split('@')[0] : '');
+                        console.log(`[RANKING] Processando usuário: email=${email}, displayName=${user.displayName}, active=${user.active}, uid=${uid.slice(0, 8)}...`);
                         
                         // VALIDAÇÕES para detectar usuários deletados ou corrompidos
                         // 1. Pula admins
@@ -60,25 +61,17 @@ function initRanking() {
                             return null;
                         }
                         
-                        // 2. Pula usuários sem email válido (dados corrompidos/deletados)
-                        if (!email || email.trim() === '') {
-                            console.log(`[RANKING]   ⏭️ Pulando: sem email`);
+                        // 2. Pula usuários inválidos ou deletados (usa mesma lógica do UserCleanup)
+                        if (window.UserCleanup && !window.UserCleanup.isValidUserData(user)) {
+                            console.log(`[RANKING]   ⏭️ Pulando: inativo ou dados inválidos`);
                             return null;
                         }
-                        
-                        // 3. Pula usuários sem username (indicativo de deleção parcial)
-                        if (!user.username || user.username.trim() === '') {
-                            console.log(`[RANKING]   ⏭️ Pulando: sem username`);
-                            return null;
-                        }
-                        
-                        // 4. Pula usuários marcados como deletados
-                        if (user.active === false) {
-                            console.log(`[RANKING]   ⏭️ Pulando: marcado como inativo`);
+                        if (!window.UserCleanup && (!email || email.trim() === '' || user.active === false)) {
+                            console.log(`[RANKING]   ⏭️ Pulando: sem email ou inativo`);
                             return null;
                         }
 
-                        console.log(`[RANKING]   ✅ Usuário válido: ${user.username}`);
+                        console.log(`[RANKING]   ✅ Usuário válido: ${displayName}`);
 
                         // Calcula valor total: balance + valor dos jogos COM UPGRADES
                         const balance = user.balance || 0;

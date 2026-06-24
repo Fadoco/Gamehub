@@ -40,6 +40,7 @@
     <script src="../java/firestore-cache.js"></script>
     <script src="../java/theme-switcher.js"></script>
     <script src="../java/notifications-manager.js" defer></script>
+    <script src="../java/user-cleanup.js" defer></script>
     <script src="../java/ranks.js" defer></script>
     <script src="../java/auth.js" defer></script>
     <script src="../java/global.js" defer></script>
@@ -94,6 +95,16 @@
                     <label>Novo Saldo (R$)</label>
                     <input type="number" step="0.01" id="new-balance-input" placeholder="Ex: 100.00">
                     <button type="button" class="admin-btn-primary w-full mt-4" onclick="window.updateUserBalance()">Atualizar Saldo</button>
+                </div>
+
+                <div id="delete-user-section" class="form-group mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: #e74c3c; margin-bottom: 10px;">Zona de Perigo</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                        Desativa a conta, remove dados sensíveis e limpa referências no site.
+                    </p>
+                    <button type="button" id="btn-delete-user" class="admin-btn-primary w-full" style="background: #c0392b; border-color: #c0392b;" onclick="window.deleteUserAccount()">
+                        <i class="fas fa-user-slash"></i> Desativar Conta
+                    </button>
                 </div>
             </section>
 

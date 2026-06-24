@@ -7,6 +7,22 @@ console.log('✅ user-cleanup.js loaded');
 
 window.UserCleanup = {
     /**
+     * Verifica se os dados do Firestore representam um usuário ativo/válido
+     * @param {object} data - Documento do usuário
+     * @returns {boolean}
+     */
+    isValidUserData: (data) => {
+        if (!data) return false;
+        if (data.active === false) return false;
+        if (!data.email || String(data.email).trim() === '') return false;
+        if (data.displayName === '[Deletado]') return false;
+        if (String(data.email).startsWith('deleted_') && String(data.email).endsWith('@deleted.local')) {
+            return false;
+        }
+        return true;
+    },
+
+    /**
      * Verifica se um usuário ainda existe no Firestore
      * @param {string} uid - UID do usuário
      * @returns {Promise<boolean>} - true se existe, false se foi deletado
@@ -17,14 +33,9 @@ window.UserCleanup = {
             
             const doc = await window.db.collection('users').doc(uid).get();
             
-            // Se não existe ou está marcado como deletado
             if (!doc.exists) return false;
             
-            const data = doc.data();
-            if (data.active === false) return false;
-            if (!data.email || !data.username) return false;
-            
-            return true;
+            return window.UserCleanup.isValidUserData(doc.data());
         } catch (error) {
             console.warn('[USER CLEANUP] Erro ao verificar usuário:', error);
             return false;
@@ -164,27 +175,15 @@ window.UserCleanup = {
                     
                     const user = item.user;
                     
-                    // Se não tem dados básicos, é usuário deletado/corrompido
-                    if (!user.email || !user.username) {
-                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid}: dados inválidos`);
-                        // Chama async, mas não aguarda (será feito em background)
+                    if (!window.UserCleanup.isValidUserData(user)) {
+                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid}: inativo ou dados inválidos`);
                         window.UserCleanup.deleteUserCompletely(item.uid).catch(err => {
                             console.warn(`[USER CLEANUP] Erro background ao deletar ${item.uid}:`, err);
                         });
                         return false;
                     }
                     
-                    // Se está marcado como inativo, é deleção intencional
-                    if (user.active === false) {
-                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid}: marcado como inativo`);
-                        // Chama async, mas não aguarda (será feito em background)
-                        window.UserCleanup.deleteUserCompletely(item.uid).catch(err => {
-                            console.warn(`[USER CLEANUP] Erro background ao deletar ${item.uid}:`, err);
-                        });
-                        return false;
-                    }
-                    
-                    return true; // Usuário válido
+                    return true;
                 } catch (err) {
                     console.warn(`[USER CLEANUP] Erro ao validar item:`, err);
                     return true; // Mantém em caso de erro
@@ -207,6 +206,35 @@ window.UserCleanup = {
     cleanFriendsForProfile: async (friends) => {
         if (!friends || friends.length === 0) return [];
         return await window.UserCleanup.filterDeletedUsers(friends);
+    },
+
+    /**
+     * Soft delete seguro — marca como inativo e limpa referências
+     * @param {string} uid - UID do usuário
+     * @param {string} reason - Motivo da deleção
+     */
+    softDeleteUser: async (uid, reason = 'Solicitação do usuário') => {
+        if (!window.db || !uid) return false;
+
+        await window.db.collection('users').doc(uid).update({
+            active: false,
+            displayName: '[Deletado]',
+            email: `deleted_${uid}@deleted.local`,
+            deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            deletedReason: reason,
+            balance: 0,
+            library: [],
+            upgrades: {},
+            favorites: [],
+            cart: [],
+            history: [],
+            friends: [],
+            friendRequestsSent: [],
+            friendRequestsReceived: []
+        });
+
+        await window.UserCleanup.deleteUserCompletely(uid);
+        return true;
     },
 
     /**

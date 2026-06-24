@@ -11,59 +11,46 @@ Quando um usuário é deletado diretamente no Firestore Console, ele pode deixar
 ### 1. **Filtros de Validação no Ranking**
 O ranking agora valida usuários e filtra:
 - ❌ Usuários sem email
-- ❌ Usuários sem username  
 - ❌ Usuários marcados com `active: false`
+- ❌ Usuários com `displayName: '[Deletado]'`
+- ❌ Emails no formato `deleted_{uid}@deleted.local`
 - ❌ Administradores
 
 ### 2. **Método Recomendado: Soft Delete**
-Ao invés de deletar, **marque o usuário como inativo**:
+Ao invés de deletar o documento, **marque o usuário como inativo**:
 
 ```javascript
-// Em vez de deletar:
-await db.collection('users').doc(uid).delete();
-
-// Use:
-await db.collection('users').doc(uid).update({
-  active: false,
-  deletedAt: new Date(),
-  deletedReason: "Solicitação do usuário" // optional
-});
+await window.UserCleanup.softDeleteUser(uid, 'Motivo da deleção');
 ```
 
-### 3. **Deleção Completa Segura (Se Necessário)**
-Se quiser deletar completamente:
+Ou manualmente no Firestore:
 
 ```javascript
-// Passo 1: Marque como deletado
 await db.collection('users').doc(uid).update({
   active: false,
+  displayName: '[Deletado]',
   email: `deleted_${uid}@deleted.local`,
-  username: `[Deletado]`,
-  deletedAt: new Date()
+  deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  deletedReason: "Solicitação do usuário"
 });
-
-// Passo 2: Limpar dados sensíveis
-await db.collection('users').doc(uid).update({
-  balance: 0,
-  library: [],
-  upgrades: {},
-  friends: [],
-  // Mantém uid e metadata para referências
-});
-
-// Passo 3: Depois de 30 dias (opcional)
-// Deleta completamente do banco
 ```
+
+### 3. **Painel Admin**
+Em `admin-user-detail.html`, admins podem usar o botão **Desativar Conta**, que executa o soft delete e limpa referências automaticamente via `UserCleanup`.
+
+### 4. **Deleção Completa no Firestore (Opcional)**
+Após o soft delete e limpeza de referências, você pode apagar o documento manualmente no Firebase Console se desejar remoção total.
 
 ## 🔍 Como Verificar Usuários Fantasma
 
 No console do navegador (F12):
 ```javascript
-// Verifica se há usuários no ranking
-window.rankingDebugData?.forEach(u => {
-  if (!u.user.email || !u.user.username) {
-    console.warn('USUÁRIO FANTASMA:', u.uid, u.user);
-  }
+// Verifica usuários inválidos na coleção
+window.db.collection('users').get().then(snap => {
+  snap.docs.forEach(doc => {
+    const valid = window.UserCleanup?.isValidUserData(doc.data());
+    if (!valid) console.warn('USUÁRIO INVÁLIDO/DELETADO:', doc.id, doc.data());
+  });
 });
 ```
 
@@ -71,10 +58,10 @@ window.rankingDebugData?.forEach(u => {
 
 ```javascript
 {
-  uid: string,              // ✅ OBRIGATÓRIO
+  uid: string,              // ✅ OBRIGATÓRIO (ID do documento)
   email: string,            // ✅ OBRIGATÓRIO (não vazio)
-  username: string,         // ✅ OBRIGATÓRIO (não vazio)
-  active: boolean,          // ✅ OBRIGATÓRIO (true/false)
+  displayName: string,      // ⚠️ Recomendado (fallback: prefixo do email)
+  active: boolean,          // ✅ OBRIGATÓRIO (true para ativos)
   balance: number,          // ✅ OBRIGATÓRIO (>= 0)
   library: array,           // ✅ OBRIGATÓRIO (pode ser vazio)
   upgrades: object,         // ✅ OBRIGATÓRIO (pode ser vazio {})
@@ -84,11 +71,13 @@ window.rankingDebugData?.forEach(u => {
 }
 ```
 
+> **Nota:** O site usa `displayName` no Firestore, não `username`.
+
 ## 🚀 Recomendações Futuras
 
-1. **Adicionar campo `active` por padrão** em novos usuários
-2. **Criar função de administração** para deletar usuários de forma segura via UI
-3. **Implementar soft delete automático** ao fazer logout/cancelar conta
+1. ~~Adicionar campo `active` por padrão em novos usuários~~ ✅ Implementado
+2. ~~Criar função de administração para deletar usuários via UI~~ ✅ Implementado
+3. **Implementar soft delete automático** ao cancelar conta pelo próprio usuário
 4. **Adicionar cleanup job** para deletar permanentemente após 30 dias
 5. **Auditoria de deleções** com logs de quem/quando deletou
 

@@ -35,11 +35,25 @@ function renderUserPanel() {
         <div class="admin-panel-card" style="margin-bottom: 20px; border-left: 4px solid var(--accent);">
             <p style="margin: 5px 0;"><strong>Email:</strong> ${targetUserData.email || 'Não informado'}</p>
             <p style="margin: 5px 0;"><strong>UID:</strong> <small style="font-family: monospace; opacity: 0.6;">${targetUid}</small></p>
+            <p style="margin: 5px 0;"><strong>Status:</strong> ${targetUserData.active === false ? '<span style="color:#e74c3c">Inativo</span>' : '<span style="color:#4ade80">Ativo</span>'}</p>
             <p style="font-size: 1.4rem; color: #4ade80; margin: 15px 0 0 0; font-weight: 800;">
                 <i class="fas fa-coins"></i> R$ ${(targetUserData.balance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </p>
         </div>
     `;
+
+    const deleteSection = document.getElementById('delete-user-section');
+    const deleteBtn = document.getElementById('btn-delete-user');
+    const adminEmails = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+    const isTargetAdmin = adminEmails.includes((targetUserData.email || '').toLowerCase());
+    const isInactive = targetUserData.active === false;
+
+    if (deleteSection) {
+        deleteSection.style.display = (isTargetAdmin || isInactive) ? 'none' : 'block';
+    }
+    if (deleteBtn && isInactive) {
+        deleteBtn.disabled = true;
+    }
 
     // Renderizar Biblioteca
     const libIds = targetUserData.library || [];
@@ -145,6 +159,40 @@ window.removeGameFromUser = async (gameId) => {
         
         showToast("Jogo removido da biblioteca e do histórico.");
     });
+};
+
+window.deleteUserAccount = async () => {
+    const userName = window.utils.getUserFriendlyName({ ...targetUserData, id: targetUid });
+    const adminEmails = (window.ADMIN_EMAILS || []).map(e => e.toLowerCase());
+
+    if (adminEmails.includes((targetUserData.email || '').toLowerCase())) {
+        return window.showToast('Não é possível desativar uma conta de administrador.', 'error');
+    }
+    if (targetUserData.active === false) {
+        return window.showToast('Esta conta já está desativada.', 'info');
+    }
+
+    window.customConfirm(
+        `Desativar permanentemente a conta de "${userName}"?\n\nSaldo, biblioteca e amizades serão removidos. Esta ação não pode ser desfeita pelo site.`,
+        async () => {
+            try {
+                if (typeof window.toggleLoader === 'function') window.toggleLoader(true);
+
+                if (!window.UserCleanup?.softDeleteUser) {
+                    throw new Error('Sistema de limpeza não disponível nesta página.');
+                }
+
+                await window.UserCleanup.softDeleteUser(targetUid, 'Admin panel');
+                window.showToast('Conta desativada com sucesso.', 'success');
+                setTimeout(() => { window.location.href = 'admin.html'; }, 1000);
+            } catch (error) {
+                console.error('Erro ao desativar usuário:', error);
+                window.showToast('Erro ao desativar usuário: ' + error.message, 'error');
+            } finally {
+                if (typeof window.toggleLoader === 'function') window.toggleLoader(false);
+            }
+        }
+    );
 };
 
 // Iniciar sistema

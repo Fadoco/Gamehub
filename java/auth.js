@@ -236,6 +236,8 @@ auth.onAuthStateChanged((user) => {
 
                 db.collection('users').doc(user.uid).set({
                     email: user.email,
+                    displayName: existingData.displayName || user.displayName || (user.email ? user.email.split('@')[0] : ''),
+                    active: existingData.active ?? true,
                     balance: existingData.balance ?? 0,
                     favorites: existingData.favorites ?? [],
                     cart: existingData.cart ?? [],
@@ -608,6 +610,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return db.collection('users').doc(user.uid).set({
                         displayName: name,
                         email: user.email,
+                        active: true,
                         friendshipId: Math.floor(100000 + Math.random() * 900000),
                         friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
