@@ -3,10 +3,11 @@
  * Refatorado do zero para garantir performance e hierarquia visual.
  */
 
-let globalUsersList = []; // Cache local para busca instantânea
+let globalUsersList = [];
+let adminUsersUnsubscribe = null;
 
 /**
- * Função principal que busca dados no Firestore
+ * Função principal que busca dados no Firestore (tempo real)
  */
 async function loadUsersSystem() {
     const container = document.querySelector('.user-list-container');
@@ -14,10 +15,9 @@ async function loadUsersSystem() {
 
     if (!container) return;
     if (!window.db || !window.utils) {
-        return setTimeout(loadUsersSystem, 500); // Aguarda dependências globais
+        return setTimeout(loadUsersSystem, 500);
     }
 
-    // Injeta Botão de Teste do Mercado Negro (Estilo Hacker)
     if (container && !document.getElementById('debug-hacker-btn')) {
         const debugBtn = document.createElement('button');
         debugBtn.id = 'debug-hacker-btn';
@@ -33,37 +33,65 @@ async function loadUsersSystem() {
         container.parentNode.insertBefore(debugBtn, container);
     }
 
+    if (adminUsersUnsubscribe) return;
+
     try {
-        const snapshot = await window.db.collection('users').get();
-        if (snapshot.empty) {
-            container.innerHTML = "<p>Nenhum usuário encontrado no banco de dados.</p>";
-            return;
-        }
+        adminUsersUnsubscribe = window.db.collection('users').onSnapshot(
+            { includeMetadataChanges: true },
+            (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'removed' && window.UserCleanup) {
+                        window.UserCleanup.handleUserDeletion(change.doc.id, 'Removido do painel admin');
+                    }
+                });
 
-        // Mapeia os dados e armazena na variável global
-        globalUsersList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                if (snapshot.metadata.fromCache) return;
 
-        // Renderização inicial (ordenada por nome)
-        displayUsers(globalUsersList.sort((a, b) => 
-            window.utils.getUserFriendlyName(a).localeCompare(window.utils.getUserFriendlyName(b))
-        ));
+                if (snapshot.empty) {
+                    container.innerHTML = "<p>Nenhum usuário encontrado no banco de dados.</p>";
+                    globalUsersList = [];
+                    return;
+                }
 
-        // Lógica de Busca em Tempo Real
-        searchInput?.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = globalUsersList.filter(u => {
-                const name = window.utils.getUserFriendlyName(u).toLowerCase();
-                const email = (u.email || "").toLowerCase();
-                const id = u.id.toLowerCase();
-                return name.includes(term) || email.includes(term) || id.includes(term);
+                globalUsersList = snapshot.docs
+                    .map(doc => ({ id: doc.id, ...doc.data() }))
+                    .filter(user => !window.UserCleanup || window.UserCleanup.isValidUserData(user));
+
+                displayUsers(globalUsersList.sort((a, b) =>
+                    window.utils.getUserFriendlyName(a).localeCompare(window.utils.getUserFriendlyName(b))
+                ));
+            },
+            (error) => {
+                console.error("Erro ao ouvir usuários:", error);
+                container.innerHTML = `<p style="color:red">Erro ao carregar usuários: ${error.code === 'permission-denied' ? 'Sem permissão no Firestore (verifique as Regras de Segurança)' : error.message}</p>`;
+            }
+        );
+
+        if (searchInput && !searchInput.dataset.bound) {
+            searchInput.dataset.bound = 'true';
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = globalUsersList.filter(u => {
+                    const name = window.utils.getUserFriendlyName(u).toLowerCase();
+                    const email = (u.email || "").toLowerCase();
+                    const id = u.id.toLowerCase();
+                    return name.includes(term) || email.includes(term) || id.includes(term);
+                });
+                displayUsers(filtered);
             });
-            displayUsers(filtered);
-        });
+        }
     } catch (error) {
         console.error("Erro detalhado ao carregar usuários:", error);
-        container.innerHTML = `<p style="color:red">Erro ao carregar usuários: ${error.code === 'permission-denied' ? 'Sem permissão no Firestore (verifique as Regras de Segurança)' : error.message}</p>`;
+        container.innerHTML = `<p style="color:red">Erro ao carregar usuários: ${error.message}</p>`;
     }
 }
+
+window.reloadAdminUserList = () => {
+    if (globalUsersList.length === 0) return;
+    displayUsers(globalUsersList.sort((a, b) =>
+        window.utils.getUserFriendlyName(a).localeCompare(window.utils.getUserFriendlyName(b))
+    ));
+};
 
 /**
  * Injeta o HTML dos cartões no container

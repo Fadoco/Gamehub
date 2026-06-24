@@ -31,8 +31,19 @@ function initRanking() {
         const adminEmails = ['fadoco12311@gmail.com', 'gabrielmomo6759@gmail.com'];
 
         window.db.collection('users')
-            .onSnapshot((snapshot) => {
-                console.log('[RANKING] 📦 Snapshot recebido:', {
+            .onSnapshot({ includeMetadataChanges: true }, (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'removed' && window.UserCleanup) {
+                        window.UserCleanup.handleUserDeletion(change.doc.id, 'Removido do ranking snapshot');
+                    }
+                });
+
+                if (snapshot.metadata.fromCache) {
+                    console.log('[RANKING] ⏳ Dados do cache local — aguardando servidor...');
+                    return;
+                }
+
+                console.log('[RANKING] 📦 Snapshot do servidor:', {
                     empty: snapshot.empty,
                     size: snapshot.size,
                     docs: snapshot.docs.length

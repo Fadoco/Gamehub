@@ -83,6 +83,7 @@ try {
 window.firebaseApp = firebaseApp;
 window.firebaseAuth = firebaseAuth;
 window.firebaseDb = firebaseDb;
+window.db = firebaseDb;
 
 /**
  * Firebase Authentication State Observer

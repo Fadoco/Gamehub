@@ -1,7 +1,6 @@
 /**
  * SISTEMA DE LIMPEZA DE USUÁRIOS DELETADOS
- * Garante que não haja "resquícios" de contas deletadas no site
- * Detecta automaticamente quando um usuário é removido do Firestore
+ * Detecta automaticamente remoções no Firestore e limpa referências no site
  */
 
 if (window.UserCleanup) {
@@ -11,12 +10,17 @@ if (window.UserCleanup) {
 window.UserCleanup = {
     _listenerActive: false,
     _processedDeletions: new Set(),
+    _orphanScanDone: false,
+    _monitoringStarted: false,
 
-    /**
-     * Verifica se os dados do Firestore representam um usuário ativo/válido
-     * @param {object} data - Documento do usuário
-     * @returns {boolean}
-     */
+    getDb: () => window.db || window.firebaseDb || null,
+
+    isAdmin: () => {
+        const email = window.auth?.currentUser?.email?.toLowerCase();
+        if (!email) return false;
+        return (window.ADMIN_EMAILS || []).map(e => e.toLowerCase()).includes(email);
+    },
+
     isValidUserData: (data) => {
         if (!data) return false;
         if (data.active === false) return false;
@@ -28,31 +32,27 @@ window.UserCleanup = {
         return true;
     },
 
-    /**
-     * Verifica se um usuário ainda existe no Firestore
-     * @param {string} uid - UID do usuário
-     * @returns {Promise<boolean>} - true se existe, false se foi deletado
-     */
     userExists: async (uid) => {
         try {
-            if (!window.db) return false;
-            
-            const doc = await window.db.collection('users').doc(uid).get();
-            
+            const db = window.UserCleanup.getDb();
+            if (!db || !uid) return false;
+
+            const doc = await db.collection('users').doc(uid).get({ source: 'server' });
             if (!doc.exists) return false;
-            
             return window.UserCleanup.isValidUserData(doc.data());
         } catch (error) {
-            console.warn('[USER CLEANUP] Erro ao verificar usuário:', error);
-            return false;
+            try {
+                const db = window.UserCleanup.getDb();
+                const doc = await db.collection('users').doc(uid).get();
+                if (!doc.exists) return false;
+                return window.UserCleanup.isValidUserData(doc.data());
+            } catch (fallbackError) {
+                console.warn('[USER CLEANUP] Erro ao verificar usuário:', fallbackError);
+                return false;
+            }
         }
     },
 
-    /**
-     * Processa a remoção de um usuário (evita execução duplicada)
-     * @param {string} uid - UID do usuário
-     * @param {string} reason - Motivo do log
-     */
     handleUserDeletion: async (uid, reason = 'Removido do Firestore') => {
         if (!uid || window.UserCleanup._processedDeletions.has(uid)) return;
         window.UserCleanup._processedDeletions.add(uid);
@@ -60,16 +60,13 @@ window.UserCleanup = {
         await window.UserCleanup.deleteUserCompletely(uid);
     },
 
-    /**
-     * Deleta completamente um usuário (quando não existe mais no Firestore)
-     * @param {string} uid - UID do usuário
-     */
     deleteUserCompletely: async (uid) => {
         try {
-            if (!window.db || !uid) return;
-            
+            const db = window.UserCleanup.getDb();
+            if (!db || !uid) return;
+
             console.log(`[USER CLEANUP] Limpando referências do usuário ${uid}...`);
-            
+
             if (window.GitHubUploader && typeof window.GitHubUploader.deleteAllUserImages === 'function') {
                 try {
                     await window.GitHubUploader.deleteAllUserImages(uid);
@@ -77,80 +74,110 @@ window.UserCleanup = {
                     console.warn(`[USER CLEANUP] ⚠️ Erro ao deletar imagens:`, error.message);
                 }
             }
-            
+
             await Promise.all([
                 window.UserCleanup.removeFromFriends(uid),
                 window.UserCleanup.removeFromFriendRequests(uid),
                 window.UserCleanup.removeFromFriendships(uid)
             ]);
-            
+
             localStorage.removeItem(`user_${uid}`);
             localStorage.removeItem(`user_profile_${uid}`);
-            
+
             window.dispatchEvent(new CustomEvent('userDeleted', { detail: { uid } }));
-            
+
             console.log(`[USER CLEANUP] ✅ Usuário ${uid} removido de todas as referências do site`);
         } catch (error) {
             console.error('[USER CLEANUP] Erro ao deletar usuário:', error);
         }
     },
 
-    /**
-     * Remove um UID de todos os amigos de outros usuários
-     * @param {string} deletedUid - UID do usuário deletado
-     */
     removeFromFriends: async (deletedUid) => {
         try {
-            if (!window.db) return;
-            
-            // Busca todos os usuários que têm este UID na lista de amigos
-            const usersWithThisFriend = await window.db
+            const db = window.UserCleanup.getDb();
+            if (!db) return;
+
+            const currentUid = window.auth?.currentUser?.uid;
+
+            if (currentUid && currentUid !== deletedUid) {
+                const myRef = db.collection('users').doc(currentUid);
+                const myDoc = await myRef.get();
+                if (myDoc.exists) {
+                    const friends = myDoc.data().friends || [];
+                    if (friends.includes(deletedUid)) {
+                        await myRef.update({ friends: friends.filter(f => f !== deletedUid) });
+                        console.log(`[USER CLEANUP] ✅ Removido da sua lista de amigos`);
+                    }
+                }
+            }
+
+            if (!window.UserCleanup.isAdmin()) return;
+
+            const usersWithThisFriend = await db
                 .collection('users')
                 .where('friends', 'array-contains', deletedUid)
                 .get();
-            
-            if (usersWithThisFriend.docs.length === 0) {
-                console.log(`[USER CLEANUP] Nenhum usuário tinha ${deletedUid} na lista de amigos`);
-                return;
-            }
-            
-            // Remove de cada um
-            const batch = window.db.batch();
+
+            if (usersWithThisFriend.empty) return;
+
+            const batch = db.batch();
             usersWithThisFriend.docs.forEach(doc => {
                 const friends = doc.data().friends || [];
-                const updated = friends.filter(f => f !== deletedUid);
-                batch.update(doc.ref, { friends: updated });
+                batch.update(doc.ref, { friends: friends.filter(f => f !== deletedUid) });
             });
-            
+
             await batch.commit();
-            console.log(`[USER CLEANUP] ✅ Removido de ${usersWithThisFriend.docs.length} listas de amigos`);
+            console.log(`[USER CLEANUP] ✅ Admin removeu de ${usersWithThisFriend.size} listas de amigos`);
         } catch (error) {
             console.warn('[USER CLEANUP] Erro ao remover de amigos:', error);
         }
     },
 
-    /**
-     * Remove pedidos de amizade e referências em arrays de usuários
-     * @param {string} deletedUid - UID do usuário deletado
-     */
     removeFromFriendRequests: async (deletedUid) => {
         try {
-            if (!window.db) return;
+            const db = window.UserCleanup.getDb();
+            if (!db) return;
 
-            const [fromSnap, toSnap, sentSnap, recvSnap] = await Promise.all([
-                window.db.collection('friendRequests').where('from', '==', deletedUid).get(),
-                window.db.collection('friendRequests').where('to', '==', deletedUid).get(),
-                window.db.collection('users').where('friendRequestsSent', 'array-contains', deletedUid).get(),
-                window.db.collection('users').where('friendRequestsReceived', 'array-contains', deletedUid).get()
+            const [fromSnap, toSnap] = await Promise.all([
+                db.collection('friendRequests').where('from', '==', deletedUid).get(),
+                db.collection('friendRequests').where('to', '==', deletedUid).get()
             ]);
 
-            const batch = window.db.batch();
-            let ops = 0;
+            const requestDocs = [...fromSnap.docs, ...toSnap.docs];
+            if (requestDocs.length > 0) {
+                const batch = db.batch();
+                requestDocs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                console.log(`[USER CLEANUP] ✅ ${requestDocs.length} pedido(s) de amizade apagado(s)`);
+            }
 
-            [...fromSnap.docs, ...toSnap.docs].forEach(doc => {
-                batch.delete(doc.ref);
-                ops++;
-            });
+            const currentUid = window.auth?.currentUser?.uid;
+            if (currentUid) {
+                const myRef = db.collection('users').doc(currentUid);
+                const myDoc = await myRef.get();
+                if (myDoc.exists) {
+                    const data = myDoc.data();
+                    const sent = (data.friendRequestsSent || []).filter(id => id !== deletedUid);
+                    const recv = (data.friendRequestsReceived || []).filter(id => id !== deletedUid);
+                    if (sent.length !== (data.friendRequestsSent || []).length ||
+                        recv.length !== (data.friendRequestsReceived || []).length) {
+                        await myRef.update({
+                            friendRequestsSent: sent,
+                            friendRequestsReceived: recv
+                        });
+                    }
+                }
+            }
+
+            if (!window.UserCleanup.isAdmin()) return;
+
+            const [sentSnap, recvSnap] = await Promise.all([
+                db.collection('users').where('friendRequestsSent', 'array-contains', deletedUid).get(),
+                db.collection('users').where('friendRequestsReceived', 'array-contains', deletedUid).get()
+            ]);
+
+            const batch = db.batch();
+            let ops = 0;
 
             sentSnap.docs.forEach(doc => {
                 const list = (doc.data().friendRequestsSent || []).filter(id => id !== deletedUid);
@@ -166,60 +193,50 @@ window.UserCleanup = {
 
             if (ops > 0) {
                 await batch.commit();
-                console.log(`[USER CLEANUP] ✅ Pedidos de amizade limpos (${ops} operações)`);
+                console.log(`[USER CLEANUP] ✅ Admin limpou pedidos em ${ops} usuário(s)`);
             }
         } catch (error) {
             console.warn('[USER CLEANUP] Erro ao remover pedidos de amizade:', error);
         }
     },
 
-    /**
-     * Remove documentos da coleção friendships envolvendo o usuário
-     * @param {string} deletedUid - UID do usuário deletado
-     */
     removeFromFriendships: async (deletedUid) => {
         try {
-            if (!window.db) return;
+            const db = window.UserCleanup.getDb();
+            if (!db) return;
 
             const [asUser1, asUser2] = await Promise.all([
-                window.db.collection('friendships').where('user1', '==', deletedUid).get(),
-                window.db.collection('friendships').where('user2', '==', deletedUid).get()
+                db.collection('friendships').where('user1', '==', deletedUid).get(),
+                db.collection('friendships').where('user2', '==', deletedUid).get()
             ]);
 
             const docs = [...asUser1.docs, ...asUser2.docs];
             if (docs.length === 0) return;
 
-            const batch = window.db.batch();
+            const batch = db.batch();
             docs.forEach(doc => batch.delete(doc.ref));
             await batch.commit();
-            console.log(`[USER CLEANUP] ✅ ${docs.length} amizade(s) removida(s) da coleção friendships`);
+            console.log(`[USER CLEANUP] ✅ ${docs.length} amizade(s) removida(s)`);
         } catch (error) {
             console.warn('[USER CLEANUP] Erro ao remover friendships:', error);
         }
     },
 
-    /**
-     * Limpa usuários deletados de um array de UIDs
-     * @param {array} uids - Array de UIDs
-     * @returns {Promise<array>} - Array sem UIDs deletados
-     */
     filterDeletedUsers: async (uids) => {
         if (!Array.isArray(uids) || uids.length === 0) return [];
-        
+
         try {
             const validUsers = [];
-            
-            // Verifica cada UID em paralelo (máx 10 de cada vez)
             const chunks = [];
             for (let i = 0; i < uids.length; i += 10) {
                 chunks.push(uids.slice(i, i + 10));
             }
-            
+
             for (const chunk of chunks) {
                 const results = await Promise.all(
                     chunk.map(uid => window.UserCleanup.userExists(uid))
                 );
-                
+
                 chunk.forEach((uid, index) => {
                     if (results[index]) {
                         validUsers.push(uid);
@@ -228,74 +245,171 @@ window.UserCleanup = {
                     }
                 });
             }
-            
+
             return validUsers;
         } catch (error) {
             console.error('[USER CLEANUP] Erro ao filtrar usuários deletados:', error);
-            return uids; // Retorna original se houver erro
+            return uids;
         }
     },
 
-    /**
-     * Verifica e limpa usuários deletados no ranking
-     * Chamado automaticamente pelo ranking.js
-     */
     cleanRanking: (rankingData) => {
         if (!Array.isArray(rankingData) || rankingData.length === 0) {
             return rankingData;
         }
 
         try {
-            // Filtra apenas usuários que claramente não existem
             const cleaned = rankingData.filter(item => {
                 try {
-                    // Estrutura esperada: { uid, user, balance, gamesValue, totalValue, name, _debug }
                     if (!item || !item.user) return false;
-                    
-                    const user = item.user;
-                    
-                    if (!window.UserCleanup.isValidUserData(user)) {
-                        console.log(`[USER CLEANUP] Removendo usuário ${item.uid} do ranking: inativo ou inválido`);
+
+                    if (!window.UserCleanup.isValidUserData(item.user)) {
                         window.UserCleanup.handleUserDeletion(item.uid, 'Usuário inválido no ranking').catch(err => {
                             console.warn(`[USER CLEANUP] Erro background ao limpar ${item.uid}:`, err);
                         });
                         return false;
                     }
-                    
+
                     return true;
                 } catch (err) {
                     console.warn(`[USER CLEANUP] Erro ao validar item:`, err);
-                    return true; // Mantém em caso de erro
+                    return true;
                 }
             });
-            
+
             console.log(`[USER CLEANUP] Ranking: ${rankingData.length} → ${cleaned.length} usuários válidos`);
             return cleaned;
         } catch (error) {
             console.error('[USER CLEANUP] Erro geral em cleanRanking:', error);
-            return rankingData; // Retorna original em caso de erro crítico
+            return rankingData;
         }
     },
 
-    /**
-     * Verifica e limpa amigos deletados do perfil
-     * @param {array} friends - Array de UIDs de amigos
-     * @returns {Promise<array>} - Array sem amigos deletados
-     */
     cleanFriendsForProfile: async (friends) => {
         if (!friends || friends.length === 0) return [];
         return await window.UserCleanup.filterDeletedUsers(friends);
     },
 
-    /**
-     * Soft delete seguro — marca como inativo e limpa referências
-     * @param {string} uid - UID do usuário
-     * @param {string} reason - Motivo da deleção
-     */
-    softDeleteUser: async (uid, reason = 'Solicitação do usuário') => {
-        if (!window.db || !uid) return false;
+    scanCurrentUserReferences: async () => {
+        const db = window.UserCleanup.getDb();
+        const uid = window.auth?.currentUser?.uid;
+        if (!db || !uid) return;
 
-        await window.db.collection('users').doc(uid).update({
+        try {
+            const myDoc = await db.collection('users').doc(uid).get();
+            if (!myDoc.exists) return;
+
+            const data = myDoc.data();
+            const friends = data.friends || [];
+            const validFriends = await window.UserCleanup.filterDeletedUsers(friends);
+
+            if (validFriends.length !== friends.length) {
+                await db.collection('users').doc(uid).update({ friends: validFriends });
+            }
+
+            if (window.UserCleanup.isAdmin()) {
+                await window.UserCleanup.scanAllOrphanReferences();
+            }
+        } catch (error) {
+            console.warn('[USER CLEANUP] Erro ao escanear referências do usuário logado:', error);
+        }
+    },
+
+    /**
+     * Admin: remove referências a UIDs que não existem mais no Firestore
+     */
+    scanAllOrphanReferences: async () => {
+        const db = window.UserCleanup.getDb();
+        if (!db || !window.UserCleanup.isAdmin()) return;
+
+        try {
+            console.log('[USER CLEANUP] 🔍 Admin: escaneando referências órfãs...');
+            const usersSnap = await db.collection('users').get({ source: 'server' });
+            const validUids = new Set(usersSnap.docs.map(d => d.id));
+            let cleaned = 0;
+
+            for (const doc of usersSnap.docs) {
+                const data = doc.data();
+                const friends = data.friends || [];
+                const sent = data.friendRequestsSent || [];
+                const recv = data.friendRequestsReceived || [];
+
+                const validFriends = friends.filter(uid => validUids.has(uid));
+                const validSent = sent.filter(uid => validUids.has(uid));
+                const validRecv = recv.filter(uid => validUids.has(uid));
+
+                const orphanUids = [
+                    ...friends.filter(uid => !validUids.has(uid)),
+                    ...sent.filter(uid => !validUids.has(uid)),
+                    ...recv.filter(uid => !validUids.has(uid))
+                ];
+
+                if (validFriends.length !== friends.length ||
+                    validSent.length !== sent.length ||
+                    validRecv.length !== recv.length) {
+                    await doc.ref.update({
+                        friends: validFriends,
+                        friendRequestsSent: validSent,
+                        friendRequestsReceived: validRecv
+                    });
+                    cleaned++;
+                }
+
+                for (const orphanUid of [...new Set(orphanUids)]) {
+                    await window.UserCleanup.removeFromFriendships(orphanUid);
+                    await window.UserCleanup.removeFromFriendRequests(orphanUid);
+                }
+            }
+
+            await window.UserCleanup.purgeInactiveDocuments();
+
+            if (cleaned > 0) {
+                console.log(`[USER CLEANUP] ✅ Admin limpou referências órfãs em ${cleaned} usuário(s)`);
+            }
+        } catch (error) {
+            console.warn('[USER CLEANUP] Erro no scan de órfãos:', error);
+        }
+    },
+
+    /**
+     * Admin: apaga documentos inativos/deletados que ainda existem no Firestore
+     */
+    purgeInactiveDocuments: async () => {
+        const db = window.UserCleanup.getDb();
+        if (!db || !window.UserCleanup.isAdmin()) return;
+
+        try {
+            const usersSnap = await db.collection('users').get({ source: 'server' });
+            let purged = 0;
+
+            for (const doc of usersSnap.docs) {
+                if (window.UserCleanup.isValidUserData(doc.data())) continue;
+
+                const uid = doc.id;
+                await window.UserCleanup.handleUserDeletion(uid, 'Documento inativo — purge automático');
+
+                try {
+                    await doc.ref.delete();
+                    purged++;
+                    console.log(`[USER CLEANUP] 🗑️ Documento removido do Firestore: ${uid}`);
+                } catch (deleteError) {
+                    console.warn(`[USER CLEANUP] Não foi possível apagar doc ${uid}:`, deleteError.message);
+                }
+            }
+
+            if (purged > 0) {
+                console.log(`[USER CLEANUP] ✅ ${purged} documento(s) inativo(s) apagado(s) do Firestore`);
+            }
+        } catch (error) {
+            console.warn('[USER CLEANUP] Erro ao purgar documentos inativos:', error);
+        }
+    },
+
+    softDeleteUser: async (uid, reason = 'Solicitação do usuário') => {
+        const db = window.UserCleanup.getDb();
+        if (!db || !uid) return false;
+
+        await db.collection('users').doc(uid).update({
             active: false,
             displayName: '[Deletado]',
             email: `deleted_${uid}@deleted.local`,
@@ -313,69 +427,91 @@ window.UserCleanup = {
         });
 
         await window.UserCleanup.handleUserDeletion(uid, 'Soft delete via admin');
+
+        try {
+            await db.collection('users').doc(uid).delete();
+            console.log(`[USER CLEANUP] 🗑️ Documento ${uid} apagado do Firestore após soft delete`);
+        } catch (error) {
+            console.warn(`[USER CLEANUP] Soft delete ok, mas doc não apagado:`, error.message);
+        }
+
         return true;
     },
 
-    /**
-     * Escuta em tempo real a coleção users e reage a deleções no Firestore
-     */
     startFirestoreDeletionListener: () => {
         if (window.UserCleanup._listenerActive) return;
 
         const attach = () => {
-            if (!window.db) {
-                setTimeout(attach, 500);
+            const db = window.UserCleanup.getDb();
+            if (!db) {
+                setTimeout(attach, 300);
                 return;
             }
 
             window.UserCleanup._listenerActive = true;
             console.log('[USER CLEANUP] 👁️ Listener Firestore ativo — detectando deleções automaticamente');
 
-            window.db.collection('users').onSnapshot((snapshot) => {
-                snapshot.docChanges().forEach((change) => {
-                    const uid = change.doc.id;
+            db.collection('users').onSnapshot(
+                { includeMetadataChanges: true },
+                (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        const uid = change.doc.id;
 
-                    if (change.type === 'removed') {
-                        window.UserCleanup.handleUserDeletion(uid, 'Documento removido do Firestore');
+                        if (change.type === 'removed') {
+                            window.UserCleanup.handleUserDeletion(uid, 'Documento removido do Firestore');
+                            return;
+                        }
+
+                        if (change.type === 'modified') {
+                            const data = change.doc.data();
+                            if (!window.UserCleanup.isValidUserData(data)) {
+                                window.UserCleanup.handleUserDeletion(uid, 'Usuário desativado no Firestore');
+                            }
+                        }
+                    });
+
+                    if (snapshot.metadata.fromCache) {
+                        console.log('[USER CLEANUP] Snapshot do cache — aguardando confirmação do servidor');
                         return;
                     }
 
-                    if (change.type === 'modified') {
-                        const data = change.doc.data();
-                        if (!window.UserCleanup.isValidUserData(data)) {
-                            window.UserCleanup.handleUserDeletion(uid, 'Usuário desativado no Firestore');
-                        }
+                    if (window.UserCleanup.isAdmin() && !window.UserCleanup._orphanScanDone) {
+                        window.UserCleanup._orphanScanDone = true;
+                        window.UserCleanup.scanAllOrphanReferences();
                     }
-                });
-            }, (error) => {
-                console.warn('[USER CLEANUP] Erro no listener Firestore:', error);
-                window.UserCleanup._listenerActive = false;
-                setTimeout(() => window.UserCleanup.startFirestoreDeletionListener(), 5000);
-            });
+                },
+                (error) => {
+                    console.warn('[USER CLEANUP] Erro no listener Firestore:', error);
+                    window.UserCleanup._listenerActive = false;
+                    setTimeout(() => window.UserCleanup.startFirestoreDeletionListener(), 5000);
+                }
+            );
         };
 
         attach();
     },
 
-    /**
-     * Inicia monitoramento de limpeza
-     * Verifica periodicamente se há usuários deletados a remover
-     */
     startMonitoring: () => {
+        if (window.UserCleanup._monitoringStarted) return;
+        window.UserCleanup._monitoringStarted = true;
+
         console.log('[USER CLEANUP] Iniciando monitoramento de usuários deletados...');
-        
+
         window.UserCleanup.startFirestoreDeletionListener();
-        
+
+        window.addEventListener('firebase-user-logged-in', () => {
+            window.UserCleanup.scanCurrentUserReferences();
+        });
+
+        if (window.auth?.currentUser) {
+            window.UserCleanup.scanCurrentUserReferences();
+        }
+
         window.addEventListener('userDeleted', (event) => {
             const uid = event.detail.uid;
-            
-            if (window.location.pathname.includes('ranking')) {
-                console.log('[USER CLEANUP] Ranking atualizado após deleção');
-            }
-            
-            if (window.location.pathname.includes('perfil') && 
+
+            if (window.location.pathname.includes('perfil') &&
                 new URLSearchParams(window.location.search).get('uid') === uid) {
-                console.log('[USER CLEANUP] Perfil deletado, redirecionando...');
                 setTimeout(() => {
                     const homePath = window.utils?.getHtmlPath ? window.utils.getHtmlPath('index.html') : '../index.html';
                     window.location.href = homePath;
@@ -388,13 +524,16 @@ window.UserCleanup = {
             if (window.notificationsManager?.renderNotifications) {
                 setTimeout(() => window.notificationsManager.renderNotifications(), 300);
             }
+            if (typeof window.reloadAdminUserList === 'function') {
+                window.reloadAdminUserList();
+            }
         });
     }
 };
 
 console.log('✅ user-cleanup.js loaded');
 
-} // fim do guard UserCleanup
+}
 
 function initUserCleanupMonitoring() {
     if (window.UserCleanup) window.UserCleanup.startMonitoring();
