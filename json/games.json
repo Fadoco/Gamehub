@@ -1472,7 +1472,7 @@
         "title": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
         "Description": "Retorne à Zona de Exclusão de Chernobyl em 2185. Um jogo de tiro em primeira pessoa de mundo aberto com gráficos avançados, IA profunda e uma narrativa envolvente em um cenário pós-apocalíptico devastado.",
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs4zPCAEfEKrBIzSBH1qTmK15VTb0aNvgW7oSbV-ZymQFnAFcB2Wg0fc9z&s=10",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2408520/library_600x900_2x.jpg",
+        "coverUrl": "https://upload.wikimedia.org/wikipedia/pt/8/80/STALKER_2_cover_art.jpg",
         "platforms": [
             "fab fa-windows",
             "fab fa-xbox"
@@ -1518,8 +1518,8 @@
         "id": 69,
         "title": "Final Fantasy XVI",
         "Description": "A história do mundo de Valisthea desenrola-se através dos olhos de Clive Rosfield, um homem cujo destino foi moldado pela morte de seus pais e o poder dos Essêncios. Jogue em um universo de fantasia única com combate dinâmico e uma narrativa épica.",
-        "image": "https://images.alphacoders.com/134/1346088.jpg",
-        "coverUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2191110/library_600x900_2x.jpg",
+        "image": "https://image.api.playstation.com/vulcan/ap/rnd/202211/1007/M1j1kwGXMhbfA8OQo3r7wrMw.jpg",
+        "coverUrl": "https://live.staticflickr.com/65535/50542067131_762c2f45e2_o.png",
         "platforms": [
             "fab fa-windows",
             "fab fa-playstation"
