@@ -299,4 +299,17 @@ window.onFirestoreCollectionChange = (collectionName, onSnapshot) => {
 
 console.log('✅ Firebase Config loaded - All functions available');
 
+// Carrega user-cleanup.js automaticamente em todas as páginas com Firebase
+(function loadUserCleanupScript() {
+  if (window.UserCleanup || window.__userCleanupScriptLoading) return;
+  window.__userCleanupScriptLoading = true;
+
+  const script = document.createElement('script');
+  const current = document.currentScript;
+  const basePath = current?.src?.replace(/firebase-config\.js(\?.*)?$/, '') || 'java/';
+  script.src = basePath + 'user-cleanup.js';
+  script.async = false;
+  document.head.appendChild(script);
+})();
+
 } // Fim da proteção contra carregamento duplicado

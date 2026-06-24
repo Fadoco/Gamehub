@@ -12,7 +12,10 @@ async function initUserDetail() {
     // Escuta mudanças em tempo real no usuário selecionado
     window.db.collection('users').doc(targetUid).onSnapshot(doc => {
         if (!doc.exists) {
-            alert("Usuário não encontrado!");
+            if (window.UserCleanup) {
+                window.UserCleanup.handleUserDeletion(targetUid, 'Usuário removido enquanto admin visualizava');
+            }
+            alert("Usuário não encontrado ou foi removido!");
             window.location.href = 'admin.html';
             return;
         }

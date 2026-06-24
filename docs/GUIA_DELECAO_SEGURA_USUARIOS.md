@@ -8,6 +8,18 @@ Quando um usuário é deletado diretamente no Firestore Console, ele pode deixar
 
 ## ✅ Solução Implementada
 
+### 0. **Detecção Automática em Tempo Real**
+O `user-cleanup.js` é carregado automaticamente em **todas as páginas** via `firebase-config.js` e escuta a coleção `users` no Firestore.
+
+Quando um documento é **removido** do Firestore Console (ou desativado com `active: false`), o site automaticamente:
+- Remove o UID das listas de amigos de outros usuários
+- Apaga pedidos de amizade (`friendRequests`)
+- Apaga documentos de amizade (`friendships`)
+- Limpa cache local (`localStorage`)
+- Atualiza ranking, perfil e notificações em tempo real
+
+> **Importante:** A limpeza automática ocorre enquanto **alguém** tiver o site aberto. Para limpeza 24/7 sem depender do browser, seria necessário uma Cloud Function no Firebase.
+
 ### 1. **Filtros de Validação no Ranking**
 O ranking agora valida usuários e filtra:
 - ❌ Usuários sem email

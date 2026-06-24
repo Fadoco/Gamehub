@@ -63,7 +63,16 @@ async function initProfilePage() {
                 renderProfile();
             }, 100);
         } else {
+            if (window.UserCleanup) {
+                window.UserCleanup.handleUserDeletion(ProfileState.uid, 'Perfil não encontrado no Firestore');
+            }
             document.querySelector('main.container').innerHTML = "<h2 style='text-align:center; margin-top: 50px;'>Perfil não encontrado.</h2>";
+            if (!ProfileState.isMyProfile) {
+                setTimeout(() => {
+                    const homePath = window.utils?.getHtmlPath ? window.utils.getHtmlPath('index.html') : '../index.html';
+                    window.location.href = homePath;
+                }, 2000);
+            }
         }
     });
 }
