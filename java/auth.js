@@ -192,7 +192,10 @@ auth.onAuthStateChanged((user) => {
 
     if (!user) {
         if (!isLoginPage && !isWelcomePage && !DESATIVAR_LOGIN_PARA_TESTE && !isSkipActive) { // Se não logado e não na página de login/welcome
-            let loginPath = window.utils.getHtmlPath('login.html'); // Usa utilitário global
+            let loginPath = 'html/login.html';
+            if (window.utils?.getHtmlPath) {
+                loginPath = window.utils.getHtmlPath('login.html'); // Usa utilitário global, se já carregado
+            }
             if (isHtmlFolder) { // Tratamento especial para acesso direto à pasta html
                 loginPath = 'login.html'; // Se já estiver na pasta html, usa apenas o nome do arquivo
             } else if (isActuallySubfolder) {

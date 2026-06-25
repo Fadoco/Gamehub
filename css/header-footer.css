@@ -133,7 +133,6 @@
     width: 100%;
 }
 .mobile-nav-panel .wallet-widget,
-.mobile-nav-panel .notifications-container,
 .mobile-nav-panel #user-menu {
     display: flex;
     align-items: center;
@@ -141,6 +140,10 @@
     gap: 10px;
     padding: 12px 14px;
     background: rgba(255,255,255,0.04);
+}
+.mobile-nav-panel .notifications-container,
+.mobile-nav-panel #btn-login {
+    display: none !important;
 }
 .mobile-nav-panel nav a:hover,
 .mobile-nav-panel nav a:focus { outline: none; background: rgba(255,255,255,0.08); box-shadow: var(--focus-ring); color: #fff; }

@@ -633,6 +633,10 @@ function initMobileHeader() {
                 sanitizeClone(actionsClone);
                 actionsClone.style.marginTop = '12px';
                 actionsClone.classList.add('mobile-nav-actions');
+                const loginButton = actionsClone.querySelector('#btn-login');
+                if (loginButton) loginButton.remove();
+                const notifContainer = actionsClone.querySelector('.notifications-container');
+                if (notifContainer) notifContainer.remove();
                 panel.appendChild(actionsClone);
             }
 
