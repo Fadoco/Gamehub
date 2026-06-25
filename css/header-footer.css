@@ -811,9 +811,75 @@
 .footer-section ul li a { color: #bdc3c7; text-decoration: none; font-size: 14px; transition: var(--transition); }
 .footer-section ul li a:hover { color: var(--accent); }
 
+.footer-support-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.support-action-btn {
+    appearance: none;
+    border: 1px solid rgba(0, 212, 255, 0.22);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 212, 255, 0.04));
+    color: #e8f9ff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    box-shadow: 0 10px 24px rgba(0, 212, 255, 0.08);
+    text-align: left;
+}
+
+.support-action-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 212, 255, 0.55);
+    box-shadow: 0 14px 30px rgba(0, 212, 255, 0.16);
+}
+
+.support-action-btn:active {
+    transform: translateY(0) scale(0.99);
+}
+
+.support-privacy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.footer-support-message {
+    min-height: 24px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 200ms ease, transform 200ms ease;
+    pointer-events: none;
+}
+
+.footer-support-message.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.footer-support-message.is-eye {
+    color: var(--accent);
+    font-size: 16px;
+    text-align: center;
+}
+
 .social-icons { display: flex; gap: 20px; }
 .social-icons a { color: #bdc3c7; font-size: 22px; transition: var(--transition); }
-.social-icons a:hover { color: var(--accent); transform: translateY(-5px); }
+.social-icons a:hover { color: var(--accent); transform: translateY(-5px) scale(1.08); }
 
 .footer-bottom {
     text-align: center;

@@ -152,6 +152,93 @@ window.updateNavBadges = () => {
     // Badge é gerenciado pelo notifications-manager.js
 };
 
+window.getFooterPathPrefix = () => (window.IS_SUBFOLDER ? '../' : '');
+
+window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => `
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>GameHub</h3>
+                <p>Sua loja independente preferida para descobrir novos mundos.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navegação</h3>
+                <ul role="list">
+                    <li><a href="${pathPrefix}index.html">Loja</a></li>
+                    <li><a href="${pathPrefix}html/biblioteca.html">Biblioteca</a></li>
+                    <li><a href="${pathPrefix}html/carrinho.html">Carrinho</a></li>
+                    <li><a href="${pathPrefix}html/historico.html">Histórico</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Suporte</h3>
+                <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
+                    <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
+                    <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
+                    <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="footer-support-message" aria-live="polite" aria-atomic="true"></div>
+            </div>
+            <div class="footer-section">
+                <h3>Siga-nos</h3>
+                <div class="social-icons" role="list">
+                    <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/fadoco_oficial/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://x.com/Fadoco1" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Twitter/X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
+    </div>
+`;
+
+window.applyStandardFooters = () => {
+    const footers = document.querySelectorAll('footer.main-footer');
+    if (!footers.length) return;
+
+    const footerHTML = window.buildStandardFooterHTML();
+    footers.forEach((footer) => {
+        footer.innerHTML = footerHTML;
+    });
+};
+
+window.setupFooterSupportActions = () => {
+    if (window.__footerSupportReady) {
+        return;
+    }
+
+    window.__footerSupportReady = true;
+
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('.support-action-btn');
+        if (!button) return;
+
+        const footerSection = button.closest('.footer-section');
+        const messageBox = footerSection?.querySelector('.footer-support-message');
+        if (!messageBox) return;
+
+        const message = button.dataset.supportMessage || '';
+        const isEyeMessage = message.trim() === '👁️';
+
+        messageBox.classList.toggle('is-eye', isEyeMessage);
+        messageBox.textContent = message;
+        messageBox.classList.add('is-visible');
+
+        clearTimeout(messageBox._hideTimer);
+        messageBox._hideTimer = setTimeout(() => {
+            messageBox.classList.remove('is-visible');
+            messageBox.classList.remove('is-eye');
+        }, 2600);
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.applyStandardFooters();
+    window.setupFooterSupportActions();
+});
+
 // Função para renderizar a UI do cabeçalho com base no estado de autenticação - Movida de auth.js
 window.checkUserSession = (user) => { 
     const btnLogin = document.getElementById('btn-login');

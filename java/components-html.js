@@ -56,21 +56,21 @@ window.injectGameHubFooter = (pathPrefix = '') => {
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>GameHub</h3>
-                    <p>Sua loja independente preferida para descobrir novos mundos.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Navegação</h3>
-                    <ul role="list">
-                        <li><a href="${pathPrefix}index.html">Loja</a></li>
-                        <li><a href="${pathPrefix}html/biblioteca.html">Biblioteca</a></li>
+                    <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
+                        <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
+                        <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
+                        <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="footer-support-message" aria-live="polite" aria-atomic="true"></div>
                         <li><a href="${pathPrefix}html/carrinho.html">Carrinho</a></li>
                         <li><a href="${pathPrefix}html/historico.html">Histórico</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Suporte</h3>
-                    <ul role="list">
+                        <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/fadoco_oficial/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://x.com/Fadoco1" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Twitter/X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                         <li><a href="#">Ajuda</a></li>
                         <li><a href="#">Reembolsos</a></li>
                         <li><a href="#">Privacidade</a></li>
