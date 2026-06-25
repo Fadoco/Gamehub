@@ -203,20 +203,19 @@ function setupMyProfileUI(data) {
     const friendSearchContainer = document.querySelector('.friend-search-container');
     if (friendSearchContainer) friendSearchContainer.style.display = 'block';
 
-    // Preencher formulário antigo (se existir)
+    // Garantir que o formulário legado permaneça desativado
     const form = el.editForm;
-    if (form && form.style.display !== 'flex') form.style.display = 'none';
+    if (form) {
+        form.style.display = 'none';
+        form.classList.add('hidden');
+        form.setAttribute('aria-hidden', 'true');
+    }
     
     if (document.getElementById('edit-display-name')) document.getElementById('edit-display-name').value = data.displayName || '';
     if (document.getElementById('edit-bio')) document.getElementById('edit-bio').value = data.bio || '';
     if (document.getElementById('edit-avatar-url')) document.getElementById('edit-avatar-url').value = data.avatar || '';
     if (document.getElementById('edit-banner-url')) document.getElementById('edit-banner-url').value = data.bannerURL || '';
     if (document.getElementById('edit-banner-type')) document.getElementById('edit-banner-type').value = data.bannerType || 'image';
-
-    // Configurar handlers para botões antigos (se existirem)
-    if (el.btnEdit && form) el.btnEdit.onclick = () => { form.style.display = 'flex'; el.btnEdit.style.display = 'none'; };
-    if (el.cancelEdit && form) el.cancelEdit.onclick = () => { form.style.display = 'none'; el.btnEdit.style.display = 'block'; };
-    if (form) form.onsubmit = handleEditProfile;
 
     // Manipulador para o botão de adicionar por ID
     const toggleAddFriendBtn = document.getElementById('btn-toggle-add-friend');
@@ -420,8 +419,19 @@ async function handleEditProfile(event) {
         });
 
         showToast("Perfil atualizado com sucesso!", "success");
-        document.getElementById('edit-profile-form').style.display = 'none';
-        document.getElementById('btn-edit-profile').style.display = 'block';
+
+        const legacyForm = document.getElementById('edit-profile-form');
+        if (legacyForm) {
+            legacyForm.style.display = 'none';
+            legacyForm.classList.add('hidden');
+            legacyForm.setAttribute('aria-hidden', 'true');
+        }
+
+        const legacyButton = document.getElementById('btn-edit-profile');
+        if (legacyButton) {
+            legacyButton.style.display = 'block';
+        }
+
         // Recarrega os dados do usuário para atualizar a UI
         await window.loadUserData(window.auth.currentUser.uid);
     } catch (error) {
