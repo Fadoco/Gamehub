@@ -48,7 +48,7 @@ main {
 
 @media (max-width: 768px) {
     .hero-card {
-        min-height: 300px;
+        min-height: 520px;
     }
 }
 
