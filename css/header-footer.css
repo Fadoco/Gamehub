@@ -70,7 +70,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--transition-normal), visibility 0s linear var(--transition-normal);
-    z-index: 9998;
+    z-index: 10009;
 }
 .mobile-nav-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
 
@@ -87,7 +87,7 @@
     background: var(--bg-header);
     transform: translateX(-100%);
     transition: transform var(--transition-normal);
-    z-index: 10001;
+    z-index: 10011;
     box-shadow: 2px 0 30px rgba(0,0,0,0.6);
     padding: 20px;
     box-sizing: border-box;
