@@ -794,6 +794,17 @@
         max-width: calc(100% - 20px);
     }
 
+    .btn-edit-profile-simple {
+        position: static;
+        align-self: flex-end;
+        top: auto;
+        right: auto;
+        margin: 0 0 4px auto;
+        padding: 8px 14px;
+        font-size: 12px;
+        border-radius: 999px;
+    }
+
     .edit-profile-modal-content {
         max-height: 95vh;
     }
@@ -821,5 +832,27 @@
 
     .avatar-preview {
         max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 20px 16px;
+        gap: 16px;
+    }
+
+    .btn-edit-profile-simple {
+        width: 100%;
+        max-width: 180px;
+    }
+
+    .profile-avatar {
+        width: 96px;
+        height: 96px;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 }
