@@ -178,15 +178,15 @@ function initRanking() {
 
                     return `
                         <tr class="rank-row" style="align-items: center;">
-                            <td class="rank-pos rank-${pos <= 3 ? pos : 'other'}">#${pos}</td>
-                            <td>
+                            <td class="rank-pos rank-${pos <= 3 ? pos : 'other'}" data-label="Posição">#${pos}</td>
+                            <td data-label="Usuário">
                                 <div class="rank-user" onclick="window.location.href='${profilePath}'" style="cursor: pointer;">
                                     <img src="${avatar}" class="rank-avatar" alt="Avatar">
                                     <span>${name}</span>
                                 </div>
                             </td>
-                            <td class="rank-val" style="text-align: center;">R$ ${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-                            <td class="rank-val" style="text-align: center; font-weight: bold; color: #f39c12;">R$ ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                            <td class="rank-val" data-label="Carteira" style="text-align: center;">R$ ${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                            <td class="rank-val" data-label="Patrimônio Total" style="text-align: center; font-weight: bold; color: #f39c12;">R$ ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
                         </tr>
                     `;
                 }).join('');

@@ -84,3 +84,79 @@
     color: #4ade80; 
     font-family: 'JetBrains Mono', monospace; 
 }
+
+@media (max-width: 767px) {
+    .ranking-container {
+        padding: 18px;
+        margin-top: 24px;
+    }
+
+    .ranking-table,
+    .ranking-table thead,
+    .ranking-table tbody,
+    .ranking-table tr,
+    .ranking-table th,
+    .ranking-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .ranking-table thead {
+        display: none;
+    }
+
+    .ranking-table {
+        margin-top: 16px;
+    }
+
+    .ranking-table tr {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .ranking-table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ranking-table td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .ranking-table td:last-child {
+        border-bottom: none;
+    }
+
+    .rank-user {
+        gap: 10px;
+        margin-left: auto;
+    }
+
+    .rank-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rank-pos {
+        width: auto;
+        font-size: 1rem;
+    }
+
+    .rank-val {
+        font-size: 0.9rem;
+    }
+}
