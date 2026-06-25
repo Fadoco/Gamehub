@@ -121,7 +121,7 @@ window.selectGameForSpecialBox = (gameId) => {
 
     // Atualiza o texto do botão da roleta baseado no rank
     const spinBtn = document.getElementById('btn-spin-special');
-    if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 250)" : "TENTAR UPGRADE (R$ 250)";
+    if (spinBtn) spinBtn.innerText = (window.userUpgrades[gameId] || 0) === 3 ? "TENTAR DARK MATTER (R$ 50)" : "TENTAR UPGRADE (R$ 50)";
     
     window.showToast(`Jogo ${game.title} selecionado para corrupção.`, "info");
 };
@@ -290,7 +290,7 @@ function initSpecialRoulette() {
 }
 
 window.spinSpecialRoulette = async () => {
-    const cost = 250;
+    const cost = 50;
     if (window.isActionInProgress) return; // Proteção contra spam
     if (!selectedGameForSpecialBox) return window.showToast("ALVO NÃO SELECIONADO.", "error");
     
