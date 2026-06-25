@@ -109,7 +109,16 @@ function setupHero(featuredGames) {
         }
         
         if (elements.card) {
-            elements.card.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${game.image}')`;
+            const heroImg = new Image();
+            const heroSrc = game.image;
+            const heroFallback = game.coverUrl || game.image;
+            heroImg.onerror = () => {
+                elements.card.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${heroFallback}')`;
+            };
+            heroImg.onload = () => {
+                elements.card.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)), url('${heroSrc}')`;
+            };
+            heroImg.src = heroSrc;
             elements.card.style.backgroundSize = 'cover';
             elements.card.style.backgroundPosition = 'center';
         }
@@ -143,7 +152,7 @@ function renderCategories(categories, container) {
 function renderBanners(games, container) {
     container.innerHTML = games.map(game => `
         <div class="banner-card" onclick="window.location.href='${window.utils.getHtmlPath(`jogo.html?id=${game.id}`)}'" style="cursor:pointer; position:relative; overflow:hidden; border-radius:12px; height:200px;">
-            <img src="${game.image}" style="width:100%; height:100%; object-fit:cover; position:absolute; z-index:1;">
+            <img src="${game.image}" onerror="this.onerror=null;this.src='${game.coverUrl || game.image}'" style="width:100%; height:100%; object-fit:cover; position:absolute; z-index:1;">
             <div style="position:absolute; z-index:2; bottom:0; left:0; right:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8));">
                 <span class="tag">OFERTA</span>
                 <h3 style="margin:5px 0;">${game.title}</h3>
