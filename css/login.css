@@ -1,16 +1,19 @@
 /* Estilos específicos para a página de login inspirada na Steam */
 
 .login-page-container {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    box-sizing: border-box;
     background: linear-gradient(rgba(18, 18, 18, 0.75), rgba(18, 18, 18, 0.75)), url('../assets/capa.jpg');
     background-size: 100% auto;
     background-position: top center;
     background-repeat: no-repeat;
     background-color: #12121c;
     position: relative;
+    overflow: auto;
 }
  
 .background-overlay {
@@ -23,7 +26,7 @@
     padding: 50px 40px;
     border-radius: 8px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    width: 90%;
+    width: min(100%, 420px);
     max-width: 420px;
     text-align: center;
     z-index: 2;
@@ -121,10 +124,33 @@
 }
 
 @media (max-width: 480px) {
-    .login-card {
-        padding: 30px 20px;
+    .login-page-container {
+        padding: 16px;
+        align-items: start;
     }
+
+    .login-card {
+        width: 100%;
+        max-width: 360px;
+        padding: 26px 18px;
+        border-radius: 14px;
+    }
+
     .login-card h1 {
-        font-size: 24px;
+        font-size: 22px;
+    }
+
+    .login-card p {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .form-group input {
+        padding: 11px;
+    }
+
+    .login-card .buy-button {
+        padding: 14px;
+        margin-top: 16px;
     }
 }
