@@ -3,30 +3,31 @@
  */
 
 // === SISTEMA DE SEGURANÇA ===
-// Verifica acesso não autorizado quando a página carrega completamente
-window.addEventListener('load', () => {
-    const securityOverlay = document.getElementById('security-hack-overlay');
-    const entranceOverlay = document.getElementById('entrance-overlay');
-    
-    // Aguarda um pouco para Firebase estar pronto
+// Verifica acesso não autorizado
+document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-        // Se não há usuário autenticado, mostrar vídeo de hack
+        // Se não há usuário autenticado, redirecionar com vídeo de hack
         if (!window.auth || !window.auth.currentUser) {
-            // Esconde a animação de entrada normal
-            if (entranceOverlay) entranceOverlay.style.display = 'none';
+            const securityOverlay = document.getElementById('security-hack-overlay');
+            const entranceOverlay = document.getElementById('entrance-overlay');
             
-            // Mostra o vídeo de hack
-            if (securityOverlay) securityOverlay.classList.add('active');
+            // Esconde ambos os overlays e mostra o vídeo de hack
+            if (entranceOverlay) entranceOverlay.style.display = 'none';
+            if (securityOverlay) {
+                securityOverlay.classList.add('active');
+                securityOverlay.style.display = 'flex';
+            }
             
             // Redireciona após 10 segundos
             setTimeout(() => {
                 window.location.href = '../index.html';
             }, 10000);
         } else {
-            // Usuário autenticado - garante que overlay de segurança está escondido
+            // Usuário autenticado - esconder overlay de segurança
+            const securityOverlay = document.getElementById('security-hack-overlay');
             if (securityOverlay) securityOverlay.style.display = 'none';
         }
-    }, 500); // Espera 500ms para Firebase estar pronto
+    }, 1000); // Aguarda 1 segundo para Firebase estar pronto
 });
 
 async function processSecretPurchase(cost, itemName, actionFn) {

@@ -158,21 +158,22 @@
     
     <!-- Script de scroll automático para o topo e animação de entrada -->
     <script>
-        // Animação de entrada assustadora
+        // Animação de entrada assustadora - Versão simplificada
         window.addEventListener('load', () => {
             const overlay = document.getElementById('entrance-overlay');
             
-            // Mantém o overlay por 2.5 segundos para criar o efeito dramático
+            // Remove overlay após 1.5 segundos de forma definitiva
             setTimeout(() => {
-                overlay.classList.add('fade-out-entrance');
-                
-                // Remove o overlay após a animação
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 800);
-            }, 2500);
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 300);
+                }
+            }, 1500);
             
-            // Scroll para o topo suavemente (após a animação)
+            // Scroll para o topo suavemente
             setTimeout(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 100);
