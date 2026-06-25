@@ -202,25 +202,43 @@
         min-width: 0;
     }
 
-    .topbar__actions > *,
+    .topbar__actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+    }
+
+    .topbar__actions > * {
+        width: 100%;
+        min-width: 0;
+    }
+
     .topbar__actions .notifications-container,
     .topbar__actions .wallet-widget,
     .topbar__actions #btn-login,
     .topbar__actions #user-menu {
-        min-width: 0;
+        width: 100%;
+        justify-content: center;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .topbar__actions .notifications-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         width: auto;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+
+    .topbar__actions #btn-login {
+        white-space: nowrap;
     }
 
     .topbar__actions .wallet-widget,
     .topbar__actions #btn-login,
     .topbar__actions #user-menu {
-        flex: 1 1 auto;
+        flex: none;
     }
 
     .main-header {
@@ -395,14 +413,59 @@
 .topbar__actions {
     display: flex;
     align-items: center;
-    gap: 25px; /* Espaço entre Carteira e Menu do Usuário */
+    gap: 18px;
     justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.topbar__actions > * {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.topbar__actions .notifications-container,
+.topbar__actions .wallet-widget,
+.topbar__actions #btn-login,
+.topbar__actions #user-menu {
+    min-width: 0;
+    max-width: 260px;
+}
+
+.topbar__actions .notifications-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.topbar__actions .wallet-widget {
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+}
+
+.topbar__actions #btn-login {
+    white-space: nowrap;
 }
 
 #user-menu {
     display: flex;
     align-items: center;
-    gap: 25px; /* Espaço entre Sininho, Perfil e Sair */
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+#user-menu > * {
+    min-width: 0;
+}
+
+.user-profile-display {
+    min-width: 0;
 }
 
 /* Nova classe para o container da foto de perfil + nome */
