@@ -26,6 +26,16 @@
     <link rel="stylesheet" href="../css/mercado-negro.css">
 </head>
 <body>
+    <!-- Overlay de Segurança - Vídeo de Hack -->
+    <div class="security-hack-overlay" id="security-hack-overlay">
+        <div class="hack-video-container">
+            <video id="hack-video" autoplay muted>
+                <source src="../assets/hack.mp4" type="video/mp4">
+            </video>
+            <div class="hack-overlay-text">>>> ACESSO NÃO AUTORIZADO DETECTADO</div>
+        </div>
+    </div>
+
     <!-- Overlay de Entrada Assustadora -->
     <div class="market-entrance-overlay" id="entrance-overlay">
         <div class="entrance-glitch-container">
@@ -148,23 +158,46 @@
     
     <!-- Script de scroll automático para o topo e animação de entrada -->
     <script>
-        // Animação de entrada assustadora
-        window.addEventListener('load', () => {
-            const overlay = document.getElementById('entrance-overlay');
-            
-            // Mantém o overlay por 2.5 segundos para criar o efeito dramático
+        // Verificação de segurança - Detecta acesso não autorizado
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aguarda um pouco para o Firebase estar pronto
             setTimeout(() => {
-                overlay.classList.add('fade-out-entrance');
+                const securityOverlay = document.getElementById('security-hack-overlay');
                 
-                // Remove o overlay após a animação
+                // Se não há usuário autenticado, exibir vídeo de hack
+                if (!window.auth || !window.auth.currentUser) {
+                    if (securityOverlay) {
+                        securityOverlay.classList.add('active');
+                        
+                        // Redireciona para página inicial após 10 segundos
+                        setTimeout(() => {
+                            window.location.href = '../index.html';
+                        }, 10000);
+                    }
+                    return; // Para a execução do resto do código
+                } else {
+                    // Usuário autenticado - esconder overlay de segurança
+                    if (securityOverlay) {
+                        securityOverlay.style.display = 'none';
+                    }
+                }
+                
+                // CONTINUAÇÃO: Animação de entrada normal (somente se autenticado)
+                const overlay = document.getElementById('entrance-overlay');
+                
+                // Mantém o overlay por 2.5 segundos para criar o efeito dramático
                 setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 800);
-            }, 2500);
-            
-            // Scroll para o topo suavemente (após a animação)
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                    overlay.classList.add('fade-out-entrance');
+                    
+                    // Remove o overlay após a animação
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 800);
+                }, 2500);
+                
+                // Scroll para o topo suavemente (após a animação)
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 100);
         });
         
