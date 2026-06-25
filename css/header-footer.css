@@ -851,30 +851,37 @@
 }
 
 .footer-support-message {
-    min-height: 24px;
-    margin-top: 12px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 0;
     color: #ffffff;
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: clamp(1.05rem, 3.2vw, 1.6rem);
+    font-weight: 800;
+    line-height: 1.35;
+    text-align: center;
     opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 200ms ease, transform 200ms ease;
+    transform: scale(0.98);
+    transition: opacity 220ms ease, transform 220ms ease;
     pointer-events: none;
+    z-index: 10050;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
 }
 
 .footer-support-message.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
 }
 
 .footer-support-message.is-eye {
     color: var(--accent);
-    font-size: 16px;
-    text-align: center;
+    font-size: clamp(1.6rem, 5vw, 3rem);
 }
 
 .social-icons { display: flex; gap: 20px; }
