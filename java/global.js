@@ -525,7 +525,134 @@ function initBackToTop() {
     btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// --- Mobile Header Initialization (accessible hamburger + slide panel) ---
+function initMobileHeader() {
+    try {
+        const header = document.querySelector('.topbar');
+        if (!header) return;
+
+        // Create hamburger button (if not exists)
+        let hb = document.getElementById('mobile-hamburger');
+        if (!hb) {
+            hb = document.createElement('button');
+            hb.id = 'mobile-hamburger';
+            hb.className = 'hamburger-button';
+            hb.setAttribute('aria-label', 'Abrir menu');
+            hb.setAttribute('aria-expanded', 'false');
+            hb.setAttribute('aria-controls', 'mobile-nav-panel');
+            hb.innerHTML = `<span class="bar" aria-hidden="true"></span>`;
+            // Insert at the beginning of topbar__left for mobile
+            const left = header.querySelector('.topbar__left');
+            if (left) left.insertBefore(hb, left.firstChild);
+            else header.insertBefore(hb, header.firstChild);
+        }
+
+        // Create overlay
+        let overlay = document.getElementById('mobile-nav-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'mobile-nav-overlay';
+            overlay.className = 'mobile-nav-overlay';
+            document.body.appendChild(overlay);
+        }
+
+        // Create panel
+        let panel = document.getElementById('mobile-nav-panel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'mobile-nav-panel';
+            panel.className = 'mobile-nav-panel';
+            panel.setAttribute('role', 'dialog');
+            panel.setAttribute('aria-modal', 'true');
+            panel.setAttribute('aria-hidden', 'true');
+
+            // Clone main menu into panel
+            const mainMenu = document.querySelector('.topbar__menu');
+            const menuClone = mainMenu ? mainMenu.cloneNode(true) : document.createElement('nav');
+            menuClone.setAttribute('aria-label', 'Menu principal - móvel');
+            panel.appendChild(menuClone);
+
+            // Add wallet and user actions to panel for mobile
+            const actions = document.querySelector('.topbar__actions');
+            if (actions) {
+                const actionsClone = actions.cloneNode(true);
+                actionsClone.style.marginTop = '12px';
+                panel.appendChild(actionsClone);
+            }
+
+            document.body.appendChild(panel);
+        }
+
+        // Helpers to open/close
+        const openPanel = () => {
+            hb.classList.add('active');
+            panel.classList.add('active');
+            overlay.classList.add('active');
+            hb.setAttribute('aria-expanded', 'true');
+            panel.setAttribute('aria-hidden', 'false');
+            // Lock scroll
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+            // Focus first link
+            const firstLink = panel.querySelector('a, button');
+            if (firstLink) firstLink.focus();
+        };
+
+        const closePanel = () => {
+            hb.classList.remove('active');
+            panel.classList.remove('active');
+            overlay.classList.remove('active');
+            hb.setAttribute('aria-expanded', 'false');
+            panel.setAttribute('aria-hidden', 'true');
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+            hb.focus();
+        };
+
+        // Event listeners
+        hb.addEventListener('click', (e) => {
+            const expanded = hb.classList.contains('active');
+            if (expanded) closePanel(); else openPanel();
+        });
+
+        overlay.addEventListener('click', () => closePanel());
+
+        // Close when clicking a link inside panel
+        panel.addEventListener('click', (e) => {
+            const target = e.target.closest('a, button');
+            if (target && target.tagName.toLowerCase() === 'a') {
+                // Let navigation proceed but close UI
+                closePanel();
+            }
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && panel.classList.contains('active')) closePanel();
+        });
+
+        // Responsive behavior: hide default menu on small screens
+        const mq = window.matchMedia('(max-width: 767px)');
+        const updateVisibility = () => {
+            const desktopMenu = document.querySelector('.topbar__menu');
+            if (mq.matches) {
+                if (desktopMenu) desktopMenu.style.display = 'none';
+                hb.style.display = 'inline-flex';
+            } else {
+                if (desktopMenu) desktopMenu.style.display = '';
+                hb.style.display = 'none';
+                closePanel();
+            }
+        };
+        mq.addListener(updateVisibility);
+        updateVisibility();
+    } catch (err) {
+        console.error('Erro ao inicializar header móvel:', err);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchGamesData();
     initBackToTop();
+    initMobileHeader();
 });

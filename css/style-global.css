@@ -23,6 +23,8 @@
 
 /* --- Configurações Globais --- */
 /* Reseta margens e padding padrão, define fonte e cor de fundo */
+html, body { overflow-x: hidden; }
+
 body {
     margin: 0; /* Remove margem padrão do navegador */
     padding: 0; /* Remove padding padrão */
@@ -34,12 +36,32 @@ body {
     line-height: 1.5;
 }
 
+/* Ensure buttons meet touch target */
+.btn { min-height: 44px; min-width: 44px; padding: 10px 16px; }
+.btn:focus, .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+button, a, .btn, .nav-button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible,
+.nav-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
 /* Container principal: Centraliza conteúdo e limita largura máxima */
 .container {
-    max-width: 1600px; /* Alargado para o estilo Epic */
+    max-width: min(1600px, 96%); /* Alargado para o estilo Epic (agora responsivo) */
     margin: 0 auto; /* Centraliza horizontalmente */
     padding: 1.5rem 4%; /* Padding vertical fixo e lateral flexível */
     box-sizing: border-box;
+    width: 100%;
 }
 
 .btn {
@@ -61,7 +83,7 @@ body {
     position: absolute;
     top: calc(100% + 8px); /* Posiciona logo abaixo da barra */
     left: 0;
-    width: 280px; /* Largura maior para acomodar o mini-card */
+    width: min(320px, 92%); /* Largura responsiva para pequenos dispositivos */
     background: var(--bg-header);
     border-radius: 4px;
     box-shadow: 0 10px 30px var(--shadow);
@@ -449,7 +471,7 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 250px;
+    width: min(320px, 90%);
     animation: slideIn 0.3s ease forwards;
     z-index: 10000;
 }
@@ -692,7 +714,12 @@ h2.section-title {
 /* --- Responsividade Global --- */
 @media (max-width: 1024px) {
     .container { padding: 15px 3%; }
-    .search-box input { width: 150px; }
+    .search-box input { width: min(220px, 60%); }
+}
+
+@media (max-width: 640px) {
+    .search-box input { width: 100%; }
+    .search-suggestions { left: 4%; right: 4%; width: calc(92% - 8%); }
 }
 
 @media (max-width: 768px) {
@@ -700,6 +727,14 @@ h2.section-title {
     nav { flex-wrap: wrap; gap: 10px; }
     
     .logo { font-size: 18px; margin-right: 15px; }
+
+    .game-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+    }
+    .game-card {
+        margin-bottom: 14px;
+    }
     
     .search-box {
         order: 10;

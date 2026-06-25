@@ -2,6 +2,200 @@
  * GameHub - Estilos Compartilhados do Header e Footer
  */
 
+/* Mobile-first header: hamburger, slide panel and overlay */
+.hamburger-button {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background var(--transition-normal), transform var(--transition-fast);
+}
+.hamburger-button:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+.hamburger-button .bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    position: relative;
+}
+.hamburger-button .bar::before,
+.hamburger-button .bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.hamburger-button .bar::before { top: -6px; }
+.hamburger-button .bar::after { top: 6px; }
+.hamburger-button.active .bar { transform: rotate(45deg); }
+
+.hamburger-button,
+.notifications-button,
+.nav-button,
+.btn,
+.mobile-nav-panel nav a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.hamburger-button:focus-visible,
+.notifications-button:focus-visible,
+.btn:focus-visible,
+.nav-button:focus-visible,
+.mobile-nav-panel nav a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+.hamburger-button.active .bar::before { transform: rotate(90deg) translateX(0); top: 0; }
+.hamburger-button.active .bar::after { opacity: 0; }
+
+.mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility 0s linear var(--transition-normal);
+    z-index: 9998;
+}
+.mobile-nav-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+.mobile-nav-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(320px, 92vw);
+    max-width: 92vw;
+    height: 100vh;
+    background: var(--bg-header);
+    transform: translateX(-110%);
+    transition: transform var(--transition-normal);
+    z-index: 9999;
+    box-shadow: 2px 0 30px rgba(0,0,0,0.6);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.mobile-nav-panel.active { transform: translateX(0); }
+.mobile-nav-panel nav a,
+.mobile-nav-panel button {
+    display: block;
+    padding: 14px 10px;
+    border-radius: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background var(--transition-normal), color var(--transition-normal);
+    min-width: 0;
+}
+.mobile-nav-panel nav a:hover,
+.mobile-nav-panel nav a:focus { outline: none; background: rgba(255,255,255,0.08); box-shadow: var(--focus-ring); color: #fff; }
+
+/* Show desktop menu by default on larger screens */
+@media (min-width: 768px) {
+    .hamburger-button { display: none; }
+    .mobile-nav-panel { display: none; }
+    .mobile-nav-overlay { display: none; }
+}
+
+@media (max-width: 768px) {
+    .topbar, .main-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 14px 18px;
+    }
+
+    .topbar__left {
+        flex-wrap: wrap;
+        gap: 14px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .topbar__menu {
+        display: none !important;
+    }
+
+    .topbar__actions,
+    #user-menu {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .main-header {
+        padding: 14px 18px;
+    }
+
+    .searchbar {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .section-nav {
+        width: 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .mobile-nav-panel nav {
+        display: grid;
+        gap: 12px;
+    }
+
+    .mobile-nav-panel nav a,
+    .mobile-nav-panel button {
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    .topbar__actions > * {
+        min-width: 0;
+    }
+
+    .topbar__left,
+    .topbar__actions,
+    .section-nav {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar,
+    .main-header {
+        padding: 12px 14px;
+    }
+
+    .topbar__actions {
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .section-nav {
+        justify-content: center;
+    }
+}
+
 /* --- Cabeçalho (Header) --- */
 .topbar, .main-header {
     display: flex;
@@ -247,8 +441,9 @@
 .notif-dropdown {
     position: fixed;
     top: 95px;
-    right: 30px;
-    width: 320px;
+    right: 16px;
+    left: auto;
+    width: min(320px, 92%);
     background: rgba(20, 20, 25, 0.98);
     border: 1px solid var(--border);
     border-radius: 8px;

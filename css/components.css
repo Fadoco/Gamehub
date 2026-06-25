@@ -561,7 +561,9 @@ input[type="reset"] {
   .btn,
   .btn-primary,
   .btn-secondary,
-  button {
+  button,
+  .btn-large,
+  .buy-button {
     width: 100%;
     padding: var(--spacing-4);
   }
@@ -577,5 +579,78 @@ input[type="reset"] {
 
   .card {
     padding: var(--spacing-3);
+  }
+
+  .promo-grid,
+  .promo-cards,
+  .charts-grid,
+  .poster-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .promo-cards {
+    grid-auto-rows: minmax(120px, auto);
+  }
+
+  .promo-card,
+  .wide-banner,
+  .chart-card li,
+  .poster-card {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .promo-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .promo-card__thumb,
+  .wide-banner img {
+    width: 100%;
+    height: auto;
+  }
+
+  .wide-banner {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .wide-banner__content {
+    padding: 18px;
+  }
+
+  .chart-card li {
+    grid-template-columns: 1fr;
+  }
+
+  .categories-container {
+    gap: 10px;
+  }
+}
+
+/* Additional mobile-friendly tweaks for hero and promo components */
+@media (max-width: 820px) {
+  .hero-card {
+    min-height: 340px;
+  }
+
+  .promo-feature {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .promo-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-card {
+    min-height: 300px;
+  }
+
+  .promo-cards {
+    grid-template-columns: 1fr;
   }
 }

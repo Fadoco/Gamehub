@@ -52,7 +52,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    min-width: 200px;
+    min-width: min(200px, 90%);
     background: var(--theme-surface);
     border: 2px solid var(--theme-border);
     border-radius: var(--radius-lg);
@@ -66,7 +66,7 @@
     .theme-menu {
         bottom: 10px;
         right: 10px;
-        min-width: 160px;
+        min-width: min(160px, 90%);
     }
 }
 
@@ -309,7 +309,7 @@ select:focus {
     }
 
     .theme-menu {
-        min-width: 150px;
+        min-width: min(150px, 90%);
     }
 
     .theme-option {

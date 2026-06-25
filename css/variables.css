@@ -145,19 +145,17 @@
   --shadow-neon-cyan: 0 0 10px rgba(0, 212, 255, 0.5);
   --shadow-neon-purple: 0 0 10px rgba(168, 85, 247, 0.5);
   --shadow-neon-gold: 0 0 10px rgba(255, 215, 0, 0.5);
-  : all 0.3s ease;  /* Padrão genérico (compatibilidade) */
-  --transition
   /* === TRANSIÇÕES === */
-  
+
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
-  --transition-timing-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --transition-timing-ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --transition-timing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  
+  --transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
   /* === Z-INDEX === */
-  
+
   --z-index-dropdown: 100;
   --z-index-sticky: 200;
   --z-index-fixed: 300;
@@ -165,16 +163,35 @@
   --z-index-modal: 500;
   --z-index-popover: 600;
   --z-index-tooltip: 700;
-  
+
   /* === BREAKPOINTS (Mobile-First) === */
-  /* Usados em media queries */
-  /* 
-    sm: 640px  (Small phones)
-    md: 768px  (Tablets)
-    lg: 1024px (Desktops)
-    xl: 1280px (Large desktops)
-    2xl: 1536px (Extra large)
-  */
+  --bp-320: 320px;
+  --bp-360: 360px;
+  --bp-375: 375px;
+  --bp-390: 390px;
+  --bp-412: 412px;
+  --bp-430: 430px;
+  --bp-480: 480px;
+  --bp-640: 640px; /* small */
+  --bp-768: 768px; /* md */
+  --bp-820: 820px;
+  --bp-1024: 1024px; /* lg */
+  --bp-1200: 1200px;
+  --bp-1440: 1440px;
+
+  /* === TIPOGRAFIA RESPONSIVA (clamp) === */
+  --fs-scale-xxs: clamp(0.75rem, 0.68rem + 0.4vw, 0.85rem);
+  --fs-scale-xs: clamp(0.85rem, 0.8rem + 0.45vw, 0.95rem);
+  --fs-scale-sm: clamp(0.95rem, 0.9rem + 0.5vw, 1.05rem);
+  --fs-scale-base: clamp(1rem, 0.98rem + 0.6vw, 1.125rem);
+  --fs-scale-lg: clamp(1.125rem, 1.08rem + 0.8vw, 1.25rem);
+  --fs-scale-xl: clamp(1.25rem, 1.2rem + 1vw, 1.5rem);
+  --fs-scale-2xl: clamp(1.5rem, 1.45rem + 1.2vw, 1.875rem);
+  --fs-scale-3xl: clamp(1.875rem, 1.8rem + 1.6vw, 2.25rem);
+  --fs-scale-4xl: clamp(2.25rem, 2.15rem + 2vw, 3rem);
+
+  /* Accessibility default focus outline */
+  --focus-ring: 3px solid rgba(0, 212, 255, 0.25);
 }
 
 /* === DARK MODE THEME === */
@@ -212,6 +229,8 @@
     --theme-text-secondary: #b0b0b0;
     --theme-border: #333333;
     --theme-hover: #2a2a3e;
+  }
+}
 
 /* === ALIASES PARA COMPATIBILIDADE === */
 :root {

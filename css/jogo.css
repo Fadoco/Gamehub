@@ -43,7 +43,8 @@
 .detail-header h1 {
     margin: 0; /* Remove margem padrão */
     flex: 1; /* Permite que o título ocupe o espaço disponível */
-    min-width: 300px; /* Garante que o título não fique muito pequeno */
+    min-width: 220px; /* Garante que o título não fique pequeno demais */
+    max-width: 100%;
     font-size: 2.2rem; /* Tamanho maior para o título */
     display: flex; /* Para alinhar o título com o ícone de upgrade */
     align-items: center;
@@ -53,7 +54,7 @@
 
 .detail-content {
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: 1fr minmax(260px, 350px);
     align-items: start; /* Essencial para permitir que o elemento sticky flutue */
     gap: 30px;
 }
@@ -169,7 +170,23 @@
 
 @media (max-width: 1024px) {
     .detail-content {
-        grid-template-columns: 1fr 300px; /* Ajusta a coluna lateral */
+        grid-template-columns: 1fr minmax(240px, 1fr); /* Ajusta a coluna lateral para telas médias */
+    }
+}
+
+@media (max-width: 820px) {
+    .detail-content {
+        gap: 24px;
+    }
+
+    .detail-header h1 {
+        min-width: auto;
+        max-width: 100%;
+        word-break: break-word;
+    }
+
+    .detail-media img {
+        aspect-ratio: 4 / 3;
     }
 }
 
@@ -179,4 +196,7 @@
     }
     .detail-buy-box { position: static; margin-top: 20px; }
     .detail-header h1 { font-size: 1.5em; }
+    .price-section { flex-direction: column; align-items: stretch; gap: 12px; }
+    .buy-button { width: 100%; font-size: 1rem; }
+    .secondary-button { width: 100%; }
 }

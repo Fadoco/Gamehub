@@ -106,7 +106,7 @@
 
 .entrance-scanner {
     position: relative;
-    width: 300px;
+    width: min(300px, 92%);
     height: 150px;
     border: 3px solid #00ff88;
     margin: 2rem auto;
@@ -738,7 +738,7 @@
    ============================================================================ */
 
 .special-card {
-    width: 120px;
+    width: min(120px, 40%);
     height: 120px;
     margin: 0 5px;
     display: flex;
@@ -979,7 +979,7 @@
 .secret-item span {
     color: var(--market-warning);
     font-weight: bold;
-    min-width: 120px;
+    min-width: min(120px, 40%);
     text-align: right;
 }
 
@@ -1030,7 +1030,7 @@
     }
 
     .entrance-scanner {
-        width: 250px;
+        width: min(250px, 92%);
         height: 120px;
     }
 }

@@ -109,6 +109,13 @@
     box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
 
+@media (max-width: 640px) {
+    .profile-avatar { width: 96px; height: 96px; }
+    .profile-container { padding: 20px; }
+    .profile-banner-container { height: 180px; }
+    .highlight-grid { grid-template-columns: 1fr; }
+}
+
 /* --- Seções de Amizade --- */
 .friend-request-card, .friend-card {
     background: rgba(9, 17, 34, 0.6);

@@ -113,7 +113,7 @@
 
 .w-full { width: 100%; }
 .w-auto { width: auto; }
-.w-screen { width: 100vw; }
+.w-screen { width: 100%; }
 .w-max { width: max-content; }
 
 .h-full { height: 100%; }
@@ -131,6 +131,15 @@
 .max-h-screen { max-height: 100vh; }
 
 /* === ASPECT RATIO === */
+
+/* Responsive images and touch targets */
+img, picture, video { max-width: 100%; height: auto; display: block; }
+.touch-target { min-width: 44px; min-height: 44px; padding: 8px; display: inline-flex; align-items: center; justify-content: center; }
+
+/* Accessibility focus-visible helper */
+:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+
 
 .aspect-auto { aspect-ratio: auto; }
 .aspect-square { aspect-ratio: 1 / 1; }
@@ -514,7 +523,7 @@ select:disabled {
 
 .w-full { width: 100%; }
 .w-auto { width: auto; }
-.w-screen { width: 100vw; }
+.w-screen { width: 100%; }
 .max-w-full { max-width: 100%; }
 .max-w-sm { max-width: 24rem; }
 .max-w-md { max-width: 28rem; }
