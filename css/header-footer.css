@@ -157,40 +157,51 @@
 }
 
 @media (max-width: 768px) {
-    .topbar, .main-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 14px;
-        padding: 14px 18px;
-    }
-
     .topbar {
         position: sticky;
         top: 0;
         z-index: 10010;
         background: rgba(24, 24, 28, 0.96);
         backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 14px 18px;
     }
 
     .topbar__left {
-        flex-wrap: wrap;
-        gap: 12px;
-        width: 100%;
+        position: absolute;
+        left: 12px;
+        display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 12px;
         min-width: 0;
+    }
+
+    .brand {
+        flex: 0 0 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        order: 2;
     }
 
     .topbar__menu {
         display: none !important;
     }
 
-    .brand {
-        flex: 1 1 auto;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .hamburger-button {
+        order: 1;
     }
 
     .topbar__actions,
