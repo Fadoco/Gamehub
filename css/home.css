@@ -696,6 +696,10 @@ main {
         min-height: 340px;
     }
 
+    .hero-card__actions {
+        display: none;
+    }
+
     .hero-list {
         grid-template-columns: 1fr;
     }
