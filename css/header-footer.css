@@ -280,7 +280,12 @@
         width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
+    }
+
+    .section-nav a {
+        padding: 6px 12px;
+        font-size: 0.85rem;
     }
 
     .mobile-nav-panel {

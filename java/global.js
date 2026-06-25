@@ -626,19 +626,7 @@ function initMobileHeader() {
             });
             panel.appendChild(menuClone);
 
-            // Add wallet and user actions to panel for mobile
-            const actions = document.querySelector('.topbar__actions');
-            if (actions) {
-                const actionsClone = actions.cloneNode(true);
-                sanitizeClone(actionsClone);
-                actionsClone.style.marginTop = '12px';
-                actionsClone.classList.add('mobile-nav-actions');
-                const loginButton = actionsClone.querySelector('#btn-login');
-                if (loginButton) loginButton.remove();
-                const notifContainer = actionsClone.querySelector('.notifications-container');
-                if (notifContainer) notifContainer.remove();
-                panel.appendChild(actionsClone);
-            }
+            // Don't add wallet/actions to mobile menu - reduce clutter
 
             if (!panel.parentElement) {
                 document.body.appendChild(panel);
