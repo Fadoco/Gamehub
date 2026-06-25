@@ -78,13 +78,15 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: min(320px, calc(100vw - 2rem));
+    right: auto;
+    width: clamp(260px, 88vw, 340px);
     max-width: 100%;
+    min-width: 240px;
     height: 100vh;
     background: var(--bg-header);
-    transform: translateX(-110%);
+    transform: translateX(-100%);
     transition: transform var(--transition-normal);
-    z-index: 9999;
+    z-index: 10001;
     box-shadow: 2px 0 30px rgba(0,0,0,0.6);
     padding: 20px;
     box-sizing: border-box;
@@ -92,6 +94,7 @@
     flex-direction: column;
     gap: 16px;
     overflow-y: auto;
+    overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
 }
 .mobile-nav-panel.active { transform: translateX(0); }
@@ -110,9 +113,16 @@
     display: grid;
     gap: 12px;
     width: 100%;
+    align-items: stretch;
+}
+.mobile-nav-panel .topbar__actions > * {
+    min-width: 0;
 }
 .mobile-nav-panel nav a,
-.mobile-nav-panel button {
+.mobile-nav-panel button,
+.mobile-nav-panel .notifications-container,
+.mobile-nav-panel .wallet-widget,
+.mobile-nav-panel #user-menu {
     display: block;
     padding: 14px 10px;
     border-radius: 10px;
@@ -121,6 +131,16 @@
     transition: background var(--transition-normal), color var(--transition-normal);
     min-width: 0;
     width: 100%;
+}
+.mobile-nav-panel .wallet-widget,
+.mobile-nav-panel .notifications-container,
+.mobile-nav-panel #user-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.04);
 }
 .mobile-nav-panel nav a:hover,
 .mobile-nav-panel nav a:focus { outline: none; background: rgba(255,255,255,0.08); box-shadow: var(--focus-ring); color: #fff; }
@@ -140,12 +160,21 @@
         padding: 14px 18px;
     }
 
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10010;
+        background: rgba(24, 24, 28, 0.96);
+        backdrop-filter: blur(12px);
+    }
+
     .topbar__left {
         flex-wrap: wrap;
         gap: 12px;
         width: 100%;
         align-items: center;
         justify-content: space-between;
+        min-width: 0;
     }
 
     .topbar__menu {
@@ -155,6 +184,9 @@
     .brand {
         flex: 1 1 auto;
         min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .topbar__actions,
@@ -164,6 +196,58 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 12px;
+        min-width: 0;
+    }
+
+    .topbar__actions > *,
+    .topbar__actions .notifications-container,
+    .topbar__actions .wallet-widget,
+    .topbar__actions #btn-login,
+    .topbar__actions #user-menu {
+        min-width: 0;
+    }
+
+    .topbar__actions .notifications-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+    }
+
+    .topbar__actions .wallet-widget,
+    .topbar__actions #btn-login,
+    .topbar__actions #user-menu {
+        flex: 1 1 auto;
+    }
+
+    .main-header {
+        padding: 14px 18px;
+    }
+
+    .searchbar {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .section-nav {
+        width: 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .mobile-nav-panel {
+        width: clamp(260px, 88vw, 340px);
+        max-width: 100%;
+    }
+
+    .mobile-nav-panel .topbar__actions {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .mobile-nav-panel .topbar__actions > * {
+        width: 100%;
+        min-width: 0;
     }
 
     .main-header {
