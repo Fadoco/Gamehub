@@ -6,8 +6,10 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(rgba(18, 18, 18, 0.75), rgba(18, 18, 18, 0.75)), url('../assets/capa.jpg');
-    background-size: cover;
-    background-position: center;
+    background-size: 100% auto;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #12121c;
     position: relative;
 }
  
