@@ -52,7 +52,7 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
 // Função para disparar o evento raro do Mercado Negro
 window.triggerSecretEvent = (force = false) => {
     const chance = Math.random();
-    if (force || chance <= 0.04) { // 4% de chance
+    if (force || chance <= 1) { // 100% de chance - TESTE
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
         // 1. Congela o site visualmente com efeito mais intenso

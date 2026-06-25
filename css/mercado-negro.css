@@ -1335,30 +1335,6 @@
     object-fit: cover;
 }
 
-.hack-overlay-text {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ff0000;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    text-shadow: 
-        0 0 10px #ff0000,
-        0 0 20px #ff006e;
-    letter-spacing: 2px;
-    animation: hackTextBlink 0.5s infinite;
-}
-
-@keyframes hackTextBlink {
-    0%, 50%, 100% {
-        opacity: 1;
-    }
-    25%, 75% {
-        opacity: 0.5;
-    }
-}
-
 /* ============================================================================
    ACCESSIBILITY
    ============================================================================ */

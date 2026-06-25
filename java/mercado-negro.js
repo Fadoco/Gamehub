@@ -3,7 +3,7 @@
  */
 
 // === SISTEMA DE SEGURANÇA ===
-// Verifica acesso não autorizado
+// Verifica acesso direto não autorizado (link copiado)
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         // Se não há usuário autenticado, redirecionar com vídeo de hack
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const securityOverlay = document.getElementById('security-hack-overlay');
             if (securityOverlay) securityOverlay.style.display = 'none';
         }
-    }, 1000); // Aguarda 1 segundo para Firebase estar pronto
+    }, 500); // Aguarda 500ms para Firebase estar pronto
 });
 
 async function processSecretPurchase(cost, itemName, actionFn) {
