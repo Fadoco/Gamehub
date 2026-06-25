@@ -877,6 +877,7 @@
 .footer-support-message.is-visible {
     opacity: 1;
     transform: scale(1);
+    pointer-events: auto;
 }
 
 .footer-support-message.is-eye {

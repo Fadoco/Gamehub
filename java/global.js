@@ -212,6 +212,14 @@ window.setupFooterSupportActions = () => {
     window.__footerSupportReady = true;
 
     document.addEventListener('click', (event) => {
+        const visibleMessageBox = event.target.closest('.footer-support-message.is-visible');
+        if (visibleMessageBox) {
+            visibleMessageBox.classList.remove('is-visible');
+            visibleMessageBox.classList.remove('is-eye');
+            clearTimeout(visibleMessageBox._hideTimer);
+            return;
+        }
+
         const button = event.target.closest('.support-action-btn');
         if (!button) return;
 
