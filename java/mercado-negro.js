@@ -3,7 +3,8 @@
  */
 
 // === SISTEMA DE SEGURANÇA ===
-// Verifica acesso direto não autorizado (link copiado)
+// Desativado temporariamente - Verificar sistema de token após ajustes
+/*
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         // Se não há usuário autenticado, redirecionar com vídeo de hack
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 500); // Aguarda 500ms para Firebase estar pronto
 });
+*/
 
 async function processSecretPurchase(cost, itemName, actionFn) {
     if (!window.auth.currentUser) return window.showToast("Conexão perdida. Relogue.", "error");
