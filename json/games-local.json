@@ -1,0 +1,13 @@
+[
+  {
+    "id": 999,
+    "title": "Exemplo de Jogo Local",
+    "currentPrice": "R$ 99,90",
+    "image": "img/exemplo.jpg",
+    "coverUrl": "img/exemplo-cover.jpg",
+    "description": "Este é um exemplo de como adicionar um jogo localmente. Edite este arquivo para adicionar seus próprios jogos.",
+    "platforms": ["Windows", "Web"],
+    "tags": ["local", "exemplo"],
+    "developer": "Seu Nome"
+  }
+]
