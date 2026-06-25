@@ -2,6 +2,33 @@
  * Lógica do Mercado Negro
  */
 
+// === SISTEMA DE SEGURANÇA ===
+// Verifica acesso não autorizado quando a página carrega completamente
+window.addEventListener('load', () => {
+    const securityOverlay = document.getElementById('security-hack-overlay');
+    const entranceOverlay = document.getElementById('entrance-overlay');
+    
+    // Aguarda um pouco para Firebase estar pronto
+    setTimeout(() => {
+        // Se não há usuário autenticado, mostrar vídeo de hack
+        if (!window.auth || !window.auth.currentUser) {
+            // Esconde a animação de entrada normal
+            if (entranceOverlay) entranceOverlay.style.display = 'none';
+            
+            // Mostra o vídeo de hack
+            if (securityOverlay) securityOverlay.classList.add('active');
+            
+            // Redireciona após 10 segundos
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 10000);
+        } else {
+            // Usuário autenticado - garante que overlay de segurança está escondido
+            if (securityOverlay) securityOverlay.style.display = 'none';
+        }
+    }, 500); // Espera 500ms para Firebase estar pronto
+});
+
 async function processSecretPurchase(cost, itemName, actionFn) {
     if (!window.auth.currentUser) return window.showToast("Conexão perdida. Relogue.", "error");
     if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");

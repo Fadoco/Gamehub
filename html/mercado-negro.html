@@ -158,46 +158,23 @@
     
     <!-- Script de scroll automático para o topo e animação de entrada -->
     <script>
-        // Verificação de segurança - Detecta acesso não autorizado
-        document.addEventListener('DOMContentLoaded', () => {
-            // Aguarda um pouco para o Firebase estar pronto
+        // Animação de entrada assustadora
+        window.addEventListener('load', () => {
+            const overlay = document.getElementById('entrance-overlay');
+            
+            // Mantém o overlay por 2.5 segundos para criar o efeito dramático
             setTimeout(() => {
-                const securityOverlay = document.getElementById('security-hack-overlay');
+                overlay.classList.add('fade-out-entrance');
                 
-                // Se não há usuário autenticado, exibir vídeo de hack
-                if (!window.auth || !window.auth.currentUser) {
-                    if (securityOverlay) {
-                        securityOverlay.classList.add('active');
-                        
-                        // Redireciona para página inicial após 10 segundos
-                        setTimeout(() => {
-                            window.location.href = '../index.html';
-                        }, 10000);
-                    }
-                    return; // Para a execução do resto do código
-                } else {
-                    // Usuário autenticado - esconder overlay de segurança
-                    if (securityOverlay) {
-                        securityOverlay.style.display = 'none';
-                    }
-                }
-                
-                // CONTINUAÇÃO: Animação de entrada normal (somente se autenticado)
-                const overlay = document.getElementById('entrance-overlay');
-                
-                // Mantém o overlay por 2.5 segundos para criar o efeito dramático
+                // Remove o overlay após a animação
                 setTimeout(() => {
-                    overlay.classList.add('fade-out-entrance');
-                    
-                    // Remove o overlay após a animação
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                    }, 800);
-                }, 2500);
-                
-                // Scroll para o topo suavemente (após a animação)
-                setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    overlay.style.display = 'none';
+                }, 800);
+            }, 2500);
+            
+            // Scroll para o topo suavemente (após a animação)
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 100);
         });
         
