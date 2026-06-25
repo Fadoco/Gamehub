@@ -175,9 +175,9 @@
             "Mundo Aberto",
             "Sobrevivência"
         ],
-        "discount": 10,
-        "oldPrice": "R$ 189,90",
-        "currentPrice": "R$ 170,91",
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 189,90",
         "featured": false
     },
     {
@@ -349,9 +349,9 @@
             "Ação",
             "Multijogador"
         ],
-        "discount": 10,
-        "oldPrice": "R$ 219,90",
-        "currentPrice": "R$ 197,91",
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 219,90",
         "featured": false
     },
     {
@@ -458,9 +458,9 @@
             "Crafting",
             "Multijogador"
         ],
-        "discount": 10,
-        "oldPrice": "R$ 169,90",
-        "currentPrice": "R$ 152,91",
+        "discount": 0,
+        "oldPrice": null,
+        "currentPrice": "R$ 169,90",
         "featured": false
     },
     {

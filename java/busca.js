@@ -6,12 +6,37 @@ window.renderSearchResults = function(games) {
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q')?.toLowerCase().trim() || "";
     const queryWords = query.split(' ').filter(w => w.length > 0);
+    const promoTerms = ['promo', 'promocao', 'promoção', 'promocoes', 'promoções', 'oferta', 'ofertas', 'desconto', 'descontos'];
+    const isPromoQuery = promoTerms.includes(query);
     
     const queryDisplay = document.getElementById('search-query-text');
     if (queryDisplay) queryDisplay.textContent = query;
 
     if (queryWords.length === 0) {
         if (queryDisplay) queryDisplay.textContent = "nenhum termo digitado";
+        return;
+    }
+
+    if (isPromoQuery) {
+        const promoGames = games
+            .filter(game => Number(game.discount) > 0)
+            .sort((a, b) => {
+                if (b.discount !== a.discount) return b.discount - a.discount;
+                if ((b.featured ? 1 : 0) !== (a.featured ? 1 : 0)) return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+                return a.title.localeCompare(b.title, 'pt-BR');
+            });
+
+        const grid = document.getElementById('grid-busca');
+        if (grid) {
+            if (promoGames.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                                    <h3>Nenhuma promoção ativa no momento</h3>
+                                    <p>Volte mais tarde para novas ofertas.</p>
+                                  </div>`;
+            } else {
+                window.renderToContainer(promoGames, grid, true);
+            }
+        }
         return;
     }
 

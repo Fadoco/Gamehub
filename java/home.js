@@ -17,14 +17,15 @@ window.renderGames = function(games) {
     }
 
     // 1.2. Banner de Destaque Secundário (Formato Largo)
-    const bannerGames = games.filter(g => !g.featured && g.discount > 0).slice(0, 2);
+    const sortedDiscounted = [...games].filter(g => g.discount > 0).sort((a, b) => b.discount - a.discount);
+    const bannerGames = sortedDiscounted.filter(g => !g.featured).slice(0, 2);
     const bannerGrid = document.getElementById('banners-grid');
     if (bannerGrid) {
         renderBanners(bannerGames, bannerGrid);
     }
 
     // 2. Configurar Promoções (Jogos com desconto)
-    const discounted = games.filter(g => g.discount > 0).slice(0, 6);
+    const discounted = sortedDiscounted.slice(0, 6);
     const promoContainer = document.getElementById('promo-cards-container');
     if (promoContainer) {
         promoContainer.innerHTML = discounted.map(game => `
