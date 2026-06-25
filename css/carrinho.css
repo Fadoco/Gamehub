@@ -37,7 +37,7 @@
 }
 
 .cart-item img {
-    width: 70px; /* Largura reduzida para estilo lista */
+    width: clamp(50px, 15vw, 70px);
     aspect-ratio: 3 / 4; /* Mantém a identidade visual da capa do jogo */
     object-fit: cover;
     object-position: top center;
@@ -83,11 +83,18 @@
     border: 1px solid var(--accent);
     height: fit-content;
     position: sticky;
-    top: 100px;
+    top: clamp(60px, 10vh, 100px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+@media (max-width: 768px) {
+    #cart-summary {
+        position: static;
+        top: auto;
+    }
 }
 
 #cart-summary h2 { margin-bottom: 20px; }

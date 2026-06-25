@@ -1,0 +1,625 @@
+{
+  "projeto": "GameHub - Análise de Responsividade",
+  "data_analise": "2026-06-25",
+  "arquivo": "ANALISE_RESPONSIVIDADE_COMPLETA.json",
+  "problemas_criticos": [
+    {
+      "id": 1,
+      "arquivo": "css/home.css",
+      "linha": 25,
+      "tipo": "layout_rigido",
+      "severidade": "CRÍTICA",
+      "descricao": "Hero section com grid template fixa: grid-template-columns: 1.7fr 1fr sem breakpoint mobile",
+      "componente": "hero-section",
+      "css_atual": "grid-template-columns: 1.7fr 1fr; gap: 22px;",
+      "impacto_mobile": "Em telas pequenas (< 640px), layout quebra e sidebar fica inutilizável. Deve ser 1fr em mobile.",
+      "recomendacao": "Adicionar media query para mobile: @media (max-width: 640px) { grid-template-columns: 1fr; }",
+      "prioridade": "P0"
+    },
+    {
+      "id": 2,
+      "arquivo": "css/home.css",
+      "linha": 32,
+      "tipo": "altura_fixa",
+      "severidade": "CRÍTICA",
+      "descricao": "Hero card com min-height: 540px (muito grande para mobile)",
+      "componente": "hero-card",
+      "css_atual": "min-height: 540px;",
+      "impacto_mobile": "Em phones (< 480px), ocupa quase toda viewport vertical. Hero card fica 100% da tela em mobile.",
+      "recomendacao": "Media query: @media (max-width: 640px) { min-height: 300px; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 3,
+      "arquivo": "css/perfil.css",
+      "linha": 15,
+      "tipo": "largura_fixa",
+      "severidade": "ALTA",
+      "descricao": "Avatar com largura e altura fixas: width: 150px; height: 150px",
+      "componente": "profile-avatar",
+      "css_atual": "width: 150px; height: 150px; border-radius: 50%;",
+      "impacto_mobile": "Em mobile (< 480px), avatar não cabe bem, margin esquerda/direita fica ruim. Deveria ser clamp(96px, 20vw, 150px).",
+      "recomendacao": "Usar clamp: width: clamp(96px, 20vw, 150px); height: clamp(96px, 20vw, 150px);",
+      "prioridade": "P1"
+    },
+    {
+      "id": 4,
+      "arquivo": "css/perfil.css",
+      "linha": 37,
+      "tipo": "altura_fixa",
+      "severidade": "ALTA",
+      "descricao": "Profile banner container com altura fixa: height: 300px sem breakpoint até 640px",
+      "componente": "profile-banner-container",
+      "css_atual": "height: 300px;",
+      "impacto_mobile": "Ocupa muito espaço vertical em mobile. Media query só reduz em 640px (180px), deveria ter breakpoint em 480px.",
+      "recomendacao": "@media (max-width: 768px) { height: 220px; } @media (max-width: 480px) { height: 150px; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 5,
+      "arquivo": "css/home.css",
+      "linha": 44,
+      "tipo": "posicionamento_manual",
+      "severidade": "ALTA",
+      "descricao": "Hero card overlay com position absolute e valores fixos: top: 22px; left: 22px; right: 22px;",
+      "componente": "hero-card__badge",
+      "css_atual": "position: absolute; top: 22px; left: 22px;",
+      "impacto_mobile": "Padding fixo em telas pequenas pode cortar conteúdo. Deveria usar padding responsivo.",
+      "recomendacao": "Usar clamp ou calc: top: clamp(8px, 2vw, 22px); left: clamp(8px, 2vw, 22px);",
+      "prioridade": "P1"
+    },
+    {
+      "id": 6,
+      "arquivo": "css/home.css",
+      "linha": 283,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Categories container com grid fixo: grid-template-columns: repeat(3, minmax(0, 1fr)) sem breakpoint antes de 900px",
+      "componente": "categories-container",
+      "css_atual": "grid-template-columns: repeat(3, minmax(0, 1fr));",
+      "impacto_mobile": "Em tablet 768px, 3 colunas é muito. Deveria ter breakpoint em 768px para 2 colunas, 480px para 1.",
+      "recomendacao": "@media (max-width: 768px) { grid-template-columns: repeat(2, 1fr); } @media (max-width: 480px) { grid-template-columns: 1fr; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 7,
+      "arquivo": "css/perfil.css",
+      "linha": 220,
+      "tipo": "posicionamento_manual",
+      "severidade": "CRÍTICA",
+      "descricao": "Modal de edição com position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) e max-width: 650px",
+      "componente": "edit-profile-modal",
+      "css_atual": "position: fixed; top: 50%; left: 50%; width: 90%; max-width: 650px;",
+      "impacto_mobile": "Em telas < 480px com 90% width, modal pode ficar muito grande (432px > 480px viewport). Não responde bem ao teclado virtual.",
+      "recomendacao": "@media (max-width: 640px) { width: 95%; max-width: calc(100vw - 20px); } @media (max-height: 600px) { max-height: 90vh; overflow-y: auto; }",
+      "prioridade": "P0"
+    },
+    {
+      "id": 8,
+      "arquivo": "css/carrinho.css",
+      "linha": 85,
+      "tipo": "posicionamento_manual",
+      "severidade": "ALTA",
+      "descricao": "Cart summary sticky com position: sticky; top: 100px (altura do header pode variar)",
+      "componente": "cart-summary",
+      "css_atual": "position: sticky; top: 100px;",
+      "impacto_mobile": "Em mobile, header tem altura diferente (sticky em mobile). Top fixo em 100px não funciona bem.",
+      "recomendacao": "@media (max-width: 768px) { position: static; } ou usar CSS custom property para header height",
+      "prioridade": "P1"
+    },
+    {
+      "id": 9,
+      "arquivo": "css/home.css",
+      "linha": 95,
+      "tipo": "altura_fixa",
+      "severidade": "MÉDIA",
+      "descricao": "Hero card content com max-width: 560px sem considerar margin lateral",
+      "componente": "hero-card__content p",
+      "css_atual": "max-width: 560px; margin: 0 0 24px;",
+      "impacto_mobile": "Em mobile, 560px >> 100% - padding. Texto não cabe bem dentro do padding 22px.",
+      "recomendacao": "Usar: max-width: min(560px, calc(100% - 44px));",
+      "prioridade": "P2"
+    },
+    {
+      "id": 10,
+      "arquivo": "css/lista-jogos.css",
+      "linha": 32,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Game grid com minmax(220px, 1fr) - 220px é muito grande para mobile",
+      "componente": "game-grid",
+      "css_atual": "grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));",
+      "impacto_mobile": "Em mobile 375px, com gap 24px, só cabe 1 card. Deveria usar minmax(140px, 1fr) para mobile.",
+      "recomendacao": "@media (max-width: 640px) { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 11,
+      "arquivo": "css/ranking.css",
+      "linha": 47,
+      "tipo": "largura_fixa",
+      "severidade": "MÉDIA",
+      "descricao": "Rank position com width: 60px fixo (usa muito espaço horizontal)",
+      "componente": "rank-pos",
+      "css_atual": "width: 60px;",
+      "impacto_mobile": "Em mobile, 60px em 360px total deixa pouco espaço. Deveria ser width: auto ou min(60px, 20%).",
+      "recomendacao": "@media (max-width: 640px) { width: auto; } ou usar: width: clamp(40px, 15vw, 60px);",
+      "prioridade": "P2"
+    },
+    {
+      "id": 12,
+      "arquivo": "css/jogo.css",
+      "linha": 46,
+      "tipo": "largura_minima",
+      "severidade": "ALTA",
+      "descricao": "Game detail h1 com min-width: 220px - pode quebrar layout em mobile",
+      "componente": "detail-header h1",
+      "css_atual": "min-width: 220px; max-width: 100%;",
+      "impacto_mobile": "Em 375px viewport com padding 24px, min-width 220px > 327px disponível. Causa overflow.",
+      "recomendacao": "Usar: min-width: min(220px, calc(100% - 60px));",
+      "prioridade": "P1"
+    },
+    {
+      "id": 13,
+      "arquivo": "css/header-footer.css",
+      "linha": 82,
+      "tipo": "largura_dinamica",
+      "severidade": "MÉDIA",
+      "descricao": "Search bar com width: clamp(260px, 88vw, 340px) - máximo 340px fixo",
+      "componente": "searchbar",
+      "css_atual": "width: clamp(260px, 88vw, 340px);",
+      "impacto_mobile": "88vw em 375px = 330px OK, mas em 768px = 675px > 340px. Não é responsive em tablet.",
+      "recomendacao": "Usar media query: @media (min-width: 1024px) { width: clamp(380px, 50vw, 500px); }",
+      "prioridade": "P2"
+    },
+    {
+      "id": 14,
+      "arquivo": "css/perfil.css",
+      "linha": 25,
+      "tipo": "layout_rigido",
+      "severidade": "MÉDIA",
+      "descricao": "Highlight grid com minmax(300px, 1fr) - muito grande para mobile",
+      "componente": "highlight-grid",
+      "css_atual": "grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));",
+      "impacto_mobile": "Em mobile 375px, 300px + gap não cabe. Deveria ser minmax(160px, 1fr) para mobile.",
+      "recomendacao": "@media (max-width: 640px) { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 15,
+      "arquivo": "css/mercado-negro.css",
+      "linha": 109,
+      "tipo": "largura_dinamica",
+      "severidade": "MÉDIA",
+      "descricao": "Entrance scanner com width: min(300px, 92%) - bom, mas 92% deixa pouco padding",
+      "componente": "entrance-scanner",
+      "css_atual": "width: min(300px, 92%);",
+      "impacto_mobile": "92% em 375px = 345px, muito grande. Deveria ser min(280px, 90%).",
+      "recomendacao": "Reduzir para: width: min(280px, 90%);",
+      "prioridade": "P2"
+    },
+    {
+      "id": 16,
+      "arquivo": "css/home.css",
+      "linha": 383,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Banners grid com minmax(450px, 1fr) - extremamente grande para mobile",
+      "componente": "banners-grid",
+      "css_atual": "grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));",
+      "impacto_mobile": "450px >> 375px mobile. Deve quebrar para 1 coluna. Falta media query.",
+      "recomendacao": "@media (max-width: 768px) { grid-template-columns: 1fr; } Adicionar já no breakpoint 900px.",
+      "prioridade": "P1"
+    },
+    {
+      "id": 17,
+      "arquivo": "css/header-footer.css",
+      "linha": 85,
+      "tipo": "altura_fixa",
+      "severidade": "CRÍTICA",
+      "descricao": "Mobile nav panel com height: 100vh - ocupa toda viewport",
+      "componente": "mobile-nav-panel",
+      "css_atual": "height: 100vh;",
+      "impacto_mobile": "Em phones com teclado virtual aberto, menu fica inacessível. Deveria usar max-height com overflow-y: auto.",
+      "recomendacao": "height: auto; max-height: 100vh; overflow-y: auto;",
+      "prioridade": "P0"
+    },
+    {
+      "id": 18,
+      "arquivo": "css/mercado-negro.css",
+      "linha": 228,
+      "tipo": "overflow",
+      "severidade": "ALTA",
+      "descricao": "Market content com overflow-x: hidden - pode esconder conteúdo importante",
+      "componente": "market-content",
+      "css_atual": "overflow-x: hidden;",
+      "impacto_mobile": "Se elemento interno tem position absolute ou transform, pode sair da tela.",
+      "recomendacao": "Verificar se é necessário. Se sim, usar overflow: clip; em vez de hidden.",
+      "prioridade": "P1"
+    },
+    {
+      "id": 19,
+      "arquivo": "css/home.css",
+      "linha": 502,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Bottom games grid com minmax(280px, 1fr) - grande para mobile",
+      "componente": "games-grid-bottom",
+      "css_atual": "grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));",
+      "impacto_mobile": "280px em 375px mobile com gap 24px = só 1 coluna. Deveria ser minmax(150px, 1fr).",
+      "recomendacao": "@media (max-width: 640px) { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 20,
+      "arquivo": "css/home.css",
+      "linha": 59,
+      "tipo": "posicionamento_manual",
+      "severidade": "MÉDIA",
+      "descricao": "Hero content left positioning com left: 22px fixo",
+      "componente": "hero-card__content",
+      "css_atual": "left: 22px; right: 22px; bottom: 24px;",
+      "impacto_mobile": "22px padding em telas muito pequenas deixa pouco espaço para texto.",
+      "recomendacao": "Usar clamp: left: clamp(8px, 2vw, 22px); right: clamp(8px, 2vw, 22px);",
+      "prioridade": "P2"
+    },
+    {
+      "id": 21,
+      "arquivo": "css/perfil.css",
+      "linha": 17,
+      "tipo": "layout_rigido",
+      "severidade": "MÉDIA",
+      "descricao": "Profile stats com minmax(180px, 1fr) - pode não caber bem em mobile",
+      "componente": "profile-stats",
+      "css_atual": "grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));",
+      "impacto_mobile": "180px em 375px mobile = só 1 coluna. Deveria ser minmax(120px, 1fr) para 2 colunas.",
+      "recomendacao": "@media (max-width: 640px) { grid-template-columns: repeat(2, 1fr); gap: 12px; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 22,
+      "arquivo": "css/carrinho.css",
+      "linha": 40,
+      "tipo": "largura_fixa",
+      "severidade": "MÉDIA",
+      "descricao": "Cart item thumbnail com width: 70px fixo",
+      "componente": "cart-item-thumb",
+      "css_atual": "width: 70px;",
+      "impacto_mobile": "70px em 375px mobile deixa pouco espaço para info. Deveria ser 50px ou clamp.",
+      "recomendacao": "width: clamp(50px, 15vw, 70px);",
+      "prioridade": "P2"
+    },
+    {
+      "id": 23,
+      "arquivo": "css/home.css",
+      "linha": 394,
+      "tipo": "altura_fixa",
+      "severidade": "MÉDIA",
+      "descricao": "Promo card image com height: 200px fixo",
+      "componente": "promo-card-image",
+      "css_atual": "height: 200px;",
+      "impacto_mobile": "200px em mobile deixa pouco para texto. Deveria ser height: auto; aspect-ratio: 16/9;",
+      "recomendacao": "aspect-ratio: 16/9; height: auto;",
+      "prioridade": "P2"
+    },
+    {
+      "id": 24,
+      "arquivo": "css/header-footer.css",
+      "linha": 158,
+      "tipo": "breakpoint_faltante",
+      "severidade": "ALTA",
+      "descricao": "Topbar com apenas breakpoint em 768px - falta 480px, 640px e intermediários",
+      "componente": "topbar",
+      "css_atual": "@media (max-width: 768px)",
+      "impacto_mobile": "Tablet 480-640px tem mesmo CSS que 768px. Deveria ter breakpoint em 640px para melhor ajuste.",
+      "recomendacao": "Adicionar: @media (max-width: 640px) { } e @media (max-width: 480px) { }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 25,
+      "arquivo": "css/perfil.css",
+      "linha": 634,
+      "tipo": "altura_fixa",
+      "severidade": "MÉDIA",
+      "descricao": "Friend item container com height: 100px fixo",
+      "componente": "friend-item-container",
+      "css_atual": "height: 100px;",
+      "impacto_mobile": "100px é bom para desktop, mas deveria ser height: auto; min-height: 80px; para mobile.",
+      "recomendacao": "@media (max-width: 640px) { height: auto; min-height: 70px; }",
+      "prioridade": "P2"
+    },
+    {
+      "id": 26,
+      "arquivo": "css/mercado-negro.css",
+      "linha": 725,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Market grid com repeat(auto-fill, minmax(160px, 1fr)) - bom, mas falta mobile",
+      "componente": "market-grid",
+      "css_atual": "grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));",
+      "impacto_mobile": "160px em 375px com gap = só 2 colunas. Falta media query para 480px.",
+      "recomendacao": "@media (max-width: 480px) { grid-template-columns: repeat(2, 1fr); gap: 12px; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 27,
+      "arquivo": "css/mercado-negro.css",
+      "linha": 778,
+      "tipo": "altura_fixa",
+      "severidade": "ALTA",
+      "descricao": "Featured product container com height: 420px fixo",
+      "componente": "featured-product",
+      "css_atual": "height: 420px;",
+      "impacto_mobile": "420px em mobile é muito grande. Deveria ser aspect-ratio: 16/9; height: auto;",
+      "recomendacao": "@media (max-width: 768px) { height: auto; aspect-ratio: 16/9; }",
+      "prioridade": "P1"
+    },
+    {
+      "id": 28,
+      "arquivo": "css/perfil.css",
+      "linha": 51,
+      "tipo": "posicionamento_manual",
+      "severidade": "ALTA",
+      "descricao": "Edit button com position: absolute; top: 20px; right: 20px sem media query",
+      "componente": "edit-button",
+      "css_atual": "position: absolute; top: 20px; right: 20px;",
+      "impacto_mobile": "20px em mobile pode deixar button inacessível. Deveria ter media query para top: 10px; right: 10px;",
+      "recomendacao": "@media (max-width: 640px) { top: 10px; right: 10px; }",
+      "prioridade": "P2"
+    },
+    {
+      "id": 29,
+      "arquivo": "css/components.css",
+      "linha": 357,
+      "tipo": "altura_maxima",
+      "severidade": "MÉDIA",
+      "descricao": "Modal com max-width: 500px - OK, mas não usa clamp",
+      "componente": "modal",
+      "css_atual": "max-width: 500px;",
+      "impacto_mobile": "500px > 375px mobile com padding. Deveria ser max-width: min(500px, calc(100vw - 32px));",
+      "recomendacao": "max-width: min(500px, calc(100vw - 32px));",
+      "prioridade": "P2"
+    },
+    {
+      "id": 30,
+      "arquivo": "css/home.css",
+      "linha": 232,
+      "tipo": "layout_rigido",
+      "severidade": "ALTA",
+      "descricao": "Promo section com grid-template-columns: 1.2fr 1fr sem breakpoint mobile",
+      "componente": "promo-section",
+      "css_atual": "grid-template-columns: 1.2fr 1fr;",
+      "impacto_mobile": "Layout 2 colunas não funciona bem em mobile < 640px.",
+      "recomendacao": "@media (max-width: 640px) { grid-template-columns: 1fr; }",
+      "prioridade": "P1"
+    }
+  ],
+  "componentes_nao_responsivos": [
+    "hero-section (layout 2 colunas sem breakpoint mobile)",
+    "hero-card (altura 540px sem ajuste até 640px)",
+    "profile-avatar (150px fixo sem clamp)",
+    "profile-banner (300px sem breakpoint 480px)",
+    "edit-profile-modal (max-width 650px sem considerar viewport pequeno)",
+    "cart-summary (sticky top 100px fixo)",
+    "categories-container (3 colunas sem breakpoint 768px)",
+    "game-grid (minmax 220px muito grande para mobile)",
+    "banners-grid (minmax 450px > mobile width)",
+    "mobile-nav-panel (height 100vh com teclado virtual)",
+    "market-entrance (position fixed pode ter problemas com viewport dinâmico)",
+    "ranking-table (sem quebra de texto em mobile)",
+    "game-detail-title (min-width 220px pode overflow)",
+    "bottom-games-grid (minmax 280px sem breakpoint mobile)",
+    "highlight-grid (minmax 300px sem breakpoint mobile)",
+    "profile-stats (minmax 180px sem breakpoint mobile)",
+    "market-grid (160px sem media query mobile)",
+    "featured-product (420px altura fixa)",
+    "promo-section (2 colunas sem breakpoint mobile)"
+  ],
+  "resumo_problemas_por_tipo": {
+    "layout_rigido": {
+      "quantidade": 8,
+      "exemplos": [
+        "hero-section com 1.7fr 1fr",
+        "categories-container com 3 colunas",
+        "promo-section com 1.2fr 1fr",
+        "game-grid com minmax 220px",
+        "banners-grid com minmax 450px",
+        "bottom-games-grid com minmax 280px",
+        "highlight-grid com minmax 300px",
+        "market-grid falta media query"
+      ]
+    },
+    "posicionamento_manual": {
+      "quantidade": 5,
+      "exemplos": [
+        "hero-card__badge left: 22px fixo",
+        "hero-card__content left: 22px fixo",
+        "edit-profile-modal position fixed sem viewport check",
+        "cart-summary sticky top: 100px",
+        "edit-button top: 20px right: 20px"
+      ]
+    },
+    "altura_fixa": {
+      "quantidade": 8,
+      "exemplos": [
+        "hero-card min-height 540px",
+        "profile-banner 300px",
+        "promo-card-image 200px",
+        "friend-item 100px",
+        "featured-product 420px",
+        "mobile-nav height 100vh",
+        "banners height variadas",
+        "hero-list items com hauteur fixa"
+      ]
+    },
+    "largura_fixa": {
+      "quantidade": 6,
+      "exemplos": [
+        "profile-avatar 150px",
+        "rank-pos 60px",
+        "cart-item-thumb 70px",
+        "ranking-avatar 40px",
+        "user-avatar 60px",
+        "friend-avatar 60px"
+      ]
+    },
+    "overflow": {
+      "quantidade": 3,
+      "exemplos": [
+        "market-content overflow-x hidden",
+        "hero-card overflow hidden",
+        "shopping-container overflow escondendo itens"
+      ]
+    },
+    "breakpoint_faltante": {
+      "quantidade": 7,
+      "exemplos": [
+        "Falta breakpoint 480px em múltiplos arquivos",
+        "Falta breakpoint 640px em header-footer",
+        "Falta breakpoint 768px em vários grids",
+        "Falta breakpoint intermediários 512px, 576px",
+        "Home.css sem 768px para banners",
+        "Perfil.css sem 480px para profile",
+        "Mercado-negro sem 480px para grids"
+      ]
+    },
+    "margem_artificial": {
+      "quantidade": 4,
+      "exemplos": [
+        "hero-card__content left: 22px, right: 22px",
+        "edit-button top: 20px, right: 20px",
+        "profile-edit top: 20px, right: 20px",
+        "various margin-top: 30px, 40px sem ajuste"
+      ]
+    },
+    "largura_minima": {
+      "quantidade": 3,
+      "exemplos": [
+        "game-detail h1 min-width 220px",
+        "ranking-container min-height 300px",
+        "search-bar min-width 240px"
+      ]
+    }
+  },
+  "analise_por_arquivo": {
+    "css/home.css": {
+      "problemas_encontrados": 9,
+      "severidade_media": "ALTA",
+      "criticas": ["grid 1.7fr 1fr (linha 25)", "min-height 540px (linha 32)", "grid 3 colunas (linha 283)", "minmax 450px (linha 383)"],
+      "recomendacoes": [
+        "Adicionar breakpoints 480px e 640px para todos grids",
+        "Usar clamp para tamanhos fixos",
+        "Hero card deveria ter max-height em mobile",
+        "Position absolute elementos devem usar clamp"
+      ]
+    },
+    "css/perfil.css": {
+      "problemas_encontrados": 8,
+      "severidade_media": "CRÍTICA",
+      "criticas": ["width: 150px avatar (linha 15)", "height: 300px banner (linha 37)", "max-width: 650px modal (linha 230)", "minmax 300px highlight (linha 25)"],
+      "recomendacoes": [
+        "Modal deve considerar viewport < 640px com max-width calc",
+        "Avatar deve usar clamp(96px, 20vw, 150px)",
+        "Banner precisa breakpoint em 480px",
+        "Remover fixed height e usar aspect-ratio"
+      ]
+    },
+    "css/header-footer.css": {
+      "problemas_encontrados": 5,
+      "severidade_media": "ALTA",
+      "criticas": ["height: 100vh mobile-nav (linha 85)", "falta breakpoint 480px", "position fixed múltiplos elementos"],
+      "recomendacoes": [
+        "Mobile nav deve ter max-height com overflow-y auto",
+        "Adicionar breakpoint 640px para menu",
+        "Position fixed elementos precisam de viewport meta tags"
+      ]
+    },
+    "css/mercado-negro.css": {
+      "problemas_encontrados": 7,
+      "severidade_media": "ALTA",
+      "criticas": ["width min(300px, 92%) muito grande (linha 109)", "height: 420px fixed (linha 778)", "grid minmax 160px sem mobile (linha 725)", "overflow-x hidden (linha 228)"],
+      "recomendacoes": [
+        "Entrance scanner deve usar min(280px, 90%)",
+        "Featured product deve usar aspect-ratio",
+        "Adicionar breakpoint 480px para grids",
+        "Remover overflow-x hidden ou usar clip"
+      ]
+    },
+    "css/lista-jogos.css": {
+      "problemas_encontrados": 2,
+      "severidade_media": "ALTA",
+      "criticas": ["minmax 220px sem breakpoint (linha 32)", "falta media query mobile"],
+      "recomendacoes": [
+        "Adicionar breakpoint 640px com minmax(140px, 1fr)",
+        "Adicionar breakpoint 480px com minmax(120px, 1fr)"
+      ]
+    },
+    "css/carrinho.css": {
+      "problemas_encontrados": 3,
+      "severidade_media": "ALTA",
+      "criticas": ["width: 70px thumb (linha 40)", "sticky top: 100px (linha 85)", "max-width: 200px sem breakpoint"],
+      "recomendacoes": [
+        "Cart summary deve ser static em mobile",
+        "Thumbnail deve usar clamp(50px, 15vw, 70px)",
+        "Adicionar breakpoint 768px para layout"
+      ]
+    },
+    "css/ranking.css": {
+      "problemas_encontrados": 2,
+      "severidade_media": "MÉDIA",
+      "criticas": ["width: 60px rank-pos (linha 47)", "table sem quebra de texto"],
+      "recomendacoes": [
+        "Rank position deve ser width: auto ou clamp",
+        "Adicionar text-overflow: ellipsis"
+      ]
+    },
+    "css/jogo.css": {
+      "problemas_encontrados": 2,
+      "severidade_media": "ALTA",
+      "criticas": ["min-width: 220px h1 pode overflow (linha 46)", "grid-template-columns sem mobile breakpoint"],
+      "recomendacoes": [
+        "H1 deve usar min-width: min(220px, calc(100% - 60px))",
+        "Adicionar breakpoint 640px"
+      ]
+    }
+  },
+  "recomendacoes_gerais": {
+    "1_implementar_mobile_first": "Iniciar CSS com mobile primeiro, depois desktop. Atual está desktop-first com media queries reativas.",
+    "2_usar_clamp_min_max": "Substituir larguras e alturas fixas por clamp/min/max para responsividade fluida.",
+    "3_adicionar_breakpoints": "Adicionar breakpoints faltantes: 480px (smartphones), 576px (pequenos tablets), 640px (tablets), 768px (tablets grandes).",
+    "4_verificar_viewport": "Meta tag viewport está OK (width=device-width), mas elements com position fixed podem ter problemas com viewport dinâmico.",
+    "5_grid_sem_minmax": "Muitos grids usam minmax(XXXpx, 1fr). Deveria ser repeat(auto-fit/auto-fill, minmax(clamp(150px, 30vw, 280px), 1fr)).",
+    "6_position_absolute": "Elementos com position absolute têm padding fixo. Usar clamp para responsive positioning.",
+    "7_modais_responsivos": "Modais com position fixed devem considerar max-height: 90vh e overflow-y: auto para mobile.",
+    "8_header_mobile": "Mobile nav com height: 100vh é problema com teclado virtual. Usar max-height: 100vh com overflow-y: auto.",
+    "9_remover_overflow_hidden": "overflow-x: hidden em containers pode esconder conteúdo importante em mobile.",
+    "10_aspect_ratio": "Substituir height fixo por aspect-ratio para imagens e cards.",
+    "11_touch_targets": "Verificar se botões têm min-height: 44px (touch target adequado) em todas as resoluções.",
+    "12_text_truncation": "Adicionar text-overflow: ellipsis onde necessário em mobile para evitar overflow.",
+    "13_flexbox_gaps": "Gaps fixos podem ser muito grandes em mobile. Considerar clamp para gaps também."
+  },
+  "arquivos_css_afetados": [
+    "css/home.css (9 problemas)",
+    "css/perfil.css (8 problemas)",
+    "css/header-footer.css (5 problemas)",
+    "css/mercado-negro.css (7 problemas)",
+    "css/lista-jogos.css (2 problemas)",
+    "css/carrinho.css (3 problemas)",
+    "css/ranking.css (2 problemas)",
+    "css/jogo.css (2 problemas)",
+    "css/components.css (1 problema)",
+    "css/busca.css (não analisado em detalhes, mas provavelmente tem problemas similares)"
+  ],
+  "estimativa_correcao": {
+    "tempo_horas": 12,
+    "prioridade_p0": "6 horas (modais, nav height, hero layout)",
+    "prioridade_p1": "4 horas (grid breakpoints, avatares, positioning)",
+    "prioridade_p2": "2 horas (refinamentos, clamp values)"
+  },
+  "total_problemas": 30,
+  "severidade_distribuicao": {
+    "CRITICA": 5,
+    "ALTA": 14,
+    "MEDIA": 11
+  }
+}

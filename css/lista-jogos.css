@@ -37,6 +37,20 @@
     gap: 24px;
 }
 
+@media (max-width: 768px) {
+    .game-grid.list-view {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-grid.list-view {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
 .game-card-link {
     display: block;
     width: 100%;

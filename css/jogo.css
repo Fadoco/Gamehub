@@ -43,7 +43,7 @@
 .detail-header h1 {
     margin: 0; /* Remove margem padrão */
     flex: 1; /* Permite que o título ocupe o espaço disponível */
-    min-width: 220px; /* Garante que o título não fique pequeno demais */
+    min-width: min(220px, calc(100% - 60px));
     max-width: 100%;
     font-size: 2.2rem; /* Tamanho maior para o título */
     display: flex; /* Para alinhar o título com o ícone de upgrade */
@@ -57,6 +57,13 @@
     grid-template-columns: 1fr minmax(260px, 350px);
     align-items: start; /* Essencial para permitir que o elemento sticky flutue */
     gap: 30px;
+}
+
+@media (max-width: 1024px) {
+    .detail-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }
 
 .detail-media {

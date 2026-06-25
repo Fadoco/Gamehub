@@ -472,6 +472,89 @@
   }
 }
 
+/* === ULTRA-SMALL DEVICES (320px - 479px) === */
+
+@media (max-width: 479px) {
+  :root {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 var(--spacing-3);
+  }
+
+  .grid-2-xs,
+  .grid-3-xs,
+  .grid-4-xs {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+  }
+
+  h3 {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  p {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  .p-xs-2 {
+    padding: var(--spacing-2);
+  }
+
+  .p-xs-3 {
+    padding: var(--spacing-3);
+  }
+
+  .m-xs-2 {
+    margin: var(--spacing-2);
+  }
+
+  .m-xs-3 {
+    margin: var(--spacing-3);
+  }
+}
+
+/* === SMALL-MEDIUM DEVICES (480px - 639px) === */
+
+@media (min-width: 480px) and (max-width: 639px) {
+  :root {
+    font-size: 15px;
+  }
+
+  .container {
+    padding: 0 var(--spacing-4);
+  }
+
+  .grid-2-sm-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3-sm-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-4-sm-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+
+  .btn {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-sm);
+  }
+}
+
 /* ========================================================================
    PRINT MEDIA
    ======================================================================== */

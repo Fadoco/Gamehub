@@ -27,9 +27,16 @@ main {
     align-items: start;
 }
 
+@media (max-width: 1024px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+}
+
 .hero-card {
     position: relative;
-    min-height: 540px;
+    min-height: clamp(300px, 50vw, 540px);
     border-radius: 24px;
     overflow: hidden;
     background: linear-gradient(180deg, rgba(4, 12, 26, 0.25), rgba(2, 6, 14, 0.95)),
@@ -37,6 +44,12 @@ main {
         linear-gradient(135deg, #17171d 0%, #0f1116 100%);
     border: 1px solid rgba(255,255,255,0.08);
     box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+    .hero-card {
+        min-height: 300px;
+    }
 }
 
 .hero-card::before {
@@ -49,8 +62,8 @@ main {
 
 .hero-card__overlay {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 42%, rgba(10, 12, 18, 0.95) 100%);
+    insetclamp(8px, 2vw, 22px);
+    left: clamp(8px, 2vw, 22px): linear-gradient(180deg, transparent 42%, rgba(10, 12, 18, 0.95) 100%);
 }
 
 .hero-card__badge {
@@ -68,8 +81,8 @@ main {
 
 .hero-card__content {
     position: absolute;
-    left: 22px;
-    right: 22px;
+    left: clamp(8px, 2vw, 22px);
+    right: clamp(8px, 2vw, 22px);
     bottom: 24px;
     z-index: 1;
 }
@@ -90,7 +103,7 @@ main {
 }
 
 .hero-card__content p {
-    max-width: 560px;
+    max-width: min(560px, calc(100% - 44px));
     margin: 0 0 24px;
     color: var(--text-secondary);
     font-size: 0.99rem;
@@ -233,6 +246,13 @@ main {
     gap: 18px;
 }
 
+@media (max-width: 768px) {
+    .promo-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
 .promo-feature {
     display: flex;
     flex-direction: column;
@@ -283,6 +303,21 @@ main {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(2, 1fr);
     gap: 16px;
+}
+
+@media (max-width: 1024px) {
+    .promo-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    .promo-cards {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 10px;
+    }
 }
 
 .promo-card {
@@ -382,6 +417,19 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
     gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .banners-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .banners-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
 }
 
 .wide-banner {
@@ -496,12 +544,31 @@ main {
     gap: 18px;
 }
 
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* --- Nova Seção de Posters --- */
 .poster-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .poster-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
 }
 
 .poster-card {

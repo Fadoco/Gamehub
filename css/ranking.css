@@ -44,7 +44,7 @@
 .rank-pos { 
     font-weight: 800; 
     font-size: 1.2rem; 
-    width: 60px; 
+    width: clamp(40px, 15vw, 60px); 
 }
 
 .rank-1 { 

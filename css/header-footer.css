@@ -82,7 +82,8 @@
     width: clamp(260px, 88vw, 340px);
     max-width: 100%;
     min-width: 240px;
-    height: 100vh;
+    height: auto;
+    max-height: 100vh;
     background: var(--bg-header);
     transform: translateX(-100%);
     transition: transform var(--transition-normal);
@@ -226,9 +227,12 @@
     }
 
     .topbar__actions .notifications-container {
-        width: auto;
+        width: 100%;
         justify-content: center;
-        padding: 10px 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .topbar__actions #btn-login {
@@ -239,6 +243,24 @@
     .topbar__actions #btn-login,
     .topbar__actions #user-menu {
         flex: none;
+    }
+
+    /* Mobile: Reorganizar para Perfil > Notificações > Saldo */
+    .topbar__actions .user-section-mobile {
+        order: 1;
+        width: 100%;
+    }
+
+    .topbar__actions .notifications-container {
+        order: 2;
+    }
+
+    .topbar__actions .wallet-widget {
+        order: 3;
+    }
+
+    .topbar__actions #btn-login {
+        order: 4;
     }
 
     .main-header {
@@ -317,10 +339,36 @@
     .topbar__actions {
         justify-content: space-between;
         gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+
+    .topbar__actions > * {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .section-nav {
         justify-content: center;
+    }
+
+    /* Mobile: Ensure proper centering and alignment */
+    .topbar__actions .user-section-mobile,
+    .topbar__actions .notifications-container,
+    .topbar__actions .wallet-widget {
+        padding: 10px 12px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+    }
+
+    .topbar__actions .notifications-container button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 }
 
