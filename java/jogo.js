@@ -2,6 +2,72 @@
  * Lógica específica para a página de detalhes do jogo.
  */
 
+function getDefaultDetailImage() {
+    return window.IS_SUBFOLDER ? '../assets/capa.jpg' : 'assets/capa.jpg';
+}
+
+function normalizeDetailImagePath(path) {
+    if (typeof path !== 'string') return '';
+
+    const trimmed = path.trim();
+    if (!trimmed) return '';
+
+    // Accept absolute URLs, data URLs and root-relative paths as-is
+    if (/^(https?:\/\/|data:|blob:|\/)/i.test(trimmed)) return trimmed;
+
+    // If this page is in a subfolder, local relative assets need one level up
+    if (window.IS_SUBFOLDER && !trimmed.startsWith('../')) {
+        return `../${trimmed.replace(/^\.\//, '')}`;
+    }
+
+    return trimmed.replace(/^\.\//, '');
+}
+
+function getGameImageCandidates(game) {
+    const rawCandidates = [
+        game?.image,
+        game?.Image,
+        game?.coverUrl,
+        game?.CoverUrl,
+        game?.imageUrl,
+        game?.ImageUrl,
+        game?.thumbnail,
+        game?.Thumbnail,
+        game?.banner,
+        game?.Banner,
+        game?.poster,
+        game?.Poster,
+        game?.images?.[0],
+        game?.Images?.[0]
+    ];
+
+    const normalized = rawCandidates
+        .map(normalizeDetailImagePath)
+        .filter(Boolean);
+
+    const unique = [...new Set(normalized)];
+    unique.push(getDefaultDetailImage());
+    return unique;
+}
+
+function applyDetailImageWithFallback(imgElement, candidates) {
+    if (!imgElement) return;
+
+    let currentIndex = 0;
+    const nextCandidate = () => {
+        if (currentIndex >= candidates.length) return;
+        imgElement.src = candidates[currentIndex];
+        currentIndex += 1;
+    };
+
+    imgElement.referrerPolicy = 'no-referrer';
+    imgElement.loading = 'eager';
+    imgElement.decoding = 'async';
+
+    imgElement.onerror = () => nextCandidate();
+    nextCandidate();
+}
+
 function renderGameDetails(games) {
     // Pega o ID da URL (ex: jogo.html?id=1)
     const params = new URLSearchParams(window.location.search);
@@ -15,8 +81,9 @@ function renderGameDetails(games) {
         document.title = `GameHub - ${game.title}`;
         document.getElementById('game-title-detail').textContent = game.title;
 
-        const detailImage = game.image || game.coverUrl || game.Image || game.CoverUrl || '';
-        document.getElementById('game-image-detail').src = detailImage;
+        const detailImageElement = document.getElementById('game-image-detail');
+        const imageCandidates = getGameImageCandidates(game);
+        applyDetailImageWithFallback(detailImageElement, imageCandidates);
         document.getElementById('game-tags-detail').textContent = game.tags.join(', ');
 
         // Preenche a descrição usando o campo já normalizado pelo global.js
