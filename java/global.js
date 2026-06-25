@@ -565,23 +565,15 @@ function initMobileHeader() {
             panel.setAttribute('role', 'dialog');
             panel.setAttribute('aria-modal', 'true');
             panel.setAttribute('aria-hidden', 'true');
-
-            // Clone main menu into panel
-            const mainMenu = document.querySelector('.topbar__menu');
-            const menuClone = mainMenu ? mainMenu.cloneNode(true) : document.createElement('nav');
-            menuClone.setAttribute('aria-label', 'Menu principal - móvel');
-            panel.appendChild(menuClone);
-
-            // Add wallet and user actions to panel for mobile
-            const actions = document.querySelector('.topbar__actions');
-            if (actions) {
-                const actionsClone = actions.cloneNode(true);
-                actionsClone.style.marginTop = '12px';
-                panel.appendChild(actionsClone);
-            }
-
-            document.body.appendChild(panel);
         }
+
+        const sanitizeClone = (element) => {
+            if (!element || !element.querySelectorAll) return;
+            element.removeAttribute('id');
+            element.querySelectorAll('[id]').forEach(child => child.removeAttribute('id'));
+            element.querySelectorAll('[aria-controls]').forEach(child => child.removeAttribute('aria-controls'));
+            element.querySelectorAll('[aria-expanded]').forEach(child => child.removeAttribute('aria-expanded'));
+        };
 
         // Helpers to open/close
         const openPanel = () => {
@@ -608,6 +600,48 @@ function initMobileHeader() {
             document.body.style.overflow = '';
             hb.focus();
         };
+
+        const buildMobilePanel = () => {
+            panel.innerHTML = '';
+
+            // Add close button at the top of the mobile panel
+            const closeButton = document.createElement('button');
+            closeButton.className = 'mobile-nav-close-btn btn btn-ghost';
+            closeButton.type = 'button';
+            closeButton.textContent = 'Fechar menu';
+            closeButton.setAttribute('aria-label', 'Fechar menu');
+            closeButton.addEventListener('click', closePanel);
+            panel.appendChild(closeButton);
+
+            // Clone main menu into panel and avoid mobile-hidden desktop class
+            const mainMenu = document.querySelector('.topbar__menu');
+            const menuClone = mainMenu ? mainMenu.cloneNode(true) : document.createElement('nav');
+            sanitizeClone(menuClone);
+            menuClone.className = 'mobile-nav-menu';
+            menuClone.setAttribute('aria-label', 'Menu principal - móvel');
+            menuClone.setAttribute('role', 'menu');
+            menuClone.querySelectorAll('a').forEach(link => {
+                link.setAttribute('role', 'menuitem');
+                link.removeAttribute('id');
+            });
+            panel.appendChild(menuClone);
+
+            // Add wallet and user actions to panel for mobile
+            const actions = document.querySelector('.topbar__actions');
+            if (actions) {
+                const actionsClone = actions.cloneNode(true);
+                sanitizeClone(actionsClone);
+                actionsClone.style.marginTop = '12px';
+                actionsClone.classList.add('mobile-nav-actions');
+                panel.appendChild(actionsClone);
+            }
+
+            if (!panel.parentElement) {
+                document.body.appendChild(panel);
+            }
+        };
+
+        buildMobilePanel();
 
         // Event listeners
         hb.addEventListener('click', (e) => {
@@ -638,13 +672,23 @@ function initMobileHeader() {
             if (mq.matches) {
                 if (desktopMenu) desktopMenu.style.display = 'none';
                 hb.style.display = 'inline-flex';
+                panel.style.display = 'flex';
+                overlay.style.display = 'block';
+                overlay.classList.remove('active');
+                panel.classList.remove('active');
             } else {
                 if (desktopMenu) desktopMenu.style.display = '';
                 hb.style.display = 'none';
                 closePanel();
+                panel.style.display = '';
+                overlay.style.display = '';
             }
         };
-        mq.addListener(updateVisibility);
+        if (typeof mq.addEventListener === 'function') {
+            mq.addEventListener('change', updateVisibility);
+        } else if (typeof mq.addListener === 'function') {
+            mq.addListener(updateVisibility);
+        }
         updateVisibility();
     } catch (err) {
         console.error('Erro ao inicializar header móvel:', err);
