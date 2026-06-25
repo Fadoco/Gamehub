@@ -7,7 +7,7 @@
     place-items: center;
     padding: 24px;
     box-sizing: border-box;
-    background: linear-gradient(rgba(18, 18, 18, 0.75), rgba(18, 18, 18, 0.75)), url('../assets/capa.jpg');
+    background: linear-gradient(rgba(18, 18, 18, 0.75), rgba(18, 18, 18, 0.75)), url('../assets/capa.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
