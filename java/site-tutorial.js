@@ -731,20 +731,27 @@
     }
 
     function ensureFloatingHelperButton() {
-        if (getPageKey() !== 'index') return;
         if (document.getElementById('floating-tutorial-helper')) return;
+
+        const pageKey = getPageKey();
+        const isMarketPage = pageKey === 'mercado-negro';
+        const helperIcon = isMarketPage ? 'fas fa-skull-crossbones' : 'fas fa-user-astronaut';
+        const helperLabel = getTutorialConfig().helperLabel || 'Ajuda';
 
         const helperBtn = document.createElement('button');
         helperBtn.id = 'floating-tutorial-helper';
         helperBtn.className = 'floating-tutorial-helper';
+        if (isMarketPage) {
+            helperBtn.classList.add('floating-tutorial-helper--market');
+        }
         helperBtn.type = 'button';
-        helperBtn.setAttribute('aria-label', 'Abrir tutorial da loja');
-        helperBtn.title = 'Ajuda rápida';
+        helperBtn.setAttribute('aria-label', isMarketPage ? 'Abrir tutorial do mercado negro' : 'Abrir tutorial desta página');
+        helperBtn.title = isMarketPage ? 'Ajuda do mercado negro' : 'Ajuda rápida';
         helperBtn.innerHTML = `
             <span class="floating-helper-icon" aria-hidden="true">
-                <i class="fas fa-user-astronaut"></i>
+                <i class="${helperIcon}"></i>
             </span>
-            <span class="floating-helper-label">${getTutorialConfig().helperLabel || 'Ajuda'}</span>
+            <span class="floating-helper-label">${helperLabel}</span>
         `;
         helperBtn.addEventListener('click', () => {
             if (typeof window.startSiteTutorial === 'function') {
