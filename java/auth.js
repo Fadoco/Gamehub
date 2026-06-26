@@ -911,13 +911,19 @@ window.purchaseLibrary = async () => {
 
         try {
             let result = null;
+            const purchaseRecord = {
+                date: new Date().toISOString(),
+                items: cartGames.map(g => g.title),
+                total: totalPurchase
+            };
             
             // Tenta usar FirebaseTransactions se disponível
             if (window.FirebaseTransactions && typeof window.FirebaseTransactions.purchaseGameTransaction === 'function') {
                 result = await window.FirebaseTransactions.purchaseGameTransaction(
                     auth.currentUser.uid,
                     window.userCart,
-                    totalPurchase
+                    totalPurchase,
+                    purchaseRecord
                 );
             } else {
                 // Fallback: atualiza manualmente no Firestore
@@ -927,7 +933,8 @@ window.purchaseLibrary = async () => {
                 await db.collection('users').doc(auth.currentUser.uid).update({
                     library: newLibrary,
                     cart: [],
-                    balance: newBalance
+                    balance: newBalance,
+                    history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
                 });
                 
                 result = {
@@ -935,22 +942,6 @@ window.purchaseLibrary = async () => {
                     newBalance: newBalance,
                     gamesPurchased: window.userCart.length
                 };
-            }
-
-            // Cria registro de histórico
-            const purchaseRecord = {
-                date: new Date().toISOString(),
-                items: cartGames.map(g => g.title),
-                total: totalPurchase
-            };
-
-            // Atualiza histórico
-            try {
-                await db.collection('users').doc(auth.currentUser.uid).update({
-                    history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
-                });
-            } catch (historyError) {
-                console.error('Erro ao atualizar histórico:', historyError);
             }
 
             // Atualiza globais locais

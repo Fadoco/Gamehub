@@ -10,6 +10,7 @@ const FirebaseTransactions = (() => {
     const LOAN_DAILY_LIMIT = 5000;
     const LOAN_INTEREST_RATE = 0.10;
     const LOAN_MAX_DEBT = 15000;
+    const ENABLE_PURCHASE_AUDIT_LOG = false;
 
     const roundMoney = (value) => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
     const dateKey = (baseDate = new Date()) => {
@@ -727,7 +728,7 @@ const FirebaseTransactions = (() => {
         }
     };
 
-    const purchaseGameTransaction = async (userId, gameIds, totalPrice) => {
+    const purchaseGameTransaction = async (userId, gameIds, totalPrice, purchaseRecord = null) => {
         if (!window.db || !userId) {
             throw new Error('Database ou userId não definido');
         }
@@ -768,23 +769,29 @@ const FirebaseTransactions = (() => {
                 const newLibrary = [...new Set([...currentLibrary, ...gameIds])];
                 const newCart = currentCart.filter((id) => !gameIds.includes(id));
 
+                const updatePayload = {
+                    balance: newBalance,
+                    library: newLibrary,
+                    cart: newCart,
+                    loanDebt: state.loanDebt,
+                    loanWalletBalance: newLoanWallet,
+                    loanBorrowedToday: state.loanBorrowedToday,
+                    loanDayKey: state.loanDayKey,
+                    lastPurchase: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                if (purchaseRecord) {
+                    updatePayload.history = firebase.firestore.FieldValue.arrayUnion(purchaseRecord);
+                }
+
                 commitLoanAwareUserUpdate(
                     transaction,
                     userRef,
-                    {
-                        balance: newBalance,
-                        library: newLibrary,
-                        cart: newCart,
-                        loanDebt: state.loanDebt,
-                        loanWalletBalance: newLoanWallet,
-                        loanBorrowedToday: state.loanBorrowedToday,
-                        loanDayKey: state.loanDayKey,
-                        lastPurchase: firebase.firestore.FieldValue.serverTimestamp()
-                    },
+                    updatePayload,
                     resetEntry ? [resetEntry] : []
                 );
 
-                if (window.db.collection('purchase_history')) {
+                if (ENABLE_PURCHASE_AUDIT_LOG && window.db.collection('purchase_history')) {
                     transaction.set(window.db.collection('purchase_history').doc(), {
                         userId,
                         gameIds,
