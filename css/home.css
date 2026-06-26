@@ -70,6 +70,59 @@ body {
     border-radius: 10px;
 }
 
+.floating-tutorial-helper {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 11990;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 212, 255, 0.45);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 116, 228, 0.25));
+    color: #ecf9ff;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 212, 255, 0.22);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.floating-tutorial-helper:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(0, 212, 255, 0.75);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.4), 0 0 28px rgba(0, 212, 255, 0.3);
+}
+
+.floating-helper-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(5, 14, 28, 0.85);
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    font-size: 1rem;
+}
+
+.floating-helper-label {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .floating-tutorial-helper {
+        right: 12px;
+        bottom: 12px;
+        padding: 8px 10px;
+    }
+
+    .floating-helper-label {
+        display: none;
+    }
+}
+
 .topbar,
 .main-header,
 .hero-card,

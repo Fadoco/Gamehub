@@ -224,6 +224,31 @@
         }, 900);
     }
 
+    function ensureFloatingHelperButton() {
+        if (!isIndexPage()) return;
+        if (document.getElementById('floating-tutorial-helper')) return;
+
+        const helperBtn = document.createElement('button');
+        helperBtn.id = 'floating-tutorial-helper';
+        helperBtn.className = 'floating-tutorial-helper';
+        helperBtn.type = 'button';
+        helperBtn.setAttribute('aria-label', 'Abrir tutorial da loja');
+        helperBtn.title = 'Ajuda rápida';
+        helperBtn.innerHTML = `
+            <span class="floating-helper-icon" aria-hidden="true">
+                <i class="fas fa-user-astronaut"></i>
+            </span>
+            <span class="floating-helper-label">Ajuda</span>
+        `;
+        helperBtn.addEventListener('click', () => {
+            if (typeof window.startSiteTutorial === 'function') {
+                window.startSiteTutorial(true);
+            }
+        });
+
+        document.body.appendChild(helperBtn);
+    }
+
     window.startSiteTutorial = (forceManualOpen = false) => {
         if (!isIndexPage()) return false;
         markPromptedThisSession();
@@ -235,6 +260,7 @@
         const fallbackTimer = setTimeout(() => {
             if (initialized) return;
             initialized = true;
+            ensureFloatingHelperButton();
             scheduleAutomaticPrompt();
         }, 2200);
 
@@ -242,9 +268,13 @@
             if (initialized) return;
             initialized = true;
             clearTimeout(fallbackTimer);
+            ensureFloatingHelperButton();
             scheduleAutomaticPrompt();
         });
     } else {
-        document.addEventListener('DOMContentLoaded', scheduleAutomaticPrompt);
+        document.addEventListener('DOMContentLoaded', () => {
+            ensureFloatingHelperButton();
+            scheduleAutomaticPrompt();
+        });
     }
 })();
