@@ -165,16 +165,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 30px;
+        gap: clamp(12px, 1.6vw, 24px);
         margin-bottom: 24px;
         flex-wrap: nowrap;
+        position: sticky;
+        top: 0;
     }
     
     .topbar__left {
         display: flex;
         align-items: center;
-        gap: 50px;
-        flex: 0 0 auto;
+        gap: clamp(14px, 2vw, 34px);
+        flex: 1 1 auto;
+        min-width: 0;
     }
     
     .brand {
@@ -189,18 +192,28 @@
     
     .topbar__menu {
         display: flex;
-        gap: 30px;
+        gap: clamp(8px, 1vw, 16px);
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-bottom: 2px;
+    }
+
+    .topbar__menu::-webkit-scrollbar {
+        display: none;
     }
     
     .topbar__menu a {
         color: var(--text-secondary);
-        font-size: 0.9rem;
+        font-size: clamp(0.76rem, 0.9vw, 0.9rem);
         text-decoration: none;
         font-weight: 600;
         transition: var(--transition);
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        padding: 8px 16px;
+        white-space: nowrap;
+        padding: 8px clamp(9px, 1vw, 14px);
         border-radius: 6px;
         position: relative;
         display: inline-flex;
@@ -243,10 +256,11 @@
     .topbar__actions {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: clamp(8px, 1vw, 14px);
         justify-content: flex-end;
-        flex: 1;
-        flex-wrap: wrap;
+        flex: 0 0 auto;
+        flex-wrap: nowrap;
+        min-width: fit-content;
     }
     
     .topbar__actions > * {
@@ -259,7 +273,7 @@
     .topbar__actions #btn-login,
     .topbar__actions #user-menu {
         min-width: 0;
-        max-width: 260px;
+        max-width: none;
     }
 
     .topbar__actions .notifications-container {
@@ -295,6 +309,28 @@
         align-items: center;
         gap: 30px;
         margin-bottom: 24px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1320px) {
+    .topbar {
+        padding: 12px 18px;
+    }
+
+    .topbar__menu a {
+        padding: 6px 10px;
+    }
+
+    .topbar__actions .wallet-widget {
+        padding: 8px 10px;
+    }
+
+    .topbar__actions .wallet-widget span {
+        font-size: 0.84rem;
+    }
+
+    .user-profile-display span {
+        display: none;
     }
 }
 
