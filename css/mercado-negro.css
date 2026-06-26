@@ -1364,8 +1364,18 @@ html[data-market-force-dark="true"] .theme-menu {
     object-fit: contain;
     object-position: center center;
     background: #000000;
-    max-width: 100vw;
-    max-height: 100vh;
+    max-width: 92vw;
+    max-height: 92vh;
+    transform: scale(0.9);
+    transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+    .hack-video-container video {
+        max-width: 90vw;
+        max-height: 88vh;
+        transform: scale(0.86);
+    }
 }
 
 /* ============================================================================
