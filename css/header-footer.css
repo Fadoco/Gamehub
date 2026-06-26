@@ -879,6 +879,13 @@
     transform: translateY(0) scale(0.99);
 }
 
+.support-tutorial-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
 .support-privacy-btn {
     display: inline-flex;
     align-items: center;

@@ -189,46 +189,52 @@ window.buildStandardHeaderHTML = (pathPrefix = window.getHeaderPathPrefix()) => 
     `;
 };
 
-window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => `
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>GameHub</h3>
-                <p>Sua loja independente preferida para descobrir novos mundos.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Navegação</h3>
-                <ul role="list">
-                    <li><a href="${pathPrefix}index.html">Loja</a></li>
-                    <li><a href="${pathPrefix}html/biblioteca.html">Biblioteca</a></li>
-                    <li><a href="${pathPrefix}html/carrinho.html">Carrinho</a></li>
-                    <li><a href="${pathPrefix}html/emprestimo.html">Empréstimo</a></li>
-                    <li><a href="${pathPrefix}html/historico.html">Histórico</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Suporte</h3>
-                <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
-                    <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
-                    <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
-                    <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
-                        <i class="fas fa-eye" aria-hidden="true"></i>
-                    </button>
+window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => {
+    const currentPath = (window.location.pathname || '').toLowerCase();
+    const isIndexPage = currentPath.endsWith('/index.html') || currentPath === '/' || currentPath === '';
+
+    return `
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GameHub</h3>
+                    <p>Sua loja independente preferida para descobrir novos mundos.</p>
                 </div>
-                <div class="footer-support-message" aria-live="polite" aria-atomic="true"></div>
-            </div>
-            <div class="footer-section">
-                <h3>Siga-nos</h3>
-                <div class="social-icons" role="list">
-                    <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
-                    <a href="https://www.instagram.com/fadoco_oficial/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a href="https://x.com/Fadoco1" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Twitter/X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <div class="footer-section">
+                    <h3>Navegação</h3>
+                    <ul role="list">
+                        <li><a href="${pathPrefix}index.html">Loja</a></li>
+                        <li><a href="${pathPrefix}html/biblioteca.html">Biblioteca</a></li>
+                        <li><a href="${pathPrefix}html/carrinho.html">Carrinho</a></li>
+                        <li><a href="${pathPrefix}html/emprestimo.html">Empréstimo</a></li>
+                        <li><a href="${pathPrefix}html/historico.html">Histórico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
+                        ${isIndexPage ? '<button type="button" class="support-action-btn support-tutorial-btn"><i class="fas fa-circle-question" aria-hidden="true"></i> Ajuda (Tutorial)</button>' : ''}
+                        <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
+                        <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
+                        <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="footer-support-message" aria-live="polite" aria-atomic="true"></div>
+                </div>
+                <div class="footer-section">
+                    <h3>Siga-nos</h3>
+                    <div class="social-icons" role="list">
+                        <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/fadoco_oficial/" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://x.com/Fadoco1" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Twitter/X"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
         </div>
-        <div class="footer-bottom">&copy; 2026 GameHub. Todos os direitos reservados.</div>
-    </div>
-`;
+    `;
+};
 
 window.applyStandardFooters = () => {
     const footers = document.querySelectorAll('footer.main-footer');
@@ -268,6 +274,15 @@ window.setupFooterSupportActions = () => {
 
         const button = event.target.closest('.support-action-btn');
         if (!button) return;
+
+        if (button.classList.contains('support-tutorial-btn')) {
+            if (typeof window.startSiteTutorial === 'function') {
+                window.startSiteTutorial(true);
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Tutorial disponível apenas na página principal.', 'info');
+            }
+            return;
+        }
 
         const footerSection = button.closest('.footer-section');
         const messageBox = footerSection?.querySelector('.footer-support-message');

@@ -5,6 +5,71 @@ body {
     color: var(--text-main);
 }
 
+.site-tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    background: rgba(5, 8, 18, 0.76);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.site-tutorial-card {
+    width: min(620px, 96%);
+    background: #151821;
+    border: 1px solid rgba(0, 212, 255, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    padding: 22px;
+}
+
+.site-tutorial-progress {
+    color: #8bdcff;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.site-tutorial-title {
+    margin: 0 0 8px;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+}
+
+.site-tutorial-text {
+    margin: 0 0 16px;
+    color: #c2cad6;
+    line-height: 1.5;
+}
+
+.site-tutorial-never-show {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: #d8e1ef;
+    font-size: 0.92rem;
+}
+
+.site-tutorial-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.site-tutorial-actions .btn {
+    min-width: 120px;
+}
+
+.tutorial-highlight-target {
+    position: relative;
+    z-index: 12001 !important;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.6), 0 0 28px rgba(0, 212, 255, 0.35) !important;
+    border-radius: 10px;
+}
+
 .topbar,
 .main-header,
 .hero-card,
