@@ -67,13 +67,14 @@ function renderLoanGamesList() {
                 const upgradeHtml = item.upgradeLevel > 0 && window.RankSystem?.getUpgradeHtml
                     ? window.RankSystem.getUpgradeHtml(item.gameId)
                     : '';
+                const selectionLabel = isSelected ? '✅ Selecionado' : '🎯 Toque para usar';
 
                 return `
                     <article class="game-card loan-game-card ${isSelected ? 'selected' : ''}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="Selecionar ${item.game.title} para pagamento" data-loan-game-id="${item.gameId}" onclick="window.toggleLoanGameSelection('${item.gameId}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.toggleLoanGameSelection('${item.gameId}')}">
                         <div class="card-media">
-                            <span class="loan-select-pill">${isSelected ? 'Selecionado' : 'Toque para usar'}</span>
+                            <span class="loan-select-pill">${selectionLabel}</span>
                             <img data-src="${cover}" alt="${item.game.title}" class="lazy-image" referrerpolicy="no-referrer">
-                            <div class="loan-value-chip">${formatCurrency(item.valuation)}</div>
+                            <div class="loan-value-chip">💎 ${formatCurrency(item.valuation)}</div>
                         </div>
                         <div class="game-info">
                             <div class="game-details">
@@ -84,7 +85,7 @@ function renderLoanGamesList() {
                                 <span class="game-tags">${item.game.tags?.slice(0, 3).join(', ') || 'Jogo da biblioteca'}</span>
                             </div>
                             <div class="price-container">
-                                <p class="game-price">Abate ${formatCurrency(item.valuation)}</p>
+                                <p class="game-price">🧾 Abate ${formatCurrency(item.valuation)}</p>
                             </div>
                         </div>
                     </article>
@@ -105,11 +106,11 @@ function renderLoanHistory() {
     }
 
     const labels = {
-        loan_request: 'Empréstimo solicitado',
-        loan_payment_money: 'Pagamento com dinheiro',
-        loan_payment_games: 'Pagamento com jogos',
-        loan_daily_expire: 'Expiração diária',
-        loan_max_reset: 'Reset de emergência'
+        loan_request: '💸 Empréstimo solicitado',
+        loan_payment_money: '💰 Pagamento com dinheiro',
+        loan_payment_games: '🎮 Pagamento com jogos',
+        loan_daily_expire: '🌙 Expiração diária',
+        loan_max_reset: '🚨 Reset de emergência'
     };
 
     historyList.innerHTML = [...history]
@@ -152,7 +153,7 @@ function renderLoanPage() {
     if (availableElement) availableElement.textContent = formatCurrency(availableToday);
     if (borrowedElement) borrowedElement.textContent = formatCurrency(borrowedToday);
     if (rulesText) {
-        rulesText.textContent = `Você pode pegar até ${formatCurrency(dailyLimit)} por dia. Pedido mínimo: ${formatCurrency(minAmount)}. Pedido máximo: ${formatCurrency(maxAmount)}. Dívida máxima: ${formatCurrency(maxDebt)}.`;
+        rulesText.textContent = `💡 Você pode pegar até ${formatCurrency(dailyLimit)} por dia. Pedido mínimo: ${formatCurrency(minAmount)}. Pedido máximo: ${formatCurrency(maxAmount)}. Dívida máxima: ${formatCurrency(maxDebt)}.`;
     }
 
     if (emergencyPanel) {
@@ -163,12 +164,12 @@ function renderLoanPage() {
     }
     if (emergencyMessage) {
         emergencyMessage.textContent = atMaxDebt
-            ? 'Você atingiu o limite máximo de dívida. Só resta a saída extrema.'
+            ? '🚨 Você atingiu o limite máximo de dívida. Só resta a saída extrema.'
             : 'O botão aparece quando a dívida atingir o máximo.';
     }
     if (requestSubmitBtn) {
         requestSubmitBtn.disabled = atMaxDebt;
-        requestSubmitBtn.textContent = atMaxDebt ? 'Limite máximo atingido' : 'Pedir empréstimo';
+        requestSubmitBtn.textContent = atMaxDebt ? '🚫 Limite máximo atingido' : '🚀 Pedir empréstimo';
     }
 
     renderLoanGamesList();
