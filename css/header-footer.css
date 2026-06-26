@@ -933,9 +933,9 @@
     inset: 0;
     z-index: 999999;
     background:
-        radial-gradient(circle at top, rgba(0, 212, 255, 0.08), transparent 35%),
-        rgba(5, 8, 18, 0.42);
-    backdrop-filter: blur(6px);
+        radial-gradient(circle at top, rgba(0, 212, 255, 0.05), transparent 35%),
+        rgba(5, 8, 18, 0.16);
+    backdrop-filter: blur(2px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -945,10 +945,10 @@
 .site-tutorial-card {
     position: relative;
     width: min(420px, 92vw);
-    background: linear-gradient(180deg, rgba(18, 22, 34, 0.98), rgba(11, 14, 22, 0.98));
+    background: linear-gradient(180deg, rgba(18, 22, 34, 0.90), rgba(11, 14, 22, 0.90));
     border: 1px solid rgba(0, 212, 255, 0.24);
     border-radius: 18px;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
     padding: 18px;
     max-height: calc(100vh - 32px);
     overflow-y: auto;
