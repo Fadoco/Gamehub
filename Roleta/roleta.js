@@ -465,16 +465,24 @@ async function startUpgradeSpin() {
     let winProb, stayProb; // O resto é a probabilidade de perder
     
     if (currentLevel === 0) { // Para Raro (+)
-        winProb = 60; stayProb = 30; // 10% de perda
+        winProb = 65; stayProb = 28;
     } else if (currentLevel === 1) { // Para Épico (++)
-        winProb = 35; stayProb = 35; // 30% de perda
+        winProb = 50; stayProb = 30;
     } else { // Para Lendário (+++)
-        winProb = 15; stayProb = 25; // 60% de perda
+        winProb = 38; stayProb = 30;
     }
 
-    // 2. Ajuste de Dificuldade por Preço: -5% de chance a cada R$ 50,00
-    const pricePenalty = Math.floor(gamePrice / 50) * 5;
-    winProb = Math.max(5, winProb - pricePenalty); // Chance mínima de 5%
+    // 2. Ajuste de Dificuldade por Preço: -2% de chance a cada R$ 50,00
+    const pricePenalty = Math.floor(gamePrice / 50) * 2;
+    winProb = Math.max(22, winProb - pricePenalty);
+
+    // 3. Garante uma experiência mais favorável: chance de perda sempre menor que a de ganho
+    let loseProb = 100 - (winProb + stayProb);
+    if (loseProb >= winProb) {
+        const shiftToStay = loseProb - (winProb - 1);
+        stayProb += shiftToStay;
+        loseProb -= shiftToStay;
+    }
 
     const result = Math.random() * 100;
     let winnerType = 'lose';

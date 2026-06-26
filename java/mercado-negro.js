@@ -363,9 +363,10 @@ window.spinSpecialRoulette = async () => {
     // Lógica Dupla: Se rank 3, tenta Dark Matter. Se não, tenta Upgrade normal.
     const roll = Math.random() * 100;
     let resultType = 'lose';
-    const winChance = currentLevel === 3 ? 20 : 40; // Menor chance para Dark Matter
+    const winChance = currentLevel === 3 ? 30 : 55; // Ainda difícil no Dark Matter, mas mais favorável ao jogador
+    const stayChance = currentLevel === 3 ? 50 : 30;
     if (roll < winChance) resultType = 'win';
-    else if (roll < 80) resultType = 'stay';
+    else if (roll < winChance + stayChance) resultType = 'stay';
 
     // Preencher rail com cards temáticos (150 cards para parecer infinito)
     rail.innerHTML = '';

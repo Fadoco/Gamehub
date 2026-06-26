@@ -10,6 +10,7 @@ if (typeof window.authModuleLoaded !== 'undefined') {
 
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
 const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
+const INITIAL_USER_BALANCE = 5.00;
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
@@ -246,7 +247,7 @@ auth.onAuthStateChanged((user) => {
                     email: user.email,
                     displayName: existingData.displayName || user.displayName || (user.email ? user.email.split('@')[0] : ''),
                     active: existingData.active ?? true,
-                    balance: existingData.balance ?? 0,
+                    balance: existingData.balance ?? INITIAL_USER_BALANCE,
                     favorites: existingData.favorites ?? [],
                     cart: existingData.cart ?? [],
                     library: existingData.library ?? [],
@@ -301,7 +302,7 @@ async function loadUserData(uid) {
             window.userCart = data.cart || [];
             window.userLibrary = data.library || [];
             window.userUpgrades = data.upgrades || {};
-            window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
+            window.userBalance = data.balance ?? INITIAL_USER_BALANCE; // Usuário inicia com saldo padrão
             window.userHistory = data.history || []; // Histórico de compras
             window.userLoanDebt = data.loanDebt ?? 0;
             window.userLoanHistory = data.loanHistory || [];
@@ -323,7 +324,7 @@ async function loadUserData(uid) {
             }
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
-            window.userUpgrades = {}; window.userBalance = 0.00; window.userHistory = [];
+            window.userUpgrades = {}; window.userBalance = INITIAL_USER_BALANCE; window.userHistory = [];
             window.userLoanDebt = 0; window.userLoanHistory = [];
             window.userLoanWalletBalance = 0; window.userLoanBorrowedToday = 0; window.userLoanDayKey = null;
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
@@ -647,6 +648,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         displayName: name,
                         email: user.email,
                         active: true,
+                        balance: INITIAL_USER_BALANCE,
                         friendshipId: Math.floor(100000 + Math.random() * 900000),
                         friends: [], friendRequestsSent: [], friendRequestsReceived: []
                     }, { merge: true });
