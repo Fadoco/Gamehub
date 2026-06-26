@@ -5,8 +5,8 @@
     if (window.siteTutorialLoaded) return;
     window.siteTutorialLoaded = true;
 
-    const NEVER_SHOW_PREFIX = 'gh_site_tutorial_never_show';
-    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session_v2';
+    const NEVER_SHOW_PREFIX = 'gh_site_tutorial_never_show_v3';
+    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session_v3';
 
     const createStep = (title, text, selector, extras = {}) => ({
         title,
@@ -512,6 +512,8 @@
     let activeOverlay = null;
     let currentStepIndex = 0;
     let currentTutorial = null;
+    let autoPromptTimer = null;
+    let autoPromptBootstrapped = false;
 
     function getPageKey() {
         const path = (window.location.pathname || '').toLowerCase();
@@ -774,6 +776,7 @@
     }
 
     function showTutorialPrompt() {
+        if (activeOverlay) return;
         if (shouldNeverShowAutomatically()) return;
         if (wasPromptedThisSession()) return;
 
@@ -848,12 +851,40 @@
     }
 
     function scheduleAutomaticPrompt() {
+        if (autoPromptTimer) {
+            clearTimeout(autoPromptTimer);
+            autoPromptTimer = null;
+        }
+
         const tutorial = getTutorialConfig();
         const delay = Number(tutorial.autoPromptDelay || 1000);
-        setTimeout(() => {
+        autoPromptTimer = setTimeout(() => {
             if (activeOverlay) return;
             showTutorialPrompt();
         }, delay);
+    }
+
+    function bootstrapAutomaticPrompt() {
+        if (autoPromptBootstrapped) return;
+        autoPromptBootstrapped = true;
+
+        const startAfterPageLoad = () => {
+            setTimeout(() => {
+                scheduleAutomaticPrompt();
+            }, 1200);
+        };
+
+        if (document.readyState === 'complete') {
+            startAfterPageLoad();
+        } else {
+            window.addEventListener('load', startAfterPageLoad, { once: true });
+        }
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                scheduleAutomaticPrompt();
+            }
+        });
     }
 
     window.startSiteTutorial = (forceManualOpen = false) => {
@@ -862,9 +893,7 @@
 
     function initializeTutorial() {
         ensureFloatingHelperButton();
-        if (!shouldNeverShowAutomatically()) {
-            scheduleAutomaticPrompt();
-        }
+        bootstrapAutomaticPrompt();
     }
 
     if (document.readyState === 'loading') {
