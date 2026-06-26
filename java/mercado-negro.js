@@ -36,6 +36,8 @@ const MARKET_SESSION_DURATION_MS = 90 * 1000;
 const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
 const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
 const MARKET_ACCESS_SOURCE_KEY = 'gh_market_access_source';
+const MARKET_THEME_FORCE_KEY = 'gh_market_prev_theme_preference';
+const MARKET_THEME_FORCE_FLAG = 'gh_market_force_dark_active';
 let marketSessionTimerInterval = null;
 let marketSessionTimeout = null;
 
@@ -113,6 +115,38 @@ function showUnauthorizedMarketVideo() {
     setTimeout(() => {
         window.location.replace('../index.html');
     }, 10000);
+}
+
+function forceDarkThemeForMarket() {
+    if (sessionStorage.getItem(MARKET_THEME_FORCE_FLAG) !== '1') {
+        const previousTheme = localStorage.getItem('gamehub-theme-preference');
+        sessionStorage.setItem(MARKET_THEME_FORCE_KEY, previousTheme === null ? '__none__' : previousTheme);
+        sessionStorage.setItem(MARKET_THEME_FORCE_FLAG, '1');
+    }
+
+    localStorage.setItem('gamehub-theme-preference', 'dark');
+    document.documentElement.setAttribute('data-market-force-dark', 'true');
+
+    if (window.ThemeSwitcher?.set) {
+        window.ThemeSwitcher.set('dark');
+    } else if (document.documentElement) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+}
+
+function restoreThemeAfterMarket() {
+    if (sessionStorage.getItem(MARKET_THEME_FORCE_FLAG) !== '1') return;
+
+    const previousTheme = sessionStorage.getItem(MARKET_THEME_FORCE_KEY);
+    sessionStorage.removeItem(MARKET_THEME_FORCE_KEY);
+    sessionStorage.removeItem(MARKET_THEME_FORCE_FLAG);
+    document.documentElement.removeAttribute('data-market-force-dark');
+
+    if (previousTheme === '__none__') {
+        localStorage.removeItem('gamehub-theme-preference');
+    } else if (previousTheme) {
+        localStorage.setItem('gamehub-theme-preference', previousTheme);
+    }
 }
 
 async function processSecretPurchase(cost, itemName, actionFn) {
@@ -566,6 +600,10 @@ window.renderMercadoNegro = () => {
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     console.log("%c MERCADO NEGRO ATIVO ", "background: #000; color: #0f0; font-size: 20px;");
+
+    forceDarkThemeForMarket();
+    window.addEventListener('pagehide', restoreThemeAfterMarket);
+    window.addEventListener('beforeunload', restoreThemeAfterMarket);
 
     if (!consumeMarketAccessToken()) {
         showUnauthorizedMarketVideo();
