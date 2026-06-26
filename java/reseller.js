@@ -294,10 +294,18 @@ window.confirmResale = async () => {
         // Atualizar no Firebase
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
         
-        // Adicionar valor à carteira
-        await userRef.update({
-            balance: firebase.firestore.FieldValue.increment(totalResaleValue)
-        });
+        // Adicionar valor à carteira (crédito não conta como empréstimo)
+        if (window.FirebaseTransactions?.creditBalance) {
+            await window.FirebaseTransactions.creditBalance(
+                window.auth.currentUser.uid,
+                totalResaleValue,
+                'resale_games'
+            );
+        } else {
+            await userRef.update({
+                balance: firebase.firestore.FieldValue.increment(totalResaleValue)
+            });
+        }
 
         // Remover jogos da biblioteca
         for (const gameId of gamesToRemove) {

@@ -3,6 +3,26 @@
 .history-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; }
 .history-items { font-size: 0.9em; color: #bdc3c7; }
 .history-total { color: var(--promo); font-weight: bold; font-size: 1.1em; }
+.loan-section { margin-bottom: 24px; }
+.loan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+.loan-card { background: var(--bg-header); border: 1px solid var(--card-border); border-radius: 8px; padding: 16px; }
+.loan-card h2 { margin-bottom: 10px; font-size: 1.1rem; }
+.loan-help { margin-bottom: 12px; color: #bdc3c7; }
+.loan-form { display: flex; flex-direction: column; gap: 8px; }
+.loan-form input { width: 100%; }
+.loan-rules { display: block; margin-top: 10px; color: #8fa0b3; }
+.loan-stats { margin-bottom: 12px; }
+.loan-history-list { background: var(--bg-header); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; }
+.loan-history-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.loan-history-item:last-child { border-bottom: none; padding-bottom: 0; }
+.loan-history-item strong { color: var(--promo); }
+.loan-games-payment { margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; }
+.loan-games-payment h3 { margin-bottom: 8px; font-size: 0.95rem; }
+.loan-games-list { max-height: 180px; overflow-y: auto; border: 1px solid var(--card-border); border-radius: 6px; padding: 8px; margin-bottom: 8px; }
+.loan-game-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.loan-game-item:last-child { border-bottom: none; }
+.loan-game-item label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.loan-game-value { color: var(--promo); font-weight: 600; }
 
 @media (max-width: 768px) {
     .history-header {
@@ -11,4 +31,5 @@
         gap: 5px;
     }
     .history-total { font-size: 1em; }
+    .loan-grid { grid-template-columns: 1fr; }
 } 

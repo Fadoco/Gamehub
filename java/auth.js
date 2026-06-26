@@ -97,6 +97,11 @@ window.userBalance = 0;    // Saldo da carteira
 window.userUpgrades = {};  // Armazenamento de melhorias { gameId: level }
 window.ADMIN_EMAILS = ["fadoco12311@gmail.com", "gabrielmomo6759@gmail.com"]; // E-mails de administradores
 window.userHistory = [];   // Histórico de compras
+window.userLoanDebt = 0;   // Dívida atual de empréstimo
+window.userLoanHistory = []; // Histórico de empréstimos/pagamentos
+window.userLoanWalletBalance = 0; // Parcela emprestada ainda presente na carteira (expira no dia)
+window.userLoanBorrowedToday = 0; // Valor emprestado no dia atual
+window.userLoanDayKey = null; // Chave de data para controle diário
 window.userBio = "";       // Descrição do perfil
 window.userAvatar = "";    // URL da foto customizada
 window.userBannerURL = ""; // URL do banner
@@ -247,6 +252,11 @@ auth.onAuthStateChanged((user) => {
                     library: existingData.library ?? [],
                     upgrades: existingData.upgrades ?? {},
                     history: existingData.history ?? [],
+                    loanDebt: existingData.loanDebt ?? 0,
+                    loanHistory: existingData.loanHistory ?? [],
+                    loanWalletBalance: existingData.loanWalletBalance ?? 0,
+                    loanBorrowedToday: existingData.loanBorrowedToday ?? 0,
+                    loanDayKey: existingData.loanDayKey ?? null,
                     bio: existingData.bio ?? "",
                     avatar: existingData.avatar ?? "",
                     bannerURL: existingData.bannerURL ?? "",
@@ -293,6 +303,11 @@ async function loadUserData(uid) {
             window.userUpgrades = data.upgrades || {};
             window.userBalance = data.balance ?? 0.00; // Usuário começa com R$ 0,00
             window.userHistory = data.history || []; // Histórico de compras
+            window.userLoanDebt = data.loanDebt ?? 0;
+            window.userLoanHistory = data.loanHistory || [];
+            window.userLoanWalletBalance = data.loanWalletBalance ?? 0;
+            window.userLoanBorrowedToday = data.loanBorrowedToday ?? 0;
+            window.userLoanDayKey = data.loanDayKey ?? null;
             window.userBio = data.bio || "";
             window.userAvatar = data.avatar || "";
             window.userBannerURL = data.bannerURL || "";
@@ -309,9 +324,27 @@ async function loadUserData(uid) {
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
             window.userUpgrades = {}; window.userBalance = 0.00; window.userHistory = [];
+            window.userLoanDebt = 0; window.userLoanHistory = [];
+            window.userLoanWalletBalance = 0; window.userLoanBorrowedToday = 0; window.userLoanDayKey = null;
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
             window.userFriends = []; window.userFriendRequestsSent = []; window.userFriendRequestsReceived = [];
         }
+
+        if (window.FirebaseTransactions?.syncDailyLoanState && uid) {
+            try {
+                const syncResult = await window.FirebaseTransactions.syncDailyLoanState(uid);
+                if (syncResult) {
+                    window.userBalance = syncResult.newBalance ?? window.userBalance;
+                    window.userLoanDebt = syncResult.newDebt ?? window.userLoanDebt;
+                    window.userLoanWalletBalance = syncResult.newLoanWalletBalance ?? window.userLoanWalletBalance;
+                    window.userLoanBorrowedToday = syncResult.newBorrowedToday ?? window.userLoanBorrowedToday;
+                    window.userLoanDayKey = syncResult.newLoanDayKey ?? window.userLoanDayKey;
+                }
+            } catch (loanSyncError) {
+                console.warn("Aviso ao sincronizar expiração diária de empréstimo:", loanSyncError);
+            }
+        }
+
         if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
         // ⚠️ DESABILITADO setupFriendshipListener - conflita com setupFriendshipsCollectionListener

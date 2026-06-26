@@ -41,9 +41,17 @@ async function processSecretPurchase(cost, itemName, actionFn) {
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
             
             // Deduz o saldo
-            await userRef.update({
-                balance: firebase.firestore.FieldValue.increment(-cost)
-            });
+            if (window.FirebaseTransactions?.debitBalance) {
+                await window.FirebaseTransactions.debitBalance(
+                    window.auth.currentUser.uid,
+                    cost,
+                    `black_market_purchase_${itemName}`
+                );
+            } else {
+                await userRef.update({
+                    balance: firebase.firestore.FieldValue.increment(-cost)
+                });
+            }
 
             // Executa a ação específica do item
             await actionFn(userRef);
@@ -185,9 +193,17 @@ window.openSpecialBox = async (tier) => {
             if (typeof window.playSpinSound === 'function') window.playSpinSound();
 
             const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-            await userRef.update({
-                balance: firebase.firestore.FieldValue.increment(-cost)
-            });
+            if (window.FirebaseTransactions?.debitBalance) {
+                await window.FirebaseTransactions.debitBalance(
+                    window.auth.currentUser.uid,
+                    cost,
+                    `black_market_box_${tier}`
+                );
+            } else {
+                await userRef.update({
+                    balance: firebase.firestore.FieldValue.increment(-cost)
+                });
+            }
 
             // Mostrar modal de hacking
             const modal = document.getElementById('box-opening-modal');
@@ -275,7 +291,15 @@ window.openSpecialBox = async (tier) => {
                 if (window.userLibrary.includes(winningGame.id)) {
                     // Reembolso se já tiver (Mercado Negro é generoso: 70% de volta)
                     const refund = window.utils.parsePrice(winningGame.currentPrice) * 0.7;
-                    await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
+                    if (window.FirebaseTransactions?.creditBalance) {
+                        await window.FirebaseTransactions.creditBalance(
+                            window.auth.currentUser.uid,
+                            refund,
+                            'black_market_duplicate_refund'
+                        );
+                    } else {
+                        await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
+                    }
                     window.showToast(`Software já detectado. Crédito de R$ ${refund.toFixed(2)} injetado.`, "info");
                 } else {
                     await userRef.update({
@@ -354,8 +378,17 @@ window.spinSpecialRoulette = async () => {
 
     try {
         const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-        await userRef.update({ balance: firebase.firestore.FieldValue.increment(-cost) });
-        window.userBalance -= cost;
+        if (window.FirebaseTransactions?.debitBalance) {
+            const debitResult = await window.FirebaseTransactions.debitBalance(
+                window.auth.currentUser.uid,
+                cost,
+                'black_market_spin'
+            );
+            window.userBalance = debitResult.newBalance;
+        } else {
+            await userRef.update({ balance: firebase.firestore.FieldValue.increment(-cost) });
+            window.userBalance -= cost;
+        }
         if (window.updateNavBadges) window.updateNavBadges();
     } catch (e) {
         window.isActionInProgress = false;

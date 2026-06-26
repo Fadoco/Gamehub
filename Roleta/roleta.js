@@ -286,15 +286,23 @@ window.openBox = async (tier) => {
     isActionInProgress = true;
 
     try {
-        // 1. Debitar saldo IMEDIATAMENTE no banco de dados para evitar gastos duplicados ou negativos
-        // Usamos increment(-cost) para garantir atomicidade no Firebase
-        const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
-        await userRef.update({
-            balance: firebase.firestore.FieldValue.increment(-cost)
-        });
+        // 1. Debitar saldo com transação segura (considera regras de empréstimo diário)
+        if (window.FirebaseTransactions?.debitBalance) {
+            const debitResult = await window.FirebaseTransactions.debitBalance(
+                window.auth.currentUser.uid,
+                cost,
+                `roulette_box_${tier}`
+            );
+            window.userBalance = debitResult.newBalance;
+        } else {
+            const userRef = window.db.collection('users').doc(window.auth.currentUser.uid);
+            await userRef.update({
+                balance: firebase.firestore.FieldValue.increment(-cost)
+            });
+            window.userBalance -= cost;
+        }
 
         // Atualiza localmente para a UI refletir a cobrança imediatamente
-        window.userBalance -= cost;
         const walletDisplay = document.getElementById('wallet-amount');
         if (walletDisplay) {
             walletDisplay.textContent = `R$ ${window.userBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
@@ -408,7 +416,15 @@ window.openBox = async (tier) => {
                 const currentLevel = window.userUpgrades[winningGame.id] || 0;
                 const multipliers = { 0: 1, 1: 1.5, 2: 2.5, 3: 4.0 };
                 const refund = (window.utils.parsePrice(winningGame.currentPrice) * multipliers[currentLevel]) * 0.5;
-                await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
+                if (window.FirebaseTransactions?.creditBalance) {
+                    await window.FirebaseTransactions.creditBalance(
+                        window.auth.currentUser.uid,
+                        refund,
+                        'roulette_duplicate_refund'
+                    );
+                } else {
+                    await userRef.update({ balance: firebase.firestore.FieldValue.increment(refund) });
+                }
                 window.showToast(`Você já tinha o jogo! Recebeu R$ ${refund.toFixed(2)} de compensação.`, "info");
             } else {
                 await userRef.update({
