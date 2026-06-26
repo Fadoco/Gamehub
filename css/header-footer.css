@@ -1122,7 +1122,7 @@
 .floating-tutorial-helper {
     position: fixed;
     right: 18px;
-    bottom: 18px;
+    bottom: 86px;
     z-index: 11990;
     display: inline-flex;
     align-items: center;
@@ -1188,7 +1188,7 @@
 @media (max-width: 640px) {
     .floating-tutorial-helper {
         right: 12px;
-        bottom: 12px;
+        bottom: 74px;
         width: 48px;
         height: 48px;
         padding: 0;
@@ -1236,7 +1236,7 @@
         width: 44px;
         height: 44px;
         right: 10px;
-        bottom: 10px;
+        bottom: 68px;
     }
 }
 

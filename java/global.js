@@ -4,6 +4,7 @@
 
 window.allGamesData = []; // Armazenar os dados dos jogos globalmente para acesso por outros scripts
 window.isActionInProgress = false; // Trava global para evitar operações duplicadas (compras/roleta)
+window.SITE_TUTORIAL_VERSION = '2026-06-26-1';
 
 // Detecta uma única vez se estamos em uma subpasta
 window.IS_SUBFOLDER = window.location.pathname.includes('/html/') || window.location.pathname.includes('/Roleta/');
@@ -380,7 +381,7 @@ window.loadSiteTutorialModule = () => {
     if (document.querySelector('script[data-site-tutorial="true"]')) return;
 
     const script = document.createElement('script');
-    script.src = `${window.getHeaderPathPrefix()}java/site-tutorial.js`;
+    script.src = `${window.getHeaderPathPrefix()}java/site-tutorial.js?v=${window.SITE_TUTORIAL_VERSION}`;
     script.async = false;
     script.defer = true;
     script.dataset.siteTutorial = 'true';

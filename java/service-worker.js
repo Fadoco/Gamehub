@@ -4,13 +4,13 @@
  * 
  * Caching Strategy: Cache-First for static assets, Network-First for APIs
  * 
- * @version 2.0.1
+ * @version 2.0.2
  * @date 2026-06-13
  */
 
-const CACHE_VERSION = 'gamehub-v2.0.1';
-const CRITICAL_CACHE = 'gamehub-critical-v2.0.1';
-const RUNTIME_CACHE = 'gamehub-runtime-v2.0.1';
+const CACHE_VERSION = 'gamehub-v2.0.2';
+const CRITICAL_CACHE = 'gamehub-critical-v2.0.2';
+const RUNTIME_CACHE = 'gamehub-runtime-v2.0.2';
 
 /**
  * Critical resources that must be cached for offline support
@@ -33,7 +33,8 @@ const URLS_TO_CACHE_CRITICAL = [
     '/java/validators.js',
     '/java/security.js',
     '/java/global.js',
-    '/java/lazy-image-loader.js'
+    '/java/lazy-image-loader.js',
+    '/java/site-tutorial.js?v=2026-06-26-1'
 ];
 
 /**
