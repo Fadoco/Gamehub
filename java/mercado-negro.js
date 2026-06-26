@@ -32,6 +32,56 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 */
 
+const MARKET_SESSION_DURATION_MS = 90 * 1000;
+let marketSessionTimerInterval = null;
+let marketSessionTimeout = null;
+
+function formatSessionTime(msRemaining) {
+    const totalSeconds = Math.max(0, Math.ceil(msRemaining / 1000));
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${minutes}:${seconds}`;
+}
+
+function stopMarketSessionTimer() {
+    if (marketSessionTimerInterval) {
+        clearInterval(marketSessionTimerInterval);
+        marketSessionTimerInterval = null;
+    }
+    if (marketSessionTimeout) {
+        clearTimeout(marketSessionTimeout);
+        marketSessionTimeout = null;
+    }
+}
+
+function redirectToStoreFromBlackMarket() {
+    stopMarketSessionTimer();
+    window.location.href = '../index.html';
+}
+
+function startMarketSessionTimer() {
+    stopMarketSessionTimer();
+
+    const timerElement = document.getElementById('market-session-timer');
+    const endAt = Date.now() + MARKET_SESSION_DURATION_MS;
+
+    const updateTimerText = () => {
+        const remaining = endAt - Date.now();
+        if (timerElement) {
+            timerElement.textContent = `> Sessão instável: voltando para loja em ${formatSessionTime(remaining)}`;
+        }
+    };
+
+    updateTimerText();
+    marketSessionTimerInterval = setInterval(updateTimerText, 1000);
+    marketSessionTimeout = setTimeout(() => {
+        if (typeof window.showToast === 'function') {
+            window.showToast('Conexão com Mercado Negro expirada. Retornando para loja...', 'info');
+        }
+        redirectToStoreFromBlackMarket();
+    }, MARKET_SESSION_DURATION_MS);
+}
+
 async function processSecretPurchase(cost, itemName, actionFn) {
     if (!window.auth.currentUser) return window.showToast("Conexão perdida. Relogue.", "error");
     if (window.userBalance < cost) return window.showToast("SALDO INSUFICIENTE NO SISTEMA.", "error");
@@ -483,6 +533,7 @@ window.renderMercadoNegro = () => {
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     console.log("%c MERCADO NEGRO ATIVO ", "background: #000; color: #0f0; font-size: 20px;");
+    startMarketSessionTimer();
     
     // Pequena animação de "digitação" no parágrafo inicial
     const p = document.querySelector('.black-market-container p');
@@ -498,3 +549,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 50);
 });
+
+window.addEventListener('beforeunload', stopMarketSessionTimer);

@@ -100,12 +100,7 @@
         if (!step) return;
 
         currentStepIndex = stepIndex;
-        const targetElement = step.selector ? document.querySelector(step.selector) : null;
         clearTutorialHighlight();
-        if (targetElement) {
-            targetElement.classList.add('tutorial-highlight-target');
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
 
         const progress = overlay.querySelector('.site-tutorial-progress');
         const title = overlay.querySelector('.site-tutorial-title');

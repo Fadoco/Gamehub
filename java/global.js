@@ -51,8 +51,16 @@ window.addPageRenderer = (pageFile, rendererFunction) => {
 
 // Função para disparar o evento raro do Mercado Negro
 window.triggerSecretEvent = (force = false) => {
+    const SECRET_EVENT_CHANCE = 0.0075; // 0.75% por tentativa
+    const SECRET_EVENT_COOLDOWN_MS = 20 * 60 * 1000; // 20 minutos
+    const SECRET_EVENT_LAST_TRIGGER_KEY = 'gh_secret_event_last_trigger';
     const chance = Math.random();
-    if (force || chance <= 0.04) { // 4% de chance
+    const now = Date.now();
+    const lastTrigger = Number(localStorage.getItem(SECRET_EVENT_LAST_TRIGGER_KEY) || 0);
+    const cooldownReady = !lastTrigger || (now - lastTrigger) >= SECRET_EVENT_COOLDOWN_MS;
+
+    if (force || (cooldownReady && chance <= SECRET_EVENT_CHANCE)) {
+        localStorage.setItem(SECRET_EVENT_LAST_TRIGGER_KEY, String(now));
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
         // 1. Congela o site visualmente com efeito mais intenso

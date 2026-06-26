@@ -230,6 +230,14 @@
     padding: 2rem;
 }
 
+.market-session-timer {
+    margin: 0 0 18px;
+    color: #ff9f9f;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 12px rgba(255, 23, 68, 0.45);
+}
+
 /* Advanced animated background pattern */
 .black-market-container::before {
     content: '';
@@ -1356,5 +1364,4 @@
         transform: none;
     }
 }
-
 
