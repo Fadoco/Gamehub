@@ -510,12 +510,8 @@
     };
 
     let activeOverlay = null;
-    let activeSpotlight = null;
     let currentStepIndex = 0;
     let currentTutorial = null;
-    let boundUpdateSpotlight = null;
-    let boundResizeSpotlight = null;
-    let boundViewportResize = null;
 
     function getPageKey() {
         const path = (window.location.pathname || '').toLowerCase();
@@ -561,27 +557,13 @@
         });
     }
 
-    function clearTutorialSpotlight() {
-        if (activeSpotlight) {
-            activeSpotlight.remove();
-            activeSpotlight = null;
-        }
-    }
-
-    function detachTracking() {
-        if (boundUpdateSpotlight) window.removeEventListener('scroll', boundUpdateSpotlight, true);
-        if (boundResizeSpotlight) window.removeEventListener('resize', boundResizeSpotlight);
-        if (boundViewportResize && window.visualViewport) window.visualViewport.removeEventListener('resize', boundViewportResize);
-        boundUpdateSpotlight = null;
-        boundResizeSpotlight = null;
-        boundViewportResize = null;
+    function getTutorialCard() {
+        return activeOverlay ? activeOverlay.querySelector('.site-tutorial-card') : null;
     }
 
     function closeActiveOverlay() {
         if (!activeOverlay) return;
         clearTutorialHighlight();
-        clearTutorialSpotlight();
-        detachTracking();
         activeOverlay.remove();
         activeOverlay = null;
         currentTutorial = null;
@@ -595,15 +577,6 @@
         document.body.appendChild(overlay);
         activeOverlay = overlay;
         return overlay;
-    }
-
-    function ensureSpotlightElement(overlay) {
-        if (activeSpotlight && activeSpotlight.isConnected) return activeSpotlight;
-        const spotlight = document.createElement('div');
-        spotlight.className = 'site-tutorial-spotlight';
-        overlay.appendChild(spotlight);
-        activeSpotlight = spotlight;
-        return spotlight;
     }
 
     function getTargetForStep(step) {
@@ -620,46 +593,65 @@
         const step = currentTutorial?.steps?.[stepIndex];
         if (!step) return;
 
+        const card = getTutorialCard();
         const target = getTargetForStep(step);
-        const spotlight = ensureSpotlightElement(overlay);
 
         if (!target) {
-            spotlight.classList.remove('is-visible');
             return;
         }
 
-        const rect = target.getBoundingClientRect();
-        const padding = 14;
-        const left = Math.max(8, rect.left - padding);
-        const top = Math.max(8, rect.top - padding);
-        const rightLimit = window.innerWidth - 8;
-        const bottomLimit = window.innerHeight - 8;
-        const width = Math.max(120, Math.min(rightLimit - left, rect.width + (padding * 2)));
-        const height = Math.max(72, Math.min(bottomLimit - top, rect.height + (padding * 2)));
-
         target.classList.add('tutorial-highlight-target');
-        spotlight.style.left = `${left}px`;
-        spotlight.style.top = `${top}px`;
-        spotlight.style.width = `${width}px`;
-        spotlight.style.height = `${height}px`;
-        spotlight.style.borderRadius = window.getComputedStyle(target).borderRadius || '18px';
-        spotlight.classList.add('is-visible');
-    }
 
-    function updateSpotlightPosition() {
-        if (!activeOverlay) return;
-        positionSpotlightForStep(activeOverlay, currentStepIndex);
-    }
+        if (!card) return;
 
-    function bindTracking() {
-        boundUpdateSpotlight = updateSpotlightPosition;
-        boundResizeSpotlight = updateSpotlightPosition;
-        boundViewportResize = updateSpotlightPosition;
-        window.addEventListener('scroll', boundUpdateSpotlight, true);
-        window.addEventListener('resize', boundResizeSpotlight);
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', boundViewportResize);
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        const margin = 12;
+        const mobile = viewportWidth <= 768;
+        const targetRect = target.getBoundingClientRect();
+        const preferredWidth = mobile ? Math.min(400, Math.max(280, viewportWidth - (margin * 2))) : 360;
+
+        card.style.width = mobile ? `${Math.min(viewportWidth - (margin * 2), 400)}px` : `${preferredWidth}px`;
+        card.style.maxWidth = mobile ? `${Math.min(viewportWidth - (margin * 2), 400)}px` : `${preferredWidth}px`;
+        card.style.transform = 'none';
+        card.style.left = '';
+        card.style.top = '';
+        card.style.right = '';
+        card.style.bottom = '';
+
+        const cardRect = card.getBoundingClientRect();
+        const cardWidth = cardRect.width || preferredWidth;
+        const cardHeight = cardRect.height || 360;
+
+        let left = margin;
+        let top = margin;
+
+        if (mobile) {
+            left = Math.max(margin, Math.min((viewportWidth - cardWidth) / 2, viewportWidth - cardWidth - margin));
+            top = Math.max(margin, Math.min(targetRect.bottom + 12, viewportHeight - cardHeight - margin));
+        } else {
+            const spaceRight = viewportWidth - targetRect.right - margin;
+            const spaceLeft = targetRect.left - margin;
+            const placeRight = spaceRight >= cardWidth + 24 || spaceRight >= spaceLeft;
+            const placeBelow = targetRect.bottom + cardHeight + 24 <= viewportHeight;
+
+            if (placeRight) {
+                left = Math.min(targetRect.right + 16, viewportWidth - cardWidth - margin);
+                top = Math.max(margin, Math.min(targetRect.top, viewportHeight - cardHeight - margin));
+            } else if (spaceLeft >= cardWidth + 24) {
+                left = Math.max(margin, targetRect.left - cardWidth - 16);
+                top = Math.max(margin, Math.min(targetRect.top, viewportHeight - cardHeight - margin));
+            } else if (placeBelow) {
+                left = Math.max(margin, Math.min(targetRect.left, viewportWidth - cardWidth - margin));
+                top = Math.min(targetRect.bottom + 16, viewportHeight - cardHeight - margin);
+            } else {
+                left = Math.max(margin, Math.min(targetRect.left, viewportWidth - cardWidth - margin));
+                top = Math.max(margin, Math.min(targetRect.top - cardHeight - 16, viewportHeight - cardHeight - margin));
+            }
         }
+
+        card.style.left = `${left}px`;
+        card.style.top = `${top}px`;
     }
 
     function renderStep(overlay, stepIndex) {
@@ -695,11 +687,14 @@
 
         const target = getTargetForStep(step);
         if (target && typeof target.scrollIntoView === 'function') {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+            target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
 
         window.requestAnimationFrame(() => {
             positionSpotlightForStep(overlay, stepIndex);
+            window.requestAnimationFrame(() => {
+                positionSpotlightForStep(overlay, stepIndex);
+            });
         });
     }
 
@@ -740,8 +735,9 @@
         `);
 
         renderStep(overlay, 0);
-        bindTracking();
-
+        window.requestAnimationFrame(() => {
+            positionSpotlightForStep(overlay, 0);
+        });
         const neverShowCheckbox = overlay.querySelector('#tutorial-never-show-checkbox');
         const skipBtn = overlay.querySelector('.site-tutorial-skip');
         const prevBtn = overlay.querySelector('.site-tutorial-prev');

@@ -943,12 +943,16 @@
 }
 
 .site-tutorial-card {
-    width: min(920px, 96%);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(420px, 92vw);
     background: linear-gradient(180deg, rgba(18, 22, 34, 0.98), rgba(11, 14, 22, 0.98));
     border: 1px solid rgba(0, 212, 255, 0.24);
     border-radius: 18px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
-    padding: 22px;
+    padding: 18px;
     max-height: calc(100vh - 32px);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -977,16 +981,17 @@
 
 .site-tutorial-layout {
     display: grid;
-    grid-template-columns: minmax(180px, 260px) 1fr;
-    gap: 18px;
+    grid-template-columns: 1fr;
+    gap: 14px;
     align-items: stretch;
 }
 
 .site-tutorial-visual {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     gap: 10px;
-    padding: 20px;
+    padding: 14px;
     border-radius: 16px;
     background: linear-gradient(145deg, rgba(0, 212, 255, 0.12), rgba(0, 116, 228, 0.08));
     border: 1px solid rgba(0, 212, 255, 0.2);
@@ -1024,7 +1029,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: auto;
+    margin-left: auto;
+    justify-content: flex-end;
 }
 
 .site-tutorial-chip {
@@ -1057,14 +1063,15 @@
 
 .site-tutorial-title {
     margin: 0 0 10px;
-    font-size: clamp(1.25rem, 2.8vw, 1.85rem);
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem);
     line-height: 1.08;
 }
 
 .site-tutorial-text {
     margin: 0 0 14px;
     color: #d1daea;
-    line-height: 1.55;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 .site-tutorial-points {
@@ -1087,7 +1094,7 @@
 }
 
 .site-tutorial-actions .btn {
-    min-width: 120px;
+    min-width: 0;
 }
 
 .site-tutorial-never-show {
@@ -1170,19 +1177,14 @@
     }
 
     .site-tutorial-card {
-        width: min(96vw, 560px);
+        width: min(92vw, 420px);
         max-height: calc(100vh - 20px);
-        padding: 18px;
-    }
-
-    .site-tutorial-layout {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        padding: 16px;
     }
 
     .site-tutorial-visual {
         min-height: auto;
-        padding: 16px;
+        padding: 12px;
     }
 }
 
@@ -1218,8 +1220,8 @@
 
 @media (max-width: 480px) {
     .site-tutorial-card {
-        width: min(96vw, 520px);
-        padding: 14px;
+        width: min(94vw, 400px);
+        padding: 12px;
     }
 
     .site-tutorial-card__header,
