@@ -935,7 +935,8 @@
     background:
         radial-gradient(circle at top, rgba(0, 212, 255, 0.05), transparent 35%),
         rgba(5, 8, 18, 0.16);
-    backdrop-filter: blur(2px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     display: flex;
     align-items: center;
     justify-content: center;
