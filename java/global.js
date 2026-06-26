@@ -338,11 +338,16 @@ window.setupFooterSupportActions = () => {
         if (!button) return;
 
         if (button.classList.contains('support-tutorial-btn')) {
-            if (typeof window.startSiteTutorial === 'function') {
-                window.startSiteTutorial(true);
-            } else if (typeof window.showToast === 'function') {
-                window.showToast('Tutorial ainda está carregando nesta página.', 'info');
-            }
+            window.ensureSiteTutorialReady((ready) => {
+                if (ready) {
+                    window.startSiteTutorial(true);
+                    return;
+                }
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast('Tutorial ainda está carregando nesta página.', 'info');
+                }
+            });
             return;
         }
 
@@ -376,17 +381,30 @@ window.loadSiteTutorialModule = () => {
 
     const script = document.createElement('script');
     script.src = `${window.getHeaderPathPrefix()}java/site-tutorial.js`;
+    script.async = false;
     script.defer = true;
     script.dataset.siteTutorial = 'true';
     document.head.appendChild(script);
 };
 
-window.loadSiteTutorialModule();
+window.ensureSiteTutorialReady = (callback) => {
+    if (typeof window.startSiteTutorial === 'function') {
+        callback(true);
+        return;
+    }
+
+    window.loadSiteTutorialModule();
+
+    setTimeout(() => {
+        callback(typeof window.startSiteTutorial === 'function');
+    }, 300);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     window.applyStandardHeaders();
     window.applyStandardFooters();
     window.setupFooterSupportActions();
+    window.loadSiteTutorialModule();
 });
 
 // Função para renderizar a UI do cabeçalho com base no estado de autenticação - Movida de auth.js
