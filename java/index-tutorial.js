@@ -130,7 +130,7 @@
                 <p class="site-tutorial-text"></p>
                 <label class="site-tutorial-never-show">
                     <input type="checkbox" id="tutorial-never-show-checkbox">
-                    Não mostrar automaticamente novamente
+                    <span>Não mostrar automaticamente novamente</span>
                 </label>
                 <div class="site-tutorial-actions">
                     <button type="button" class="btn btn-ghost site-tutorial-skip">Pular tutorial</button>
@@ -189,7 +189,7 @@
                 <p class="site-tutorial-text">Podemos te guiar em poucos passos mostrando tudo que a GameHub oferece.</p>
                 <label class="site-tutorial-never-show">
                     <input type="checkbox" id="tutorial-prompt-never-show-checkbox">
-                    Não mostrar automaticamente novamente
+                    <span>Não mostrar automaticamente novamente</span>
                 </label>
                 <div class="site-tutorial-actions">
                     <button type="button" class="btn btn-ghost site-tutorial-no">Agora não</button>

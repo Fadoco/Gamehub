@@ -9,7 +9,7 @@ body {
     position: fixed;
     inset: 0;
     z-index: 12000;
-    background: rgba(5, 8, 18, 0.76);
+    background: rgba(5, 8, 18, 0.78);
     backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
@@ -18,12 +18,12 @@ body {
 }
 
 .site-tutorial-card {
-    width: min(620px, 96%);
+    width: min(680px, 96%);
     background: #151821;
     border: 1px solid rgba(0, 212, 255, 0.35);
     border-radius: 14px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-    padding: 22px;
+    padding: 22px 24px;
 }
 
 .site-tutorial-progress {
@@ -45,11 +45,24 @@ body {
 
 .site-tutorial-never-show {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     margin-bottom: 16px;
     color: #d8e1ef;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.site-tutorial-never-show input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--accent);
+}
+
+.site-tutorial-never-show span {
+    display: inline-block;
 }
 
 .site-tutorial-actions {
@@ -64,9 +77,9 @@ body {
 }
 
 .tutorial-highlight-target {
-    position: relative;
-    z-index: 12001 !important;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.6), 0 0 28px rgba(0, 212, 255, 0.35) !important;
+    outline: 2px solid rgba(0, 212, 255, 0.65) !important;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2) !important;
     border-radius: 10px;
 }
 
@@ -120,6 +133,19 @@ body {
 
     .floating-helper-label {
         display: none;
+    }
+
+    .site-tutorial-card {
+        width: min(96vw, 560px);
+        padding: 18px;
+    }
+
+    .site-tutorial-actions {
+        justify-content: stretch;
+    }
+
+    .site-tutorial-actions .btn {
+        flex: 1 1 140px;
     }
 }
 
