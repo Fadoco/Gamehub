@@ -6,7 +6,7 @@
     window.siteTutorialLoaded = true;
 
     const NEVER_SHOW_PREFIX = 'gh_site_tutorial_never_show';
-    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session';
+    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session_v2';
 
     const createStep = (title, text, selector, extras = {}) => ({
         title,
@@ -857,7 +857,6 @@
     }
 
     window.startSiteTutorial = (forceManualOpen = false) => {
-        markPromptedThisSession();
         return startTour(Boolean(forceManualOpen));
     };
 
