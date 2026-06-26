@@ -182,6 +182,41 @@ window.getFooterPathPrefix = () => (window.IS_SUBFOLDER ? '../' : '');
 
 window.getHeaderPathPrefix = () => (window.IS_SUBFOLDER ? '../' : '');
 
+window.getCurrentPageKey = () => {
+    const currentPath = (window.location.pathname || '').toLowerCase();
+    if (currentPath.endsWith('/index.html') || currentPath === '/' || currentPath === '') return 'index';
+
+    const pathParts = currentPath.split('/').filter(Boolean);
+    const fileName = pathParts.length ? pathParts[pathParts.length - 1] : 'index.html';
+    return fileName.replace(/\.html$/, '');
+};
+
+window.getPageTutorialLabel = () => {
+    const labels = {
+        index: 'Tutorial da loja',
+        biblioteca: 'Tutorial da biblioteca',
+        carrinho: 'Tutorial do carrinho',
+        emprestimo: 'Tutorial dos empréstimos',
+        historico: 'Tutorial do histórico',
+        ranking: 'Tutorial do ranking',
+        reseller: 'Tutorial da revenda',
+        perfil: 'Tutorial do perfil',
+        busca: 'Tutorial da busca',
+        'lista-jogos': 'Tutorial do catálogo',
+        jogo: 'Tutorial do jogo',
+        admin: 'Tutorial do painel admin',
+        'admin-user-detail': 'Tutorial do usuário',
+        'admin-event-roulette': 'Tutorial da roleta admin',
+        'mercado-negro': 'Tutorial do mercado negro',
+        welcome: 'Tutorial de boas-vindas',
+        login: 'Tutorial do login',
+        roleta: 'Tutorial da roleta'
+    };
+
+    const pageKey = window.getCurrentPageKey();
+    return labels[pageKey] || 'Tutorial desta página';
+};
+
 window.buildStandardHeaderHTML = (pathPrefix = window.getHeaderPathPrefix()) => {
     const currentPath = (window.location.pathname || '').toLowerCase();
     const isActive = (fileName) => currentPath.includes(fileName.toLowerCase());
@@ -218,6 +253,7 @@ window.buildStandardHeaderHTML = (pathPrefix = window.getHeaderPathPrefix()) => 
 window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => {
     const currentPath = (window.location.pathname || '').toLowerCase();
     const isIndexPage = currentPath.endsWith('/index.html') || currentPath === '/' || currentPath === '';
+    const tutorialLabel = window.getPageTutorialLabel();
 
     return `
         <div class="container">
@@ -239,7 +275,7 @@ window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => 
                 <div class="footer-section">
                     <h3>Suporte</h3>
                     <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
-                        <button type="button" class="support-action-btn support-tutorial-btn"><i class="fas fa-circle-question" aria-hidden="true"></i> Tutorial da página</button>
+                        <button type="button" class="support-action-btn support-tutorial-btn"><i class="fas fa-circle-question" aria-hidden="true"></i> ${tutorialLabel}</button>
                         <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
                         <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
                         <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
@@ -305,7 +341,7 @@ window.setupFooterSupportActions = () => {
             if (typeof window.startSiteTutorial === 'function') {
                 window.startSiteTutorial(true);
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Tutorial disponível apenas na página principal.', 'info');
+                window.showToast('Tutorial ainda está carregando nesta página.', 'info');
             }
             return;
         }
