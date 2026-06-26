@@ -22,8 +22,8 @@
     const TUTORIALS = {
         index: {
             autoPromptDelay: 900,
-            promptTitle: 'Quer um tour rápido pela GameHub?',
-            promptText: 'Vou mostrar as partes mais importantes da loja e destacar cada área enquanto explico.',
+            promptTitle: 'Quer um tour bem guiado pela GameHub?',
+            promptText: 'Vou mostrar as áreas principais da loja, destacando a tela certa em cada passo e explicando o que você pode fazer ali.',
             helperLabel: 'Ajuda',
             floatingHelper: true,
             steps: [
@@ -34,11 +34,11 @@
                     {
                         eyebrow: 'Mapa da loja',
                         icon: 'fas fa-compass',
-                        chips: ['Biblioteca', 'Roleta', 'Carrinho'],
+                        chips: ['Biblioteca', 'Roleta', 'Carrinho', 'Perfil'],
                         bullets: [
                             'Biblioteca: veja os jogos que já são seus.',
                             'Roleta: descubra recompensas e eventos.',
-                            'Carrinho e revenda: acompanhe suas compras e trocas.'
+                            'Carrinho, revenda e perfil ficam a um clique de distância.'
                         ]
                     }
                 ),
@@ -53,7 +53,7 @@
                         bullets: [
                             'A barra filtra a loja em tempo real.',
                             'O botão aleatório ajuda a descobrir jogos novos.',
-                            'Tudo fica perto do topo para acesso rápido.'
+                            'Se você estiver perdido, esse bloco é o melhor ponto de partida.'
                         ]
                     }
                 ),
@@ -64,11 +64,11 @@
                     {
                         eyebrow: 'O que vale ver primeiro',
                         icon: 'fas fa-star',
-                        chips: ['Comprar', 'Carrinho', 'Favoritar'],
+                        chips: ['Comprar', 'Carrinho', 'Favoritar', 'Preço'],
                         bullets: [
                             'Comprar agora leva direto para a compra.',
                             'O carrinho guarda o jogo para depois.',
-                            'O coração marca favoritos.'
+                            'O preço atual e o preço antigo ajudam a comparar a oferta.'
                         ]
                     }
                 ),
@@ -83,7 +83,7 @@
                         bullets: [
                             'A carteira mostra o saldo disponível.',
                             'As notificações avisam pedidos e eventos.',
-                            'O perfil concentra as ações da sua conta.'
+                            'O perfil concentra as ações da sua conta e o acesso ao histórico.'
                         ]
                     }
                 ),
@@ -94,11 +94,11 @@
                     {
                         eyebrow: 'Descobrindo ofertas',
                         icon: 'fas fa-tags',
-                        chips: ['Ofertas', 'Categorias', 'Destaques'],
+                        chips: ['Ofertas', 'Categorias', 'Destaques', 'Banners'],
                         bullets: [
                             'As promoções mostram jogos com desconto.',
                             'As categorias ajudam a filtrar por estilo.',
-                            'Os banners chamam atenção para campanhas especiais.'
+                            'Os rankings mostram o que está mais forte na loja agora.'
                         ]
                     }
                 ),
@@ -121,7 +121,7 @@
         },
         biblioteca: {
             promptTitle: 'Quer ver como funciona a sua Biblioteca?',
-            promptText: 'Vou mostrar onde ficam seus jogos e o que você pode fazer nessa página.',
+            promptText: 'Vou mostrar onde ficam seus jogos, como reconhecer o que já é seu e onde abrir a ajuda novamente.',
             steps: [
                 createStep('Título da biblioteca', 'Aqui você vê quantos jogos já estão na sua conta.', '.section-title', {
                     eyebrow: 'Seu acervo',
@@ -131,8 +131,13 @@
                 createStep('Lista de jogos', 'Essa área exibe os cards da sua biblioteca para abrir ou consultar.', 'main', {
                     eyebrow: 'Seus jogos',
                     icon: 'fas fa-grid-2',
-                    chips: ['Abrir', 'Explorar', 'Organizar'],
+                    chips: ['Abrir', 'Explorar', 'Organizar', 'Cards'],
                     fallbackSelectors: ['.game-grid', '.library-grid']
+                }),
+                createStep('Ações dos cards', 'Cada card normalmente leva para detalhes, abrir o jogo ou outras ações rápidas.', '.game-card', {
+                    eyebrow: 'O que fazer em cada card',
+                    icon: 'fas fa-arrow-pointer',
+                    fallbackSelectors: ['.library-game-card', '.game-card']
                 }),
                 createStep('Rodapé', 'Os atalhos do rodapé ajudam a voltar para a loja e pedir ajuda.', '.main-footer', {
                     eyebrow: 'Saída da página',
@@ -142,17 +147,22 @@
         },
         carrinho: {
             promptTitle: 'Vamos olhar o Carrinho?',
-            promptText: 'Vou mostrar onde ficam os itens guardados e como finalizar a compra.',
+            promptText: 'Vou mostrar onde ficam os itens guardados, como conferir o total e onde finalizar a compra.',
             steps: [
                 createStep('Carrinho', 'Aqui você vê o que guardou antes de concluir a compra.', 'main', {
                     eyebrow: 'Compras pendentes',
                     icon: 'fas fa-cart-shopping',
-                    chips: ['Itens guardados', 'Total', 'Finalizar']
+                    chips: ['Itens guardados', 'Total', 'Finalizar', 'Cupom']
                 }),
                 createStep('Resumo e ações', 'Nesta área ficam o resumo do valor e os botões para fechar o pedido.', '.cart-summary', {
                     eyebrow: 'Fechando a compra',
                     icon: 'fas fa-receipt',
                     fallbackSelectors: ['.order-summary', '.checkout-panel']
+                }),
+                createStep('Itens no carrinho', 'Aqui você costuma revisar quantidades, remover jogos ou seguir para checkout.', '.cart-item', {
+                    eyebrow: 'Revisão antes de pagar',
+                    icon: 'fas fa-box',
+                    fallbackSelectors: ['.cart-list', '.cart-products']
                 }),
                 createStep('Rodapé', 'Se precisar, o rodapé leva você de volta à loja e à ajuda.', '.main-footer', {
                     eyebrow: 'Ajuda rápida',
@@ -182,7 +192,7 @@
         },
         emprestimo: {
             promptTitle: 'Vamos entender os Empréstimos?',
-            promptText: 'Vou mostrar como pedir, pagar e acompanhar sua dívida nesta central.',
+            promptText: 'Vou mostrar como pedir, pagar e acompanhar sua dívida nesta central com calma.',
             steps: [
                 createStep('Central de empréstimos', 'Aqui você encontra um resumo da sua situação financeira na plataforma.', '.loan-page-hero', {
                     eyebrow: 'Resumo financeiro',
@@ -191,11 +201,16 @@
                 createStep('Solicitar e acompanhar', 'Nesta área você pede empréstimo e vê a situação atual.', '.loan-page-grid', {
                     eyebrow: 'Operações principais',
                     icon: 'fas fa-credit-card',
-                    chips: ['Solicitar', 'Saldo', 'Dívida']
+                    chips: ['Solicitar', 'Saldo', 'Dívida', 'Limites']
                 }),
                 createStep('Pagar com jogos', 'Se quiser, você pode quitar parte da dívida com jogos.', '.loan-games-panel', {
                     eyebrow: 'Quitar com biblioteca',
                     icon: 'fas fa-gamepad'
+                }),
+                createStep('Pagar com dinheiro', 'Se preferir, você também pode usar saldo para reduzir a dívida mais rápido.', '.loan-page-grid', {
+                    eyebrow: 'Pagamento alternativo',
+                    icon: 'fas fa-wallet',
+                    fallbackSelectors: ['.loan-pay-money', '.loan-summary']
                 }),
                 createStep('Saída extrema', 'Se aparecer, esse painel explica a saída emergencial quando a dívida estoura.', '.loan-emergency-panel', {
                     eyebrow: 'Plano de emergência',
@@ -414,7 +429,7 @@
         },
         'mercado-negro': {
             promptTitle: 'Mercado Negro: quer saber o que ele faz?',
-            promptText: 'Essa página é temporária e mostra compras especiais, timer e as áreas proibidas.',
+            promptText: 'Essa página é temporária e mostra compras especiais, timer e as áreas proibidas. Se a sessão acabar, você volta sozinho para a loja.',
             steps: [
                 createStep('Aviso principal', 'O título e o aviso deixam claro que essa área é restrita.', '.warning', {
                     eyebrow: 'Acesso proibido',
@@ -424,10 +439,15 @@
                     eyebrow: 'Sessão temporária',
                     icon: 'fas fa-hourglass-half'
                 }),
-                createStep('Roleta e caixas', 'Essas áreas concentram as ações secretas do mercado negro.', '.market-section', {
+                createStep('Roleta e caixas', 'Essas áreas concentram as ações secretas do mercado negro e os itens especiais.', '.market-section', {
                     eyebrow: 'Ações secretas',
                     icon: 'fas fa-bolt',
-                    chips: ['Roleta', 'Caixas', 'Descontos']
+                    chips: ['Roleta', 'Caixas', 'Descontos', 'Itens raros']
+                }),
+                createStep('Jogos com desconto', 'Essa parte mostra jogos desviados com desconto e preços menores.', '#cheaper-games-list', {
+                    eyebrow: 'Ofertas secretas',
+                    icon: 'fas fa-tags',
+                    fallbackSelectors: ['.market-list']
                 }),
                 createStep('Saída segura', 'Esse botão te devolve para a loja quando acabar a sessão.', '.btn-hack', {
                     eyebrow: 'Desconectar',
