@@ -154,6 +154,41 @@ window.updateNavBadges = () => {
 
 window.getFooterPathPrefix = () => (window.IS_SUBFOLDER ? '../' : '');
 
+window.getHeaderPathPrefix = () => (window.IS_SUBFOLDER ? '../' : '');
+
+window.buildStandardHeaderHTML = (pathPrefix = window.getHeaderPathPrefix()) => {
+    const currentPath = (window.location.pathname || '').toLowerCase();
+    const isActive = (fileName) => currentPath.includes(fileName.toLowerCase());
+
+    return `
+        <div class="topbar__left">
+            <div class="brand" onclick="window.location.href='${pathPrefix}index.html'" role="button" tabindex="0" aria-label="Ir para página inicial">GameHub</div>
+            <nav class="topbar__menu" aria-label="Navegação Principal">
+                <a href="${pathPrefix}html/biblioteca.html" ${isActive('biblioteca.html') ? 'class="active"' : ''}>Biblioteca</a>
+                <a href="${pathPrefix}Roleta/roleta.html" ${isActive('roleta.html') ? 'class="active"' : ''}>Roleta</a>
+                <a href="${pathPrefix}html/ranking.html" ${isActive('ranking.html') ? 'class="active"' : ''}>Ranking</a>
+                <a href="${pathPrefix}html/emprestimo.html" ${isActive('emprestimo.html') ? 'class="active"' : ''}>Empréstimo</a>
+                <a href="${pathPrefix}html/reseller.html" ${isActive('reseller.html') ? 'class="active"' : ''}>Revenda</a>
+                <a href="${pathPrefix}html/carrinho.html" ${isActive('carrinho.html') ? 'class="active"' : ''}>Carrinho</a>
+            </nav>
+        </div>
+        <div class="topbar__actions" role="region" aria-label="Ações do Usuário">
+            <div class="notifications-container" id="notifications-container" aria-label="Notificações">
+                <button id="btn-notifications" class="notifications-button" title="Notificações">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </button>
+            </div>
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='${pathPrefix}html/historico.html'" role="button" tabindex="0" aria-label="Carteira - Clique para ver histórico">
+                <i class="fas fa-coins" aria-hidden="true"></i>
+                <span id="wallet-amount">R$ 0,00</span>
+            </div>
+            <div id="user-menu" style="display: flex; align-items: center; gap: 15px;"></div>
+            <button id="btn-login" class="btn btn-primary" aria-label="Abrir modal de login">Entrar</button>
+        </div>
+    `;
+};
+
 window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => `
     <div class="container">
         <div class="footer-content">
@@ -167,6 +202,7 @@ window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => 
                     <li><a href="${pathPrefix}index.html">Loja</a></li>
                     <li><a href="${pathPrefix}html/biblioteca.html">Biblioteca</a></li>
                     <li><a href="${pathPrefix}html/carrinho.html">Carrinho</a></li>
+                    <li><a href="${pathPrefix}html/emprestimo.html">Empréstimo</a></li>
                     <li><a href="${pathPrefix}html/historico.html">Histórico</a></li>
                 </ul>
             </div>
@@ -201,6 +237,16 @@ window.applyStandardFooters = () => {
     const footerHTML = window.buildStandardFooterHTML();
     footers.forEach((footer) => {
         footer.innerHTML = footerHTML;
+    });
+};
+
+window.applyStandardHeaders = () => {
+    const topbars = document.querySelectorAll('header.topbar');
+    if (!topbars.length) return;
+
+    const headerHTML = window.buildStandardHeaderHTML();
+    topbars.forEach((topbar) => {
+        topbar.innerHTML = headerHTML;
     });
 };
 
@@ -243,6 +289,7 @@ window.setupFooterSupportActions = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    window.applyStandardHeaders();
     window.applyStandardFooters();
     window.setupFooterSupportActions();
 });

@@ -18,11 +18,19 @@ window.injectGameHubHeader = (currentPage = '', pathPrefix = '') => {
                 <a href="${pathPrefix}html/biblioteca.html" ${currentPage === 'biblioteca' ? 'class="active"' : ''}>Biblioteca</a>
                 <a href="${pathPrefix}Roleta/roleta.html" ${currentPage === 'roleta' ? 'class="active"' : ''}>Roleta</a>
                 <a href="${pathPrefix}html/ranking.html" ${currentPage === 'ranking' ? 'class="active"' : ''}>Ranking</a>
+                <a href="${pathPrefix}html/emprestimo.html" ${currentPage === 'emprestimo' ? 'class="active"' : ''}>Empréstimo</a>
+                <a href="${pathPrefix}html/reseller.html" ${currentPage === 'reseller' ? 'class="active"' : ''}>Revenda</a>
                 <a href="${pathPrefix}html/carrinho.html" ${currentPage === 'carrinho' ? 'class="active"' : ''}>Carrinho</a>
             </nav>
         </div>
         <div class="topbar__actions" role="region" aria-label="Ações do Usuário">
-            <div id="user-wallet" class="wallet-widget" style="display: none;" onclick="window.location.href='${pathPrefix}html/historico.html'" role="button" tabindex="0" aria-label="Carteira - Clique para ver histórico">
+            <div class="notifications-container" id="notifications-container" aria-label="Notificações">
+                <button id="btn-notifications" class="notifications-button" title="Notificações">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </button>
+            </div>
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='${pathPrefix}html/historico.html'" role="button" tabindex="0" aria-label="Carteira - Clique para ver histórico">
                 <i class="fas fa-coins" aria-hidden="true"></i>
                 <span id="wallet-amount">R$ 0,00</span>
             </div>

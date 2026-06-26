@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Empréstimos - Solicite crédito e pague sua dívida no GameHub.">
+    <meta name="theme-color" content="#00d4ff">
+    <title>GameHub - Empréstimos</title>
+
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style-global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/theme-switcher.css">
+    <link rel="stylesheet" href="../css/header-footer.css">
+    <link rel="stylesheet" href="../css/emprestimo.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script src="../java/lazy-image-loader.js"></script>
+    <script src="../java/firebase-config.js"></script>
+    <script src="../java/firestore-cache.js"></script>
+    <script src="../java/firebase-transactions.js"></script>
+    <script src="../java/theme-switcher.js"></script>
+    <script src="../java/notifications-manager.js" defer></script>
+    <script src="../java/global.js" defer></script>
+    <script src="../java/ranks.js" defer></script>
+    <script src="../java/emprestimo.js" defer></script>
+    <script src="../java/auth.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar__left">
+            <div class="brand cursor-pointer" onclick="window.location.href='../index.html'">GameHub</div>
+            <nav class="topbar__menu">
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="../Roleta/roleta.html">Roleta</a>
+                <a href="ranking.html">Ranking</a>
+                <a href="emprestimo.html" class="active">Empréstimo</a>
+                <a href="reseller.html">Revenda</a>
+                <a href="carrinho.html">Carrinho</a>
+            </nav>
+        </div>
+        <div class="topbar__actions">
+            <div id="user-wallet" class="wallet-widget hidden" onclick="window.location.href='historico.html'">
+                <i class="fas fa-coins"></i>
+                <span id="wallet-amount">R$ 0,00</span>
+            </div>
+            <div class="notifications-container" id="notifications-container">
+                <button id="btn-notifications" class="notifications-button" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </button>
+            </div>
+            <div id="user-menu" class="flex items-center gap-3"></div>
+            <button id="btn-login" class="btn btn-primary">Entrar</button>
+        </div>
+    </header>
+
+    <header class="main-header">
+        <div class="searchbar">
+            <i class="fas fa-search searchbar__icon"></i>
+            <input type="text" id="main-search" placeholder="Pesquisar na loja..." aria-label="Pesquisar loja">
+        </div>
+        <nav class="section-nav">
+            <button id="btn-random-game" class="btn btn-ghost" onclick="window.handleRandomGame()">
+                <i class="fas fa-dice"></i> Jogo Aleatório
+            </button>
+        </nav>
+    </header>
+
+    <div id="notif-dropdown" class="notif-dropdown">
+        <div class="notif-header">Pedidos de Amizade</div>
+        <div id="notif-list" class="notif-list">
+            <div class="notif-empty">Nenhuma notificação nova.</div>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="loan-page-hero">
+            <div>
+                <h1><i class="fas fa-hand-holding-usd"></i> Central de Empréstimos</h1>
+                <p>Solicite crédito, pague com dinheiro ou use jogos da sua biblioteca.</p>
+            </div>
+            <a class="btn btn-secondary" href="historico.html">Ver histórico</a>
+        </section>
+
+        <section class="loan-page-grid">
+            <article class="loan-card">
+                <h2>Solicitar empréstimo</h2>
+                <form id="loan-request-form" class="loan-form">
+                    <label for="loan-amount">Valor do empréstimo (R$)</label>
+                    <input type="number" id="loan-amount" min="50" max="5000" step="0.01" required placeholder="Ex: 500.00">
+                    <button type="submit" class="btn btn-primary">Pedir empréstimo</button>
+                </form>
+                <div class="loan-help" id="loan-rules-text"></div>
+            </article>
+
+            <article class="loan-card">
+                <h2>Situação atual</h2>
+                <div class="loan-stats">
+                    <div class="loan-stat"><strong>Dívida atual</strong><span class="loan-value" id="loan-debt-amount">R$ 0,00</span></div>
+                    <div class="loan-stat"><strong>Carteira atual</strong><span class="loan-value" id="loan-wallet-amount">R$ 0,00</span></div>
+                    <div class="loan-stat"><strong>Empréstimo disponível hoje</strong><span class="loan-value" id="loan-daily-available">R$ 0,00</span></div>
+                    <div class="loan-stat"><strong>Total emprestado hoje</strong><span class="loan-value" id="loan-borrowed-today">R$ 0,00</span></div>
+                </div>
+            </article>
+        </section>
+
+        <section class="loan-games-panel">
+            <h2>Pagar com jogos</h2>
+            <p>Selecione jogos da sua biblioteca. O valor considera melhorias/upgrade.</p>
+            <div id="loan-games-list" class="loan-games-list"></div>
+            <button type="button" id="loan-pay-games-btn" class="btn btn-secondary">Pagar com jogos selecionados</button>
+        </section>
+
+        <section class="loan-page-grid">
+            <article class="loan-card">
+                <h2>Pagar com dinheiro</h2>
+                <form id="loan-payment-form" class="loan-form">
+                    <label for="loan-payment-amount">Valor para pagar (R$)</label>
+                    <input type="number" id="loan-payment-amount" min="0.01" step="0.01" required placeholder="Ex: 100.00">
+                    <button type="submit" class="btn btn-secondary">Pagar dívida</button>
+                </form>
+            </article>
+
+            <article class="loan-card">
+                <h2>Resumo</h2>
+                <p>O saldo emprestado expira no fim do dia apenas se ainda estiver na carteira. Dinheiro de revenda e compras não entra nessa regra.</p>
+            </article>
+        </section>
+
+        <section class="loan-games-panel">
+            <h2>Movimentações recentes</h2>
+            <div id="loan-history-list" class="loan-history-list">
+                <p>Nenhuma movimentação de empréstimo ainda.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container"></div>
+    </footer>
+</body>
+</html>

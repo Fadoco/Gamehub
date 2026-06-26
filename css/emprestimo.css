@@ -1,0 +1,154 @@
+/* Página de Empréstimos */
+
+.loan-page-hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.14), rgba(0, 0, 0, 0.2));
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.loan-page-hero h1 {
+    margin: 0 0 8px;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.loan-page-hero p {
+    margin: 0;
+    color: #bdc3c7;
+}
+
+.loan-page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.loan-card {
+    background: var(--bg-header);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.loan-card h2 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+.loan-card p {
+    color: #bdc3c7;
+}
+
+.loan-stats {
+    display: grid;
+    gap: 10px;
+    margin: 12px 0 16px;
+}
+
+.loan-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.loan-stat strong {
+    color: var(--text-primary);
+}
+
+.loan-value {
+    color: var(--promo);
+    font-weight: 700;
+}
+
+.loan-form {
+    display: grid;
+    gap: 10px;
+}
+
+.loan-form input {
+    width: 100%;
+}
+
+.loan-help {
+    margin-top: 10px;
+    color: #8fa0b3;
+    font-size: 0.92rem;
+}
+
+.loan-games-panel {
+    background: var(--bg-header);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.loan-games-panel h2 {
+    margin: 0 0 8px;
+}
+
+.loan-games-list {
+    display: grid;
+    gap: 8px;
+    max-height: 260px;
+    overflow: auto;
+    margin: 14px 0;
+}
+
+.loan-game-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.loan-game-item label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.loan-game-value {
+    white-space: nowrap;
+}
+
+.loan-history-list {
+    display: grid;
+    gap: 12px;
+}
+
+.loan-history-item {
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--bg-header);
+    border: 1px solid var(--card-border);
+}
+
+.loan-history-item strong {
+    color: var(--promo);
+}
+
+@media (max-width: 900px) {
+    .loan-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .loan-page-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
