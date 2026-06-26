@@ -10,7 +10,7 @@ if (typeof window.authModuleLoaded !== 'undefined') {
 
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
 const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
-const INITIAL_USER_BALANCE = 5.00;
+const INITIAL_USER_BALANCE = 5000.00;
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
