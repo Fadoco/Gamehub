@@ -5,8 +5,8 @@
     if (window.siteTutorialLoaded) return;
     window.siteTutorialLoaded = true;
 
-    const NEVER_SHOW_PREFIX = 'gh_site_tutorial_never_show_v3';
-    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session_v3';
+    const NEVER_SHOW_PREFIX = 'gh_site_tutorial_never_show_v4';
+    const PROMPTED_SESSION_PREFIX = 'gh_site_tutorial_prompted_session_v4';
 
     const createStep = (title, text, selector, extras = {}) => ({
         title,
@@ -595,7 +595,6 @@
         const step = currentTutorial?.steps?.[stepIndex];
         if (!step) return;
 
-        const card = getTutorialCard();
         const target = getTargetForStep(step);
 
         if (!target) {
@@ -603,57 +602,6 @@
         }
 
         target.classList.add('tutorial-highlight-target');
-
-        if (!card) return;
-
-        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        const margin = 12;
-        const mobile = viewportWidth <= 768;
-        const targetRect = target.getBoundingClientRect();
-        const preferredWidth = mobile ? Math.min(400, Math.max(280, viewportWidth - (margin * 2))) : 360;
-
-        card.style.width = mobile ? `${Math.min(viewportWidth - (margin * 2), 400)}px` : `${preferredWidth}px`;
-        card.style.maxWidth = mobile ? `${Math.min(viewportWidth - (margin * 2), 400)}px` : `${preferredWidth}px`;
-        card.style.transform = 'none';
-        card.style.left = '';
-        card.style.top = '';
-        card.style.right = '';
-        card.style.bottom = '';
-
-        const cardRect = card.getBoundingClientRect();
-        const cardWidth = cardRect.width || preferredWidth;
-        const cardHeight = cardRect.height || 360;
-
-        let left = margin;
-        let top = margin;
-
-        if (mobile) {
-            left = Math.max(margin, Math.min((viewportWidth - cardWidth) / 2, viewportWidth - cardWidth - margin));
-            top = Math.max(margin, Math.min(targetRect.bottom + 12, viewportHeight - cardHeight - margin));
-        } else {
-            const spaceRight = viewportWidth - targetRect.right - margin;
-            const spaceLeft = targetRect.left - margin;
-            const placeRight = spaceRight >= cardWidth + 24 || spaceRight >= spaceLeft;
-            const placeBelow = targetRect.bottom + cardHeight + 24 <= viewportHeight;
-
-            if (placeRight) {
-                left = Math.min(targetRect.right + 16, viewportWidth - cardWidth - margin);
-                top = Math.max(margin, Math.min(targetRect.top, viewportHeight - cardHeight - margin));
-            } else if (spaceLeft >= cardWidth + 24) {
-                left = Math.max(margin, targetRect.left - cardWidth - 16);
-                top = Math.max(margin, Math.min(targetRect.top, viewportHeight - cardHeight - margin));
-            } else if (placeBelow) {
-                left = Math.max(margin, Math.min(targetRect.left, viewportWidth - cardWidth - margin));
-                top = Math.min(targetRect.bottom + 16, viewportHeight - cardHeight - margin);
-            } else {
-                left = Math.max(margin, Math.min(targetRect.left, viewportWidth - cardWidth - margin));
-                top = Math.max(margin, Math.min(targetRect.top - cardHeight - 16, viewportHeight - cardHeight - margin));
-            }
-        }
-
-        card.style.left = `${left}px`;
-        card.style.top = `${top}px`;
     }
 
     function renderStep(overlay, stepIndex) {
@@ -779,50 +727,7 @@
         if (activeOverlay) return;
         if (shouldNeverShowAutomatically()) return;
         if (wasPromptedThisSession()) return;
-
-        markPromptedThisSession();
-        currentTutorial = getTutorialConfig();
-
-        const overlay = mountOverlay(`
-            <div class="site-tutorial-card site-tutorial-prompt" role="dialog" aria-modal="true" aria-labelledby="site-tutorial-prompt-title">
-                <div class="site-tutorial-prompt__hero">
-                    <div class="site-tutorial-visual-icon">
-                        <i class="fas fa-user-astronaut" aria-hidden="true"></i>
-                    </div>
-                    <div>
-                        <div class="site-tutorial-eyebrow">Boas-vindas</div>
-                        <h2 id="site-tutorial-prompt-title" class="site-tutorial-title">${currentTutorial.promptTitle || 'Quer um tour rápido?'}</h2>
-                    </div>
-                </div>
-                <p class="site-tutorial-text">${currentTutorial.promptText || 'Vou te guiar em poucos passos mostrando as partes mais importantes desta página.'}</p>
-                <label class="site-tutorial-never-show">
-                    <input type="checkbox" id="tutorial-prompt-never-show-checkbox">
-                    <span>Não mostrar automaticamente novamente</span>
-                </label>
-                <div class="site-tutorial-actions">
-                    <button type="button" class="btn btn-ghost site-tutorial-no">Agora não</button>
-                    <button type="button" class="btn btn-primary site-tutorial-yes">Sim, mostrar tutorial</button>
-                </div>
-            </div>
-        `);
-
-        const neverShowCheckbox = overlay.querySelector('#tutorial-prompt-never-show-checkbox');
-        const noBtn = overlay.querySelector('.site-tutorial-no');
-        const yesBtn = overlay.querySelector('.site-tutorial-yes');
-
-        if (noBtn) {
-            noBtn.addEventListener('click', () => {
-                setNeverShowAutomatically(Boolean(neverShowCheckbox?.checked));
-                closeActiveOverlay();
-            });
-        }
-
-        if (yesBtn) {
-            yesBtn.addEventListener('click', () => {
-                setNeverShowAutomatically(Boolean(neverShowCheckbox?.checked));
-                startTour(false);
-            });
-        }
+        startTour(false);
     }
 
     function ensureFloatingHelperButton() {
@@ -856,11 +761,17 @@
             autoPromptTimer = null;
         }
 
+        if (shouldNeverShowAutomatically() || wasPromptedThisSession()) {
+            return;
+        }
+
         const tutorial = getTutorialConfig();
         const delay = Number(tutorial.autoPromptDelay || 1000);
         autoPromptTimer = setTimeout(() => {
             if (activeOverlay) return;
-            showTutorialPrompt();
+            if (shouldNeverShowAutomatically() || wasPromptedThisSession()) return;
+            markPromptedThisSession();
+            startTour(false);
         }, delay);
     }
 
