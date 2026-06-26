@@ -54,6 +54,8 @@ window.triggerSecretEvent = (force = false) => {
     const SECRET_EVENT_CHANCE = 0.0075; // 0.75% por tentativa
     const SECRET_EVENT_COOLDOWN_MS = 20 * 60 * 1000; // 20 minutos
     const SECRET_EVENT_LAST_TRIGGER_KEY = 'gh_secret_event_last_trigger';
+    const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
+    const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
     const chance = Math.random();
     const now = Date.now();
     const lastTrigger = Number(localStorage.getItem(SECRET_EVENT_LAST_TRIGGER_KEY) || 0);
@@ -61,6 +63,8 @@ window.triggerSecretEvent = (force = false) => {
 
     if (force || (cooldownReady && chance <= SECRET_EVENT_CHANCE)) {
         localStorage.setItem(SECRET_EVENT_LAST_TRIGGER_KEY, String(now));
+        sessionStorage.setItem(MARKET_ACCESS_TOKEN_KEY, (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${now}-${Math.random().toString(36).slice(2)}`));
+        sessionStorage.setItem(MARKET_ACCESS_EXPIRES_KEY, String(now + 3 * 60 * 1000));
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
         // 1. Congela o site visualmente com efeito mais intenso

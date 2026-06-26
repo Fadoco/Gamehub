@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 */
 
 const MARKET_SESSION_DURATION_MS = 90 * 1000;
+const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
+const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
 let marketSessionTimerInterval = null;
 let marketSessionTimeout = null;
 
@@ -80,6 +82,37 @@ function startMarketSessionTimer() {
         }
         redirectToStoreFromBlackMarket();
     }, MARKET_SESSION_DURATION_MS);
+}
+
+function consumeMarketAccessToken() {
+    const token = sessionStorage.getItem(MARKET_ACCESS_TOKEN_KEY);
+    const expiresAt = Number(sessionStorage.getItem(MARKET_ACCESS_EXPIRES_KEY) || 0);
+    const valid = Boolean(token) && expiresAt > Date.now();
+    if (valid) {
+        sessionStorage.removeItem(MARKET_ACCESS_TOKEN_KEY);
+        sessionStorage.removeItem(MARKET_ACCESS_EXPIRES_KEY);
+    }
+    return valid;
+}
+
+function showUnauthorizedMarketVideo() {
+    const securityOverlay = document.getElementById('security-hack-overlay');
+    const entranceOverlay = document.getElementById('entrance-overlay');
+    const video = document.getElementById('hack-video');
+
+    if (entranceOverlay) entranceOverlay.style.display = 'none';
+    if (securityOverlay) {
+        securityOverlay.classList.add('active');
+        securityOverlay.style.display = 'flex';
+    }
+    if (video && typeof video.play === 'function') {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+    }
+
+    setTimeout(() => {
+        window.location.replace('../index.html');
+    }, 10000);
 }
 
 async function processSecretPurchase(cost, itemName, actionFn) {
@@ -533,6 +566,12 @@ window.renderMercadoNegro = () => {
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     console.log("%c MERCADO NEGRO ATIVO ", "background: #000; color: #0f0; font-size: 20px;");
+
+    if (!consumeMarketAccessToken()) {
+        showUnauthorizedMarketVideo();
+        return;
+    }
+
     startMarketSessionTimer();
     
     // Pequena animação de "digitação" no parágrafo inicial
