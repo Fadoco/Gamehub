@@ -92,34 +92,81 @@
     margin-bottom: 16px;
 }
 
+.loan-emergency-panel {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.15), rgba(0, 0, 0, 0.25));
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.loan-emergency-panel h2 {
+    margin: 0 0 8px;
+    color: #ff9aa4;
+}
+
+.loan-emergency-panel p {
+    margin-bottom: 14px;
+    color: #ffd6da;
+}
+
 .loan-games-panel h2 {
     margin: 0 0 8px;
 }
 
 .loan-games-list {
-    display: grid;
-    gap: 8px;
-    max-height: 260px;
-    overflow: auto;
     margin: 14px 0;
 }
 
-.loan-game-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+.loan-games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
 }
 
-.loan-game-item label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.loan-game-card {
     cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    position: relative;
+}
+
+.loan-game-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.25), 0 12px 28px rgba(0, 212, 255, 0.18);
+    transform: translateY(-4px);
+}
+
+.loan-game-card .card-media {
+    position: relative;
+}
+
+.loan-select-pill {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: rgba(0,0,0,0.78);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 5px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.loan-value-chip {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    background: rgba(0, 212, 255, 0.94);
+    color: #02151a;
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(0, 212, 255, 0.25);
 }
 
 .loan-game-value {
@@ -140,6 +187,10 @@
 
 .loan-history-item strong {
     color: var(--promo);
+}
+
+.hidden {
+    display: none !important;
 }
 
 @media (max-width: 900px) {

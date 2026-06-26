@@ -642,6 +642,91 @@ const FirebaseTransactions = (() => {
         }
     };
 
+    const resetUserProgressOnLoanMax = async (userId) => {
+        if (!window.db || !userId) {
+            throw new Error('Database ou userId não definido');
+        }
+
+        const userRef = window.db.collection('users').doc(userId);
+        const todayKey = dateKey();
+        const resetIso = new Date().toISOString();
+
+        try {
+            const result = await window.db.runTransaction(async (transaction) => {
+                const userDoc = await transaction.get(userRef);
+                if (!userDoc.exists) {
+                    throw new Error('Usuário não encontrado');
+                }
+
+                const userData = userDoc.data();
+                const debt = roundMoney(userData.loanDebt || 0);
+                if (debt < LOAN_MAX_DEBT) {
+                    throw new Error('Reset emergencial só fica disponível ao atingir a dívida máxima');
+                }
+
+                const resetEntry = {
+                    type: 'loan_max_reset',
+                    date: resetIso,
+                    totalDebtAfter: 0
+                };
+
+                transaction.update(userRef, {
+                    balance: 0,
+                    loanDebt: 0,
+                    loanWalletBalance: 0,
+                    loanBorrowedToday: 0,
+                    loanDayKey: todayKey,
+                    library: [],
+                    upgrades: {},
+                    cart: [],
+                    lastTransaction: {
+                        type: 'loan_max_reset',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        beforeDebt: debt,
+                        afterDebt: 0
+                    }
+                });
+
+                transaction.update(userRef, {
+                    loanHistory: firebase.firestore.FieldValue.arrayUnion(resetEntry)
+                });
+
+                if (window.db.collection('audit_logs')) {
+                    transaction.set(window.db.collection('audit_logs').doc(), {
+                        userId,
+                        action: 'loan_max_reset',
+                        beforeDebt: debt,
+                        afterDebt: 0,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                return {
+                    resetEntry,
+                    beforeDebt: debt
+                };
+            });
+
+            window.userBalance = 0;
+            window.userLoanDebt = 0;
+            window.userLoanWalletBalance = 0;
+            window.userLoanBorrowedToday = 0;
+            window.userLibrary = [];
+            window.userUpgrades = {};
+            window.userCart = [];
+            window.userLoanDayKey = todayKey;
+
+            return {
+                success: true,
+                resetEntry: result.resetEntry,
+                beforeDebt: result.beforeDebt
+            };
+        } catch (error) {
+            SecurityModule?.logger?.error(`Erro ao resetar progresso por dívida máxima: ${error.message}`);
+            throw error;
+        }
+    };
+
     const purchaseGameTransaction = async (userId, gameIds, totalPrice) => {
         if (!window.db || !userId) {
             throw new Error('Database ou userId não definido');
@@ -835,6 +920,7 @@ const FirebaseTransactions = (() => {
         requestLoan,
         repayLoan,
         repayLoanWithGames,
+        resetUserProgressOnLoanMax,
         syncDailyLoanState,
         LOAN_MIN_AMOUNT,
         LOAN_MAX_AMOUNT,
