@@ -239,7 +239,7 @@ window.buildStandardFooterHTML = (pathPrefix = window.getFooterPathPrefix()) => 
                 <div class="footer-section">
                     <h3>Suporte</h3>
                     <div class="footer-support-actions" role="group" aria-label="Ações de suporte">
-                        ${isIndexPage ? '<button type="button" class="support-action-btn support-tutorial-btn"><i class="fas fa-circle-question" aria-hidden="true"></i> Ajuda (Tutorial)</button>' : ''}
+                        <button type="button" class="support-action-btn support-tutorial-btn"><i class="fas fa-circle-question" aria-hidden="true"></i> Tutorial da página</button>
                         <button type="button" class="support-action-btn" data-support-message="Resa que Deus te ajuda">Ajuda</button>
                         <button type="button" class="support-action-btn" data-support-message="Não tem garantia, comprou porque quis">Reembolsos</button>
                         <button type="button" class="support-action-btn support-privacy-btn" data-support-message="👁️" aria-label="Privacidade">
@@ -328,6 +328,24 @@ window.setupFooterSupportActions = () => {
         }, 2600);
     });
 };
+
+window.loadSiteTutorialModule = () => {
+    if (window.siteTutorialLoaded) return;
+
+    const path = (window.location.pathname || '').toLowerCase();
+    const isIndexPage = path.endsWith('/index.html') || path === '/' || path === '';
+    if (isIndexPage) return;
+
+    if (document.querySelector('script[data-site-tutorial="true"]')) return;
+
+    const script = document.createElement('script');
+    script.src = `${window.getHeaderPathPrefix()}java/site-tutorial.js`;
+    script.defer = true;
+    script.dataset.siteTutorial = 'true';
+    document.head.appendChild(script);
+};
+
+window.loadSiteTutorialModule();
 
 document.addEventListener('DOMContentLoaded', () => {
     window.applyStandardHeaders();
