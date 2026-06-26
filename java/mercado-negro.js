@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const MARKET_SESSION_DURATION_MS = 90 * 1000;
 const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
 const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
+const MARKET_ACCESS_SOURCE_KEY = 'gh_market_access_source';
 let marketSessionTimerInterval = null;
 let marketSessionTimeout = null;
 
@@ -88,10 +89,9 @@ function consumeMarketAccessToken() {
     const token = sessionStorage.getItem(MARKET_ACCESS_TOKEN_KEY);
     const expiresAt = Number(sessionStorage.getItem(MARKET_ACCESS_EXPIRES_KEY) || 0);
     const valid = Boolean(token) && expiresAt > Date.now();
-    if (valid) {
-        sessionStorage.removeItem(MARKET_ACCESS_TOKEN_KEY);
-        sessionStorage.removeItem(MARKET_ACCESS_EXPIRES_KEY);
-    }
+    sessionStorage.removeItem(MARKET_ACCESS_TOKEN_KEY);
+    sessionStorage.removeItem(MARKET_ACCESS_EXPIRES_KEY);
+    sessionStorage.removeItem(MARKET_ACCESS_SOURCE_KEY);
     return valid;
 }
 

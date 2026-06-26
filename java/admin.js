@@ -28,7 +28,7 @@ async function loadUsersSystem() {
             text-shadow: 0 0 5px #0f0; box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         `;
         debugBtn.innerText = "> FORÇAR_CORRUPÇÃO_SISTEMA (MERCADO_NEGRO.EXE)";
-        debugBtn.onclick = () => window.triggerSecretEvent(true);
+        debugBtn.onclick = () => window.openBlackMarketFromAdmin();
         
         container.parentNode.insertBefore(debugBtn, container);
     }

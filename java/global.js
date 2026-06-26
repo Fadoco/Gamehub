@@ -56,6 +56,7 @@ window.triggerSecretEvent = (force = false) => {
     const SECRET_EVENT_LAST_TRIGGER_KEY = 'gh_secret_event_last_trigger';
     const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
     const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
+    const MARKET_ACCESS_SOURCE_KEY = 'gh_market_access_source';
     const chance = Math.random();
     const now = Date.now();
     const lastTrigger = Number(localStorage.getItem(SECRET_EVENT_LAST_TRIGGER_KEY) || 0);
@@ -65,6 +66,7 @@ window.triggerSecretEvent = (force = false) => {
         localStorage.setItem(SECRET_EVENT_LAST_TRIGGER_KEY, String(now));
         sessionStorage.setItem(MARKET_ACCESS_TOKEN_KEY, (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${now}-${Math.random().toString(36).slice(2)}`));
         sessionStorage.setItem(MARKET_ACCESS_EXPIRES_KEY, String(now + 3 * 60 * 1000));
+        sessionStorage.setItem(MARKET_ACCESS_SOURCE_KEY, 'secret');
         console.error("CRITICAL_SYSTEM_BREACH_DETECTED");
 
         // 1. Congela o site visualmente com efeito mais intenso
@@ -146,6 +148,18 @@ window.triggerSecretEvent = (force = false) => {
         return true;
     }
     return false;
+};
+
+window.openBlackMarketFromAdmin = () => {
+    const MARKET_ACCESS_TOKEN_KEY = 'gh_market_access_token';
+    const MARKET_ACCESS_EXPIRES_KEY = 'gh_market_access_expires_at';
+    const MARKET_ACCESS_SOURCE_KEY = 'gh_market_access_source';
+    const now = Date.now();
+
+    sessionStorage.setItem(MARKET_ACCESS_TOKEN_KEY, (window.crypto?.randomUUID ? window.crypto.randomUUID() : `${now}-${Math.random().toString(36).slice(2)}`));
+    sessionStorage.setItem(MARKET_ACCESS_EXPIRES_KEY, String(now + 3 * 60 * 1000));
+    sessionStorage.setItem(MARKET_ACCESS_SOURCE_KEY, 'admin');
+    window.location.href = window.utils.getHtmlPath('mercado-negro.html');
 };
 
 // Função para atualizar contadores no menu (opcional) - Movida de auth.js
