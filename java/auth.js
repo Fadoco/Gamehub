@@ -11,6 +11,9 @@ if (typeof window.authModuleLoaded !== 'undefined') {
 const DESATIVAR_LOGIN_PARA_TESTE = false; // Altere para 'false' quando quiser reativar o login
 const USAR_EMULADOR_LOCAL = false; // Mude para 'true' apenas se estiver rodando 'firebase emulators:start' no terminal
 const INITIAL_USER_BALANCE = 5000.00;
+const PURCHASE_HISTORY_BATCH_KEY_PREFIX = 'gh_pending_purchase_history';
+const PURCHASE_HISTORY_BATCH_INTERVAL_MS = 10 * 60 * 1000;
+const PURCHASE_HISTORY_BATCH_CHUNK_SIZE = 25;
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // Inicializa o Firebase apenas se a configuração estiver disponível
@@ -111,6 +114,116 @@ window.userFriendshipId = null; // ID numérico para adicionar amigos
 window.userFriends = [];   // Lista de UIDs de amigos
 window.userFriendRequestsSent = []; // Requisições de amizade enviadas
 window.userFriendRequestsReceived = []; // Requisições de amizade recebidas
+window.purchaseHistorySyncDelayMinutes = Math.floor(PURCHASE_HISTORY_BATCH_INTERVAL_MS / 60000);
+
+let purchaseHistoryFlushIntervalId = null;
+let purchaseHistoryFlushInProgress = false;
+
+function getPurchaseHistoryBatchKey(uid = null) {
+    const resolvedUid = uid || auth.currentUser?.uid || 'anonymous';
+    return `${PURCHASE_HISTORY_BATCH_KEY_PREFIX}:${resolvedUid}`;
+}
+
+function readPendingPurchaseHistory(uid = null) {
+    try {
+        const raw = localStorage.getItem(getPurchaseHistoryBatchKey(uid));
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn('Falha ao ler fila de histórico pendente:', error);
+        return [];
+    }
+}
+
+function savePendingPurchaseHistory(entries, uid = null) {
+    const storageKey = getPurchaseHistoryBatchKey(uid);
+    if (!Array.isArray(entries) || entries.length === 0) {
+        localStorage.removeItem(storageKey);
+        return;
+    }
+    localStorage.setItem(storageKey, JSON.stringify(entries));
+}
+
+function getHistoryEntryKey(entry) {
+    const safeEntry = entry || {};
+    const items = Array.isArray(safeEntry.items) ? safeEntry.items.join('|') : '';
+    return `${safeEntry.date || ''}|${safeEntry.total || 0}|${items}`;
+}
+
+function mergeHistoryWithPending(serverHistory = [], uid = null) {
+    const pending = readPendingPurchaseHistory(uid);
+    const merged = [...pending, ...(Array.isArray(serverHistory) ? serverHistory : [])];
+    const seen = new Set();
+
+    return merged.filter((entry) => {
+        const key = getHistoryEntryKey(entry);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function queuePurchaseHistoryEntry(entry, uid = null) {
+    const queue = readPendingPurchaseHistory(uid);
+    queue.push(entry);
+    savePendingPurchaseHistory(queue, uid);
+    window.userHistory = [entry, ...(window.userHistory || [])];
+}
+
+async function flushPurchaseHistoryBatch(options = {}) {
+    const silent = options.silent !== false;
+
+    if (purchaseHistoryFlushInProgress) return false;
+    if (!auth.currentUser || !db) return false;
+
+    const queue = readPendingPurchaseHistory(auth.currentUser.uid);
+    if (queue.length === 0) return false;
+
+    purchaseHistoryFlushInProgress = true;
+    const batchToFlush = queue.slice(0, PURCHASE_HISTORY_BATCH_CHUNK_SIZE);
+
+    try {
+        await db.collection('users').doc(auth.currentUser.uid).update({
+            history: firebase.firestore.FieldValue.arrayUnion(...batchToFlush)
+        });
+
+        savePendingPurchaseHistory(queue.slice(batchToFlush.length), auth.currentUser.uid);
+        if (!silent) {
+            showToast('Histórico sincronizado com sucesso.', 'success');
+        }
+        return true;
+    } catch (error) {
+        console.error('Erro ao sincronizar histórico em lote:', error);
+        return false;
+    } finally {
+        purchaseHistoryFlushInProgress = false;
+    }
+}
+
+function startPurchaseHistoryBatchSync() {
+    if (purchaseHistoryFlushIntervalId) {
+        clearInterval(purchaseHistoryFlushIntervalId);
+    }
+
+    purchaseHistoryFlushIntervalId = setInterval(() => {
+        flushPurchaseHistoryBatch({ silent: true });
+    }, PURCHASE_HISTORY_BATCH_INTERVAL_MS);
+}
+
+function stopPurchaseHistoryBatchSync() {
+    if (!purchaseHistoryFlushIntervalId) return;
+    clearInterval(purchaseHistoryFlushIntervalId);
+    purchaseHistoryFlushIntervalId = null;
+}
+
+window.flushPurchaseHistoryBatch = flushPurchaseHistoryBatch;
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        flushPurchaseHistoryBatch({ silent: true });
+    }
+});
 
 // Função auxiliar para o Loader
 function toggleLoader(show) {
@@ -231,6 +344,11 @@ auth.onAuthStateChanged((user) => {
     if ((DESATIVAR_LOGIN_PARA_TESTE || isSkipActive) && !user) return;
 
     if (user) {
+        startPurchaseHistoryBatchSync();
+        setTimeout(() => {
+            flushPurchaseHistoryBatch({ silent: true });
+        }, 15000);
+
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
         if (db) {
             db.collection('users').doc(user.uid).get().then(doc => {
@@ -284,6 +402,7 @@ auth.onAuthStateChanged((user) => {
             window.updateNavBadges();
         }
     } else {
+        stopPurchaseHistoryBatchSync();
         window.userFavorites = [];
         window.userCart = [];
         window.userLibrary = [];
@@ -303,7 +422,7 @@ async function loadUserData(uid) {
             window.userLibrary = data.library || [];
             window.userUpgrades = data.upgrades || {};
             window.userBalance = data.balance ?? INITIAL_USER_BALANCE; // Usuário inicia com saldo padrão
-            window.userHistory = data.history || []; // Histórico de compras
+            window.userHistory = mergeHistoryWithPending(data.history || [], uid); // Histórico + pendências locais
             window.userLoanDebt = data.loanDebt ?? 0;
             window.userLoanHistory = data.loanHistory || [];
             window.userLoanWalletBalance = data.loanWalletBalance ?? 0;
@@ -324,7 +443,7 @@ async function loadUserData(uid) {
             }
         } else {
             window.userFavorites = []; window.userCart = []; window.userLibrary = [];
-            window.userUpgrades = {}; window.userBalance = INITIAL_USER_BALANCE; window.userHistory = [];
+            window.userUpgrades = {}; window.userBalance = INITIAL_USER_BALANCE; window.userHistory = mergeHistoryWithPending([], uid);
             window.userLoanDebt = 0; window.userLoanHistory = [];
             window.userLoanWalletBalance = 0; window.userLoanBorrowedToday = 0; window.userLoanDayKey = null;
             window.userBio = ""; window.userAvatar = ""; window.userBannerURL = ""; window.userBannerType = "image";
@@ -922,8 +1041,7 @@ window.purchaseLibrary = async () => {
                 result = await window.FirebaseTransactions.purchaseGameTransaction(
                     auth.currentUser.uid,
                     window.userCart,
-                    totalPurchase,
-                    purchaseRecord
+                    totalPurchase
                 );
             } else {
                 // Fallback: atualiza manualmente no Firestore
@@ -933,8 +1051,7 @@ window.purchaseLibrary = async () => {
                 await db.collection('users').doc(auth.currentUser.uid).update({
                     library: newLibrary,
                     cart: [],
-                    balance: newBalance,
-                    history: firebase.firestore.FieldValue.arrayUnion(purchaseRecord)
+                    balance: newBalance
                 });
                 
                 result = {
@@ -948,10 +1065,10 @@ window.purchaseLibrary = async () => {
             window.userLibrary = result.library;
             window.userCart = [];
             window.userBalance = result.newBalance;
-            window.userHistory = [purchaseRecord, ...window.userHistory];
+            queuePurchaseHistoryEntry(purchaseRecord, auth.currentUser.uid);
             
             toggleLoader(false);
-            showToast(`Compra finalizada com sucesso! ${result.gamesPurchased} jogo(s) adicionado(s).`, "success");
+            showToast(`Compra finalizada com sucesso! ${result.gamesPurchased} jogo(s) adicionado(s). Histórico e detalhes podem levar até ${window.purchaseHistorySyncDelayMinutes} minutos para aparecer por limite do plano gratuito.`, "success");
             window.updateNavBadges();
             // Trigger mercado negro chance
             if (!window.location.pathname.includes('mercado-negro')) {

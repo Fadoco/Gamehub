@@ -728,7 +728,7 @@ const FirebaseTransactions = (() => {
         }
     };
 
-    const purchaseGameTransaction = async (userId, gameIds, totalPrice, purchaseRecord = null) => {
+    const purchaseGameTransaction = async (userId, gameIds, totalPrice) => {
         if (!window.db || !userId) {
             throw new Error('Database ou userId não definido');
         }
@@ -779,10 +779,6 @@ const FirebaseTransactions = (() => {
                     loanDayKey: state.loanDayKey,
                     lastPurchase: firebase.firestore.FieldValue.serverTimestamp()
                 };
-
-                if (purchaseRecord) {
-                    updatePayload.history = firebase.firestore.FieldValue.arrayUnion(purchaseRecord);
-                }
 
                 commitLoanAwareUserUpdate(
                     transaction,

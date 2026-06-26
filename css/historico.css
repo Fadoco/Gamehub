@@ -18,6 +18,24 @@
 .history-header-row p { margin: 0; color: #bdc3c7; }
 .history-total { color: var(--promo); font-weight: bold; font-size: 1.1em; }
 
+.history-sync-note {
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   margin-bottom: 14px;
+   padding: 12px 14px;
+   border-radius: 10px;
+   border: 1px solid rgba(0, 212, 255, 0.35);
+   background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 0, 0, 0.16));
+   color: #cfeeff;
+   font-size: 0.92rem;
+}
+
+.history-sync-note i {
+   color: var(--accent);
+   margin-top: 2px;
+}
+
 @media (max-width: 768px) {
    .history-header {
        flex-direction: column;

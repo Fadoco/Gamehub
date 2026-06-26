@@ -27,5 +27,9 @@ function renderHistory() {
 window.renderHistory = renderHistory;
 
 document.addEventListener('DOMContentLoaded', () => {
+    const syncNoteText = document.getElementById('history-sync-note-text');
+    if (syncNoteText && Number(window.purchaseHistorySyncDelayMinutes) > 0) {
+        syncNoteText.textContent = `Projeto gratuito: algumas informações de histórico podem levar até ${window.purchaseHistorySyncDelayMinutes} minutos para aparecer. Sua experiência de compra não é afetada.`;
+    }
     renderHistory();
 });
