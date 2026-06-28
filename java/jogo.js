@@ -111,12 +111,12 @@ function renderGameDetails(games) {
             };
             
             // Muda o texto se já estiver no carrinho ou biblioteca
-            if (window.userLibrary && window.userLibrary.includes(game.id)) {
+            if (window.userLibrary && window.userLibrary.some(id => String(id) === String(game.id))) {
                 buyBtn.textContent = "Na Biblioteca";
                 buyBtn.style.background = "#2a2a2a";
                 buyBtn.style.cursor = "default";
                 buyBtn.disabled = true;
-            } else if (window.userCart && window.userCart.includes(game.id)) {
+            } else if (window.userCart && window.userCart.some(id => String(id) === String(game.id))) {
                 buyBtn.textContent = "Remover do Carrinho";
                 buyBtn.style.background = "var(--accent)";
                 buyBtn.disabled = false;

@@ -105,6 +105,13 @@ window.addEventListener('gamesDataLoaded', () => {
     }
 });
 
+// Garante re-render quando os dados do usuário chegam do Firestore
+window.addEventListener('userDataLoaded', () => {
+    if (window.location.pathname.includes('carrinho')) {
+        renderCart();
+    }
+});
+
 // Atualizacao quando auth muda
 if (window.auth) {
     window.auth.onAuthStateChanged(() => {

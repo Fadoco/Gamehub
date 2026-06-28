@@ -13,6 +13,20 @@ const FirebaseTransactions = (() => {
     const ENABLE_PURCHASE_AUDIT_LOG = false;
 
     const roundMoney = (value) => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+    const normalizeGameId = (id) => {
+        if (id === null || id === undefined) return '';
+        return String(id).trim();
+    };
+    const normalizeGameIdList = (list) => {
+        if (!Array.isArray(list)) return [];
+
+        const unique = new Set();
+        for (const id of list) {
+            const normalized = normalizeGameId(id);
+            if (normalized) unique.add(normalized);
+        }
+        return Array.from(unique);
+    };
     const dateKey = (baseDate = new Date()) => {
         const y = baseDate.getFullYear();
         const m = String(baseDate.getMonth() + 1).padStart(2, '0');
@@ -752,22 +766,23 @@ const FirebaseTransactions = (() => {
                 const userData = userDoc.data();
                 const baseState = normalizeLoanState(userData, todayKey);
                 const { state, resetEntry } = applyDailyLoanReset(baseState, todayKey);
-                const currentLibrary = userData.library || [];
-                const currentCart = userData.cart || [];
+                const normalizedGameIds = normalizeGameIdList(gameIds);
+                const currentLibrary = normalizeGameIdList(userData.library || []);
+                const currentCart = normalizeGameIdList(userData.cart || []);
 
                 if (state.balance < totalPrice) {
                     throw new Error(`Saldo insuficiente. Saldo: R$ ${state.balance}, Necessário: R$ ${totalPrice}`);
                 }
 
-                const duplicates = gameIds.filter((id) => currentLibrary.includes(id));
+                const duplicates = normalizedGameIds.filter((id) => currentLibrary.includes(id));
                 if (duplicates.length > 0) {
                     throw new Error(`Alguns jogos já estão na sua biblioteca: ${duplicates.join(', ')}`);
                 }
 
                 const newBalance = roundMoney(state.balance - totalPrice);
                 const newLoanWallet = roundMoney(Math.max(0, state.loanWalletBalance - totalPrice));
-                const newLibrary = [...new Set([...currentLibrary, ...gameIds])];
-                const newCart = currentCart.filter((id) => !gameIds.includes(id));
+                const newLibrary = normalizeGameIdList([...currentLibrary, ...normalizedGameIds]);
+                const newCart = currentCart.filter((id) => !normalizedGameIds.includes(id));
 
                 const updatePayload = {
                     balance: newBalance,
@@ -811,7 +826,7 @@ const FirebaseTransactions = (() => {
             window.userLoanWalletBalance = result.newLoanWallet;
             window.userLoanBorrowedToday = result.loanBorrowedToday;
             window.userLoanDayKey = result.loanDayKey;
-            window.userLibrary = result.library;
+            window.userLibrary = normalizeGameIdList(result.library);
             window.userCart = [];
 
             return {

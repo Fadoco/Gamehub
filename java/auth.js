@@ -263,6 +263,22 @@ window.showToast = (message, type = 'info') => {
     }, 3500);
 };
 
+function normalizeGameId(id) {
+    if (id === null || id === undefined) return '';
+    return String(id).trim();
+}
+
+function normalizeGameIdList(list) {
+    if (!Array.isArray(list)) return [];
+
+    const unique = new Set();
+    for (const id of list) {
+        const normalized = normalizeGameId(id);
+        if (normalized) unique.add(normalized);
+    }
+    return Array.from(unique);
+}
+
 // Substituição para o confirm() nativo do navegador
 window.customConfirm = (message, onConfirm) => {
     let modal = document.getElementById('confirm-modal');
@@ -418,8 +434,8 @@ async function loadUserData(uid) {
         if (doc.exists) {
             const data = doc.data();
             window.userFavorites = data.favorites || [];
-            window.userCart = data.cart || [];
-            window.userLibrary = data.library || [];
+            window.userCart = normalizeGameIdList(data.cart || []);
+            window.userLibrary = normalizeGameIdList(data.library || []);
             window.userUpgrades = data.upgrades || {};
             window.userBalance = data.balance ?? INITIAL_USER_BALANCE; // Usuário inicia com saldo padrão
             window.userHistory = mergeHistoryWithPending(data.history || [], uid); // Histórico + pendências locais
@@ -467,6 +483,13 @@ async function loadUserData(uid) {
 
         if (window.routePageRendering) window.routePageRendering();
         window.updateNavBadges(); // Chama a função global updateNavBadges para atualizar os badges do cabeçalho e a carteira
+        window.dispatchEvent(new CustomEvent('userDataLoaded', {
+            detail: {
+                uid,
+                cart: window.userCart,
+                library: window.userLibrary
+            }
+        }));
         // ⚠️ DESABILITADO setupFriendshipListener - conflita com setupFriendshipsCollectionListener
         // Mantém apenas listeners de PEDIDOS, não de amigos (amigos vêm de friendships)
         // window.setupFriendshipListener(uid);
@@ -898,8 +921,10 @@ window.toggleFavorite = async (event, gameId) => {
 // Com validação de segurança e transações
 window.toggleCart = async (gameId) => {
     try {
+        const normalizedGameId = normalizeGameId(gameId);
+
         // Validação básica do gameId
-        if (!gameId || (typeof gameId !== 'number' && typeof gameId !== 'string')) {
+        if (!normalizedGameId || (typeof gameId !== 'number' && typeof gameId !== 'string')) {
             showToast("Erro ao adicionar jogo ao carrinho.", "error");
             return;
         }
@@ -919,21 +944,22 @@ window.toggleCart = async (gameId) => {
         }
 
         // Verifica se o jogo já está na biblioteca
-        if (window.userLibrary && window.userLibrary.includes(gameId)) {
+        if (window.userLibrary && window.userLibrary.some((id) => normalizeGameId(id) === normalizedGameId)) {
             showToast("Você já possui este jogo!", "info");
             return;
         }
 
         // Inicializa carrinho se não existir
         if (!window.userCart) window.userCart = [];
+        window.userCart = normalizeGameIdList(window.userCart);
 
         // Atualização local
-        const index = window.userCart.indexOf(gameId);
+        const index = window.userCart.findIndex((id) => normalizeGameId(id) === normalizedGameId);
         if (index > -1) {
             window.userCart.splice(index, 1);
             showToast("Removido do carrinho.");
         } else {
-            window.userCart.push(gameId);
+            window.userCart.push(normalizedGameId);
             showToast("Adicionado ao carrinho!", "success");
             // Trigger mercado negro chance
             if (!window.location.pathname.includes('mercado-negro')) {
