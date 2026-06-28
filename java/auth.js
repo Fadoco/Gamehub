@@ -225,6 +225,15 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+window.addEventListener('currentUserDocumentRestored', () => {
+    const uid = auth?.currentUser?.uid;
+    if (!uid || typeof loadUserData !== 'function') return;
+
+    setTimeout(() => {
+        loadUserData(uid).catch((e) => console.warn('Falha ao recarregar usuário após restauração:', e));
+    }, 300);
+});
+
 // Função auxiliar para o Loader
 function toggleLoader(show) {
     const loader = document.getElementById('loading-overlay');
@@ -277,6 +286,78 @@ function normalizeGameIdList(list) {
         if (normalized) unique.add(normalized);
     }
     return Array.from(unique);
+}
+
+async function ensureUserDocument(user) {
+    if (!db || !user?.uid) return;
+
+    const userRef = db.collection('users').doc(user.uid);
+    const doc = await userRef.get();
+    const existingData = doc.exists ? (doc.data() || {}) : {};
+    let friendshipId = existingData.friendshipId;
+
+    if (!friendshipId) {
+        friendshipId = Math.floor(100000 + Math.random() * 900000);
+    }
+
+    if (!doc.exists) {
+        // Criação compatível com firestore.rules (validateNewUserData exige balance == 0)
+        await userRef.set({
+            email: user.email,
+            balance: 0,
+            library: [],
+            favorites: [],
+            history: []
+        });
+
+        // Atualização complementar após criação
+        await userRef.update({
+            displayName: user.displayName || (user.email ? user.email.split('@')[0] : ''),
+            active: true,
+            cart: [],
+            upgrades: {},
+            loanDebt: 0,
+            loanHistory: [],
+            loanWalletBalance: 0,
+            loanBorrowedToday: 0,
+            loanDayKey: null,
+            bio: '',
+            avatar: '',
+            bannerURL: '',
+            bannerType: 'image',
+            friendshipId,
+            friends: [],
+            friendRequestsSent: [],
+            friendRequestsReceived: [],
+            balance: INITIAL_USER_BALANCE
+        });
+        return;
+    }
+
+    await userRef.set({
+        email: user.email,
+        displayName: existingData.displayName || user.displayName || (user.email ? user.email.split('@')[0] : ''),
+        active: existingData.active ?? true,
+        balance: existingData.balance ?? INITIAL_USER_BALANCE,
+        favorites: existingData.favorites ?? [],
+        cart: existingData.cart ?? [],
+        library: existingData.library ?? [],
+        upgrades: existingData.upgrades ?? {},
+        history: existingData.history ?? [],
+        loanDebt: existingData.loanDebt ?? 0,
+        loanHistory: existingData.loanHistory ?? [],
+        loanWalletBalance: existingData.loanWalletBalance ?? 0,
+        loanBorrowedToday: existingData.loanBorrowedToday ?? 0,
+        loanDayKey: existingData.loanDayKey ?? null,
+        bio: existingData.bio ?? '',
+        avatar: existingData.avatar ?? '',
+        bannerURL: existingData.bannerURL ?? '',
+        bannerType: existingData.bannerType ?? 'image',
+        friendshipId,
+        friends: existingData.friends ?? [],
+        friendRequestsSent: existingData.friendRequestsSent ?? [],
+        friendRequestsReceived: existingData.friendRequestsReceived ?? []
+    }, { merge: true });
 }
 
 // Substituição para o confirm() nativo do navegador
@@ -367,40 +448,8 @@ auth.onAuthStateChanged((user) => {
 
         // Garante que o documento do usuário existe no Firestore para aparecer no Admin e ter dados iniciais
         if (db) {
-            db.collection('users').doc(user.uid).get().then(doc => {
-                // Se o documento não existir OU o campo email estiver faltando, atualizamos
-                const existingData = doc.exists ? doc.data() : {};
-                let friendshipId = existingData.friendshipId;
-
-                // Gerar um friendshipId se não existir (6 dígitos aleatórios)
-                if (!friendshipId) {
-                    friendshipId = Math.floor(100000 + Math.random() * 900000);
-                }
-
-                db.collection('users').doc(user.uid).set({
-                    email: user.email,
-                    displayName: existingData.displayName || user.displayName || (user.email ? user.email.split('@')[0] : ''),
-                    active: existingData.active ?? true,
-                    balance: existingData.balance ?? INITIAL_USER_BALANCE,
-                    favorites: existingData.favorites ?? [],
-                    cart: existingData.cart ?? [],
-                    library: existingData.library ?? [],
-                    upgrades: existingData.upgrades ?? {},
-                    history: existingData.history ?? [],
-                    loanDebt: existingData.loanDebt ?? 0,
-                    loanHistory: existingData.loanHistory ?? [],
-                    loanWalletBalance: existingData.loanWalletBalance ?? 0,
-                    loanBorrowedToday: existingData.loanBorrowedToday ?? 0,
-                    loanDayKey: existingData.loanDayKey ?? null,
-                    bio: existingData.bio ?? "",
-                    avatar: existingData.avatar ?? "",
-                    bannerURL: existingData.bannerURL ?? "",
-                    bannerType: existingData.bannerType ?? "image",
-                    friendshipId: friendshipId,
-                    friends: existingData.friends ?? [],
-                    friendRequestsSent: existingData.friendRequestsSent ?? [],
-                    friendRequestsReceived: existingData.friendRequestsReceived ?? []
-                }, { merge: true });
+            ensureUserDocument(user).catch((docError) => {
+                console.warn('Falha ao garantir documento do usuário:', docError?.message || docError);
             });
         }
         // Carrega dados do usuário - verifica se db está disponível

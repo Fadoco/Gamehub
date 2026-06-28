@@ -55,6 +55,14 @@ window.UserCleanup = {
 
     handleUserDeletion: async (uid, reason = 'Removido do Firestore') => {
         if (!uid || window.UserCleanup._processedDeletions.has(uid)) return;
+        const currentUid = window.auth?.currentUser?.uid;
+
+        // Nunca tratar o próprio usuário logado como órfão para evitar limpeza indevida
+        if (currentUid && uid === currentUid) {
+            console.warn(`[USER CLEANUP] Ignorando limpeza do usuário logado (${uid}) - motivo: ${reason}`);
+            return;
+        }
+
         window.UserCleanup._processedDeletions.add(uid);
         console.log(`[USER CLEANUP] 🔔 ${reason}: ${uid}`);
         await window.UserCleanup.deleteUserCompletely(uid);
@@ -456,8 +464,30 @@ window.UserCleanup = {
                 (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
                         const uid = change.doc.id;
+                        const currentUid = window.auth?.currentUser?.uid;
 
                         if (change.type === 'removed') {
+                            if (currentUid && uid === currentUid) {
+                                console.warn('[USER CLEANUP] Documento do usuário logado removido. Tentando restaurar perfil...');
+
+                                const currentUser = window.auth?.currentUser;
+                                if (currentUser?.email) {
+                                    db.collection('users').doc(uid).set({
+                                        email: currentUser.email,
+                                        balance: 0,
+                                        library: [],
+                                        favorites: [],
+                                        history: []
+                                    }).then(() => {
+                                        window.dispatchEvent(new CustomEvent('currentUserDocumentRestored', { detail: { uid } }));
+                                        console.log('[USER CLEANUP] ✅ Documento mínimo do usuário restaurado');
+                                    }).catch((restoreError) => {
+                                        console.warn('[USER CLEANUP] Falha ao restaurar documento do usuário:', restoreError?.message || restoreError);
+                                    });
+                                }
+                                return;
+                            }
+
                             window.UserCleanup.handleUserDeletion(uid, 'Documento removido do Firestore');
                             return;
                         }
